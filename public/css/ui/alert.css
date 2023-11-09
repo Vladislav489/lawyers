@@ -1,0 +1,46 @@
+
+body { overflow-x: hidden; }
+
+
+
+.Easy {
+    width: 200px;
+    height: auto;
+    border: 1px solid #666666;
+    border-radius: 4px;
+    background-color: cadetblue;
+    color: #FFFFFF;
+    padding: 10px 5px;
+    position: fixed;
+    right: -250px;
+    top: 30px;
+    -webkit-transition: all 1.0s ease;
+    -moz-transition: all 1.0s ease;
+    transition: all 1.0s ease;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    box-shadow: 0px 0px 2px #333333;
+    text-align: center;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.Easy P {
+    padding: 0px;
+    margin: 0;
+}
+
+.Easy.go {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    right: 5px;
+    transform: scale(1);
+}
+
+.Easy.stop {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    opacity: 0;
+}

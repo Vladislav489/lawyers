@@ -1,0 +1,72 @@
+.nav_menu_component_2 {
+    background: white;
+}
+.nav_menu_component_2 a {
+    text-decoration: none;
+    display: block;
+    transition: .5s linear;
+    border: 1px solid black;
+    border-radius: 5px;
+
+}
+.nav_menu_component_2 > li > a > i {
+    padding-right: 5px;
+    padding-left: 5px;
+    color: red;
+}
+.nav_menu_component_2 ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nav_menu_component_2 .topmenu_menu_component > li {
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    min-width: 200px;
+
+}
+.nav_menu_component_2 .topmenu_menu_component > li > a {
+    font-weight: bold;
+    padding: 10px 40px;
+    font-size: 12px;
+    margin-right:5px;
+    margin-left: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1c1c1c;
+
+}
+.nav_menu_component_2 .topmenu_menu_component .submenu_menu_component {
+    position: absolute;
+    left: -1px;
+    z-index: 99999;
+    width: 200px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0px);
+    transition: .5s ease-in-out;
+}
+.nav_menu_component_2 .topmenu_menu_component .submenu_menu_component li {
+    position: relative;
+    margin-left: 1px;
+    margin-top: 1px;
+}
+.nav_menu_component_2 .topmenu_menu_component .submenu_menu_component a {
+    background: white;
+    color: #1c1c1c;
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+}
+.nav_menu_component_2 .submenu_menu_component .submenu_menu_component {
+    position: absolute;
+    top: 0;
+    left: 200px;
+}
+.nav_menu_component_2 .nav_menu_component_ li:hover > .submenu_menu_component {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0px);
+}

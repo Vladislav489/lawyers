@@ -1,0 +1,66 @@
+
+.nav_menu_component_3 {
+    background: white;
+    text-align: center;
+    width: 200px;
+}
+.nav_menu_component_3 a {
+    text-decoration: none;
+    display: block;
+    transition: .5s linear;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+.nav_menu_component_3 ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav_menu_component_3 .topmenu_menu_component > li {
+    display: block;
+    position: relative;
+    margin-bottom: 2px;
+
+}
+.nav_menu_component_3 .topmenu_menu_component > li > a {
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #1c1c1c;
+}
+.nav_menu_component_3 .topmenu_menu_component .submenu_menu_component {
+    position: absolute;
+    left: 205px;
+    top:0px;
+    z-index: 5;
+    width: 240px;
+    visibility: hidden;
+    opacity: 0;
+    margin-bottom:2px;
+    transition: .5s ease-in-out;
+}
+nav_menu_component_3  .submenu_menu_component li {
+    position: relative;
+    margin-bottom: 2px;
+}
+nav_menu_component_3  .submenu_menu_component a {
+    background: white;
+    color: #1c1c1c;
+    text-align: left;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+}
+nav_menu_component_3 .submenu_menu_component .submenu_menu_component {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 5px);
+    left: -webkit-calc(100% + 5px);
+}
+.nav_menu_component_3 li:hover > .submenu_menu_component {
+    visibility: visible;
+    opacity: 1;
+}

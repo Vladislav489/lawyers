@@ -1,0 +1,7 @@
+.simpleSelect{
+    width: 100%;
+    min-width: 190px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    height: 35px;
+}

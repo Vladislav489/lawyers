@@ -1,0 +1,19 @@
+.group_drop{
+   background-color: #0b5ed7;
+   font-size: 16pt!important;
+   color: #FFF;
+   font-weight: bold;
+   padding-left:10px;
+   width:100%!important;
+   border-radius: 4px;
+   margin-bottom: 2px;
+}
+
+.group_drop_item{
+   background-color: gainsboro;
+   font-size: 14pt;
+   margin: 5px;
+   padding-left:10px;
+   border: 1px solid black;
+   border-radius: 4px;
+}

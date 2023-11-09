@@ -1,0 +1,15 @@
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+public/images/icon_currence/icon_currence.zi
+auth.json
+signatorinve__.sql
+npm-debug.log
+signatorinve__.sql
+yarn-error.log
+/vendor
+/storage
+/.idea
+/.vscode
