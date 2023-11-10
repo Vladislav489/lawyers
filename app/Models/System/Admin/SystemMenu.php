@@ -1,6 +1,7 @@
 
 <?php
 namespace App\Models\System\Admin;
+
 use App\Models\CoreEngine\Model\ModyfiModel;
 
 class SystemMenu extends ModyfiModel  {

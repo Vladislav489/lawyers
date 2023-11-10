@@ -67,7 +67,6 @@ class FrontController extends CentralController {
     // Занрузка шаблона страницы
     private function init($parameters){
         $template = $seo = null;
-
         $this->setting =Cache::tags([Site::getSite()['domain_name']])->get('site_setting');
         if(empty($this->setting)) {
             $this->setting = getSetting('site_setting');
@@ -85,7 +84,7 @@ class FrontController extends CentralController {
         //все параметры роута
         $GLOBALS['route'] = $routsTemplate;
         //все параметры страницы
-        $GLOBALS['setting'] = $this->setting;
+        $GLOBALS['setting'] = (!is_null($this->setting) && $this->setting !== false)?$this->setting:[];
         $GLOBALS['params'] = array_merge(\request()->all(),$parameters);
         // проыеряет переданны ли правельные параметры для страницы (проверка урла на жизнеспособность)
         $checkParamsUrlExist = $routs->checkDinamicParams($routsTemplate,$GLOBALS['params']);
