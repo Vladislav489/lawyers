@@ -1,3 +1,5 @@
-<?php return array (
-  'migration' => false,
-);
+<?php
+
+return [
+    'migration' => false,
+];
