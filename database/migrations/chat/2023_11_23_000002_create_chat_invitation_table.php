@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->text('text')->comment('текст приглашения');
-            $table->boolean('is_deleted')->default(false);
             $table->boolean('is_archive')->default(false)->comment('в архиве');
+            $table->boolean('is_deleted')->default(false);
             $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
             $table->bigInteger('target_user_id')->unsigned()->index()->comment('ID пользователя (которому приглашение)');

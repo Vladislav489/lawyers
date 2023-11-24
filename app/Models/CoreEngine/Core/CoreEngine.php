@@ -103,7 +103,7 @@ class CoreEngine{
             if (isset($data['id'])) {
                 $id = $data['id'];
                 unset($data['id']);
-                return $this->update($data, $id);;
+                return $this->update($data, $id);
             } else {
                 return $this->insert($data);
             }

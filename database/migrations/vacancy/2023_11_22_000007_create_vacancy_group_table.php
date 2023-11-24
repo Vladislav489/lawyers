@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_payment_transaction_user', function (Blueprint $table) {
+        Schema::create('vacancy_group', function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->float('amount', 8, 2)->comment('сумма транзакции');
-            $table->string('status', 128)->comment('статус');
+            $table->boolean('is_appruv')->default(false)->comment('одобрен');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
-            $table->bigInteger('target_user_id')->unsigned()->index()->comment('ID пользователя (которому транзакция)');
+            $table->bigInteger('vacancy_id')->unsigned()->index()->comment('ID вакансии');
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_payment_transaction_user');
+        Schema::dropIfExists('vacancy_user_in_group');
     }
 };

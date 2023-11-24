@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vacancy_documentation_user_access', function (Blueprint $table) {
+        Schema::create('payment_transaction_user', function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->date('period_start');
-            $table->date('period_end');
-            $table->boolean('is_deleted')->default(false);
+            $table->float('amount', 8, 2)->comment('сумма транзакции');
+            $table->string('status', 128)->comment('статус');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
-            $table->bigInteger('documentation_id')->unsigned()->index()->comment('ID документации');
+            $table->bigInteger('target_user_id')->unsigned()->index()->comment('ID пользователя (которому транзакция)');
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vacancy_documentation_user_access');
+        Schema::dropIfExists('user_payment_transaction_user');
     }
 };

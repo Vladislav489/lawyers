@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+ini_set('max_execution_time', 500);
+
 Route::any('/system/import/chunk', [ControllerTaskSystem::class, 'importChartForecastData'])->name('importChart');
 Route::any('/system/import/price', [ControllerTaskSystem::class, 'importPrice'])->name('cron_price');
 Route::any('/install', function () {

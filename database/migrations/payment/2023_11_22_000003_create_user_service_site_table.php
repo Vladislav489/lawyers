@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employee_question_answer', function (Blueprint $table) {
+        Schema::create('user_service_site', function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->text('text')->comment('текст ответа');
-            $table->boolean('is_deleted')->default(false);
-            $table->bigInteger('question_id')->unsigned()->index()->comment('ID вопроса');
-            $table->bigInteger('employee_id')->unsigned()->index()->comment('ID сотрудника');
+            $table->string('name', 128);
+            $table->float('price', 8, 2)->comment('стоимость');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_question_answer');
+        Schema::dropIfExists('user_server_site');
     }
 };
