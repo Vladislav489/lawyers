@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->string('name', 128);
             $table->boolean('is_group')->default(false)->comment('групповой');
-            $table->boolean('is_delete')->default(false);
+            $table->boolean('is_deleted')->default(false);
             $table->boolean('is_archive')->default(false)->comment('в архиве');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
         });

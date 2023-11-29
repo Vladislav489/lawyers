@@ -22,10 +22,9 @@ return new class extends Migration
             $table->string('status', 128)->comment('статус');
             $table->date('period_start');
             $table->date('period_end');
-            $table->boolean('is_delete')->default(false);
+            $table->boolean('is_deleted')->default(false);
             $table->boolean('is_donate')->default(false)->comment('донат');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
-            // TODO: period_start?
         });
     }
 

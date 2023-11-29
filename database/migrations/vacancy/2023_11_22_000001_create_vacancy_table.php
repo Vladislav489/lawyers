@@ -37,7 +37,7 @@ return new class extends Migration
             $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
             $table->bigInteger('service_id')->unsigned()->index()->comment('ID сервиса');
-            $table->bigInteger('employee_executor_id')->unsigned()->index()->comment('ID сотрудника-исполнителя');
+            $table->bigInteger('executor_id')->unsigned()->index()->comment('ID сотрудника-исполнителя');
             $table->bigInteger('country_id')->unsigned()->index()->comment('ID страны');
             $table->bigInteger('state_id')->unsigned()->index()->comment('ID области');
             $table->bigInteger('city_id')->unsigned()->index()->comment('ID города');

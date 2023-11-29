@@ -33,8 +33,8 @@ return new class extends Migration{
                \Illuminate\Support\Facades\DB::table($this->tableName)->insert(
                    ['first_name' => "root",
                        'last_name' => "root",
-                       'email' => "root@" . $_SERVER['HTTP_HOST'],
-                       'password' => \Illuminate\Support\Facades\Hash::make("root@" . $_SERVER['HTTP_HOST'])
+                       'email' => "root",
+                       'password' => \Illuminate\Support\Facades\Hash::make("root")
                    ]
                );
            }catch (Exception $e){
