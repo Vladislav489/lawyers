@@ -11,7 +11,7 @@ function route__($name,$params = []) {
         try {
             return route($name, $params, false);
         }catch (\Throwable $e){
-            abort(404);
+          //  abort(404);
         }
     }
 }

@@ -23,8 +23,8 @@ abstract class CentralController extends BaseController {
         $this->params = \request()->all();
     }
     public function callAction($method, $parameters){
+        $parameters = (empty($parameters) || (isset($parameters[0]) && empty($parameters[0]) ))?[]:$parameters;
         $this->params = $GLOBALS["params"] = array_merge(\request()->all(),$parameters);
-
         if(isset($GLOBALS["params"]['template']['body_view']))
             unset($GLOBALS["params"]['template']['body_view']);
         if(isset($GLOBALS["params"]['template']['view']))
