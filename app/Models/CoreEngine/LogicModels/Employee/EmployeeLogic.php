@@ -3,16 +3,12 @@
 namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\Model\InformationCategoryName;
+use App\Models\CoreEngine\LogicModels\User\UserLogic;
 
-class EmployeeLogic extends CoreEngine
+class EmployeeLogic extends UserLogic
 {
-    private $helpEngine;
-
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
-        $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
 

@@ -46,10 +46,10 @@ class CoreEngine{
 
     public function __construct($params,$select = [],$callback = null ){
         $this->setSelect((is_array($select) && count($select) > 0)?$select:$this->defaultSelect());
-        if (Auth::id() == 1) {
-            unset($params['site']);
-            unset($params['site_id']);
-        }
+        // if (Auth::id() == 1) {
+        //     unset($params['site']);
+        //     unset($params['site_id']);
+        // }
         $this->union = (key_exists('union',$params))?true:false;
         if (!isset($params['is_delete']))
             $params['is_delete'] = 0;
