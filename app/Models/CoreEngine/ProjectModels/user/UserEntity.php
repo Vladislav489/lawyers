@@ -3,8 +3,9 @@
 namespace App\Models\CoreEngine\ProjectModels\User;
 
 use App\Models\CoreEngine\ProjectModels\BaseModel;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserEntity extends BaseModel
+class UserEntity extends Authenticatable
 {
     protected $table = 'user_entity';
 

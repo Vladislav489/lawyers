@@ -3,7 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\Service;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\Model\InformationCategoryName;
+use App\Models\CoreEngine\ProjectModels\Service\Service;
 
 class ServiceLogic extends CoreEngine
 {
@@ -11,7 +11,7 @@ class ServiceLogic extends CoreEngine
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
+        $this->engine = new Service();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();

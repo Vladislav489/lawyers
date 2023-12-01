@@ -3,15 +3,11 @@
 namespace App\Models\CoreEngine\LogicModels\Payment;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\Model\InformationCategoryName;
 
 class PaymentLogic extends CoreEngine
 {
-    private $helpEngine;
-
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();

@@ -3,15 +3,13 @@
 namespace App\Models\CoreEngine\LogicModels\Contract;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\Model\InformationCategoryName;
+use App\Models\CoreEngine\ProjectModels\Contract\Contract;
 
 class ContractLogic extends CoreEngine
 {
-    private $helpEngine;
-
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
+        $this->engine = new Contract();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();

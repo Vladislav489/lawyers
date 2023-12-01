@@ -7,8 +7,6 @@ use App\Models\CoreEngine\Model\InformationCategoryName;
 
 class VacancyDocumentationLogic extends CoreEngine
 {
-    private $helpEngine;
-
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
