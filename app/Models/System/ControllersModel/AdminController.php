@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends CentralController {
     public function callAction($method, $parameters){
-        if (!Auth::check()) {
+        if (!Auth::check() && Auth::) {
             if($_SERVER['SERVER_ADDR'] != "127.0.0.1"){
                 return redirect(route__("actionIndex_logincontroller"));
             }
