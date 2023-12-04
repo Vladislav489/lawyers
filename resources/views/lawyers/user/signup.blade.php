@@ -9,10 +9,11 @@
                     <h1 class="fs-3">Регистрация аккаунта</h1>
                     <form
                         id="signup-form"
-                        class="mt-3 p-3 bg-primary-subtle"
+                        class="mt-3 mb-5 p-3 bg-primary-subtle"
                         action=""
                         method="post"
                         enctype="application/x-www-form-urlencoded"
+                        style="border: 1px dashed"
                     >
                         @csrf
                         <div class="mb-3">
@@ -77,49 +78,11 @@
         </div>
     </section>
 
+    @include('js.validation')
     <script>
         const formElement = document.querySelector('#signup-form');
+        const url = 'http://lawyers/site/store';
 
-        const createUser = async (body) => {
-            const url = 'http://lawyers/storeuser';
-            const options = {
-                method: 'POST',
-                body
-            };
-
-            const response = await fetch(url, options);
-            const data = await response.json();
-
-            return {
-                status: response.status,
-                errors: data.errors
-            };
-        };
-
-        const clearValidationErrors = (formElement) => {
-            formElement.querySelectorAll('input:not([type=hidden])').forEach((input) => {
-                input.classList.remove('is-invalid');
-                input.nextElementSibling.textContent = '';
-            });
-        };
-
-        const renderValidationErrors = (errors, formElement) => {
-            Object.keys(errors).forEach((field) => {
-                const inputElement = formElement.querySelector(`[name=${field}]`);
-                inputElement.classList.add('is-invalid');
-                inputElement.nextElementSibling.textContent = errors[field][0];
-            });
-        };
-
-        formElement.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-            createUser(new FormData(evt.target)).then((response) => {
-                clearValidationErrors(formElement);
-
-                if (response.errors) {
-                    renderValidationErrors(response.errors, evt.target);
-                }
-            });
-        });
+        setSubmitHandler(url, formElement);
     </script>
 @endsection

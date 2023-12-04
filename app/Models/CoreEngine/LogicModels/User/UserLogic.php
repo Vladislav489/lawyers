@@ -62,8 +62,8 @@ class UserLogic extends CoreEngine
         $user->country_id = 1;
         $user->state_id = 1;
         $user->city_id = 1;
-        $user->user_type_id = 1;
-        $user->user_modifier_id = 1;
+        $user->type_id = 1;
+        $user->modifier_id = 1;
 
         $user->save();
 

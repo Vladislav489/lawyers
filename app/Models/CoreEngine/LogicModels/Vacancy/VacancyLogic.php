@@ -3,13 +3,15 @@
 namespace App\Models\CoreEngine\LogicModels\Vacancy;
 
 use App\Models\CoreEngine\Core\CoreEngine;
+use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
+use Illuminate\Support\Facades\Auth;
 
 class VacancyLogic extends CoreEngine
 {
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->helpEngine['InformationCategoryName'] = new InformationCategoryName();
+        $this->engine = new Vacancy();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -43,5 +45,33 @@ class VacancyLogic extends CoreEngine
         $this->filter = array_merge($this->filter, parent::getFilter());
 
         return $this->filter;
+    }
+
+    public function store(array $data): Vacancy
+    {
+        $vacancy = new Vacancy();
+
+        $vacancy->description = $data['description'];
+        $vacancy->payment = $data['payment'];
+        $vacancy->defendant = json_encode([]);
+        $vacancy->status = '1';
+        $vacancy->lawsuit_number = '1';
+        $vacancy->address_judgment = '1';
+        $vacancy->period_start = '2023-01-01';
+        $vacancy->period_end = '2023-01-01';
+
+        $vacancy->priority_id = 1;
+        $vacancy->chat_id = 1;
+        $vacancy->user_id = Auth::id();
+
+        $vacancy->service_id = 1;
+        $vacancy->executor_id = null;
+        $vacancy->country_id = 1;
+        $vacancy->state_id = 1;
+        $vacancy->city_id = 1;
+
+        $vacancy->save();
+
+        return $vacancy;
     }
 }

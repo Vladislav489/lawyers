@@ -35,8 +35,8 @@ return new class extends Migration
             $table->bigInteger('country_id')->unsigned()->index()->comment('ID страны');
             $table->bigInteger('state_id')->unsigned()->index()->comment('ID области');
             $table->bigInteger('city_id')->unsigned()->index()->comment('ID города');
-            $table->bigInteger('user_type_id')->unsigned()->index()->comment('ID типа пользоватедя');
-            $table->bigInteger('user_modifier_id')->unsigned()->index()->comment('ID модификатора пользоватедя');
+            $table->bigInteger('type_id')->unsigned()->index()->comment('ID типа пользоватедя');
+            $table->bigInteger('modifier_id')->unsigned()->index()->comment('ID модификатора пользоватедя');
         });
     }
 

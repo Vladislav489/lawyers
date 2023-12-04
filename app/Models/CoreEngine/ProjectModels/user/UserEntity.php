@@ -24,7 +24,13 @@ class UserEntity extends Authenticatable
         'country_id',
         'state_id',
         'city_id',
-        'user_type_id',
-        'user_modifier_id',
+        'type_id',
+        'modifier_id',
     ];
+
+    // FIXME:
+    public function type(): HasOne
+    {
+        return $this->hasOne(UserType::class, 'id', 'type_id');
+    }
 }
