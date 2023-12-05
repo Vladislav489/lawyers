@@ -1,28 +1,29 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Создать вакансию')
+@section('title', 'Редактировать вакансию')
 
 @section('content')
     <section class="mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-6">
-                    <h1 class="fs-3">Создать вакансию</h1>
+                    <h1 class="fs-3">Редактировать вакансию</h1>
                     <form
                         id="signup-form"
-                        class="mt-3 mb-5 p-3 bg-primary-subtle"
+                        class="mt-4 mb-5 p-3 bg-primary-subtle"
                         action=""
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
                     >
                         @csrf
+                        @method('PATCH')
                         <div class="mb-3">
                             <label class="form-label" for="desc">Описание</label>
                             <textarea
                                 id="desc"
                                 class="form-control"
                                 name="description"
-                            ></textarea>
+                            >{{ $vacancy->description }}</textarea>
                             <div class="invalid-feedback"></div>
                         </div>
 
@@ -33,11 +34,12 @@
                                 class="form-control"
                                 type="number"
                                 name="payment"
+                                value="{{ $vacancy->payment }}"
                             >
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Создать</button>
+                        <button type="submit" class="btn btn-primary">Обновить</button>
                     </form>
                 </div>
             </div>
@@ -46,9 +48,9 @@
 
     @include('js.validation')
     <script>
-        const formElement = document.querySelector('#signup-form');
-        const url = 'http://lawyers/storevacancy';
+        const url = 'http://lawyers/storevacancy?id={{ $vacancy->id }}';
+        const onSuccess = () => window.location.href = 'http://lawyers/vacancylist';
 
-        setSubmitHandler(url, formElement);
+        setSubmitHandler(url, onSuccess);
     </script>
 @endsection

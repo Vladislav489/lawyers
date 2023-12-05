@@ -1,8 +1,12 @@
 <script>
+    const tokenElement = document.querySelector('[name="csrf-token"]');
+
     const sendRequest = async (url, body) => {
         const options = {
-            method: 'POST',
-            body
+            body,
+            headers: {
+                'X-CSRF-TOKEN': tokenElement.content
+            }
         };
 
         const response = await fetch(url, options);
@@ -14,8 +18,25 @@
         };
     };
 
+    const sendDeleteRequest = async (url) => {
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': tokenElement.content
+            }
+        };
+
+        const response = await fetch(url, options);
+        const data = await response.json();
+
+        return {
+            status: response.status,
+            errors: data.errors
+        }
+    };
+
     const clearValidationErrors = (formElement) => {
-        formElement.querySelectorAll('input:not([type=hidden])').forEach((input) => {
+        formElement.querySelectorAll('input:not([type=hidden]), textarea').forEach((input) => {
             input.classList.remove('is-invalid');
             input.nextElementSibling.textContent = '';
         });
@@ -29,14 +50,16 @@
         });
     };
 
-    const setSubmitHandler = (url, formElement) => {
-        formElement.addEventListener('submit', (evt) => {
+    const setSubmitHandler = (url, onSuccess) => {
+        document.querySelector('form').addEventListener('submit', (evt) => {
             evt.preventDefault();
             sendRequest(url, new FormData(evt.target)).then((response) => {
-                clearValidationErrors(formElement);
+                clearValidationErrors(evt.target);
 
                 if (response.errors) {
                     renderValidationErrors(response.errors, evt.target);
+                } else {
+                    onSuccess();
                 }
             });
         });

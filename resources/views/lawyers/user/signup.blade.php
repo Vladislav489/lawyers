@@ -80,9 +80,9 @@
 
     @include('js.validation')
     <script>
-        const formElement = document.querySelector('#signup-form');
         const url = 'http://lawyers/site/store';
+        const onSuccess = () => window.location.href = 'http://lawyers/site/login';
 
-        setSubmitHandler(url, formElement);
+        setSubmitHandler(url, onSuccess);
     </script>
 @endsection

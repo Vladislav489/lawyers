@@ -37,12 +37,13 @@ const EMPLOYEE_TYPE_ID = 2;
                             {{ $user->first_name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <?php if ($user->type_id === USER_TYPE_ID): ?>
+                            @if ($user->type_id === USER_TYPE_ID)
                                 <li><a class="dropdown-item" href="/clientcabinet">Кабинет клиента</a></li>
                                 <li><a class="dropdown-item" href="/createvacancy">Создать вакансию</a></li>
-                            <?php else: ?>
+                                <li><a class="dropdown-item" href="/vacancylist">Мои вакансии</a></li>
+                            @else
                                 <li><a class="dropdown-item" href="/employeecabinet">Кабинет юриста</a></li>
-                            <?php endif; ?>
+                            @endif
 
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/site/logout">Выход</a></li>

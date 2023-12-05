@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\ProjectModels\User;
 
 use App\Models\CoreEngine\ProjectModels\BaseModel;
+use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class UserEntity extends Authenticatable
@@ -29,8 +30,13 @@ class UserEntity extends Authenticatable
     ];
 
     // FIXME:
-    public function type(): HasOne
+    public function type()
     {
         return $this->hasOne(UserType::class, 'id', 'type_id');
+    }
+
+    public function vacancies()
+    {
+        return $this->hasMany(Vacancy::class, 'user_id', 'id');
     }
 }

@@ -74,4 +74,15 @@ class VacancyLogic extends CoreEngine
 
         return $vacancy;
     }
+
+    public function update2(int $vacancy_id, array $data)
+    {
+        $vacancy = Vacancy::find($vacancy_id);
+
+        $vacancy->description = $data['description'];
+        $vacancy->payment = $data['payment'];
+        $vacancy->save();
+
+        return $vacancy;
+    }
 }
