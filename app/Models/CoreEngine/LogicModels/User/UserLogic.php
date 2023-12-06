@@ -54,6 +54,7 @@ class UserLogic extends CoreEngine
         $user->password = Hash::make($data['password']);
         $user->first_name = $data['first_name'];
         $user->last_name = $data['last_name'];
+        $user->middle_name = $data['middle_name'];
 
         $user->post_code = '1';
         $user->phone_number = $data['phone_number'];

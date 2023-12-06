@@ -7,6 +7,12 @@
             <div class="row">
                 <div class="col-6">
                     <h1 class="fs-3">Регистрация аккаунта</h1>
+                    <div class="d-grid gap-2">
+                        <div class="btn-group btn-group-sm mt-3">
+                            <a href="http://lawyers/site/signupclient" class="btn btn-outline-primary active">Клиент</a>
+                            <a href="http://lawyers/site/signupemployee" class="btn btn-outline-primary">Юрист</a>
+                        </div>
+                    </div>
                     <form
                         id="signup-form"
                         class="mt-3 mb-5 p-3 bg-primary-subtle"

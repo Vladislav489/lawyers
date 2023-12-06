@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'migration' => true,
+    'migration' => false,
 ];

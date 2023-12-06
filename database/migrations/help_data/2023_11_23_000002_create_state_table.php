@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('employee_city', function (Blueprint $table) {
+        Schema::create('state', function (Blueprint $table) {
             $table->id();
             $table->string('name', 128);
             $table->boolean('is_deleted')->default(false);
-            $table->bigInteger('state_id')->unsigned()->index()->comment('ID области');
             $table->bigInteger('country_id')->unsigned()->index()->comment('ID страны');
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_city');
+        Schema::dropIfExists('state');
     }
 };

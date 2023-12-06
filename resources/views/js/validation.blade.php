@@ -3,6 +3,7 @@
 
     const sendRequest = async (url, body) => {
         const options = {
+            method: 'POST',
             body,
             headers: {
                 'X-CSRF-TOKEN': tokenElement.content

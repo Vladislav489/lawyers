@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->string('photo_path', 128)->comment('url фотографии');
             $table->string('license_number', 128)->comment('лицензионный номер');
+            $table->date('practice_start')->comment('начало юридической практики');
+            $table->integer('consultation_price')->comment('стоимость консультации');
             $table->boolean('is_deleted')->default(false);
             $table->boolean('is_confirmed')->default(false)->comment('подтверждён');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');

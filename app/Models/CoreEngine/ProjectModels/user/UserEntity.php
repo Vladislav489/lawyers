@@ -15,6 +15,7 @@ class UserEntity extends Authenticatable
         'password',
         'first_name',
         'last_name',
+        'middle_name',
         'post_code',
         'phone_number',
         'date_birthday',

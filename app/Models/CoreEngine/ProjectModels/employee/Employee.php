@@ -11,6 +11,8 @@ class Employee extends BaseModel
     protected $fillable = [
         'photo_path',
         'license_number',
+        'practice_start',
+        'consultation_price',
         'is_deleted',
         'is_confirmed',
         'user_id',

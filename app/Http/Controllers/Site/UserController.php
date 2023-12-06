@@ -20,12 +20,17 @@ class UserController extends CentralController
         return [];
     }
 
-    public function actionLogin(Request $request)
+    public function callAction($method, $parameters)
     {
-        if (Auth::check()) {
+        if (Auth::check() && $method !== 'actionLogout') {
             return redirect('/main');
         }
 
+        return parent::callAction($method, $parameters);
+    }
+
+    public function actionLogin(Request $request)
+    {
         if ($request->isMethod('post')) {
             $credentials = $request->validate([
                 'phone_number' => 'required|string',
@@ -55,21 +60,18 @@ class UserController extends CentralController
         return redirect('/main');
     }
 
-    public function actionSignup()
+    public function actionSignupClient()
     {
-        if (Auth::check()) {
-            return redirect('/main');
-        }
+        return view('lawyers.user.signup-client');
+    }
 
-        return view('lawyers.user.signup');
+    public function actionSignupEmployee()
+    {
+        return view('lawyers.user.signup-employee');
     }
 
     public function actionStore()
     {
-        if (Auth::check()) {
-            return redirect('/main');
-        }
-
         $validator = Validator::make($this->params, [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
             'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',

@@ -20,7 +20,7 @@ const EMPLOYEE_TYPE_ID = 2;
                         <a @class([
                             'nav-link',
                             'active' => Route::currentRouteName() === 'actionSignup_usercontroller'
-                        ]) href="/site/signup">Регистрация</a>
+                        ]) href="/site/signupclient">Регистрация</a>
                     </li>
                     <li class="nav-item">
                         <a @class([
