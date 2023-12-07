@@ -10,7 +10,7 @@
                     <div class="d-grid gap-2">
                         <div class="btn-group btn-group-sm mt-3">
                             <a href="http://lawyers/site/signupclient" class="btn btn-outline-primary active">Клиент</a>
-                            <a href="http://lawyers/site/signupemployee" class="btn btn-outline-primary">Юрист</a>
+                            <a href="http://lawyers/site/signupemployee" class="btn btn-outline-primary">Сотрудник</a>
                         </div>
                     </div>
                     <form
@@ -24,58 +24,101 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="email">Электропочта</label>
-                            <input
-                                id="email"
-                                class="form-control"
-                                type="email"
-                                name="email"
-                            >
+                            <input id="email" class="form-control" type="email" name="email">
                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="phone">Номер телефона</label>
-                            <input
-                                id="phone"
-                                class="form-control"
-                                type="tel"
-                                name="phone_number"
-                            >
+                            <input id="phone" class="form-control" type="tel" name="phone_number">
                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="password">Пароль</label>
-                            <input
-                                id="password"
-                                class="form-control"
-                                type="password"
-                                name="password"
-                            >
+                            <input id="password" class="form-control" type="password" name="password">
                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="first-name">Имя</label>
-                            <input
-                                id="first-name"
-                                class="form-control"
-                                type="text"
-                                name="first_name"
-                            >
+                            <input id="first-name" class="form-control" type="text" name="first_name">
                             <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="last-name">Фамилия</label>
-                            <input
-                                id="last-name"
-                                class="form-control"
-                                type="text"
-                                name="last_name"
-                            >
+                            <input id="last-name" class="form-control" type="text" name="last_name">
                             <div class="invalid-feedback"></div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="middle-name">Отчество</label>
+                            <input id="middle-name" class="form-control" type="text" name="middle_name">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="post-code">Почтовый индекс</label>
+                            <input id="post-code" class="form-control" type="text" name="post_code">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="date-birthday">Дата рождения</label>
+                            <input id="date-birthday" class="form-control" type="date" name="date_birthday">
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="country" class="form-label">Страна</label>
+                            <select id="country" class="form-select" name="country_id">
+
+                                @foreach($countries as $country)
+                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="state" class="form-label">Область</label>
+                            <select id="state" class="form-select" name="state_id">
+
+                                @foreach($states as $state)
+                                    <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="district" class="form-label">Район</label>
+                            <select id="district" class="form-select" name="district_id">
+
+                                @foreach($districts as $district)
+                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Город</label>
+                            <select id="city" class="form-select" name="city_id">
+
+                                @foreach($cities as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <input type="hidden" name="type_id" value="1">
 
                         <button type="submit" class="btn btn-primary">Зарегистрировать</button>
                     </form>

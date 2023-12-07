@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ClientController extends FrontController
 {
-    const USER_TYPE_ID = 1;
-
     public function getPageParams(): array
     {
         return [
@@ -27,7 +25,7 @@ class ClientController extends FrontController
 
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type_id !== self::USER_TYPE_ID) {
+        if (!Auth::check() || Auth::user()->type !== 'client') {
             return redirect('/main');
         }
 

@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends FrontController
 {
-    const EMPLOYEE_TYPE_ID = 2;
-
     public function getPageParams(): array
     {
         return [
@@ -18,7 +16,7 @@ class EmployeeController extends FrontController
 
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type_id !== self::EMPLOYEE_TYPE_ID) {
+        if (!Auth::check() || Auth::user()->type !== 'employee') {
             return redirect('/main');
         }
 

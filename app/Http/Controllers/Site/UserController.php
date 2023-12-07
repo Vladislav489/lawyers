@@ -3,7 +3,13 @@
 namespace App\Http\Controllers\Site;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\ProjectModels\Company\Company;
+use App\Models\CoreEngine\ProjectModels\HelpData\City;
+use App\Models\CoreEngine\ProjectModels\HelpData\District;
+use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\CentralController;
 use App\Models\System\General\Routs;
 use App\Models\System\SystemLog;
@@ -12,9 +18,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends CentralController
 {
+    const EMPLOYEE_TYPE_ID = 2;
+
     public function getPageParams(): array
     {
         return [];
@@ -62,31 +71,79 @@ class UserController extends CentralController
 
     public function actionSignupClient()
     {
-        return view('lawyers.user.signup-client');
+        $entities = ['city', 'state', 'country', 'district'];
+        $plural_entities = [];
+
+        foreach ($entities as $entity) {
+            $plural_entities[] = $plural_entity = Str::plural($entity);
+            $class_name = 'App\Models\CoreEngine\ProjectModels\HelpData\\' . ucfirst($entity);
+            $$plural_entity = $class_name::all();
+        }
+
+        return view('lawyers.user.signup-client', compact($plural_entities));
     }
 
     public function actionSignupEmployee()
     {
-        return view('lawyers.user.signup-employee');
+        $entities = ['city', 'state', 'country', 'district'];
+        $plural_entities = [];
+
+        foreach ($entities as $entity) {
+            $plural_entities[] = $plural_entity = Str::plural($entity);
+            $class_name = 'App\Models\CoreEngine\ProjectModels\HelpData\\' . ucfirst($entity);
+            $$plural_entity = $class_name::all();
+        }
+
+        $companies = Company::all();
+        $plural_entities[] = 'companies';
+
+        return view('lawyers.user.signup-employee', compact($plural_entities));
     }
 
-    public function actionStore()
+    public function actionStore(Request $request)
     {
-        $validator = Validator::make($this->params, [
+        $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
             'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'password' => 'required|string',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
-        ]);
+            'middle_name' => 'required|string|max:64',
+            'post_code' => 'required|string|max:7',
+            'date_birthday' => 'required|date',
+            'city_id' => 'required|integer|exists:' . City::class . ',id',
+            'state_id' => 'required|integer|exists:' . State::class . ',id',
+            'country_id' => 'required|integer|exists:' . Country::class . ',id',
+            'district_id' => 'required|integer|exists:' . District::class . ',id',
+            'type_id' => 'required|integer|exists:' . UserType::class . ',id',
+        ];
 
-        if ($validator->fails()) {
+        $data = array_merge($request->all(), ['avatar_path' => null]);
+
+        if ($request->input('type_id') == self::EMPLOYEE_TYPE_ID) {
+            $rules = array_merge($rules, [
+                'avatar_path' => 'required|string|max:128',
+                'company_id' => 'required|integer',
+                'license_number' => 'required|string|max:128',
+                'dt_practice_start' => 'required|date',
+                'consultation_price' => 'required|integer',
+                'company_id' => 'required|integer|exists:' . Company::class . ',id',
+            ]);
+
+            if ($request->hasFile('avatar')) {
+                $dir = 'public';
+                $path = mb_substr($request->avatar->store($dir), strlen("$dir/"));
+                $data['avatar_path'] = $path;
+            }
+        }
+
+        if (($validator = Validator::make($data, $rules))->fails()) {
             return response()->json([
-                'errors' => $validator->errors()
+                'errors' => $validator->errors(),
             ]);
         }
 
-        $user = (new UserLogic())->store($this->params);
+        $user = (new UserLogic())->store($data);
 
         return response()->json($user);
     }

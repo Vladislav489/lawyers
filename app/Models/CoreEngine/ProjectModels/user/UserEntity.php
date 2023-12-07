@@ -25,6 +25,7 @@ class UserEntity extends Authenticatable
         'is_deleted',
         'country_id',
         'state_id',
+        'district_id',
         'city_id',
         'type_id',
         'modifier_id',

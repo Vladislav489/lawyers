@@ -45,7 +45,8 @@
 
     const renderValidationErrors = (errors, formElement) => {
         Object.keys(errors).forEach((field) => {
-            const inputElement = formElement.querySelector(`[name=${field}]`);
+            fieldName = field === 'avatar_path' ? 'avatar' : field;
+            const inputElement = formElement.querySelector(`[name=${fieldName}]:not([type=hidden])`);
             inputElement.classList.add('is-invalid');
             inputElement.nextElementSibling.textContent = errors[field][0];
         });
