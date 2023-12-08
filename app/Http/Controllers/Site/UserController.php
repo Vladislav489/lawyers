@@ -128,13 +128,10 @@ class UserController extends CentralController
             'type_id' => 'required|integer|exists:' . UserType::class . ',id',
         ];
 
-        $data = array_merge($request->all(), ['avatar_path' => null]);
-
         if (intval($request->input('type_id')) === self::EMPLOYEE_TYPE_ID) {
             $rules = array_merge($rules, [
                 'avatar' => File::types(['jpg', 'png'])->max(1024 * self::MAX_FILE_SIZE),
                 'avatar_path' => 'required|string|max:128|unique:' . Employee::class . ',avatar_path',
-                'company_id' => 'required|integer',
                 'license_number' => 'required|string|max:128',
                 'dt_practice_start' => 'required|date',
                 'consultation_price' => 'required|integer',
@@ -144,19 +141,21 @@ class UserController extends CentralController
             if ($request->hasFile('avatar')) {
                 $dir = 'public';
                 $path = mb_substr($request->avatar->store($dir), strlen("$dir/"));
-                $data['avatar_path'] = $path;
+                $request->merge(['avatar_path' => $path]);
             }
         }
 
-        if (($validator = Validator::make($data, $rules))->fails()) {
-            Storage::delete("$dir/$path");
+        if (($validator = Validator::make($request->all(), $rules))->fails()) {
+            if (isset($dir, $path)) {
+                Storage::delete("$dir/$path");
+            }
 
             return response()->json([
                 'errors' => $validator->errors(),
             ]);
         }
 
-        $user = (new UserLogic())->store($data);
+        $user = (new UserLogic())->store($request->all());
 
         return response()->json($user);
     }

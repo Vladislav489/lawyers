@@ -5,7 +5,7 @@
     <section class="mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     <h1 class="fs-3">Регистрация аккаунта</h1>
                     <div class="d-grid gap-2">
                         <div class="btn-group btn-group-sm mt-3">
@@ -120,18 +120,23 @@
 
                         <input type="hidden" name="type_id" value="1">
 
-                        <button type="submit" class="btn btn-primary">Зарегистрировать</button>
+                        <button type="submit" class="btn btn-primary" style="pointer-events: all;">Зарегистрировать</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- spinner -->
+    <template id="spinner">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    </template>
+
     @include('js.validation')
     <script>
         const url = 'http://lawyers/site/store';
         const onSuccess = () => window.location.href = 'http://lawyers/site/login';
 
-        setSubmitHandler(url, onSuccess);
+        setSubmitHandler(url, onSuccess, 'Регистрирую');
     </script>
 @endsection
