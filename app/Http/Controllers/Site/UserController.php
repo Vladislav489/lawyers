@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Site;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
+use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\District;
 use App\Models\CoreEngine\ProjectModels\HelpData\State;
@@ -17,12 +18,22 @@ use Illuminate\Routing\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 
 class UserController extends CentralController
 {
     const EMPLOYEE_TYPE_ID = 2;
+    const MAX_FILE_SIZE = 5;
+
+    const ENTITIES = [
+        'city',
+        'state',
+        'country',
+        'district',
+    ];
 
     public function getPageParams(): array
     {
@@ -31,7 +42,10 @@ class UserController extends CentralController
 
     public function callAction($method, $parameters)
     {
-        if (Auth::check() && $method !== 'actionLogout') {
+        if (
+            (Auth::check() && $method !== 'actionLogout')
+            || (!Auth::check() && $method === 'actionLogout')
+        ) {
             return redirect('/main');
         }
 
@@ -61,20 +75,16 @@ class UserController extends CentralController
 
     public function actionLogout()
     {
-        if (!Auth::check()) {
-            return redirect('/main');
-        }
-
         Auth::logout();
         return redirect('/main');
     }
 
+    // FIXME: dry
     public function actionSignupClient()
     {
-        $entities = ['city', 'state', 'country', 'district'];
         $plural_entities = [];
 
-        foreach ($entities as $entity) {
+        foreach (self::ENTITIES as $entity) {
             $plural_entities[] = $plural_entity = Str::plural($entity);
             $class_name = 'App\Models\CoreEngine\ProjectModels\HelpData\\' . ucfirst($entity);
             $$plural_entity = $class_name::all();
@@ -83,12 +93,12 @@ class UserController extends CentralController
         return view('lawyers.user.signup-client', compact($plural_entities));
     }
 
+    // FIXME: dry
     public function actionSignupEmployee()
     {
-        $entities = ['city', 'state', 'country', 'district'];
         $plural_entities = [];
 
-        foreach ($entities as $entity) {
+        foreach (self::ENTITIES as $entity) {
             $plural_entities[] = $plural_entity = Str::plural($entity);
             $class_name = 'App\Models\CoreEngine\ProjectModels\HelpData\\' . ucfirst($entity);
             $$plural_entity = $class_name::all();
@@ -120,9 +130,10 @@ class UserController extends CentralController
 
         $data = array_merge($request->all(), ['avatar_path' => null]);
 
-        if ($request->input('type_id') == self::EMPLOYEE_TYPE_ID) {
+        if (intval($request->input('type_id')) === self::EMPLOYEE_TYPE_ID) {
             $rules = array_merge($rules, [
-                'avatar_path' => 'required|string|max:128',
+                'avatar' => File::types(['jpg', 'png'])->max(1024 * self::MAX_FILE_SIZE),
+                'avatar_path' => 'required|string|max:128|unique:' . Employee::class . ',avatar_path',
                 'company_id' => 'required|integer',
                 'license_number' => 'required|string|max:128',
                 'dt_practice_start' => 'required|date',
@@ -138,6 +149,8 @@ class UserController extends CentralController
         }
 
         if (($validator = Validator::make($data, $rules))->fails()) {
+            Storage::delete("$dir/$path");
+
             return response()->json([
                 'errors' => $validator->errors(),
             ]);

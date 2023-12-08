@@ -44,6 +44,7 @@
     };
 
     const renderValidationErrors = (errors, formElement) => {
+        console.log(errors);
         Object.keys(errors).forEach((field) => {
             fieldName = field === 'avatar_path' ? 'avatar' : field;
             const inputElement = formElement.querySelector(`[name=${fieldName}]:not([type=hidden])`);
