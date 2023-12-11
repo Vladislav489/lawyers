@@ -3,6 +3,8 @@
 namespace App\Models\CoreEngine\ProjectModels\User;
 
 use App\Models\CoreEngine\ProjectModels\BaseModel;
+use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class UserEntity extends Authenticatable
@@ -14,6 +16,7 @@ class UserEntity extends Authenticatable
         'password',
         'first_name',
         'last_name',
+        'middle_name',
         'post_code',
         'phone_number',
         'date_birthday',
@@ -23,8 +26,25 @@ class UserEntity extends Authenticatable
         'is_deleted',
         'country_id',
         'state_id',
+        'district_id',
         'city_id',
-        'user_type_id',
-        'user_modifier_id',
+        'type_id',
+        'modifier_id',
     ];
+
+    // FIXME:
+    public function type()
+    {
+        return $this->hasOne(UserType::class, 'id', 'type_id');
+    }
+
+    public function services()
+    {
+        return $this->hasMany(EmployeeService::class, 'user_id', 'id');
+    }
+
+    public function vacancies()
+    {
+        return $this->hasMany(Vacancy::class, 'user_id', 'id');
+    }
 }

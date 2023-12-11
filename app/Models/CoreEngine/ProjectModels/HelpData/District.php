@@ -4,9 +4,9 @@ namespace App\Models\CoreEngine\ProjectModels\HelpData;
 
 use App\Models\CoreEngine\ProjectModels\BaseModel;
 
-class City extends BaseModel
+class District extends BaseModel
 {
-    protected $table = 'city';
+    protected $table = 'district';
 
     protected $fillable = [
         'name',

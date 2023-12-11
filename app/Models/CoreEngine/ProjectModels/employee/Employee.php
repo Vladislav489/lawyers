@@ -9,12 +9,13 @@ class Employee extends BaseModel
     protected $table = 'user_employee';
 
     protected $fillable = [
-        'photo_path',
+        'avatar_path',
         'license_number',
+        'dt_practice_start',
+        'consultation_price',
         'is_deleted',
         'is_confirmed',
         'user_id',
         'company_id',
-        'user_type_id',
     ];
 }

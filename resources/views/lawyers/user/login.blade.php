@@ -10,9 +10,10 @@
                     <form
                         id="login-form"
                         class="mt-3 p-3 bg-primary-subtle"
-                        action="http://lawyers/login/login"
+                        action="http://lawyers/site/login"
                         method="post"
                         enctype="application/x-www-form-urlencoded"
+                        style="border: 1px dashed"
                     >
                         @csrf
                         <div class="mb-3">

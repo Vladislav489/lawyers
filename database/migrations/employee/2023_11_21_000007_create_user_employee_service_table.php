@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->text('description')->comment('описание');
-            $table->integer('price')->comment('цена');
+            $table->text('description')->nullable()->comment('описание');
+            $table->integer('price')->nullable()->comment('цена');
+            $table->boolean('is_main')->default(false)->comment('основная');
             $table->boolean('is_deleted')->default(false);
             $table->boolean('is_archive')->default(false)->comment('в архиве');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
