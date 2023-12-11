@@ -51,6 +51,16 @@ class UserLogic extends CoreEngine
 
     public function store(array $data): UserEntity
     {
+
+        /*
+         *
+        $userId = $this->save($data);
+        if($userId){
+            $data['id'] = $userId;
+            return $data;
+        }
+        return false;
+         */
         $user = new UserEntity();
 
         $user->email = $data['email'];
@@ -72,7 +82,7 @@ class UserLogic extends CoreEngine
         $user->modifier_id = 1;
 
         $user->save();
-
+        //Это тут делать нельзя это наследник  (это перебор)
         if (intval($user->type_id) === self::EMPLOYEE_TYPE_ID) {
             (new EmployeeLogic())->storeEmployee($data, $user->id);
         }

@@ -48,6 +48,18 @@ class EmployeeLogic extends UserLogic
 
     public function storeEmployee(array $data, int $user_id): Employee
     {
+
+        /*
+         * public function store(array $data)
+         *$data = parent::store($data);
+         * if($this->save($data)){
+         *      return $data;
+         * }else{
+         *      return false;
+         * }
+         * возвращаем массивы   их дегче обрабатывать
+         *
+         */
         $employee = new Employee();
 
         $employee->avatar_path = $data['avatar_path'];
