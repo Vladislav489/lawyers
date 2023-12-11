@@ -19,7 +19,7 @@ const EMPLOYEE_TYPE_ID = 2;
                     <li class="nav-item">
                         <a @class([
                             'nav-link',
-                            'active' => Route::currentRouteName() === 'actionSignup_usercontroller'
+                            'active' => str_contains(Route::currentRouteName(), 'actionSignup')
                         ]) href="/site/signupclient">Регистрация</a>
                     </li>
                     <li class="nav-item">
@@ -37,12 +37,13 @@ const EMPLOYEE_TYPE_ID = 2;
                             {{ $user->first_name }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            @if ($user->type_id === USER_TYPE_ID)
+                            @if ($user->type->name === 'client')
                                 <li><a class="dropdown-item" href="/clientcabinet">Кабинет клиента</a></li>
                                 <li><a class="dropdown-item" href="/createvacancy">Создать вакансию</a></li>
                                 <li><a class="dropdown-item" href="/vacancylist">Мои вакансии</a></li>
                             @else
-                                <li><a class="dropdown-item" href="/employeecabinet">Кабинет юриста</a></li>
+                                <li><a class="dropdown-item" href="/employeecabinet">Кабинет сотрудника</a></li>
+                                <li><a class="dropdown-item" href="/employeesettings">Настройки сотрудника</a></li>
                             @endif
 
                             <li><hr class="dropdown-divider"></li>

@@ -58,64 +58,82 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="post-code">Почтовый индекс</label>
-                            <input id="post-code" class="form-control" type="text" name="post_code">
-                            <div class="invalid-feedback"></div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="post-code">Почтовый индекс</label>
+                                    <input id="post-code" class="form-control" type="text" name="post_code">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="form-label" for="date-birthday">Дата рождения</label>
+                                    <input id="date-birthday" class="form-control" type="date" name="date_birthday">
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label" for="date-birthday">Дата рождения</label>
-                            <input id="date-birthday" class="form-control" type="date" name="date_birthday">
-                            <div class="invalid-feedback"></div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="country" class="form-label">Страна</label>
+                                    <select id="country" class="form-select" name="country_id">
+
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="state" class="form-label">Область</label>
+                                    <select id="state" class="form-select" name="state_id">
+
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="country" class="form-label">Страна</label>
-                            <select id="country" class="form-select" name="country_id">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="district" class="form-label">Район</label>
+                                    <select id="district" class="form-select" name="district_id">
 
-                                @foreach($countries as $country)
-                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                @endforeach
+                                        @foreach ($districts as $district)
+                                            <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                        @endforeach
 
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="state" class="form-label">Область</label>
-                            <select id="state" class="form-select" name="state_id">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">Город</label>
+                                    <select id="city" class="form-select" name="city_id">
 
-                                @foreach($states as $state)
-                                    <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                @endforeach
+                                        @foreach ($cities as $city)
+                                            <option value="{{ $city->id }}">{{ $city->name }}</option>
+                                        @endforeach
 
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="district" class="form-label">Район</label>
-                            <select id="district" class="form-select" name="district_id">
-
-                                @foreach($districts as $district)
-                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
-                                @endforeach
-
-                            </select>
-                            <div class="invalid-feedback"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="city" class="form-label">Город</label>
-                            <select id="city" class="form-select" name="city_id">
-
-                                @foreach($cities as $city)
-                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                @endforeach
-
-                            </select>
-                            <div class="invalid-feedback"></div>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
                         </div>
 
                         <input type="hidden" name="type_id" value="1">

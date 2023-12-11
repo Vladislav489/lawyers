@@ -1,7 +1,5 @@
 <script>
-    const formElement = document.querySelector('form');
     const tokenElement = document.querySelector('[name="csrf-token"]');
-    const submitBtnElement = formElement.querySelector('[type=submit]');
     const spinnerTemplate = document.getElementById('spinner')
         .content
         .querySelector('.spinner-border');
@@ -44,7 +42,9 @@
     const clearValidationErrors = (formElement) => {
         formElement.querySelectorAll('input:not([type=hidden]), textarea').forEach((input) => {
             input.classList.remove('is-invalid');
-            input.nextElementSibling.textContent = '';
+            if (input.nextElementSibling.matches('.invalid-feedback')) {
+                input.nextElementSibling.textContent = '';
+            }
         });
     };
 
@@ -52,8 +52,10 @@
         Object.keys(errors).forEach((field) => {
             fieldName = field === 'avatar_path' ? 'avatar' : field;
             const inputElement = formElement.querySelector(`[name=${fieldName}]:not([type=hidden])`);
-            inputElement.classList.add('is-invalid');
-            inputElement.nextElementSibling.textContent = errors[field][0];
+            if (inputElement) {
+                inputElement.classList.add('is-invalid');
+                inputElement.nextElementSibling.textContent = errors[field][0];
+            }
         });
     };
 
@@ -79,7 +81,10 @@
         }
     };
 
-    const setSubmitHandler = (url, onSuccess, btnText) => {
+    const setSubmitHandler = (url, onSuccess, btnText, selector = 'form', validate = true) => {
+        const formElement = document.querySelector(selector);
+        const submitBtnElement = formElement.querySelector('[type=submit]');
+
         formElement.addEventListener('submit', (evt) => {
             evt.preventDefault();
             blockButton(submitBtnElement, btnText);
@@ -87,9 +92,9 @@
                 sendPostRequest(url, new FormData(evt.target)).then((response) => {
                     clearValidationErrors(evt.target);
 
-                    if (response.errors) {
+                    if (response.errors && validate) {
                         renderValidationErrors(response.errors, evt.target);
-                    } else {
+                    } else if (!response.errors) {
                         onSuccess();
                     }
                 }).finally(() => {
