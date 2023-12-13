@@ -49,7 +49,7 @@ class UserLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function store(array $data): UserEntity
+    public function storeUser(array $data): UserEntity|false
     {
         $user = new UserEntity();
 
@@ -71,12 +71,10 @@ class UserLogic extends CoreEngine
         $user->type_id = $data['type_id'];
         $user->modifier_id = 1;
 
-        $user->save();
-
-        if (intval($user->type_id) === self::EMPLOYEE_TYPE_ID) {
-            (new EmployeeLogic())->storeEmployee($data, $user->id);
+        if ($user->save()) {
+            return $user;
         }
 
-        return $user;
+        return false;
     }
 }

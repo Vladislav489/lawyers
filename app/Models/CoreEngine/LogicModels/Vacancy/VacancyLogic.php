@@ -47,7 +47,7 @@ class VacancyLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function store(array $data): Vacancy
+    public function storeVacancy(array $data): Vacancy|false
     {
         $vacancy = new Vacancy();
 
@@ -70,19 +70,28 @@ class VacancyLogic extends CoreEngine
         $vacancy->state_id = 1;
         $vacancy->city_id = 1;
 
-        $vacancy->save();
+        if ($vacancy->save()) {
+            return $vacancy;
+        }
 
-        return $vacancy;
+        return false;
     }
 
-    public function update2(int $vacancy_id, array $data)
+    public function updateVacancy(array $data): Vacancy|false
     {
-        $vacancy = Vacancy::find($vacancy_id);
-
+        $vacancy = Vacancy::find($data['id']);
         $vacancy->description = $data['description'];
         $vacancy->payment = $data['payment'];
-        $vacancy->save();
 
-        return $vacancy;
+        if ($vacancy->save()) {
+            return $vacancy;
+        }
+
+        return false;
+    }
+
+    public function deleteVacancy(int $vacancy_id): ?bool
+    {
+        return Vacancy::find($vacancy_id)->delete();
     }
 }

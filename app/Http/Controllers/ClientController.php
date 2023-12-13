@@ -14,12 +14,22 @@ class ClientController extends FrontController
     public function getPageParams(): array
     {
         return [
-            'actionClientCabinet' => ['template' => '1'],
-            'actionCreateVacancy' => ['template' => '1'],
-            'actionDeleteVacancy' => ['template' => '1'],
-            'actionEditVacancy' => ['template' => '1'],
-            'actionStoreVacancy' => ['template' => '1'],
-            'actionVacancyList' => ['template' => '1'],
+            'actionClientCabinet' => [
+                'name' => 'Сlient Profile',
+                'template' => 'lawyers.client.cabinet'
+            ],
+            'actionCreateVacancy' => [
+                'name' => 'Сreate Vacancy',
+                'template' => 'lawyers.client.vacancy-create'
+            ],
+            'actionEditVacancy' => [
+                'name' => 'Edit Vacancy',
+                'template' => 'lawyers.client.vacancy-edit'
+            ],
+            'actionVacancyList' => [
+                'name' => 'List Vacancy',
+                'template' => 'lawyers.client.vacancy-list'
+            ],
         ];
     }
 
@@ -37,54 +47,18 @@ class ClientController extends FrontController
         return view('lawyers.client.cabinet');
     }
 
+    public function actionVacancyList()
+    {
+        return view('lawyers.client.vacancy-list');
+    }
+
     public function actionCreateVacancy()
     {
         return view('lawyers.client.vacancy-create');
     }
 
-    public function actionDeleteVacancy(Request $request)
+    public function actionEditVacancy()
     {
-        if ($request->isMethod('delete')) {
-            $vacancy_id = $request->input('id');
-            $vacancy = Vacancy::find($vacancy_id);
-
-            return response()->json($vacancy->delete());
-        }
-    }
-
-    public function actionEditVacancy(Request $request)
-    {
-        $vacancy = Vacancy::findOrFail($request->input('id'));
-
-        return view('lawyers.client.vacancy-edit', [
-            'vacancy' => $vacancy
-        ]);
-    }
-
-    public function actionStoreVacancy(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'description' => 'required|string',
-            'payment' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        if ($request->isMethod('post')) {
-            $vacancy = (new VacancyLogic())->store($this->params);
-        } elseif ($request->isMethod('patch')) {
-            $vacancy = (new VacancyLogic())->update2($request->input('id'), $this->params);
-        }
-
-        return response()->json($vacancy);
-    }
-
-    public function actionVacancyList()
-    {
-        return view('lawyers.client.vacancy-list');
+        return view('lawyers.client.vacancy-edit');
     }
 }

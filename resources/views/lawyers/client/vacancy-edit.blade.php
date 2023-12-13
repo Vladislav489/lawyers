@@ -5,7 +5,7 @@
     <section class="mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     <h1 class="fs-3">Редактировать вакансию</h1>
                     <form
                         id="signup-form"
@@ -14,6 +14,7 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
+                        data-success-url="http://lawyers/vacancylist"
                     >
                         @csrf
                         @method('PATCH')
@@ -23,7 +24,7 @@
                                 id="desc"
                                 class="form-control"
                                 name="description"
-                            >{{ $vacancy->description }}</textarea>
+                            ></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
 
@@ -34,23 +35,43 @@
                                 class="form-control"
                                 type="number"
                                 name="payment"
-                                value="{{ $vacancy->payment }}"
+                                value=""
                             >
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Обновить</button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="pointer-events: all;"
+                            data-text="Обновляю"
+                        >Обновить</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
+    @include('js.util')
     @include('js.validation')
+    @include('js.async-api')
     <script>
-        const url = 'http://lawyers/storevacancy?id={{ $vacancy->id }}';
-        const onSuccess = () => window.location.href = 'http://lawyers/vacancylist';
+        const params = {};
+        window.location.href.split('?')[1].split('&').forEach((param) => {
+            const [key, value] = param.split('=');
+            params[key] = value;
+        });
 
-        setSubmitHandler(url, onSuccess);
+        fetch(`http://lawyers/mainstay/client/getvacancy?id=${params.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                const url = `http://lawyers/mainstay/client/updatevacancy?id=${params.id}`;
+
+                document.querySelector('form').dataset.requestUrl = url;
+                document.getElementById('desc').textContent = data.description;
+                document.getElementById('payment').value = data.payment;
+
+                setSubmitHandler();
+            });
     </script>
 @endsection

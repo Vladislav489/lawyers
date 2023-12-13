@@ -2,12 +2,12 @@
 @section('title', 'Настройки сотрудника')
 
 @section('content')
-    <!-- spinner -->
-    <template id="spinner">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    </template>
 
+    @include('js.util')
+    @include('js.render')
     @include('js.validation')
+    @include('js.async-api')
+
     <section class="mt-5">
         <div class="container">
             <div class="row">
@@ -17,38 +17,38 @@
             </div>
             <div class="row mt-4">
                 <div class="col-lg-6">
-                    <form id="settings-form" class="p-3 bg-primary-subtle" action="">
-                        <div class="mb-3">
-
-                            @foreach ($services as $service)
-                                <div class="form-check form-switch">
-                                    <input
-                                        class="form-check-input"
-                                        type="checkbox"
-                                        name="service_ids[]"
-                                        value="{{ $service->id }}"
-                                        role="switch"
-                                        id="example-{{ $service->id }}"
-                                        {{ in_array($service->id, $user_service_ids) ? 'checked' : '' }}
-                                    >
-                                    <label
-                                        class="form-check-label"
-                                        for="example-{{ $service->id }}"
-                                        style="user-select: none;"
-                                    >{{ $service->name }}</label>
-                                </div>
-                            @endforeach
-
-                        </div>
-
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                        <button class="btn btn-primary" type="submit" style="pointer-events: all;">Сохранить</button>
+                    <form
+                        id="settings-form"
+                        class="p-3 bg-primary-subtle"
+                        action=""
+                        method="post"
+                        enctype="application/x-www-form-urlencoded"
+                        data-request-url="http://lawyers/mainstay/employee/storeemployeeservice"
+                        data-success-url="http://lawyers/employeesettings"
+                        style="border: 1px dashed #000;"
+                    >
+                        <div id="service-container" class="mb-3"></div>
+                        <button
+                            class="btn btn-primary"
+                            type="submit"
+                            style="pointer-events: all;"
+                            data-text="Сохраняю"
+                        >Сохранить</button>
                     </form>
                 </div>
                 <div class="col-lg-6">
 
                     @foreach (Auth::user()->services as $service)
-                        <form id="service-form-{{ $service->id }}" class="mb-3 p-3 bg-primary-subtle" action="">
+                        <form
+                            id="service-form-{{ $service->id }}"
+                            class="service-form mb-3 p-3 bg-{{ $service->is_main ? 'primary' : 'secondary' }}-subtle"
+                            action=""
+                            method="post"
+                            enctype="application/x-www-form-urlencoded"
+                            data-request-url="http://lawyers/mainstay/employee/updateemployeeservice"
+                            data-success-url="http://lawyers/employeesettings"
+                            style="border: 1px dashed #000;"
+                        >
                             <div class="mb-3">
                                 <input
                                     id="service-is_main-{{ $service->id }}"
@@ -90,20 +90,19 @@
                                     <div class="invalid-feedback"></div>
                                 </div>
 
-                                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                                 <input type="hidden" name="service_id" value="{{ $service->id }}">
 
                             </fieldset>
-                            <button class="btn btn-primary" type="submit" style="pointer-events: all;">Сохранить</button>
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                                style="pointer-events: all;"
+                                data-text="Сохраняю"
+                            >Сохранить</button>
                         </form>
 
                         <script>
-                            {
-                                const url = 'http://lawyers/employeeserviceupdate';
-                                const onSuccess = () => window.location.href = 'http://lawyers/employeesettings';
-
-                                setSubmitHandler(url, onSuccess, 'Сохраняю', '#service-form-{{ $service->id }}');
-                            }
+                            setSubmitHandler('#service-form-{{ $service->id }}');
                         </script>
                     @endforeach
 
@@ -113,18 +112,29 @@
     </section>
 
     <script>
-        const url = 'http://lawyers/employeestore';
         const checkboxElements = document.querySelectorAll('[name=is_main]');
-        const onSuccess = () => window.location.href = 'http://lawyers/employeesettings';
+        const serviceContainer = document.querySelector('#service-container');
+        const serviceTemplate = document.querySelector('#service')
+            .content
+            .querySelector('.form-check');
 
-        setSubmitHandler(url, onSuccess, 'Сохраняю', '#settings-form', false);
+        getDataArray([
+            'http://lawyers/mainstay/employee/getservices',
+            'http://lawyers/mainstay/employee/getuserserviceids',
+        ]).then(({data}) => {
+            renderServices(...data)
+            setSubmitHandler('#settings-form', false);
+        });
 
         checkboxElements.forEach((checkbox) => {
             const fieldsetElement = checkbox.parentElement.nextElementSibling;
-            checkbox.addEventListener('change', (evt) => {
-                const isHidden = fieldsetElement.style.display === 'none';
-                fieldsetElement.style.display = isHidden ? 'block' : 'none';
-            });
+
+            if (fieldsetElement.matches('fieldset')) {
+                checkbox.addEventListener('change', (evt) => {
+                    const isHidden = fieldsetElement.style.display === 'none';
+                    fieldsetElement.style.display = isHidden ? 'block' : 'none';
+                });
+            }
         });
     </script>
 @endsection

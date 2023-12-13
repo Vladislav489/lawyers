@@ -9,7 +9,7 @@ class Controller extends FrontController
     public function getPageParams(): array
     {
         return [
-            'actionMain' => ['template' => '1'],
+            'actionMain' => ['template' => 'lawyers.site.index'],
         ];
     }
 
