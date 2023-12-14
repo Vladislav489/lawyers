@@ -47,7 +47,7 @@ class VacancyLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function store(array $data): array|bool
+    public function storeOrUpdate(array $data): array|bool
     {
         try {
             $vacancy = array_intersect_key(
@@ -55,24 +55,15 @@ class VacancyLogic extends CoreEngine
                 array_flip($this->engine->getFillable())
             );
 
+            if (isset($data['id'])) {
+                $vacancy['id'] = $data['id'];
+            }
+
             if ($data['id'] = $this->save($vacancy)) {
                 return $data;
             }
 
         } catch (\Throwable $e) {
-        }
-
-        return false;
-    }
-
-    public function updateVacancy(array $data): Vacancy|false
-    {
-        $vacancy = Vacancy::find($data['id']);
-        $vacancy->description = $data['description'];
-        $vacancy->payment = $data['payment'];
-
-        if ($vacancy->save()) {
-            return $vacancy;
         }
 
         return false;

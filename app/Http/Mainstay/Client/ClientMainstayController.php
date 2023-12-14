@@ -85,25 +85,7 @@ class ClientMainstayController extends MainstayController
         ]);
 
         return response()->json(
-            (new VacancyLogic())->store($request->all())
-        );
-    }
-
-    public function actionUpdateVacancy(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'description' => 'required|string',
-            'payment' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        return response()->json(
-            (new VacancyLogic())->updateVacancy($request->all())
+            (new VacancyLogic())->storeOrUpdate($request->all())
         );
     }
 
