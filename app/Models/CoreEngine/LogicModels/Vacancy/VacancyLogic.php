@@ -47,7 +47,7 @@ class VacancyLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function storeOrUpdate(array $data): array|bool
+    public function store(array $data): array|bool
     {
         try {
             $vacancy = array_intersect_key(

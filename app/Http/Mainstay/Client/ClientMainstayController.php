@@ -85,7 +85,7 @@ class ClientMainstayController extends MainstayController
         ]);
 
         return response()->json(
-            (new VacancyLogic())->storeOrUpdate($request->all())
+            (new VacancyLogic())->store($request->all())
         );
     }
 
