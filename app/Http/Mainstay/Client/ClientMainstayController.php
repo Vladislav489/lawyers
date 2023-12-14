@@ -79,8 +79,13 @@ class ClientMainstayController extends MainstayController
             ]);
         }
 
+        $request->merge([
+            'user_id' => Auth::id(),
+            'defendant' => json_encode([])
+        ]);
+
         return response()->json(
-            (new VacancyLogic())->storeVacancy($request->all())
+            (new VacancyLogic())->store($request->all())
         );
     }
 

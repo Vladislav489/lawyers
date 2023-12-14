@@ -112,7 +112,6 @@ class RouteBilder {
         $site_id = Site::getSiteId();
         if(is_null($site_id) && empty($site_id))
             return [];
-
         $list = Cache::tags([Site::getSite()['domain_name']])->get(self::KEY_CACHE_ROUTE.$site_id);
         $return = [];
         if(!is_null($list))
@@ -225,9 +224,14 @@ class RouteBilder {
                     $clearAction = str_replace('action', '', strtolower($list));
                     $index = explode(self::T_S_P, substr(strtolower($controller), 1));
                     $clearAction = ($clearAction == "index") ? self::T_S_P : $clearAction;
+                    //если это Index тогда чисто слеш
                     if ($index[0] == strtolower(self::MAIN_CONTROLLER) && count($index) == 2) {
                         $url = $clearAction;
                     } else {
+                        //Если в функции встречается `_` то меняем на слеш обратны
+                        if(strpos($clearAction,'_') !== false ){
+                            $clearAction = str_replace("_","/",$clearAction);
+                        }
                         if($clearAction == self::T_S_P && in_array(strtolower(self::MAIN_CONTROLLER),$index) && count($index) ==2 ){
                             $url = self::T_S_P . $index[0] . self::T_S_P;
                         }else{

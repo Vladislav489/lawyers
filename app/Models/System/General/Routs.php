@@ -61,7 +61,6 @@ class Routs extends CoreEngine {
         $url = (is_null($url))? $route['url']:$url;
         //переделать
         $url = (strlen($url) <= 1)? RouteBilder::T_S_P:((strlen($url) <= 1)? $url:substr($url,1));
-
         if(is_null($route['template_url']))
             return [];
 
@@ -180,10 +179,10 @@ class Routs extends CoreEngine {
 
         //Для разных спйтов
         if (!is_null($this->site_id))
-            $params['site_id'] = $this->site_id;
+            $params['site_id'] = (string)$this->site_id;
 
         //простой поиск и быстрый поиск на соотвецтвие стандартом ядра и косвенным урлам типа /{type}/{code}
-        $data = $this->setJoin(['Template'])->setParams($params)->getOne();
+        $data = $this->setJoin(['Template'])->offPagination()->setParams($params)->getOne();
         if (is_array($data) && count($data) > 0) {
             $data['url_system'] = (!empty($data['template_url']))? $data['template_url']:$route_url;
             $data['params_route'] = self::parseUrlTemplateParams($data,$urlReal);

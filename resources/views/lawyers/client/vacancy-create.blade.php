@@ -39,6 +39,18 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
+                        <input type="hidden" name="status" value="1">
+                        <input type="hidden" name="lawsuit_number" value="1">
+                        <input type="hidden" name="address_judgment" value="1">
+                        <input type="hidden" name="period_start" value="2023-01-01">
+                        <input type="hidden" name="period_end" value="2023-01-01">
+                        <input type="hidden" name="chat_id" value="1">
+                        <input type="hidden" name="city_id" value="1">
+                        <input type="hidden" name="state_id" value="1">
+                        <input type="hidden" name="country_id" value="1">
+                        <input type="hidden" name="service_id" value="1">
+                        <input type="hidden" name="priority_id" value="1">
+
                         <button
                             type="submit"
                             class="btn btn-primary"

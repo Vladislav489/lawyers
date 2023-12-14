@@ -7,7 +7,7 @@ use App\Models\CoreEngine\Model\ForecastData;
 use App\Models\CoreEngine\Model\InformationalData;
 use App\Models\CoreEngine\Model\SystemSite;
 use App\Models\System\HelperFunction;
-use App\Models\System\Securities;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\System\SystemLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -46,14 +46,13 @@ class CoreEngine{
 
     public function __construct($params,$select = [],$callback = null ){
         $this->setSelect((is_array($select) && count($select) > 0)?$select:$this->defaultSelect());
-        // if (Auth::id() == 1) {
-        //     unset($params['site']);
-        //     unset($params['site_id']);
-        // }
-        $this->union = (key_exists('union',$params))?true:false;
+        if (Auth::id() == 1) {
+            unset($params['site']);
+            unset($params['site_id']);
+        }
+        $this->union = (key_exists('union',$params))? true:false;
         if (!isset($params['is_delete']))
             $params['is_delete'] = 0;
-
 
         $this->params = $params;
         $this->coreParams = new CoreParam();
@@ -123,14 +122,10 @@ class CoreEngine{
         $cols = array_combine($cols,$cols);
         $lable[] = $this->engine->getLable($lang);
         foreach ($this->joinTable as $item) {
-            $lable[] =  $this->group_params['relatedModel'][$item]['entity']->getLable($lang);
+            $lable[] = $this->group_params['relatedModel'][$item]['entity']->getLable($lang);
         }
         foreach ($lable as  $key => $itemsLabel){
-            if(!is_null($itemsLabel)){
-                $lable[$key] = HelperFunction::getLableForQuery($cols,$itemsLabel,$ignory);
-            }else{
-                $lable[$key] = $cols;
-            }
+            $lable[$key] = (!is_null($itemsLabel))?HelperFunction::getLableForQuery($cols,$itemsLabel,$ignory):$cols;
         }
         $column = HelperFunction::joinColumLabel($lable);
         $column = HelperFunction::missingColumnLabel($column,$cols);
@@ -140,6 +135,7 @@ class CoreEngine{
     }
     public function insert($data,$type = self::INSERT){
         $result = null;
+
         if($this->checkInsertColumn($data,$type)) {
             if ($type == self::INSERT) {
                 if (!isset($data[0])) {
@@ -188,30 +184,35 @@ class CoreEngine{
         }
         return $result;
     }
-    public function delete($id,$flagForeva = false){
-        if($flagForeva){
-            if(!is_array($id))
-                $id = [$id];
-            return $this->query->newQuery()->whereIn('id', $id)->delete();
-        }else{
-            return $this->update(['is_delete'=>1],$id);
+    public function delete($id,$key = NULL){
+        $id = (!is_array($id))?[$id]:$id;
+        if(is_null($key)) {
+            return $this->query->newQuery()->whereIn('id', $id)->update(['is_delete' => 1]);
+        } else {
+            if(in_array($key,$this->engine->getFillable())) {
+                return $this->query->newQuery()->whereIn($key, $id)->update(['is_delete' => 1]);
+            } else {
+                return false;
+            }
         }
-
     }
     public function deleteForeva($id){
-        if(is_array($id)) {
-           return $this->query->newQuery()->where('is_delete','=',1)->whereIn('id', $id)->delete();
-        }else{
-            return $this->query->newQuery()->where('is_delete','=',1)->whereIn('id', [$id])->delete();
-        }
+        $id = (!is_array($id))?[$id]:$id;
+        return $this->query->newQuery()->where('is_delete','=',1)->whereIn('id', [$id])->delete();
     }
-    public function update($data,$id){
+    public function update($data,$id,$key = null){
         if($this->checkInsertColumn($data)) {
-            if (is_array($id)) {
-                return $this->query->newQuery()->whereIn('id', $id)->update($data);
+            $id = (is_array($id))? $id:[$id];
+            if(is_null($key)) {
+               $result = $this->query->newQuery()->whereIn('id', $id)->update($data);
+               return ($result) ? $id : false;
             } else {
-                $result =  $this->query->newQuery()->whereIn('id', [$id])->update($data);
-                return ($result)?$id:false;
+                if(in_array($key,$this->engine->getFillable())) {
+                    $result = $this->query->newQuery()->whereIn('id', $id)->update($data);
+                    return ($result) ? $id : false;
+                } else {
+                    return false;
+                }
             }
         }else{
                 SystemLog::addLog(
@@ -232,12 +233,39 @@ class CoreEngine{
         $this->group_by = $this->prepareRequest($group_by);
         return $this;
     }
+
+
+    public function get_first_common_parent($objects) {
+        $common_ancestors = null;
+        foreach($objects as $object) {
+            if (is_object($object)) {
+                $class_name = get_class($object);
+            } else {
+                $class_name = $object;
+            }
+
+            $parent_class_names = array();
+            $parent_class_name = $class_name;
+            do {
+                $parent_class_names[] = $parent_class_name;
+            } while($parent_class_name = get_parent_class($parent_class_name));
+
+            if ($common_ancestors === null) {
+                $common_ancestors = $parent_class_names;
+            } else {
+                $common_ancestors = array_intersect($common_ancestors, $parent_class_names);
+            }
+        }
+
+        return reset($common_ancestors);
+    }
+
     public function setModel($model) {
-        if($model instanceof  Model) {
+        if(array_search(Model::class,class_parents($model))) {
             $this->engine = $model;
             $this->query = $this->engine->newQuery();
         }else{
-            throw  new Exception("Это не Модель");
+            throw  new \Exception("Это не Модель");
         }
         return $this;
     }
@@ -287,6 +315,7 @@ class CoreEngine{
     }
     public function getEngine() {return $this->engine;}
     public function getQuery() {return $this->query;}
+    public function &getQueryLink() {return $this->query;}
     public function getParams() {return  $this->params;}
     public function getGroupBy() {return $this->group_by;}
     //ПОЛУЧЕНИЕ СВОЙСТВ ПО ИМЕНИ ПАРАМЕТРА
@@ -345,7 +374,6 @@ class CoreEngine{
                 if ($this->union) {
                     if (!isset($this->params['union_type'])) $this->params['union_type'] = "UNION";
                     if (!isset($this->params['union_group'])) $this->params['union_group'] = null;
-
                     $result['result'] = $this->unionQueryOneObjectCore($this->params['union'], $this->params['union_group'], $this->params['union_type']);
                 } else {
                     $result['result'] = $this->query->get()->toArray();
@@ -367,7 +395,8 @@ class CoreEngine{
 
     public function getSqlToStr(){
         (count($this->group_by))? $this->executeGroup():$this->executeFilter();
-        $data = $this->query->getBindings();
+
+         $data = $this->query->getBindings();
         foreach ($data as $key => $item) $data[$key] = "'".$item."'";
         return Str::replaceArray("?",$data,$this->query->toSql());
     }
@@ -389,6 +418,7 @@ class CoreEngine{
         return $this->getSandartResultOne();
     }
     public function Exist() {
+        $this->offPagination();
         $this->executeFilter();
         if($this->coreParams->getStatusValidate()) {
             if ($this->debug_sql) $this->debugQuery();
@@ -399,23 +429,14 @@ class CoreEngine{
     // ОСНОВНЫЕ ФУНКЦИИ ДЛЯ  ВЫПОЛНЕНИЯ ЗАПРОСОВ
     public function executeFilter() {
         $this->selectQuery()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
-        if (!$this->paginationOff) {
-            $this->pagination();
-        } else {
-            ($this->limit && $this->limit !== self::DEFAULT_LIMI)? $this->query->limit($this->limit):"";
-        }
+        $this->pagination();
         $this->order();
         if ($this->debug_sql) $this->debugQuery();
         return $this->query;
     }
     public function executeGroup() {
         $this->selectQueryGroup()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
-        if (!$this->paginationOff) {
              $this->pagination();
-        } else {
-            if($this->limit &&  $this->limit !== self::DEFAULT_LIMI)
-                $this->query->limit($this->limit);
-        }
         $this->groupQuery()->order();
         if ($this->debug_sql) $this->debugQuery();
         return $this->query;
@@ -423,7 +444,11 @@ class CoreEngine{
     // ПАГИНАЦИЯ ВКЛЮЧАЕТСЯ ТОЛЬКО ЕСЛИ ЕСТЬ PAGESIZE ИЛИ LIMIT
     public function pagination($page = null,$pageSize = null) {
         $query = clone $this->query;
-        $totalCount = $query->count();
+        if (!$this->paginationOff) {
+            $totalCount = $query->count();
+        }else{
+            $totalCount = 1;
+        }
         if(is_null($page) && is_null($pageSize)){
             $pageSize = $this->coreParams->getParamsFilter('pageSize');
             $page = $this->coreParams->getParamsFilter('page');
@@ -530,7 +555,8 @@ class CoreEngine{
                 if (isset($this->group_params['select'][$value]))
                     $this->query->addSelect($this->group_params['select'][$value]);
             }else{
-                $this->query->addSelect($value);
+                if(!is_null($value))
+                    $this->query->addSelect($value);
             }
         }
         return $this;
@@ -580,7 +606,7 @@ class CoreEngine{
             if(isset($this->group_params['relatedModel'][$key])){
                 if(!in_array($key,$this->checkJoin)) {
                     $this->checkJoin[] = $key;
-                    $this->relatedData($this->group_params['relatedModel'][$key]);
+                    $this->relatedData($this->group_params['relatedModel'][$key],$key);
                 }
             } else if (isset($this->group_params['custom_select'][$value])){
                 $this->customSelect($this->group_params['by'][$value], $this->group_params['custom_select'][$value]);
@@ -612,7 +638,31 @@ class CoreEngine{
                    break;
 
                case "RAW":
-                   $this->query->whereRaw($item[0], $item[2], $item[3]);
+                    if(preg_match("/~\?\d+~/",$item[0])){
+                        $ar_tes = [];
+                        preg_match_all("/~\?\d+~/",$item[0],$ar_tes);
+                        if(is_array($item[2])){
+                            if(count($ar_tes[0]) > 0){
+                                $temp = [];
+                                foreach ($ar_tes[0] as $item__){
+                                    $data_ = str_replace(["?", '~'], '', $item__);
+                                    $temp[$item__] = "'".$item[2][$data_ - 1]."'";
+                                }
+                                $item[0] = str_replace(array_keys($temp), $temp, $item[0]);
+                                $this->query->whereRaw($item[0], null, $item[3]);
+                            }else {
+                                $data_ = str_replace(["?", '~'], '', $ar_tes[0][0]);
+                                $item[0] = str_replace($ar_tes[0][0], '?', $item[0]);
+                                $this->query->whereRaw($item[0], $item[2][$data_ - 1], $item[3]);
+                            }
+                        }else{
+                            $item[0] = str_replace($ar_tes[0][0],'?',$item[0]);
+                            $this->query->whereRaw($item[0], $item[2], $item[3]);
+                        }
+                    }else{
+
+                        $this->query->whereRaw($item[0], $item[2], $item[3]);
+                    }
                    break;
 
                case "CHECK_NULL":
@@ -634,7 +684,7 @@ class CoreEngine{
             if (isset($this->group_params['relatedModel'][$key])) {
                 if(!in_array($key,$this->checkJoin)){
                     $this->checkJoin[] = $key;
-                    $this->relatedData($this->group_params['relatedModel'][$key]);
+                    $this->relatedData($this->group_params['relatedModel'][$key],$key);
                 }
             }
         }
@@ -648,7 +698,8 @@ class CoreEngine{
     }
     // ВСПОМАГАТЕЛЬНЫ ФУНКЦИИ ДЛЯ ЗАПРОСОВ ОБЩИЕ ДЛЯ ГРУПП И СПИСКОВ
     private function customSelect($code, $value) {
-        $this->query->addSelect($value);
+        if(!empty($value))
+            $this->query->addSelect($value);
         $this->query->groupBy($code);
         return $this;
     }
@@ -666,55 +717,96 @@ class CoreEngine{
     private function standartField($field) {
         $colums = $this->getTableSchema();
         $keys =  array_keys($colums);
-        if ( in_array($field,$keys)) {
-            if (in_array($colums[$field]->Type, array("datetime", "date", 'timestamp'))) {
-                $this->query->groupBy(DB::raw("DATE(" . $this->engine->getTable() . '.' . $field . ")"));
-                $this->query->addSelect(DB::raw("DATE(" . $this->engine->getTable() . '.' . $field . ")"));
+
+
+        if(!is_array($field)) {
+            if (in_array($field, $keys)) {
+                if (in_array($colums[$field]->Type, array("datetime", "date", 'timestamp'))) {
+                    $this->query->groupBy(DB::raw("DATE(" . $this->engine->getTable() . '.' . $field . ")"));
+                    $this->query->addSelect(DB::raw("DATE(" . $this->engine->getTable() . '.' . $field . ")"));
+                } else {
+                    if (is_object($field) && $field::class == 'Illuminate\Database\Query\Expression') {
+                        $this->query->groupBy($field);
+                        if (!empty($field)) {
+                            $this->query->addSelect(DB::raw($field));
+                        }
+                    } else {
+                        $this->query->groupBy($this->engine->getTable() . '.' . $field);
+                        if (!empty($field)) {
+                            $this->query->addSelect($this->engine->getTable() . '.' . $field);
+                        }
+                    }
+                }
             } else {
-                $this->query->groupBy($this->engine->getTable() . '.' . $field);
-                $this->query->addSelect($this->engine->getTable() . '.' . $field);
+                $this->query->groupBy(DB::raw($field));
+                if (!empty($field)) {
+                    $this->query->addSelect(DB::raw($field));
+                }
             }
-        } else {
-            $this->query->groupBy($field);
-            $this->query->addSelect($field);
+        }else{
+            if (is_object($field['group']) && $field['group']::class == 'Illuminate\Database\Query\Expression') {
+                $this->query->groupBy($field['group']);
+                if (!empty($field['field'])) {
+                    $this->query->addSelect(DB::raw($field['field']));
+                }
+            } else {
+                $this->query->groupBy($this->engine->getTable() . '.' . $field['group']);
+                if (!empty($field['field'])) {
+                    $this->query->addSelect($this->engine->getTable() . '.' . $field['field']);
+                }
+            }
         }
         return $this;
     }
     // ДЕЛАЙЕТ ДЖОЙН ТАБЛИЦ ДЛЯ ПОДКЛЮЧЕНИЯ   ЕСЛИ НЕ ПОЛЯ ТО ГРУПИРОВКА И ЫЕЛЕК ПО ПОЛЮ НЕ ДЕЛАЕТСЯКАК
-    private function relatedData($related){
+    private function relatedData($related,$nameJoin = ""){
         $table ="";
+        if(!empty($nameJoin))
+            $nameAs = " AS ".$nameJoin;
+
         if(is_string($related['entity'])) {
             $table = $related['entity'];
-            $joinQuery = DB::raw( $table."  ON ".$this->relatedConfig($related));
+            $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
         }else if(is_array($related['entity'])){
             $join = each($related['entity']);
             $table = $join['key'];
-            $joinQuery = DB::raw( $table."  ON ".$this->relatedConfig($related));
+            $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
         }else if($related['entity']::class == 'Illuminate\Database\Query\Expression'){
             $joinQuery = $related['entity'];
         }else{
             $table = $related['entity']->getTable();
-            $joinQuery = DB::raw( $table."  ON ".$this->relatedConfig($related));
+            $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
         }
 
-       if(isset($related['type']) && $related['type'] == "right")
+       if(isset($related['type']) && $related['type'] === "right")
             $this->query->rightJoin( $joinQuery,function(){});
-       else if (isset($related['type']) && $related['type'] == "inner")
+       else if (isset($related['type']) && $related['type'] === "inner")
             $this->query->join( $joinQuery,function(){});
-       else if(isset($related['type']) && $related['type'] == "left")
+       else if(isset($related['type']) && $related['type'] === "left")
             $this->query->leftJoin( $joinQuery,function(){});
        else
             $this->query->leftJoin( $joinQuery,function(){});
 
 
         if(isset($related['field']))
-            foreach ($related['field'] as $item )
-                $this->query->addSelect(DB::raw($table.".".$item )  );
+            foreach ($related['field'] as $item ) {
+                if($table != "") {
+                    if(!empty($nameJoin)) {
+                        $this->query->addSelect(DB::raw($nameJoin . "." .$item));
+                    }else{
+                        $this->query->addSelect(DB::raw($table . "." . $item));
+                    }
+                }else if(!empty($nameJoin)){
+                    $this->query->addSelect(DB::raw($nameJoin . "." . $item));
+                }else{
+                    $this->query->addSelect(DB::raw($item));
+                }
+            }
 
         return $this;
     }
     //КОНФИГУРАЦИИ СВЯЗ ТАБЛИЦ
-    private function relatedConfig($config) {
+    private function relatedConfig($config,$nameJoin = "") {
         $joinOn  = "";
         if(is_string($config['entity'])) {
             if(stripos($config['entity']," as ")!= false){
@@ -726,7 +818,11 @@ class CoreEngine{
             $join =  each($config['entity']);
             $joinOn = (empty($join['value']))?$config['relationship'][0]:sprintf("%s.%s",$join['value'] , $config['relationship'][0]);
         }else{
-            $joinOn = sprintf("%s.%s",$config['entity']->getTable(),$config['relationship'][0]);
+            if(!empty($nameJoin )) {
+                $joinOn = sprintf("%s.%s", $nameJoin, $config['relationship'][0]);
+            } else {
+                $joinOn = sprintf("%s.%s", $config['entity']->getTable(), $config['relationship'][0]);
+            }
         }
         $joinOnMore = "";
         if (isset($config['relationship_more'])) {
@@ -740,16 +836,22 @@ class CoreEngine{
             }
         }
         //собирает условие в одну кучу джойна
-        $return = sprintf("%s.%s  =  %s %s",
-            $this->engine->getTable(), $config['relationship'][1],
-            $joinOn, $joinOnMore
-        );
+        if (strpos($config['relationship'][1],'.') === false){
+            $return = sprintf("%s.%s  =  %s %s",
+                $this->engine->getTable(), $config['relationship'][1],
+                $joinOn, $joinOnMore
+            );
+        } else {
+            $return = sprintf("%s  =  %s %s",
+                $config['relationship'][1],
+                $joinOn, $joinOnMore
+            );
+        }
         return  (isset($config['pаrams_filter']))?$this->replaceParamsFlag($return,$config['pаrams_filter']):$return;
     }
     private function replaceParamsFlag($strSql,$params){
         foreach ($params as $key=>$value)
             $strSql = (is_callable($value))? str_replace("%f_".$key,$value($this),$strSql):str_replace("%f_".$key,$value,$strSql);
-
         return $strSql;
     }
     //ДЛЯ СПИСКА ПОДКЛЮЧЕНИЕ ДРУГИХ ТАБЛИЦ ПО ПАРАМЕТРАМ ФИЛЬТРОВ
@@ -758,7 +860,7 @@ class CoreEngine{
         foreach ($existFilte as $key => $valFilter) {
             $optionFiltret = $this->getPropertyFilterByParam($key);
             if($optionFiltret) {
-                // если масив запиывается нсколько
+                // если массив запиывается нсколько
                 $join = (key_exists('relatedModel', $optionFiltret)) ? $optionFiltret['relatedModel'] : false;
                 if (is_array($join)) {
                     foreach ($join as $item) {
@@ -770,7 +872,9 @@ class CoreEngine{
                         $this->join_by[$join] = $join;
                 }
             }
+
         }
+
         $this->filterJionQuery();
         return $this;
     }
@@ -783,6 +887,10 @@ class CoreEngine{
         $this->filter =[
             [   'field'=>$this->engine->getTable().'.is_delete','params'=>'is_delete',
                 'type'=>'int','action'=>"=",'concat'=>"AND",'validate' =>['string'=>true,'empty'=>true]],
+            [   'field'=>$this->engine->getTable().'.site_id','params' => 'site_id',
+                'validate' =>['string'=>true,"empty"=>true], 'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
             [ 'field'=>$this->engine->getTable().'.id','params'=>'id',
                 'type'=>'string','action'=>"=",'concat'=>"AND",'validate' =>['number'=>true,'empty'=>true]],
             [   'params'=>'page','type'=>'string','validate' =>['number'=>true,'empty'=>true]],

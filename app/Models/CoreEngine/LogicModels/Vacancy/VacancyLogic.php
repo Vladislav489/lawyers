@@ -47,31 +47,19 @@ class VacancyLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function storeVacancy(array $data): Vacancy|false
+    public function store(array $data): array|bool
     {
-        $vacancy = new Vacancy();
+        try {
+            $vacancy = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
 
-        $vacancy->description = $data['description'];
-        $vacancy->payment = $data['payment'];
-        $vacancy->defendant = json_encode([]);
-        $vacancy->status = '1';
-        $vacancy->lawsuit_number = '1';
-        $vacancy->address_judgment = '1';
-        $vacancy->period_start = '2023-01-01';
-        $vacancy->period_end = '2023-01-01';
+            if ($data['id'] = $this->save($vacancy)) {
+                return $data;
+            }
 
-        $vacancy->priority_id = 1;
-        $vacancy->chat_id = 1;
-        $vacancy->user_id = Auth::id();
-
-        $vacancy->service_id = 1;
-        $vacancy->executor_id = null;
-        $vacancy->country_id = 1;
-        $vacancy->state_id = 1;
-        $vacancy->city_id = 1;
-
-        if ($vacancy->save()) {
-            return $vacancy;
+        } catch (\Throwable $e) {
         }
 
         return false;

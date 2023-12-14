@@ -14,7 +14,7 @@ use stringEncode\Exception;
 class CoreParam{
     private $format  = "Y-m-d";//ФОРМАТ ДАТЫ ОТ ФРОНТА
     private $format_  = "Y-m-d H:i:s"; //ФОРМАТ ДАТЫ ОТ ФРОНТА
-    private $request_; // ОБЪЕКТ YII ДЛЯ ВХОДНЫХ ПАРАМЕТРОВ
+    private $request_; // ОБЪЕКТ ДЛЯ ВХОДНЫХ ПАРАМЕТРОВ
     private $params; //ПАРАМЕТРЫ ДЛЯ ОБРАБОТКИ ВХОДНЫЕ ДАННЫЕ ОТ ФРОНТА
 
     private $paramsArray;
@@ -33,7 +33,7 @@ class CoreParam{
         if($ValidatorCustom instanceof CodeValidation) {
             $this->objValidate = $ValidatorCustom;
         }else{
-            throw new Exception("Передан не соответствующий 
+            throw new Exception("Передан не соответствующий
                     класс ValidatorCustom(!=)".get_class($ValidatorCustom));
         }
         return $this;
@@ -205,7 +205,6 @@ class CoreParam{
             $this->ParamsToWhere[$field . "_СLONE_" . $index] = array("data"=>$data,"key"=>$key,'type'=>$type);
         }
     }
-
     public function convertDate($date){
         $dateObject =\DateTime::createFromFormat($this->format, $date);
         if($dateObject !== false) return $dateObject->format("Y-m-d");
@@ -220,6 +219,14 @@ class CoreParam{
     private function preConvertValue($type,$data){
         switch ($type){
             case "int|array":
+                if(is_array($data)) {
+                    foreach ($data as $key => $item){
+                        $data[$key] = urldecode($item);
+                    }
+                    return $data;
+                } else {
+                    return (string) urldecode($data);
+                }
                 break;
             case "int":
                 break;
@@ -229,7 +236,7 @@ class CoreParam{
             case "string|array":
                     if(is_array($data)) {
                         foreach ($data as $key => $item){
-                            $data[$key] = urldecode($item);
+                            $data[$key] = (string) urldecode($item);
                         }
                         return $data;
                     } else {
@@ -329,8 +336,7 @@ class CoreParam{
                     'validate' =>['string'=>true,'empty'=>true],
                     'type' => 'string|array',
                     'action' => '=', 'concat' => 'AND'
-                ]",
-                SystemLog::CODE_ERROR
+                ]"
             );
         }
         return $rulesValidation;
