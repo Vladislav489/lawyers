@@ -77,4 +77,22 @@ class UserLogic extends CoreEngine
 
         return false;
     }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $user = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if ($data['id'] = $this->save($user)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

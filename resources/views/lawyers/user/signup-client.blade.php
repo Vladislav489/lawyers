@@ -119,6 +119,7 @@
                         </div>
 
                         <input type="hidden" name="type_id" value="1">
+                        <input type="hidden" name="modifier_id" value="1">
 
                         <button
                             class="btn btn-primary"

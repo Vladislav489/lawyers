@@ -53,7 +53,7 @@ class ClientMainstayController extends MainstayController
         }
 
         return response()->json(
-            (new UserLogic())->storeUser($request->all())
+            (new UserLogic())->store($request->all())
         );
     }
 

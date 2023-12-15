@@ -150,6 +150,7 @@
                         </div>
 
                         <input type="hidden" name="type_id" value="2">
+                        <input type="hidden" name="modifier_id" value="1">
                         <input type="hidden" name="avatar_path" value="">
 
                         <button

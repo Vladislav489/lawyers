@@ -70,6 +70,27 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
+    public function store2(array $data): array|bool
+    {
+        var_dump($data);
+        if ($data['user_id'] = parent::store($data)['id']) {
+            try {
+                $employee = array_intersect_key(
+                    $data,
+                    array_flip($this->engine->getFillable())
+                );
+
+                if ($data['id'] = $this->save($employee)) {
+                    return $data;
+                }
+
+            } catch (\Throwable $e) {
+            }
+        }
+
+        return false;
+    }
+
     public function storeEmployeeServices(array $data): array
     {
         $result = [];
