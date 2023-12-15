@@ -16,10 +16,10 @@ class EmployeeLogic extends UserLogic
     {
         $this->engine = new Employee();
         $this->query = $this->engine->newQuery();
+        $this->params = $params;
         $this->getFilter();
         $this->compileGroupParams();
-
-        parent::__construct($params, $select);
+        $this->setCoreParams($callback);
     }
 
     protected function compileGroupParams(): array
@@ -72,8 +72,8 @@ class EmployeeLogic extends UserLogic
 
     public function store2(array $data): array|bool
     {
-        var_dump($data);
-        if ($data['user_id'] = parent::store($data)['id']) {
+
+        if ($data['user_id'] = (new UserLogic())->store($data)['id']) {
             try {
                 $employee = array_intersect_key(
                     $data,

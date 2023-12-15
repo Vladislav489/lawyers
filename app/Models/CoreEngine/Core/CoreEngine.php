@@ -53,12 +53,16 @@ class CoreEngine{
         $this->union = (key_exists('union',$params))? true:false;
         if (!isset($params['is_delete']))
             $params['is_delete'] = 0;
-
         $this->params = $params;
+        $this->setCoreParams($callback);
+    }
+
+    public function setCoreParams($callback = null ){
         $this->coreParams = new CoreParam();
         $this->coreParams->setParams($this->params);
         if(!is_null($callback)) $this->coreParams->specialValueCallBack($callback);
         $this->coreParams->setRules($this->filter);
+
     }
 
     public function getRealExistFilter() {
