@@ -9,8 +9,8 @@
                     <h1 class="fs-3">Регистрация аккаунта</h1>
                     <div class="d-grid gap-2">
                         <div class="btn-group btn-group-sm mt-3">
-                            <a href="http://lawyers/site/signupclient" class="btn btn-outline-primary">Клиент</a>
-                            <a href="http://lawyers/site/signupemployee" class="btn btn-outline-primary active">Сотрудник</a>
+                            <a href="{{ route__('actionSignupClient_usercontroller') }}" class="btn btn-outline-primary">Клиент</a>
+                            <a href="{{ route__('actionSignupEmployee_usercontroller') }}" class="btn btn-outline-primary active">Сотрудник</a>
                         </div>
                     </div>
                     <form
@@ -178,11 +178,11 @@
         ];
 
         getDataArray([
-            'http://lawyers/mainstay/helpdata/getcities',
-            'http://lawyers/mainstay/helpdata/getcountries',
-            'http://lawyers/mainstay/helpdata/getdistricts',
-            'http://lawyers/mainstay/helpdata/getstates2',
-            'http://lawyers/mainstay/company/getcompanies',
+            "{{ route__('actionGetCities_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetCountries_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetDistricts_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetStates2_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetCompanies_companymainstaycontroller') }}",
         ]).then(({data}) => {
             entities.forEach((entity, index) => {
                 const selectElement = document.getElementById(entity);
