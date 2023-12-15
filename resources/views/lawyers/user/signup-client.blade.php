@@ -20,8 +20,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="http://lawyers/mainstay/client/storeclient"
-                        data-success-url="http://lawyers/site/login"
+                        data-request-url="{{ route__('actionStoreClient_clientmainstaycontroller') }}"
+                        data-success-url="{{ route__('actionLogin_usercontroller') }}"
                     >
                         @csrf
                         <div class="mb-3">

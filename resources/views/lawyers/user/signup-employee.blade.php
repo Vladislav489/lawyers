@@ -20,8 +20,8 @@
                         method="post"
                         enctype="multipart/form-data"
                         style="border: 1px dashed"
-                        data-request-url="http://lawyers/mainstay/employee/storeemployee"
-                        data-success-url="http://lawyers/site/login"
+                        data-request-url="{{ route__('actionStoreEmployee_employeemainstaycontroller') }}"
+                        data-success-url="{{ route__('actionLogin_usercontroller') }}"
                     >
                         @csrf
                         <div class="mb-3">
