@@ -20,6 +20,8 @@
                         method="post"
                         enctype="multipart/form-data"
                         style="border: 1px dashed"
+                        data-request-url="http://lawyers/mainstay/employee/storeemployee"
+                        data-success-url="http://lawyers/site/login"
                     >
                         @csrf
                         <div class="mb-3">
@@ -81,11 +83,6 @@
                                 <div class="mb-3">
                                     <label for="country" class="form-label">Страна</label>
                                     <select id="country" class="form-select" name="country_id">
-
-                                        @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -95,11 +92,6 @@
                                 <div class="mb-3">
                                     <label for="state" class="form-label">Область</label>
                                     <select id="state" class="form-select" name="state_id">
-
-                                        @foreach ($states as $state)
-                                            <option value="{{ $state->id }}">{{ $state->name }}</option>
-                                        @endforeach
-
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -111,11 +103,6 @@
                                 <div class="mb-3">
                                     <label for="district" class="form-label">Район</label>
                                     <select id="district" class="form-select" name="district_id">
-
-                                        @foreach ($districts as $district)
-                                            <option value="{{ $district->id }}">{{ $district->name }}</option>
-                                        @endforeach
-
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -125,11 +112,6 @@
                                 <div class="mb-3">
                                     <label for="city" class="form-label">Город</label>
                                     <select id="city" class="form-select" name="city_id">
-
-                                        @foreach ($cities as $city)
-                                            <option value="{{ $city->id }}">{{ $city->name }}</option>
-                                        @endforeach
-
                                     </select>
                                     <div class="invalid-feedback"></div>
                                 </div>
@@ -163,35 +145,55 @@
                         <div class="mb-3">
                             <label for="company" class="form-label">Компания</label>
                             <select id="company" class="form-select" name="company_id">
-
-                                @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-
                             </select>
                             <div class="invalid-feedback"></div>
                         </div>
 
                         <input type="hidden" name="type_id" value="2">
+                        <input type="hidden" name="modifier_id" value="1">
                         <input type="hidden" name="avatar_path" value="">
 
-                        <button type="submit" class="btn btn-primary" style="pointer-events: all;">Зарегистрировать</button>
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="pointer-events: all;"
+                            data-text="Зарегистрировать"
+                        >Зарегистрировать</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- spinner -->
-    <template id="spinner">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    </template>
-
+    @include('js.util')
     @include('js.validation')
+    @include('js.async-api')
     <script>
-        const url = 'http://lawyers/site/store';
-        const onSuccess = () => window.location.href = 'http://lawyers/site/login';
+        const entities = [
+            'city',
+            'country',
+            'district',
+            'state',
+            'company',
+        ];
 
-        setSubmitHandler(url, onSuccess, 'Регистрирую');
+        getDataArray([
+            'http://lawyers/mainstay/helpdata/getcities',
+            'http://lawyers/mainstay/helpdata/getcountries',
+            'http://lawyers/mainstay/helpdata/getdistricts',
+            'http://lawyers/mainstay/helpdata/getstates2',
+            'http://lawyers/mainstay/company/getcompanies',
+        ]).then(({data}) => {
+            entities.forEach((entity, index) => {
+                const selectElement = document.getElementById(entity);
+                data[index].forEach(({id, name}) => {
+                    const html = `<option value="${id}">${name}</option>`;
+                    selectElement.insertAdjacentHTML('beforeend', html);
+                });
+            });
+
+            setSubmitHandler();
+        });
+
     </script>
 @endsection

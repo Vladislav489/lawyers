@@ -22,7 +22,6 @@ class AdminController extends CentralController {
         if(Auth::id() != Site::ROOT_USER_ID){
             $this->params['site_id'] = $this->site_id;
         }
-
         return parent::callAction($method, $parameters);
     }
 

@@ -34,9 +34,6 @@ class AdminMenu extends MenuLogic {
             ['id'=>2,'parent_id'=>0,'site_id'=>1,'lable'=>"Управление данными",'lang_id'=>1,
                 'url'=>"#",'icon'=>"fa-database"
             ],
-            ['id'=>3,'parent_id'=>2,'site_id'=>1,'lable'=>"Элементы валют-акций", 'lang_id'=>1,
-                'url'=>"/admin/editinfodata", 'icon'=>"fa-money"
-            ],
             ['id'=>4,'parent_id'=>2,'site_id'=>1,'lable'=>"SEO",'lang_id'=> 1,
                 'url'=>"",'icon'=>"fa-file-text-o"
             ],

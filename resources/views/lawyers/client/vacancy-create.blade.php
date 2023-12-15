@@ -5,7 +5,7 @@
     <section class="mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     <h1 class="fs-3">Создать вакансию</h1>
                     <form
                         id="vacancy-form"
@@ -14,6 +14,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
+                        data-request-url="http://lawyers/mainstay/client/storevacancy"
+                        data-success-url="http://lawyers/vacancylist"
                     >
                         @csrf
                         <div class="mb-3">
@@ -37,18 +39,34 @@
                             <div class="invalid-feedback"></div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Создать</button>
+                        <input type="hidden" name="status" value="1">
+                        <input type="hidden" name="lawsuit_number" value="1">
+                        <input type="hidden" name="address_judgment" value="1">
+                        <input type="hidden" name="period_start" value="2023-01-01">
+                        <input type="hidden" name="period_end" value="2023-01-01">
+                        <input type="hidden" name="chat_id" value="1">
+                        <input type="hidden" name="city_id" value="1">
+                        <input type="hidden" name="state_id" value="1">
+                        <input type="hidden" name="country_id" value="1">
+                        <input type="hidden" name="service_id" value="1">
+                        <input type="hidden" name="priority_id" value="1">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="pointer-events: all;"
+                            data-text="Создаю"
+                        >Создать</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
 
+    @include('js.util')
     @include('js.validation')
+    @include('js.async-api')
     <script>
-        const url = 'http://lawyers/storevacancy';
-        const onSuccess = () => window.location.href = 'http://lawyers/vacancylist';
-
-        setSubmitHandler(url, onSuccess);
+        setSubmitHandler();
     </script>
 @endsection

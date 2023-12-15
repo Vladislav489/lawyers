@@ -5,7 +5,7 @@
     <section class="mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     <h1 class="fs-3">Вход в систему</h1>
                     <form
                         id="login-form"

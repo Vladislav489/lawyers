@@ -49,18 +49,8 @@ class UserLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function store(array $data): UserEntity
+    public function storeUser(array $data): UserEntity|false
     {
-
-        /*
-         *
-        $userId = $this->save($data);
-        if($userId){
-            $data['id'] = $userId;
-            return $data;
-        }
-        return false;
-         */
         $user = new UserEntity();
 
         $user->email = $data['email'];
@@ -80,13 +70,29 @@ class UserLogic extends CoreEngine
 
         $user->type_id = $data['type_id'];
         $user->modifier_id = 1;
-
-        $user->save();
-        //Это тут делать нельзя это наследник  (это перебор)
-        if (intval($user->type_id) === self::EMPLOYEE_TYPE_ID) {
-            (new EmployeeLogic())->storeEmployee($data, $user->id);
+      
+        if ($user->save()) {
+            return $user;
         }
 
-        return $user;
+        return false;
+    }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $user = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if ($data['id'] = $this->save($user)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
     }
 }
