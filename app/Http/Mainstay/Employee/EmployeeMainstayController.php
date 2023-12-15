@@ -78,7 +78,7 @@ class EmployeeMainstayController extends MainstayController
         }
 
         return response()->json(
-            (new EmployeeLogic())->storeEmployee($request->all())
+            (new EmployeeLogic())->store($request->all())
         );
     }
 
