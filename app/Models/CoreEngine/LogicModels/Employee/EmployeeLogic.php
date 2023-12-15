@@ -72,7 +72,6 @@ class EmployeeLogic extends UserLogic
 
     public function store2(array $data): array|bool
     {
-        var_dump($data);
         if ($data['user_id'] = parent::store($data)['id']) {
             try {
                 $employee = array_intersect_key(
@@ -86,48 +85,6 @@ class EmployeeLogic extends UserLogic
 
             } catch (\Throwable $e) {
             }
-        }
-
-        return false;
-    }
-
-    public function storeEmployeeServices(array $data): array
-    {
-        $result = [];
-        DB::table('user_employee_service')->where('user_id', Auth::id())->delete();
-
-        foreach ($data as $service_id) {
-            $result[] = $this->storeEmployeeService($service_id);
-        }
-
-        return $result;
-    }
-
-    public function updateEmployeeService(array $data): EmployeeService|false
-    {
-        $employee_service = EmployeeService::find($data['service_id']);
-        $employee_service->is_main = boolval($data['is_main'] ?? null);
-
-        if ($employee_service->is_main) {
-            $employee_service->description = $data['description'];
-            $employee_service->price = $data['price'];
-        }
-
-        if ($employee_service->save()) {
-            return $employee_service;
-        }
-
-        return false;
-    }
-
-    protected function storeEmployeeService(int $service_id): EmployeeService|false
-    {
-        $employee_service = new EmployeeService();
-        $employee_service->user_id = Auth::id();
-        $employee_service->service_id = $service_id;
-
-        if ($employee_service->save()) {
-            return $employee_service;
         }
 
         return false;

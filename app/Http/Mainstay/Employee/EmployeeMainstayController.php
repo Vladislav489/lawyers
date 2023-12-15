@@ -3,6 +3,7 @@
 namespace App\Http\Mainstay\Employee;
 
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
+use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
@@ -77,11 +78,11 @@ class EmployeeMainstayController extends MainstayController
         }
 
         return response()->json(
-            (new EmployeeLogic())->store2($request->all())
+            (new EmployeeLogic())->storeEmployee($request->all())
         );
     }
 
-    public function actionStoreEmployeeService(Request $request)
+    public function actionStoreEmployeeServices(Request $request)
     {
         $rules = [
             'service_ids.*' => 'required|integer|exists:' . Service::class . ',id',
@@ -96,7 +97,7 @@ class EmployeeMainstayController extends MainstayController
         $data = $request->all()['service_ids'] ?? [];
 
         return response()->json(
-            (new EmployeeLogic())->storeEmployeeServices($data)
+            (new EmployeeServiceLogic())->storeEmployeeServices($data)
         );
     }
 
@@ -106,7 +107,7 @@ class EmployeeMainstayController extends MainstayController
             'is_main' => 'boolean',
             'price' => "exclude_if:is_main,'1'|required|integer",
             'description' => "exclude_if:is_main,'1'|required|string",
-            'service_id' => 'required|integer|exists:' . EmployeeService::class . ',id',
+            'id' => 'required|integer|exists:' . EmployeeService::class . ',id',
         ];
 
         if (($validator = Validator::make($request->all(), $rules))->fails()) {
@@ -116,7 +117,7 @@ class EmployeeMainstayController extends MainstayController
         }
 
         return response()->json(
-            (new EmployeeLogic())->updateEmployeeService($request->all())
+            (new EmployeeServiceLogic())->store($request->all())
         );
     }
 

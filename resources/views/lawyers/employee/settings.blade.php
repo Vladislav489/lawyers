@@ -23,7 +23,7 @@
                         action=""
                         method="post"
                         enctype="application/x-www-form-urlencoded"
-                        data-request-url="{{ route__('actionStoreEmployeeService_employeemainstaycontroller') }}"
+                        data-request-url="{{ route__('actionStoreEmployeeServices_employeemainstaycontroller') }}"
                         data-success-url="{{ route__('actionEmployeeSettings_employeecontroller') }}"
                         style="border: 1px dashed #000;"
                     >
@@ -62,7 +62,7 @@
                                 <label
                                     class="form-check-label"
                                     for="service-is_main-{{ $service->id }}"
-                                    style="user-select: none;"
+                                    style="user-select: none; cursor: pointer;"
                                     name="is_main"
                                 >{{ $service->entity->name }} (Выбрать в качестве основного)</label>
                             </div>
@@ -90,7 +90,7 @@
                                     <div class="invalid-feedback"></div>
                                 </div>
 
-                                <input type="hidden" name="service_id" value="{{ $service->id }}">
+                                <input type="hidden" name="id" value="{{ $service->id }}">
 
                             </fieldset>
                             <button

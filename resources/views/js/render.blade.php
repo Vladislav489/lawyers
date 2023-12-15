@@ -11,7 +11,7 @@
         <label
             class="form-check-label"
             for=""
-            style="user-select: none;"
+            style="user-select: none; cursor: pointer;"
         ></label>
     </div>
 </template>
