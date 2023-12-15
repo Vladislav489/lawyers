@@ -13,7 +13,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Description: {{ $vacancy->description }}</h5>
                                 <p class="card-text">Payment: {{ $vacancy->payment }} &#8381;</p>
-                                <a href="http://lawyers/editvacancy?id={{ $vacancy->id }}" class="btn btn-secondary">Редактировать</a>
+                                <a href="{{ route__('actionEditVacancy_clientcontroller') }}?id={{ $vacancy->id }}" class="btn btn-secondary">Редактировать</a>
                                 <button
                                     type="button"
                                     class="btn btn-danger"
@@ -42,7 +42,7 @@
 
                 if (cardElement) {
                     const vacancyId = +cardElement.dataset.id;
-                    const url = `http://lawyers/mainstay/client/deletevacancy?id=${vacancyId}`;
+                    const url = `{{ route__('actionDeleteVacancy_clientmainstaycontroller') }}?id=${vacancyId}`;
                     blockButton(btnElement);
                     setTimeout(() => {
                         sendDeleteRequest(url).then((response) => {

@@ -14,7 +14,7 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-success-url="http://lawyers/vacancylist"
+                        data-success-url="{{ route__('actionVacancyList_clientcontroller')}}"
                     >
                         @csrf
                         @method('PATCH')
@@ -77,7 +77,7 @@
         fetch(`http://lawyers/mainstay/client/getvacancy?id=${params.id}`)
             .then((response) => response.json())
             .then((data) => {
-                const url = `http://lawyers/mainstay/client/storevacancy?id=${params.id}`;
+                const url = `{{ route__('actionStoreVacancy_clientmainstaycontroller') }}?id=${params.id}`;
 
                 document.querySelector('form').dataset.requestUrl = url;
                 document.getElementById('desc').textContent = data.description;

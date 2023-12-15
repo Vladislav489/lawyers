@@ -14,8 +14,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="http://lawyers/mainstay/client/storevacancy"
-                        data-success-url="http://lawyers/vacancylist"
+                        data-request-url="{{ route__('actionStoreVacancy_clientmainstaycontroller') }}"
+                        data-success-url="{{ route__('actionVacancyList_clientcontroller')}}"
                     >
                         @csrf
                         <div class="mb-3">

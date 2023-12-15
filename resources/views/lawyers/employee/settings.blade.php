@@ -23,8 +23,8 @@
                         action=""
                         method="post"
                         enctype="application/x-www-form-urlencoded"
-                        data-request-url="http://lawyers/mainstay/employee/storeemployeeservice"
-                        data-success-url="http://lawyers/employeesettings"
+                        data-request-url="{{ route__('actionStoreEmployeeService_employeemainstaycontroller') }}"
+                        data-success-url="{{ route__('actionEmployeeSettings_employeecontroller') }}"
                         style="border: 1px dashed #000;"
                     >
                         <div id="service-container" class="mb-3"></div>
@@ -45,8 +45,8 @@
                             action=""
                             method="post"
                             enctype="application/x-www-form-urlencoded"
-                            data-request-url="http://lawyers/mainstay/employee/updateemployeeservice"
-                            data-success-url="http://lawyers/employeesettings"
+                            data-request-url="{{ route__('actionUpdateEmployeeService_employeemainstaycontroller') }}"
+                            data-success-url="{{ route__('actionEmployeeSettings_employeecontroller') }}"
                             style="border: 1px dashed #000;"
                         >
                             <div class="mb-3">
@@ -119,8 +119,8 @@
             .querySelector('.form-check');
 
         getDataArray([
-            'http://lawyers/mainstay/employee/getservices',
-            'http://lawyers/mainstay/employee/getuserserviceids',
+            "{{ route__('actionGetServices_employeemainstaycontroller') }}",
+            "{{ route__('actionGetUserServiceIds_employeemainstaycontroller') }}",
         ]).then(({data}) => {
             renderServices(...data)
             setSubmitHandler('#settings-form', false);
