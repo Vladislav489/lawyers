@@ -61,7 +61,7 @@ class ClientMainstayController extends MainstayController
     {
         if ($request->isMethod('delete')) {
             return response()->json(
-                (new VacancyLogic())->deleteVacancy($request->input('id'))
+                (new VacancyLogic())->deleteVacancy($request->all())
             );
         }
     }
