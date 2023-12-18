@@ -51,8 +51,8 @@ class CoreEngine{
             unset($params['site_id']);
         }
         $this->union = (key_exists('union',$params))? true:false;
-        if (!isset($params['is_deleted']))
-            $params['is_deleted'] = 0;
+        if (!isset($params['is_delete']))
+            $params['is_delete'] = 0;
         $this->params = $params;
         $this->setCoreParams($callback);
     }
@@ -191,10 +191,10 @@ class CoreEngine{
     public function delete($id,$key = NULL){
         $id = (!is_array($id))?[$id]:$id;
         if(is_null($key)) {
-            return $this->query->newQuery()->whereIn('id', $id)->update(['is_deleted' => 1]);
+            return $this->query->newQuery()->whereIn('id', $id)->update(['is_delete' => 1]);
         } else {
             if(in_array($key,$this->engine->getFillable())) {
-                return $this->query->newQuery()->whereIn($key, $id)->update(['is_deleted' => 1]);
+                return $this->query->newQuery()->whereIn($key, $id)->update(['is_delete' => 1]);
             } else {
                 return false;
             }
@@ -202,7 +202,7 @@ class CoreEngine{
     }
     public function deleteForeva($id){
         $id = (!is_array($id))?[$id]:$id;
-        return $this->query->newQuery()->where('is_deleted','=',1)->whereIn('id', [$id])->delete();
+        return $this->query->newQuery()->where('is_delete','=',1)->whereIn('id', [$id])->delete();
     }
     public function update($data,$id,$key = null){
         if($this->checkInsertColumn($data)) {
@@ -889,7 +889,7 @@ class CoreEngine{
     //ПАРАМЕТРЫ ФИЛЬТРАЦИИ
     protected function getFilter(){
         $this->filter =[
-            [   'field'=>$this->engine->getTable().'.is_deleted','params'=>'is_deleted',
+            [   'field'=>$this->engine->getTable().'.is_delete','params'=>'is_delete',
                 'type'=>'int','action'=>"=",'concat'=>"AND",'validate' =>['string'=>true,'empty'=>true]],
             [   'field'=>$this->engine->getTable().'.site_id','params' => 'site_id',
                 'validate' =>['string'=>true,"empty"=>true], 'type' => 'string|array',

@@ -20,9 +20,8 @@ class ClientMainstayController extends MainstayController
 {
     public function callAction($method, $parameters)
     {
-        // TODO: rest-аутентификация
         if (!Auth::check() || Auth::user()->type->name !== 'client') {
-            // return response()->json(['message' => 'forbidden']);
+            return response()->json(['message' => 'forbidden']);
         }
 
         return parent::callAction($method, $parameters);
