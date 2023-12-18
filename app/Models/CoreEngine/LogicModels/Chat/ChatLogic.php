@@ -44,4 +44,26 @@ class ChatLogic extends CoreEngine
 
         return $this->filter;
     }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $chat = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if (isset($data['id'])) {
+                $chat['id'] = $data['id'];
+            }
+
+            if ($data['id'] = $this->save($chat)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }
