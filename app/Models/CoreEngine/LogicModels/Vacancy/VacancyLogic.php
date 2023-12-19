@@ -72,9 +72,9 @@ class VacancyLogic extends CoreEngine
     public function deleteVacancy(array $data): bool
     {
         try {
-            return Vacancy::find($data['id'])->delete();
-            // $vacancy = $this->setModel(new Vacancy());
-            // return $vacancy->deleteForeva($data['id']);
+            // return Vacancy::find($data['id'])->delete();
+            $vacancy = $this->setModel(new Vacancy());
+            return $vacancy->delete($data['id']);
         } catch (\Throwable $e) {
         }
 

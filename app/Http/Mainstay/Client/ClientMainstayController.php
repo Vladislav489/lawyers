@@ -94,4 +94,9 @@ class ClientMainstayController extends MainstayController
             Vacancy::find($request->input('id'))
         );
     }
+
+    public function actionGetVacancyList()
+    {
+        return response()->json((new VacancyLogic())->getList());
+    }
 }

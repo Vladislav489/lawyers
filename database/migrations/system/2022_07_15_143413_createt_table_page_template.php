@@ -17,7 +17,7 @@ return new class extends Migration{
                 $table->string("template_body");
                 $table->json('start_params');
                 $table->tinyInteger('active');
-                $table->tinyInteger('is_delete');
+                $table->tinyInteger('is_deleted');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();
             });

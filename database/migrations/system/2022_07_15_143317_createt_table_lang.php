@@ -13,7 +13,7 @@ return new class extends Migration{
                 $table->bigInteger('site_id')->unsigned();
                 $table->string('lang_name', 70);
                 $table->string('lang_code', 5);
-                $table->tinyInteger('is_delete');
+                $table->tinyInteger('is_deleted');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();
             });

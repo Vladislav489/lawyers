@@ -11,7 +11,7 @@ class SystemMenu extends ModyfiModel  {
         'lable',
         'url','sort','lang_id',
         'icon',
-        'active','is_delete', 'created_at',
+        'active','is_deleted', 'created_at',
         'updated_at'
     ];
 
@@ -28,7 +28,7 @@ class SystemMenu extends ModyfiModel  {
                 'lang_id'=>'Lang',
                 'active'=>'Active',
                 'icon'=>"Icon",
-                'is_delete'=>'Is Deleted',
+                'is_deleted'=>'Is Deleted',
                 'created_at'=>'Date Created',
                 'updated_at'=>'Date Updated'
             ],
@@ -41,7 +41,7 @@ class SystemMenu extends ModyfiModel  {
                 'sort'=>'Сортировка',
                 'lang_id'=>'Язык',
                 'active'=>'Активный',
-                'is_delete'=>'Удален',
+                'is_deleted'=>'Удален',
                 'icon'=>"Иконка",
                 'created_at'=>'Дата Создания',
                 'updated_at'=>'Дата Обновления'

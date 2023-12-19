@@ -22,7 +22,7 @@ class Seo extends CoreEngine {
 
     public function __construct($params = [],$select = ['*'],$paramsObj = [],$callback = null){
         $this->clearParams = $this->checkRulesParasms($paramsObj);
-        $params['is_delete'] = 0;
+        $params['is_deleted'] = 0;
         $this->engine = new SystemSeo();
         $this->query = $this->engine->newQuery();
         $this->getFilter();

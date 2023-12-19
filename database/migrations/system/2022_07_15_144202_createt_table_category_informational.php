@@ -15,7 +15,7 @@ return new class extends Migration{
                 $table->bigInteger('parent_id')->unsigned()->default(0);
                 $table->tinyInteger('active')->default(1);
                 $table->bigInteger('site_id');
-                $table->tinyInteger('is_delete')->default(0);
+                $table->tinyInteger('is_deleted')->default(0);
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();
             });

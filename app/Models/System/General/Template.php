@@ -31,7 +31,7 @@ class Template extends CoreEngine {
    private $route           = null;
 
    public function __construct($params = [],$select = ["*"],$callback = null){
-        $params['is_delete'] = 0;
+        $params['is_deleted'] = 0;
         $this->engine = new SystemViwe();
         $this->query = $this->engine->newQuery();
         $this->getFilter();

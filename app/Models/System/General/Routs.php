@@ -28,7 +28,7 @@ class Routs extends CoreEngine {
     protected $url;
     protected $url_system;
     public function __construct($params = [],$select = ['*'],$callback = null){
-        $params['is_delete'] = 0; //Дефолтный фильтер что бы не выбирпло удалленые записи
+        $params['is_deleted'] = 0; //Дефолтный фильтер что бы не выбирпло удалленые записи
         $this->engine = new SystemRouts(); //Модель таблицы
         $this->systemRouts = RouteBilder::getRotesBuild();//Получаем все поуты для текущего сайта
         $this->query = $this->engine->newQuery();
@@ -95,7 +95,7 @@ class Routs extends CoreEngine {
         $urlExplode = array_filter($urlExplode, function($value) { return !is_null($value) && $value !== ''; });
         $search = [];
         $query = $this->engine->newQuery();
-        $query->select()->where("is_delete", "=",0, "AND")
+        $query->select()->where('is_deleted', "=",0, "AND")
                         ->where("active", "=",1, "AND");
         if(!is_null($this->site_id))
             $query->where("site_id", "=", $this->site_id, "AND");

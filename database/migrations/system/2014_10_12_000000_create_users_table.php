@@ -23,7 +23,7 @@ return new class extends Migration{
                 $table->string('phone')->unique()->nullable();
                 $table->timestamp('email_verified_at')->nullable();
                 $table->string('password');
-                $table->tinyInteger('is_delete')->default(0);
+                $table->tinyInteger('is_deleted')->default(0);
                 $table->rememberToken();
                 $table->timestamps();
             });

@@ -24,7 +24,7 @@ return new class extends Migration
                 $table->tinyInteger('physically')->default(0);
                 $table->tinyInteger('open')->default(0);
                 $table->tinyInteger('active')->default(1);
-                $table->tinyInteger('is_delete')->default(0);
+                $table->tinyInteger('is_deleted')->default(0);
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();
             });
