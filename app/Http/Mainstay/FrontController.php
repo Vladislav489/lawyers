@@ -8,12 +8,10 @@ use App\Models\CoreEngine\LogicModels\Forecast\ForecastLogic;
 use App\Models\CoreEngine\LogicModels\Forecast\InformationalDataLogic;
 use App\Models\CoreEngine\Model\InformationalDataLong;
 use App\Models\System\ControllersModel\MainstayController;
-use App\Models\System\HelperFunction;
 use App\Models\System\Securities;
 use App\Models\System\SystemLog;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class FrontController extends MainstayController {

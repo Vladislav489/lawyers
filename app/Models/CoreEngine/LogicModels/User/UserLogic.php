@@ -70,7 +70,7 @@ class UserLogic extends CoreEngine
 
         $user->type_id = $data['type_id'];
         $user->modifier_id = 1;
-
+      
         if ($user->save()) {
             return $user;
         }

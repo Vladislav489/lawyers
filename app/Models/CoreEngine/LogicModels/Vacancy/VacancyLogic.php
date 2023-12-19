@@ -18,26 +18,7 @@ class VacancyLogic extends CoreEngine
 
         parent::__construct($params, $select);
     }
-
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
-
-        return $this->group_params;
-    }
-
-    protected function defaultSelect(): array
-    {
-        $tab = $this->engine->tableName();
-        $this->default = [];
-
-        return $this->default;
-    }
-
+  
     protected function getFilter(): array
     {
         $tab = $this->engine->getTable();
@@ -79,5 +60,24 @@ class VacancyLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    protected function compileGroupParams(): array
+    {
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' => []
+        ];
+
+        return $this->group_params;
+    }
+
+    protected function defaultSelect(): array
+    {
+        $tab = $this->engine->tableName();
+        $this->default = [];
+
+        return $this->default;
     }
 }

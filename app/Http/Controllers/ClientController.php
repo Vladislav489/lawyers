@@ -46,7 +46,7 @@ class ClientController extends FrontController
     {
         return view('lawyers.client.cabinet');
     }
-
+  
     public function actionVacancyList()
     {
         return view('lawyers.client.vacancy-list');
