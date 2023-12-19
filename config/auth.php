@@ -64,7 +64,6 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\CoreEngine\ProjectModels\User\UserEntity::class,
         ],
-
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

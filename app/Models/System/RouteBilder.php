@@ -56,7 +56,6 @@ class RouteBilder {
             } else {
                 $this->listController = Cache::tags([Site::getSite()['domain_name']])->get($this->nameKeyCache);
             }
-
             return $this->listController;
         }else{
             return [];
@@ -193,18 +192,29 @@ class RouteBilder {
        }
     }
     //Проходит по всем папкам и соберает контроллеры
-    private function getControllerFromDir($paht){
+    private function getControllerFromDir($paht,$allPath = null){
         $dir = scandir($paht);
         $listController = [];
-
         foreach ($dir as $item){
             if(!in_array($item,$this->listIgnoreFolder)){
-                if(file_exists($paht.self::T_S_P.$item)){
-                    $key = strtolower(str_replace(".php",'',$item));
+                if(file_exists($paht.self::T_S_P.$item) && strpos($item,".php") ) {
+                    $explodePath = explode(self::T_S_P,$allPath);
+                    $prefix = array_slice($explodePath,-2,);
+                    if(in_array(self::MAIN_CONTROLLER,$prefix)){
+                        $key = strtolower(str_replace(".php",'',($item)));
+                    } else {
+                       $prefix = array_pop($prefix);
+                       $key = strtolower(str_replace(".php",'',($prefix."_".$item)));
+                    }
                     $listController[$key] = $paht.self::T_S_P.str_replace(".php",'',$item);
                 }
                 if(is_dir($paht.self::T_S_P.$item)){
-                    $listController = array_merge($listController,$this->getControllerFromDir($paht.self::T_S_P.$item));
+
+                    $allPath = $paht.self::T_S_P.$item;
+                    $listController = array_merge(
+                        $listController,
+                        $this->getControllerFromDir($paht.self::T_S_P.$item,$allPath)
+                    );
                 }
             }
         }
