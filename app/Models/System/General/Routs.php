@@ -170,6 +170,7 @@ class Routs extends CoreEngine {
     }
     //Поиск пути по все системе
     public function getRoute($urlReal,$route_url = null){
+
         $this->url = $urlReal;// улр из риквеста
         $this->url_system = $route_url; //Урл системы то что мжет быит template_url или
 
@@ -183,6 +184,7 @@ class Routs extends CoreEngine {
 
         //простой поиск и быстрый поиск на соотвецтвие стандартом ядра и косвенным урлам типа /{type}/{code}
         $data = $this->setJoin(['Template'])->offPagination()->setParams($params)->getOne();
+
         if (is_array($data) && count($data) > 0) {
             $data['url_system'] = (!empty($data['template_url']))? $data['template_url']:$route_url;
             $data['params_route'] = self::parseUrlTemplateParams($data,$urlReal);
@@ -194,6 +196,7 @@ class Routs extends CoreEngine {
             unset($params['url']);
         }
         $data = $this->setJoin(['Template'])->setParams($params)->claerQuery()->getOne();
+
         if (is_array($data) && count($data) > 0) {
             $data['url_system'] = (!empty($data['template_url']))? $data['template_url']:$route_url;
             $data['params_route'] = self::parseUrlTemplateParams($data,$urlReal);
@@ -212,7 +215,8 @@ class Routs extends CoreEngine {
             return $data;
         }
         //Поиск по урлам что собранны из контроллеров
-        $data = $this->getSystemRoutByUrl($url,$route_url);
+        $data = $this->getSystemRoutByUrl($urlReal,$route_url);
+
         if(!is_null($data)) {
             $data['url'] = $url;
             $data['site_id'] = $this->site_id;

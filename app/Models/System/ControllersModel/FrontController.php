@@ -17,8 +17,8 @@ class FrontController extends CentralController {
     protected $setting = null;
     public function callAction($method, $parameters){
         // если сайт выключен или удален или отсутствует
-        if(is_null(Site::getSiteId()))
-                    abort(404);
+        //if(is_null(Site::getSiteId()))
+          //          abort(404);
         //Проверка для системных пользователей
 
         if(isset($_GET['cache_build'])) {
@@ -80,6 +80,7 @@ class FrontController extends CentralController {
         $this->routs = $routsTemplate = $routs->setJoin(['Template'])->offPagination()
             ->getRoute(\request()->getPathInfo(),\Illuminate\Support\Facades\Route::current()->uri());
         //Если не найден путь то  вернем что не нашли  ищет стери дефолтных и из ДБ
+        ;
         if (!$routsTemplate) abort(404);
         //все параметры роута
         $GLOBALS['route'] = $routsTemplate;
@@ -91,6 +92,7 @@ class FrontController extends CentralController {
          //проверка на существование данных если нет то 404
         if (!is_null($checkParamsUrlExist)) {
             if (!is_object($checkParamsUrlExist) &&  $checkParamsUrlExist == 0){
+
                 abort(404);
                 return null;
             }
