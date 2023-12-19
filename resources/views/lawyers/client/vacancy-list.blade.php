@@ -7,6 +7,8 @@
             <div class="row">
                 <div class="col-lg-6">
                     <h1 class="mb-4 fs-3">Мои вакансии</h1>
+
+
                     @include('component_build', [
                         'component' => 'component.gridComponent.simpleGrid',
                         'params_component' => [
@@ -14,12 +16,19 @@
                             'name' => 'vacancy_list',
                             'url' => route__("actionGetVacancyList_clientmainstaycontroller"),
 
-                            'template' => "<div v-for='item in data' class='card mt-3 border-primary'>
-                                <div class='card-body' v-bind:id='item.id'>
-                                    <h5 class='card-title'>Description: @{{ item.description }}</h5>
-                                    <p class='card-text'>Payment: @{{item.payment}} &#8381;</p>
+                            'template' => '<div v-for="item in data" class="card mt-3 border-primary">
+                                <div class="card-body" v-bind:data-id="item.id">
+                                    <h5 class="card-title">Description: @{{ item.description }}</h5>
+                                    <p class="card-text">Payment: @{{ item.payment }} &#8381;</p>
+                                    <a v-bind:href=\'"'.route__("actionEditVacancy_clientcontroller").' ?id="+item.id\' class="btn btn-secondary">Редактировать</a>
+                                    <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        style="pointer-events: all;"
+                                        data-text="Удаляю"
+                                    >Удалить</button>
                                 </div>
-                            </div>",
+                            </div>',
 
                             'autostart' => 'true',
                             'pagination' => [
