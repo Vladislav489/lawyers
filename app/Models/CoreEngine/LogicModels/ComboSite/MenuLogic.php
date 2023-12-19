@@ -58,7 +58,7 @@ class MenuLogic extends CoreEngine {
                 "action" => '=', 'concat' => 'AND'
             ],
             [
-                'field'=>$tab.'.is_delete','params' => 'is_deleted',
+                'field'=>$tab.'.is_deleted','params' => 'is_deleted',
                 'validate' =>['string'=>true,"empty"=>true],
                 'type' => 'int',
                 "action" => '=', 'concat' => 'AND'

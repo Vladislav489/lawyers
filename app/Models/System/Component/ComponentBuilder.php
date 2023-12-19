@@ -333,7 +333,7 @@ ComponentBuilder {
                         $response = $obj->{$listUrl[$params_component['url']]['action']}($paramSend);
 
                     } catch (\Throwable $e) {
-
+                        dd($paramSend ,$listUrl[$params_component['url']]['controller'],$params_component['url'],$listUrl[$params_component['url']]['action'],$response);
                         SystemLog::addLog("SSR Error Http Request",
                             [
                                 'component_param' => $params_component,
