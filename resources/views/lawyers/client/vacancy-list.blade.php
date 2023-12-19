@@ -1,4 +1,4 @@
-@extends('lawyers.layouts.main')
+@extends('lawyers.layouts.layout')
 @section('title', 'Мои вакансии')
 
 @section('content')
@@ -8,36 +8,19 @@
                 <div class="col-lg-6">
                     <h1 class="mb-4 fs-3">Мои вакансии</h1>
 
-                    <!-- TODO: ajax -->
-                    @forelse (Auth::user()->vacancies as $vacancy)
-                        <div class="card mt-3 border-primary" data-id="{{ $vacancy->id }}">
-                            <div class="card-body">
-                                <h5 class="card-title">Description: {{ $vacancy->description }}</h5>
-                                <p class="card-text">Payment: {{ $vacancy->payment }} &#8381;</p>
-                                <a href="{{ route__('actionEditVacancy_clientcontroller') }}?id={{ $vacancy->id }}" class="btn btn-secondary">Редактировать</a>
-                                <button
-                                    type="button"
-                                    class="btn btn-danger"
-                                    style="pointer-events: all;"
-                                    data-text="Удаляю"
-                                >Удалить</button>
-                            </div>
-                        </div>
-                    @empty
-                    @endforelse
 
                     @include('component_build', [
                         'component' => 'component.gridComponent.simpleGrid',
                         'params_component' => [
                             'autostart' => 'true',
-                            'name' => 'vacancy-list',
-                            'url' => route__("actionGetListSite_backcontroller"),
+                            'name' => 'vacancy_list',
+                            'url' => route__("actionGetVacancyList_clientmainstaycontroller"),
 
                             'template' => '<div v-for="item in data" class="card mt-3 border-primary">
-                                <div class="card-body" v-bind:data-id="@{{ item.id }}">
+                                <div class="card-body" v-bind:data-id="item.id">
                                     <h5 class="card-title">Description: @{{ item.description }}</h5>
                                     <p class="card-text">Payment: @{{ item.payment }} &#8381;</p>
-                                    <a href="{{ route__('actionEditVacancy_clientcontroller') }}?id=@{{ item.id }}" class="btn btn-secondary">Редактировать</a>
+                                    <a v-bind:href=\'"'.route__("actionEditVacancy_clientcontroller").' ?id="+item.id\' class="btn btn-secondary">Редактировать</a>
                                     <button
                                         type="button"
                                         class="btn btn-danger"

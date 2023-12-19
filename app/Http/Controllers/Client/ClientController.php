@@ -35,10 +35,9 @@ class ClientController extends FrontController
 
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type->name !== 'client') {
-            return redirect('/main');
-        }
-
+       // if (!Auth::check() || Auth::user()->type->name !== 'client') {
+     //       return redirect('/main');
+     //   }
         return parent::callAction($method, $parameters);
     }
 
@@ -48,6 +47,7 @@ class ClientController extends FrontController
     }
 
     public function actionVacancyList(){
+
         return view('lawyers.client.vacancy-list');
     }
 

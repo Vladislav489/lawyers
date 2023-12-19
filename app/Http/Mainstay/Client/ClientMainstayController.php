@@ -20,9 +20,9 @@ class ClientMainstayController extends MainstayController
 {
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type->name !== 'client') {
-            return response()->json(['message' => 'forbidden']);
-        }
+       // if (!Auth::check() || Auth::user()->type->name !== 'client') {
+       //     return response()->json(['message' => 'forbidden']);
+       // }
 
         return parent::callAction($method, $parameters);
     }
