@@ -12,7 +12,7 @@ return new class extends Migration{
                $table->id();
                $table->string('style_name');
                $table->text('folder');
-               $table->tinyInteger('is_delete');
+               $table->tinyInteger('is_deleted');
                $table->timestamp('created_at')->useCurrent();
                $table->timestamp('updated_at')->useCurrent();
            });

@@ -106,14 +106,14 @@ class SiteMapLogic extends  CoreEngine {
             $item['route_id'] = $route['id'];
             $item['site_id'] = $this->site_id;
             $item['lang_id'] = "1";
-            $item['is_delete'] = "0";
+            $item['is_deleted'] = "0";
             $item['cache'] = "0";
 
 
             $insert = explode("~~~~~~", addslashes(implode("~~~~~~",$item)));
             $insertone[] = "('".implode("','",$insert)."')";
         }
-        $sqlQueryText = " INSERT INTO ".self::getTable()." (".implode(",",['url','route_id','site_id','lang_id','is_delete','cache']).") VALUES".implode(",",$insertone);
+        $sqlQueryText = " INSERT INTO ".self::getTable()." (".implode(",",['url','route_id','site_id','lang_id','is_deleted','cache']).") VALUES".implode(",",$insertone);
         DB::statement($sqlQueryText);
     }
 
@@ -333,7 +333,7 @@ class SiteMapLogic extends  CoreEngine {
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND'
             ],
-            [   'field'=>$tab.'.is_delete','params' => 'delete',
+            [   'field'=>$tab.'.is_deleted','params' => 'delete',
                 'validate' =>['string'=>true,"empty"=>true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND'

@@ -15,7 +15,7 @@ return new class extends Migration{
                 $table->bigInteger('route_id');
                 $table->bigInteger('site_id');
                 $table->integer("lang_id");
-                $table->tinyInteger('is_delete');
+                $table->tinyInteger('is_deleted');
                 $table->tinyInteger('cache');
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();

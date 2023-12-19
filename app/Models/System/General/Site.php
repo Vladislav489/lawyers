@@ -17,7 +17,7 @@ class Site extends CoreEngine {
     const ROOT_SITE_NOT_ACTIVE = 0;
     private $site = null;
     public function __construct($params = [],$select = ['*'],$callback = null){
-        $params['is_delete'] = 0;
+        $params['is_deleted'] = 0;
         if(is_null($this->site)){
             $this->site = self::getSite();
         }
@@ -98,8 +98,8 @@ class Site extends CoreEngine {
                 $site = SystemSite::query()->newQuery()
                     ->where("active", "=", "1", "AND")
                     ->where('domain_name', '=', $domains, "AND")
-                    ->where("is_delete", "=", "0")->limit(1)
-                    ->get(['id', "domain_name", "active", "is_delete", "lang_id", "user_main_id"])->toArray();
+                    ->where("is_deleted", "=", "0")->limit(1)
+                    ->get(['id', "domain_name", "active", "is_deleted", "lang_id", "user_main_id"])->toArray();
                 $site = (isset($site[0]['id']))?$site[0]:null;
                 $session = $site;
                 Session::put('site',$site);

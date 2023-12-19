@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMenu extends MenuLogic {
     public function __construct($params = [],$select =['*'],$callback = null){
-            $params['is_delete'] = 0;
+            $params['is_deleted'] = 0;
             $this->params = $params;
             if(Auth::id() != 1)
                 $this->params['site'] = (string)Site::getSiteId();
@@ -84,7 +84,7 @@ class AdminMenu extends MenuLogic {
         foreach ($colums as $item){
             $columsSort[] = $item['column'];
         }
-        return ['select'=>$colums,"sort_col"=>$columsSort,'ignody_col'=>['site_id','is_delete','lang_id','active']];
+        return ['select'=>$colums,"sort_col"=>$columsSort,'ignody_col'=>['site_id','is_deleted','lang_id','active']];
     }
 
 }

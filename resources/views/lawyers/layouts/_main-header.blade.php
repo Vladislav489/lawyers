@@ -2,13 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
-const USER_TYPE_ID = 1;
-const EMPLOYEE_TYPE_ID = 2;
-
 ?>
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
     <div class="container">
-        <a class="navbar-brand" href="/main">Lawyers</a>
+        <a class="navbar-brand" href="{{ route__('actionMain_controller') }}">{{ env('APP_NAME') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,13 +17,13 @@ const EMPLOYEE_TYPE_ID = 2;
                         <a @class([
                             'nav-link',
                             'active' => str_contains(Route::currentRouteName(), 'actionSignup')
-                        ]) href="/site/signupclient">Регистрация</a>
+                        ]) href="{{ route__('actionSignupClient_usercontroller') }}">Регистрация</a>
                     </li>
                     <li class="nav-item">
                         <a @class([
                             'nav-link',
                             'active' => Route::currentRouteName() === 'actionLogin_usercontroller'
-                        ]) href="/site/login">Вход</a>
+                        ]) href="{{ route__('actionLogin_usercontroller') }}">Вход</a>
                     </li>
                 @endguest
 
@@ -38,16 +35,16 @@ const EMPLOYEE_TYPE_ID = 2;
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             @if ($user->type->name === 'client')
-                                <li><a class="dropdown-item" href="/clientcabinet">Кабинет клиента</a></li>
-                                <li><a class="dropdown-item" href="/createvacancy">Создать вакансию</a></li>
-                                <li><a class="dropdown-item" href="/vacancylist">Мои вакансии</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionClientCabinet_clientcontroller') }}">Кабинет клиента</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionCreateVacancy_clientcontroller') }}">Создать вакансию</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionVacancyList_clientcontroller') }}">Мои вакансии</a></li>
                             @else
-                                <li><a class="dropdown-item" href="/employeecabinet">Кабинет сотрудника</a></li>
-                                <li><a class="dropdown-item" href="/employeesettings">Настройки сотрудника</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionEmployeeCabinet_employeecontroller') }}">Кабинет сотрудника</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionEmployeeSettings_employeecontroller') }}">Настройки сотрудника</a></li>
                             @endif
 
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/site/logout">Выход</a></li>
+                            <li><a class="dropdown-item" href="{{ route__('actionLogout_usercontroller') }}">Выход</a></li>
                         </ul>
                     </li>
                 @endauth

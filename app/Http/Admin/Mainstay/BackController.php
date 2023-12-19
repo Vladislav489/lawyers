@@ -350,7 +350,7 @@ class BackController extends MainstayAdminController {
         $return = $type->getList();
         if (isset($return['result'])) {
             $return['column'] =  $type->getLable(array_keys($return['result'][0]),'rus',
-                    ['active','id_name','is_delete','site_id','created_at','updated_at']);
+                    ['active','id_name','is_deleted','site_id','created_at','updated_at']);
         }
         return Response::json($return);
     }

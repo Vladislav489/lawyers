@@ -72,7 +72,7 @@
                     if (response.errors && validate) {
                         renderValidationErrors(response.errors, evt.target);
                     } else if (!response.errors) {
-                        // window.location.href = evt.target.dataset.successUrl;
+                        window.location.href = evt.target.dataset.successUrl;
                     }
                 }).finally(() => {
                     unblockButton(submitBtnElement);

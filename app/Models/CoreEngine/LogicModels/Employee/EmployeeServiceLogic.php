@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Models\CoreEngine\LogicModels\Chat;
+namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\ProjectModels\Chat\Chat;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class ChatLogic extends CoreEngine
+class EmployeeServiceLogic extends CoreEngine
 {
+    private $helpEngine;
+
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
-        $this->engine = new Chat();
+        $this->engine = new EmployeeService();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -45,19 +49,35 @@ class ChatLogic extends CoreEngine
         return $this->filter;
     }
 
+    public function storeEmployeeServices(array $data): array
+    {
+        $result = [];
+        DB::table('user_employee_service')->where('user_id', Auth::id())->delete();
+
+        foreach ($data as $service_id) {
+            $result[] = $this->store(compact(['service_id']));
+        }
+
+        return $result;
+    }
+
     public function store(array $data): array|bool
     {
+        // dd($data);
+        $data['is_main'] = boolval($data['is_main'] ?? null);
+        $data['user_id'] = Auth::id();
+
         try {
-            $chat = array_intersect_key(
+            $service = array_intersect_key(
                 $data,
                 array_flip($this->engine->getFillable())
             );
 
             if (isset($data['id'])) {
-                $chat['id'] = $data['id'];
+                $service['id'] = $data['id'];
             }
 
-            if ($data['id'] = $this->save($chat)) {
+            if ($data['id'] = $this->save($service)) {
                 return $data;
             }
 

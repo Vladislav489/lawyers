@@ -2,7 +2,6 @@
 
 namespace App\Models\CoreEngine\ProjectModels\User;
 
-use App\Models\CoreEngine\ProjectModels\BaseModel;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use Illuminate\Foundation\Auth\User as Authenticatable;

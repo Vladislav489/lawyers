@@ -44,4 +44,26 @@ class QuestionLogic extends CoreEngine
 
         return $this->filter;
     }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $question = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if (isset($data['id'])) {
+                $question['id'] = $data['id'];
+            }
+
+            if ($data['id'] = $this->save($question)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

@@ -44,4 +44,26 @@ class FileLogic extends CoreEngine
 
         return $this->filter;
     }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $file = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if (isset($data['id'])) {
+                $file['id'] = $data['id'];
+            }
+
+            if ($data['id'] = $this->save($file)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

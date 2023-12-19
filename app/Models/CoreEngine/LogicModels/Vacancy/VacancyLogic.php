@@ -50,9 +50,16 @@ class VacancyLogic extends CoreEngine
         return false;
     }
 
-    public function deleteVacancy(int $vacancy_id): ?bool
+    public function deleteVacancy(array $data): bool
     {
-        return Vacancy::find($vacancy_id)->delete();
+        try {
+            // return Vacancy::find($data['id'])->delete();
+            $vacancy = $this->setModel(new Vacancy());
+            return $vacancy->delete($data['id']);
+        } catch (\Throwable $e) {
+        }
+
+        return false;
     }
 
     protected function compileGroupParams(): array

@@ -72,7 +72,7 @@ class CategoryLogic extends CoreEngine{
         if($flagForeva) {
             $result = $this->helpEngine['InformationCategoryName']->newQuery()->whereIn('category_id', [$id])->delete();
         }else{
-            $result = $this->helpEngine['InformationCategoryName']->newQuery()->whereIn('category_id', [$id])->update(['is_delete'=>1]);
+            $result = $this->helpEngine['InformationCategoryName']->newQuery()->whereIn('category_id', [$id])->update(['is_deleted'=>1]);
         }
         return $result;
     }

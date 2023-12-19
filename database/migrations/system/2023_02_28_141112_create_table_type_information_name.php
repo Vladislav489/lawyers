@@ -17,7 +17,7 @@ return new class extends Migration{
                 $table->integer('sort')->default(0);
                 $table->bigInteger('parent_id')->unsigned()->default(0);
                 $table->tinyInteger('active')->default(1);
-                $table->tinyInteger('is_delete')->default(0);
+                $table->tinyInteger('is_deleted')->default(0);
                 $table->timestamp('created_at')->useCurrent();
                 $table->timestamp('updated_at')->useCurrent();
             });

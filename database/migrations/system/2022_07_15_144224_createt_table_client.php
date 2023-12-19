@@ -22,7 +22,7 @@ return new class extends Migration{
             $table->string('phone')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('is_delete')->default('0');
+            $table->tinyInteger('is_deleted')->default('0');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

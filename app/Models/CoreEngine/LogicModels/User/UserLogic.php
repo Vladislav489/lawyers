@@ -81,6 +81,7 @@ class UserLogic extends CoreEngine
     public function store(array $data): array|bool
     {
         try {
+            $data['password'] = Hash::make($data['password']);
             $user = array_intersect_key(
                 $data,
                 array_flip($this->engine->getFillable())

@@ -20,9 +20,8 @@ class ClientMainstayController extends MainstayController
 {
     public function callAction($method, $parameters)
     {
-        // TODO: rest-аутентификация
         if (!Auth::check() || Auth::user()->type->name !== 'client') {
-            // return response()->json(['message' => 'forbidden']);
+            return response()->json(['message' => 'forbidden']);
         }
 
         return parent::callAction($method, $parameters);
@@ -61,7 +60,7 @@ class ClientMainstayController extends MainstayController
     {
         if ($request->isMethod('delete')) {
             return response()->json(
-                (new VacancyLogic())->deleteVacancy($request->input('id'))
+                (new VacancyLogic())->deleteVacancy($request->all())
             );
         }
     }
@@ -94,5 +93,10 @@ class ClientMainstayController extends MainstayController
         return response()->json(
             Vacancy::find($request->input('id'))
         );
+    }
+
+    public function actionGetVacancyList()
+    {
+        return response()->json((new VacancyLogic())->getList());
     }
 }
