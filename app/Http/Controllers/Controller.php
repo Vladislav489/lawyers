@@ -9,11 +9,11 @@ class Controller extends FrontController
     public function getPageParams(): array
     {
         return [
-            'actionMain' => ['template' => 'lawyers.site.index'],
+            'actionIndex' => ['template' => 'lawyers.site.index'],
         ];
     }
 
-    public function actionMain()
+    public function actionIndex()
     {
         //Лучше или home или main
         return view('lawyers.site.index');

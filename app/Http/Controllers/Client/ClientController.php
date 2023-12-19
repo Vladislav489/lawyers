@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
@@ -46,9 +46,8 @@ class ClientController extends FrontController
     {
         return view('lawyers.client.cabinet');
     }
-  
-    public function actionVacancyList()
-    {
+
+    public function actionVacancyList(){
         return view('lawyers.client.vacancy-list');
     }
 

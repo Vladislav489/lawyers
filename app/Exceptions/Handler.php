@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
                     if (in_array($codeHTTP, $list)) {
 
                         $params = ['byname' => (string)$codeHTTP];
-                        $route = new Routs($params, [DB::raw(Template::getTable() . '.body_view')]);
+                        $route = new Routs($params, [DB::raw( 'Template.body_view')]);
                         $route->setJoin(['Template']);
                         $route_error = $route->getOne();
                         if (!empty($route_error)) {

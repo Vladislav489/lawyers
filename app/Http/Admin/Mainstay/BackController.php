@@ -46,10 +46,14 @@ class BackController extends MainstayAdminController {
     }
 
     public function actionSystemsMenu($params = []){
+
         if(Auth::id() != 1)
             $this->params['site'] = (string)Site::getSiteId();
+
         $this->params['active'] = 1;
-        $menu = new AdminMenu($this->params);
+
+            $menu = new AdminMenu($this->params);
+
         return Response::json($menu->getMemuItem());
     }
     public function actionAdminMenuList($params = []){
@@ -384,7 +388,7 @@ class BackController extends MainstayAdminController {
             $return['column'] = HelperFunction::getLableForQuery(
                 $return['result'][0],
                 $category->getEngine()->getLable('rus'),
-                ['active','id_name','is_delete','site_id','created_at','updated_at']
+                ['active','id_name','is_deleted','site_id','created_at','updated_at']
             );
         }
         return Response::json($return);

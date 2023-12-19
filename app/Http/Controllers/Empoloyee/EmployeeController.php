@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Empoloyee;
 
 use App\Models\System\ControllersModel\FrontController;
 use Illuminate\Support\Facades\Auth;

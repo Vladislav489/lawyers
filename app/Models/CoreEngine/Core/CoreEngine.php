@@ -51,7 +51,7 @@ class CoreEngine{
             unset($params['site_id']);
         }
         $this->union = (key_exists('union',$params))? true:false;
-        if (!isset($params['is_deleted']) && !Auth::check())
+        if (!isset($params['is_deleted']))
             $params['is_deleted'] = 0;
         $this->params = $params;
         $this->setCoreParams($callback);
