@@ -22,7 +22,7 @@ class UserController extends CentralController
             (Auth::check() && $method !== 'actionLogout')
             || (!Auth::check() && $method === 'actionLogout')
         ) {
-            return redirect('/main');
+            return to_route('actionIndex_controller');
         }
 
         return parent::callAction($method, $parameters);
@@ -38,7 +38,7 @@ class UserController extends CentralController
 
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                return redirect()->intended('/main');
+                return to_route('actionIndex_controller');
             }
 
             return back()->withErrors([
@@ -52,7 +52,7 @@ class UserController extends CentralController
     public function actionLogout()
     {
         Auth::logout();
-        return redirect('/main');
+        return to_route('actionLogout_usercontroller');
     }
 
     public function actionSignupClient()

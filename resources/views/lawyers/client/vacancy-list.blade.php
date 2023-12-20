@@ -16,11 +16,14 @@
                             'name' => 'vacancy_list',
                             'url' => route__("actionGetVacancyList_clientmainstaycontroller"),
 
-                            'template' => '<div v-for="item in data" class="card mt-3 border-primary">
-                                <div class="card-body" v-bind:data-id="item.id">
+                            'template' => '<div v-for="item in data" class="card mt-3 border-primary" v-bind:data-id="item.id">
+                                <div class="card-body">
                                     <h5 class="card-title">Description: @{{ item.description }}</h5>
                                     <p class="card-text">Payment: @{{ item.payment }} &#8381;</p>
-                                    <a v-bind:href=\'"'.route__("actionEditVacancy_clientcontroller").' ?id="+item.id\' class="btn btn-secondary">Редактировать</a>
+                                    <a
+                                        v-bind:href=\'"' . route__('actionEditVacancy_clientcontroller') . '?id=" + item.id\'
+                                        class="btn btn-secondary"
+                                    >Редактировать</a>
                                     <button
                                         type="button"
                                         class="btn btn-danger"
@@ -54,27 +57,29 @@
     @include('js.validation')
     @include('js.async-api')
     <script>
-        const deleteBtnElements = document.querySelectorAll('.btn-danger');
+        setTimeout(() => {
+            const deleteBtnElements = document.querySelectorAll('.btn-danger');
 
-        deleteBtnElements.forEach((btnElement) => {
-            btnElement.addEventListener('click', (evt) => {
-                const cardElement = evt.target.closest('.card[data-id]');
+            deleteBtnElements.forEach((btnElement) => {
+                btnElement.addEventListener('click', (evt) => {
+                    const cardElement = evt.target.closest('.card[data-id]');
 
-                if (cardElement) {
-                    const vacancyId = +cardElement.dataset.id;
-                    const url = `{{ route__('actionDeleteVacancy_clientmainstaycontroller') }}?id=${vacancyId}`;
-                    blockButton(btnElement);
-                    setTimeout(() => {
-                        sendDeleteRequest(url).then((response) => {
-                            if (!response.errors) {
-                                // window.location.reload();
-                            }
-                        }).finally(() => {
-                            unblockButton(btnElement);
-                        });
-                    }, 2000);
-                }
+                    if (cardElement) {
+                        const vacancyId = +cardElement.dataset.id;
+                        const url = `{{ route__('actionDeleteVacancy_clientmainstaycontroller') }}?id=${vacancyId}`;
+                        blockButton(btnElement);
+                        setTimeout(() => {
+                            sendDeleteRequest(url).then((response) => {
+                                if (!response.errors) {
+                                    window.location.reload();
+                                }
+                            }).finally(() => {
+                                unblockButton(btnElement);
+                            });
+                        }, 2000);
+                    }
+                });
             });
-        });
+        }, 1000);
     </script>
 @endsection

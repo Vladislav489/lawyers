@@ -24,7 +24,7 @@ class EmployeeController extends FrontController
     public function callAction($method, $parameters)
     {
         if (!Auth::check() || Auth::user()->type->name !== 'employee') {
-            return redirect('/main');
+            // return redirect('/main');
         }
 
         return parent::callAction($method, $parameters);
