@@ -8,7 +8,6 @@
                 <div class="col-lg-6">
                     <h1 class="mb-4 fs-3">Мои вакансии</h1>
 
-
                     @include('component_build', [
                         'component' => 'component.gridComponent.simpleGrid',
                         'params_component' => [
