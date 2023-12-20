@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-3">Создать вакансию</h1>
+                    <h1 class="fs-3">Вакансии (создание)</h1>
                     <form
                         id="vacancy-form"
                         class="mt-4 mb-5 p-3 bg-primary-subtle"

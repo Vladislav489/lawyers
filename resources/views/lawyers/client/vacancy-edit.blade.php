@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-3">Редактировать вакансию</h1>
+                    <h1 class="fs-3">Вакансия «<span></span>» (редактирование)</h1>
                     <form
                         id="signup-form"
                         class="mt-4 mb-5 p-3 bg-primary-subtle"
@@ -81,6 +81,7 @@
 
                 document.querySelector('form').dataset.requestUrl = url;
                 document.getElementById('desc').textContent = data.description;
+                document.querySelector('h1 span').textContent = data.description;
                 document.getElementById('payment').value = data.payment;
 
                 setSubmitHandler();

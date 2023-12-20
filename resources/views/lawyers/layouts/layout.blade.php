@@ -17,7 +17,7 @@
 
     <link rel="canonical" href="{{ request()->getScheme() . '://' . request()->httpHost() .request()->getPathInfo() }}">
 </head>
-<body>
+<body style="background-color: #F1F2F2;">
 
     <header class="header">
         @include('lawyers.layouts.header')

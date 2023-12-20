@@ -36,8 +36,10 @@ use Illuminate\Support\Facades\Route;
                         <ul class="dropdown-menu dropdown-menu-end">
                             @if ($user->type->name === 'client')
                                 <li><a class="dropdown-item" href="{{ route__('actionClientCabinet_clientcontroller') }}">Кабинет клиента</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionCreateVacancy_clientcontroller') }}">Создать вакансию</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionVacancyList_clientcontroller') }}">Мои вакансии</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionCreateVacancy_clientcontroller') }}">Вакансии (создание)</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionVacancyList_clientcontroller') }}">Вакансии (список)</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionChatList_clientcontroller') }}">Чаты</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionContractList_clientcontroller') }}">Контракты</a></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route__('actionEmployeeCabinet_employeecontroller') }}">Кабинет сотрудника</a></li>
                                 <li><a class="dropdown-item" href="{{ route__('actionEmployeeSettings_employeecontroller') }}">Настройки сотрудника</a></li>

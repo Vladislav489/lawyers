@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Mainstay\Chat;
+namespace App\Http\Mainstay\Contract;
 
-use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
+use App\Models\CoreEngine\LogicModels\Contract\ContractLogic;
 use App\Models\System\ControllersModel\MainstayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class ChatMainstayController extends MainstayController
+class ContractMainstayController extends MainstayController
 {
     public function callAction($method, $parameters)
     {
@@ -19,10 +19,10 @@ class ChatMainstayController extends MainstayController
         return parent::callAction($method, $parameters);
     }
 
-    public function actionStoreChat(Request $request)
+    public function actionStoreContract(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'description' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -36,12 +36,12 @@ class ChatMainstayController extends MainstayController
         ]);
 
         return response()->json(
-            (new ChatLogic())->store($request->all())
+            (new ContractLogic())->store($request->all())
         );
     }
 
-    public function actionGetChatList()
+    public function actionGetContractList()
     {
-        return response()->json((new ChatLogic())->getList());
+        return response()->json((new ContractLogic())->getList());
     }
 }

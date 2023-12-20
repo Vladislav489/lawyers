@@ -30,6 +30,22 @@ class ClientController extends FrontController
                 'name' => 'List Vacancy',
                 'template' => 'lawyers.client.vacancy-list'
             ],
+            'actionChatList' => [
+                'name' => 'List Chat',
+                'template' => 'lawyers.client.chat-list'
+            ],
+            'actionChatCreate' => [
+                'name' => 'List Chat',
+                'template' => 'lawyers.client.chat-create'
+            ],
+            'actionContractList' => [
+                'name' => 'List Contract',
+                'template' => 'lawyers.client.contract-list'
+            ],
+            'actionContractCreate' => [
+                'name' => 'List Contract',
+                'template' => 'lawyers.client.contract-create'
+            ],
         ];
     }
 
@@ -46,8 +62,28 @@ class ClientController extends FrontController
         return view('lawyers.client.cabinet');
     }
 
-    public function actionVacancyList(){
+    public function actionChatList()
+    {
+        return view('lawyers.client.chat-list');
+    }
 
+    public function actionChatCreate()
+    {
+        return view('lawyers.client.chat-create');
+    }
+
+    public function actionContractList()
+    {
+        return view('lawyers.client.contract-list');
+    }
+
+    public function actionContractCreate()
+    {
+        return view('lawyers.client.contract-create');
+    }
+
+    public function actionVacancyList()
+    {
         return view('lawyers.client.vacancy-list');
     }
 

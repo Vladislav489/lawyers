@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->text('description')->comment('описание');
+            $table->boolean('is_deleted')->default(false);
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
         });
     }

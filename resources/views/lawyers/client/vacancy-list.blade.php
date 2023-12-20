@@ -6,7 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="mb-4 fs-3">Мои вакансии</h1>
+                    <h1 class="mb-4 fs-3">Вакансии (список)</h1>
 
                     @include('component_build', [
                         'component' => 'component.gridComponent.simpleGrid',
@@ -15,7 +15,8 @@
                             'name' => 'vacancy_list',
                             'url' => route__("actionGetVacancyList_clientmainstaycontroller"),
 
-                            'template' => '<div v-for="item in data" class="card mt-3 border-primary" v-bind:data-id="item.id">
+                            'template' => '<div>
+                                <div v-for="item in data" class="card mt-3 border-primary" v-bind:data-id="item.id">
                                 <div class="card-body">
                                     <h5 class="card-title">Description: @{{ item.description }}</h5>
                                     <p class="card-text">Payment: @{{ item.payment }} &#8381;</p>
@@ -29,6 +30,7 @@
                                         style="pointer-events: all;"
                                         data-text="Удаляю"
                                     >Удалить</button>
+                                </div>
                                 </div>
                             </div>',
 
