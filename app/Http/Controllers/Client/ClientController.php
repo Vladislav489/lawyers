@@ -35,9 +35,9 @@ class ClientController extends FrontController
 
     public function callAction($method, $parameters)
     {
-       // if (!Auth::check() || Auth::user()->type->name !== 'client') {
-     //       return redirect('/main');
-     //   }
+        if (!Auth::check() || Auth::user()->type->name !== 'client') {
+            // return redirect('/main');
+        }
         return parent::callAction($method, $parameters);
     }
 
