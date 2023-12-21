@@ -21,10 +21,11 @@ class EmployeeController extends FrontController
         ];
     }
 
+    // TODO
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type->name !== 'employee') {
-            // return redirect('/main');
+        if (true) {
+            // return response()->json(['message' => 'forbidden']);
         }
 
         return parent::callAction($method, $parameters);

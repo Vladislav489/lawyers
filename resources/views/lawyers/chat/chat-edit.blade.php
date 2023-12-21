@@ -1,4 +1,4 @@
-@extends('lawyers.layouts.layout')
+@extends('lawyers.layouts.main')
 @section('title', 'Мои вакансии')
 
 @section('content')
@@ -6,17 +6,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-2">Чаты (создание)</h1>
-                    <div class="btn-group mt-3">
-                        <a
-                            href="{{ route__('actionChatList_clientcontroller') }}"
-                            class="btn btn-outline-primary"
-                        >Список</a>
-                        <a
-                            href="{{ route__('actionChatCreate_clientcontroller') }}"
-                            class="btn btn-outline-primary active"
-                        >Создание</a>
-                    </div>
+                    <h1 class="fs-2">Чат «<span></span>» (редактирование)</h1>
+                    @include('lawyers.chat._menu')
 
                     <form
                         id="vacancy-form"
@@ -25,10 +16,11 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionStoreChat_chatmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionChatList_clientcontroller')}}"
+                        data-request-url="{{ route__('actionChatStore_chatmainstaycontroller') }}"
+                        data-success-url="{{ route__('actionChatList_chatcontroller')}}"
                     >
                         @csrf
+                        @method('PATCH')
                         <div class="mb-3">
                             <label class="form-label" for="name">Название</label>
                             <textarea
@@ -43,8 +35,8 @@
                             type="submit"
                             class="btn btn-primary"
                             style="pointer-events: all;"
-                            data-text="Создаю"
-                        >Создать</button>
+                            data-text="Обновляю"
+                        >Обновить</button>
                     </form>
 
                 </div>
@@ -56,6 +48,22 @@
     @include('js.validation')
     @include('js.async-api')
     <script>
-        setSubmitHandler();
+        const params = {};
+        window.location.href.split('?')[1].split('&').forEach((param) => {
+            const [key, value] = param.split('=');
+            params[key] = value;
+        });
+
+        fetch(`http://lawyers/mainstay/chat/getchat?id=${params.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                const url = `{{ route__('actionChatStore_chatmainstaycontroller') }}?id=${params.id}`;
+
+                document.querySelector('form').dataset.requestUrl = url;
+                document.querySelector('form [name=name]').textContent = data.name;
+                document.querySelector('h1 span').textContent = data.name;
+
+                setSubmitHandler();
+            });
     </script>
 @endsection

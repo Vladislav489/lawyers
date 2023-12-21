@@ -1,23 +1,25 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Создать вакансию')
+@section('title', 'Редактировать вакансию')
 
 @section('content')
     <section class="mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-3">Вакансии (создание)</h1>
+                    <h1 class="fs-3">Вакансия «<span></span>» (редактирование)</h1>
+                    @include('lawyers.vacancy._menu')
+
                     <form
-                        id="vacancy-form"
-                        class="mt-4 mb-5 p-3 bg-primary-subtle"
+                        id="signup-form"
+                        class="mt-3 mb-5 p-3 bg-primary-subtle"
                         action=""
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionStoreVacancy_clientmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionVacancyList_clientcontroller')}}"
+                        data-success-url="{{ route__('actionVacancyList_vacancycontroller')}}"
                     >
                         @csrf
+                        @method('PATCH')
                         <div class="mb-3">
                             <label class="form-label" for="desc">Описание</label>
                             <textarea
@@ -35,6 +37,7 @@
                                 class="form-control"
                                 type="number"
                                 name="payment"
+                                value=""
                             >
                             <div class="invalid-feedback"></div>
                         </div>
@@ -55,8 +58,8 @@
                             type="submit"
                             class="btn btn-primary"
                             style="pointer-events: all;"
-                            data-text="Создаю"
-                        >Создать</button>
+                            data-text="Обновляю"
+                        >Обновить</button>
                     </form>
                 </div>
             </div>
@@ -67,6 +70,23 @@
     @include('js.validation')
     @include('js.async-api')
     <script>
-        setSubmitHandler();
+        const params = {};
+        window.location.href.split('?')[1].split('&').forEach((param) => {
+            const [key, value] = param.split('=');
+            params[key] = value;
+        });
+
+        fetch(`http://lawyers/mainstay/vacancy/getvacancy?id=${params.id}`)
+            .then((response) => response.json())
+            .then((data) => {
+                const url = `{{ route__('actionVacancyStore_vacancymainstaycontroller') }}?id=${params.id}`;
+
+                document.querySelector('form').dataset.requestUrl = url;
+                document.getElementById('desc').textContent = data.description;
+                document.querySelector('h1 span').textContent = data.description;
+                document.getElementById('payment').value = data.payment;
+
+                setSubmitHandler();
+            });
     </script>
 @endsection

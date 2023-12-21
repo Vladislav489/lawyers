@@ -1,4 +1,4 @@
-@extends('lawyers.layouts.layout')
+@extends('lawyers.layouts.main')
 @section('title', 'Мои вакансии')
 
 @section('content')
@@ -6,17 +6,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-2">Контракты (создание)</h1>
-                    <div class="btn-group mt-3">
-                        <a
-                            href="{{ route__('actionContractList_clientcontroller') }}"
-                            class="btn btn-outline-primary"
-                        >Список</a>
-                        <a
-                            href="{{ route__('actionContractCreate_clientcontroller') }}"
-                            class="btn btn-outline-primary active"
-                        >Создание</a>
-                    </div>
+                    <h1 class="fs-2">Чаты (создание)</h1>
+                    @include('lawyers.chat._menu')
 
                     <form
                         id="vacancy-form"
@@ -25,16 +16,16 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionStoreContract_contractmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionContractList_clientcontroller')}}"
+                        data-request-url="{{ route__('actionChatStore_chatmainstaycontroller') }}"
+                        data-success-url="{{ route__('actionChatList_chatcontroller')}}"
                     >
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label" for="desc">Описание</label>
+                            <label class="form-label" for="name">Название</label>
                             <textarea
-                                id="desc"
+                                id="name"
                                 class="form-control"
-                                name="description"
+                                name="name"
                             ></textarea>
                             <div class="invalid-feedback"></div>
                         </div>

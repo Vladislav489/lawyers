@@ -3,6 +3,7 @@
 namespace App\Http\Mainstay\Contract;
 
 use App\Models\CoreEngine\LogicModels\Contract\ContractLogic;
+use App\Models\CoreEngine\ProjectModels\Contract\Contract;
 use App\Models\System\ControllersModel\MainstayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class ContractMainstayController extends MainstayController
         return parent::callAction($method, $parameters);
     }
 
-    public function actionStoreContract(Request $request)
+    public function actionContractStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'description' => 'required|string',
@@ -40,8 +41,24 @@ class ContractMainstayController extends MainstayController
         );
     }
 
+    public function actionGetContract(Request $request)
+    {
+        return response()->json(
+            Contract::find($request->input('id'))
+        );
+    }
+
     public function actionGetContractList()
     {
         return response()->json((new ContractLogic())->getList());
+    }
+
+    public function actionContractDelete(Request $request)
+    {
+        if ($request->isMethod('delete')) {
+            return response()->json(
+                (new ContractLogic())->deleteContract($request->all())
+            );
+        }
     }
 }

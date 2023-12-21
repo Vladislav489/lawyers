@@ -15,7 +15,6 @@ class Controller extends FrontController
 
     public function actionIndex()
     {
-        //Лучше или home или main
         return view('lawyers.site.index');
     }
 }

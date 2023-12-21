@@ -20,9 +20,9 @@ class ClientMainstayController extends MainstayController
 {
     public function callAction($method, $parameters)
     {
-       // if (!Auth::check() || Auth::user()->type->name !== 'client') {
-       //     return response()->json(['message' => 'forbidden']);
-       // }
+        if (true) {
+            // return response()->json(['message' => 'forbidden']);
+        }
 
         return parent::callAction($method, $parameters);
     }
@@ -54,49 +54,5 @@ class ClientMainstayController extends MainstayController
         return response()->json(
             (new UserLogic())->store($request->all())
         );
-    }
-
-    public function actionDeleteVacancy(Request $request)
-    {
-        if ($request->isMethod('delete')) {
-            return response()->json(
-                (new VacancyLogic())->deleteVacancy($request->all())
-            );
-        }
-    }
-
-    public function actionStoreVacancy(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'description' => 'required|string',
-            'payment' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        $request->merge([
-            'user_id' => Auth::id(),
-            'defendant' => json_encode([])
-        ]);
-
-        return response()->json(
-            (new VacancyLogic())->store($request->all())
-        );
-    }
-
-    public function actionGetVacancy(Request $request)
-    {
-        return response()->json(
-            Vacancy::find($request->input('id'))
-        );
-    }
-
-    public function actionGetVacancyList()
-    {
-        return response()->json((new VacancyLogic())->getList());
     }
 }
