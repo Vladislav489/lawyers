@@ -1,5 +1,5 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Мои вакансии')
+@section('title', 'Контракты (список)')
 
 @section('content')
     <section class="mt-5">
@@ -13,7 +13,7 @@
                         'component' => 'component.gridComponent.simpleGrid',
                         'params_component' => [
                             'autostart' => 'true',
-                            'name' => 'vacancy_list',
+                            'name' => 'contract_list',
                             'url' => route__("actionGetContractList_contractmainstaycontroller"),
 
                             'template' => '<div>

@@ -15,7 +15,7 @@
                         setTimeout(() => {
                             sendDeleteRequest(url).then((response) => {
                                 if (!response.errors) {
-                                    window.location.reload();
+                                    // window.location.reload();
                                 }
                             }).finally(() => {
                                 unblockButton(btnElement);

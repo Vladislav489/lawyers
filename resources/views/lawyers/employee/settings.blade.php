@@ -120,7 +120,6 @@
 
         getDataArray([
             "{{ route__('actionGetServices_employeemainstaycontroller') }}",
-            "{{ route__('actionGetUserServiceIds_employeemainstaycontroller') }}",
         ]).then(({data}) => {
             renderServices(...data)
             setSubmitHandler('#settings-form', false);

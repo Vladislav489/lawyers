@@ -1,27 +1,27 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Чаты (список)')
+@section('title', 'Сервисы (список)')
 
 @section('content')
     <section class="mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-2">Чаты (список)</h1>
-                    @include('lawyers.chat._menu')
+                    <h1 class="fs-2">Сервисы (список)</h1>
+                    @include('lawyers.service._menu')
 
                     @include('component_build', [
                         'component' => 'component.gridComponent.simpleGrid',
                         'params_component' => [
                             'autostart' => 'true',
-                            'name' => 'chat_list',
-                            'url' => route__("actionGetChatList_chatmainstaycontroller"),
+                            'name' => 'service_list',
+                            'url' => route__("actionGetServiceList_servicemainstaycontroller"),
 
                             'template' => '<div>
                                 <div v-for="item in data" class="card mt-3 border-primary" v-bind:data-id="item.id">
                                     <div class="card-body">
                                         <h5 class="card-title mb-4">Name: @{{ item.name }}</h5>
                                         <a
-                                            v-bind:href=\'"' . route__('actionChatEdit_chatcontroller') . '?id=" + item.id\'
+                                            v-bind:href=\'"' . route__('actionServiceEdit_servicecontroller') . '?id=" + item.id\'
                                             class="btn btn-secondary"
                                         >Редактировать</a>
                                         <button
@@ -29,7 +29,7 @@
                                             class="btn btn-danger"
                                             style="pointer-events: all;"
                                             data-text="Удаляю"
-                                            data-request-url="{{ route__("actionChatDelete_chatmainstaycontroller") }}?id="
+                                            data-request-url="{{ route__("actionServiceDelete_servicemainstaycontroller") }}?id="
                                         >Удалить</button>
                                     </div>
                                 </div>

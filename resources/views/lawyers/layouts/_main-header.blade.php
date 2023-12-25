@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Route;
                                 <li><a class="dropdown-item" href="{{ route__('actionChatList_chatcontroller') }}">Чаты</a></li>
                                 <li><a class="dropdown-item" href="{{ route__('actionVacancyList_vacancycontroller') }}">Вакансии</a></li>
                                 <li><a class="dropdown-item" href="{{ route__('actionContractList_contractcontroller') }}">Контракты</a></li>
+                                <li><a class="dropdown-item" href="{{ route__('actionServiceList_servicecontroller') }}">Сервисы</a></li>
                             @else
                                 <li><a class="dropdown-item" href="{{ route__('actionEmployeeCabinet_employeecontroller') }}">Кабинет сотрудника</a></li>
                                 <li><a class="dropdown-item" href="{{ route__('actionEmployeeSettings_employeecontroller') }}">Настройки сотрудника</a></li>

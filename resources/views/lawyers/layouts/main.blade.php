@@ -15,6 +15,8 @@
     @stack('js-lib-component-head')
     @include('lawyers.layouts.script')
 
+    <title>Lawyers | @yield('title')</title>
+
     <link rel="canonical" href="{{ request()->getScheme() . '://' . request()->httpHost() .request()->getPathInfo() }}">
 </head>
 <body style="background-color: #F1F2F2;">

@@ -1,13 +1,13 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Чаты (создание)')
+@section('title', 'Сервисы (создание)')
 
 @section('content')
     <section class="mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-2">Чаты (создание)</h1>
-                    @include('lawyers.chat._menu')
+                    <h1 class="fs-2">Сервисы (создание)</h1>
+                    @include('lawyers.service._menu')
 
                     <form
                         id="vacancy-form"
@@ -16,8 +16,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionChatStore_chatmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionChatList_chatcontroller')}}"
+                        data-request-url="{{ route__('actionServiceStore_servicemainstaycontroller') }}"
+                        data-success-url="{{ route__('actionServiceList_servicecontroller')}}"
                     >
                         @csrf
                         <div class="mb-3">
@@ -29,6 +29,18 @@
                             ></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="desc">Описание</label>
+                            <textarea
+                                id="desc"
+                                class="form-control"
+                                name="description"
+                            ></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <input type="hidden" name="type_id" value="1">
 
                         <button
                             type="submit"

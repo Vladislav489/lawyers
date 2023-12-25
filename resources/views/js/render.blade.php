@@ -17,13 +17,13 @@
 </template>
 
 <script>
-    const renderServices = (services, userServiceIds) => {
+    const renderServices = (services) => {
         services.forEach((service) => {
             const serviceElement = serviceTemplate.cloneNode(true);
             serviceElement.querySelector('input').id = `service-${service.id}`;
             serviceElement.querySelector('label').setAttribute('for', `service-${service.id}`);
 
-            if (userServiceIds.includes(service.id)) {
+            if (service.user_id) {
                 serviceElement.querySelector('input').checked = true;
             }
 

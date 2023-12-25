@@ -1,13 +1,13 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Чат (редактирование)')
+@section('title', 'Сервис (редактирование)')
 
 @section('content')
     <section class="mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="fs-2">Чат «<span></span>» (редактирование)</h1>
-                    @include('lawyers.chat._menu')
+                    <h1 class="fs-2">Сервис «<span></span>» (редактирование)</h1>
+                    @include('lawyers.service._menu')
 
                     <form
                         id="vacancy-form"
@@ -16,8 +16,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionChatStore_chatmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionChatList_chatcontroller')}}"
+                        data-request-url="{{ route__('actionServiceStore_servicemainstaycontroller') }}"
+                        data-success-url="{{ route__('actionServiceList_servicecontroller')}}"
                     >
                         @csrf
                         @method('PATCH')
@@ -30,6 +30,18 @@
                             ></textarea>
                             <div class="invalid-feedback"></div>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="desc">Описание</label>
+                            <textarea
+                                id="desc"
+                                class="form-control"
+                                name="description"
+                            ></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <input type="hidden" name="type_id" value="1">
 
                         <button
                             type="submit"
@@ -54,13 +66,14 @@
             params[key] = value;
         });
 
-        fetch(`http://lawyers/mainstay/chat/getchat?id=${params.id}`)
+        fetch(`http://lawyers/mainstay/service/getservice?id=${params.id}`)
             .then((response) => response.json())
             .then((data) => {
-                const url = `{{ route__('actionChatStore_chatmainstaycontroller') }}?id=${params.id}`;
+                const url = `{{ route__('actionServiceStore_servicemainstaycontroller') }}?id=${params.id}`;
 
                 document.querySelector('form').dataset.requestUrl = url;
                 document.querySelector('form [name=name]').textContent = data.name;
+                document.querySelector('form [name=description]').textContent = data.description;
                 document.querySelector('h1 span').textContent = data.name;
 
                 setSubmitHandler();

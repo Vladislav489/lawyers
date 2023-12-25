@@ -1,5 +1,5 @@
 @extends('lawyers.layouts.main')
-@section('title', 'Создать вакансию')
+@section('title', 'Вакансии (создание)')
 
 @section('content')
     <section class="mt-5">
