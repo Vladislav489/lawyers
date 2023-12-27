@@ -14,7 +14,7 @@ class ServiceMainstayController extends MainstayController
     public function callAction($method, $parameters)
     {
         if (!Auth::check()) {
-            return response()->json(['message' => 'forbidden']);
+            // return response()->json(['message' => 'forbidden']);
         }
 
         return parent::callAction($method, $parameters);
