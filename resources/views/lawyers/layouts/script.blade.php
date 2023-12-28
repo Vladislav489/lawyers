@@ -14,7 +14,7 @@
             window.removeEventListener('beforeunload', UnloadHandler, false);
         }
 
-        window.addEventListener('error', function(evt) {
+        window.addEventListener('error', function (evt) {
             var errorText = [
                 evt.message,
                 'URL: ' + evt.filename,
@@ -51,3 +51,7 @@
     InitHeader();
     page__.onLoadPage();
 </script>
+
+<!-- lawyers -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+<script src="/lawyers/lib/OwlCarousel2-2.3.4/docs/assets/owlcarousel/owl.carousel.min.js"></script>

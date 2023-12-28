@@ -1,57 +1,204 @@
-<?php
-
-use Illuminate\Support\Facades\Route;
-
-?>
-<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route__('actionMain_controller') }}">{{ env('APP_NAME') }}</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                @guest
-                    <li class="nav-item">
-                        <a @class([
-                            'nav-link',
-                            'active' => str_contains(Route::currentRouteName(), 'actionSignup')
-                        ]) href="{{ route__('actionSignupClient_usercontroller') }}">Регистрация</a>
-                    </li>
-                    <li class="nav-item">
-                        <a @class([
-                            'nav-link',
-                            'active' => Route::currentRouteName() === 'actionLogin_usercontroller'
-                        ]) href="{{ route__('actionLogin_usercontroller') }}">Вход</a>
-                    </li>
-                @endguest
-
-                @auth
-                    <?php $user = Auth::user(); ?>
-                    <li class="nav-item dropdown" data-bs-theme="light">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ $user->first_name }}
+<header class="u-container main-bg">
+    <nav class="container header-nav">
+        <a href="{{ route__('actionMain_controller') }}" class="image-container">Лого</a>
+        <ul class="nav-ul">
+            <li>
+                <span class="cool-underline select-btn">Найти специалиста</span>
+                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            @if ($user->type->name === 'client')
-                                <li><a class="dropdown-item" href="{{ route__('actionClientCabinet_clientcontroller') }}">Кабинет клиента</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionChatList_chatcontroller') }}">Чаты</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionVacancyList_vacancycontroller') }}">Вакансии</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionContractList_contractcontroller') }}">Контракты</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionServiceList_servicecontroller') }}">Сервисы</a></li>
-                            @else
-                                <li><a class="dropdown-item" href="{{ route__('actionEmployeeCabinet_employeecontroller') }}">Кабинет сотрудника</a></li>
-                                <li><a class="dropdown-item" href="{{ route__('actionEmployeeSettings_employeecontroller') }}">Настройки сотрудника</a></li>
-                            @endif
-
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ route__('actionLogout_usercontroller') }}">Выход</a></li>
-                        </ul>
                     </li>
-                @endauth
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката <span>Awo has 97% of all lawyersin the</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса<span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива<span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span class="cool-underline select-btn">наши юристы</span>
+                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="findSpecialist.html" class="cool-underline select-btn">наши услуги</a>
+                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса<span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span class="cool-underline select-btn">юридическая помощь</span>
+                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span class="cool-underline select-btn">юридический журнал</span>
+                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
-            </ul>
-        </div>
-    </div>
-</nav>
+        <a href="" class="signup-btn">Войти</a>
+        <button class="burger-btn popup-btn" type="button" data-popup="mobile-menu-popup">
+            <picture>
+                <img src="/lawyers/images/icons/burger-icon.svg" alt="burger-icon">
+            </picture>
+        </button>
+    </nav>
+</header>
