@@ -37,5 +37,5 @@
         </div>
     </div>
 
-    <p class="all-rights">Все права защищены <?= date('Y') ?></p>
+    <p class="all-rights" style="margin: 0;">Все права защищены <?= date('Y') ?></p>
 </footer>

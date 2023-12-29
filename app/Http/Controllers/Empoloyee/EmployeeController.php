@@ -14,6 +14,10 @@ class EmployeeController extends FrontController
                 'name' => '1',
                 'template' => '1'
             ],
+            'actionFindSpecialist' => [
+                'name' => '1',
+                'template' => '1'
+            ],
             'actionEmployeeProfile' => [
                 'name' => '1',
                 'template' => '1'
@@ -38,6 +42,11 @@ class EmployeeController extends FrontController
     public function actionEmployeeCabinet()
     {
         return view('lawyers.employee.cabinet');
+    }
+
+    public function actionFindSpecialist()
+    {
+        return view('lawyers.employee.find-specialist');
     }
 
     public function actionEmployeeProfile()

@@ -139,4 +139,17 @@ class EmployeeMainstayController extends MainstayController
             array_column(Auth::user()->services->toArray(), 'service_id')
         );
     }
+
+    public function actionGetEmployeeList()
+    {
+        // return response()->json((new EmployeeLogic())->getList());
+
+        return response()->json(DB::table('user_employee')
+            ->select('user_entity.first_name', 'user_employee.avatar_path')
+            ->leftJoin('user_entity', function (JoinClause $join) {
+                $join->on('user_entity.id', '=', 'user_employee.user_id');
+            })
+            ->limit(100)
+            ->get());
+    }
 }

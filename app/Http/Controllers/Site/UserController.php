@@ -49,7 +49,7 @@ class UserController extends CentralController
     public function actionLogout()
     {
         Auth::logout();
-        return to_route('actionLogout_usercontroller');
+        return to_route('actionIndex_controller');
     }
 
     public function actionSignupClient()
