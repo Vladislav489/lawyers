@@ -13,6 +13,7 @@
     <script src="/js/vue/vue.min.js"></script>
     <script src="/js/main.js"></script>
 
+    @stack('bootstrap')
     @stack('js-lib-component-head')
     @include('lawyers.layouts.script')
 

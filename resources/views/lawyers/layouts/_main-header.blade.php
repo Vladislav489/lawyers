@@ -1,14 +1,22 @@
 <header class="u-container main-bg">
     <nav class="container header-nav">
         <a class="image-container" href="{{ route__('actionIndex_controller') }}">Лого</a>
-        <ul class="nav-ul">
+        <ul class="nav-ul ">
             <li>
                 <span class="cool-underline select-btn">Найти специалиста</span>
                 <img class="arrow-icon sub-icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                 <ul class="select-window">
                     <li>
+                        <a href="{{ route('actionServiceList_servicecontroller') }}">
+                            <p>Сервисы<span>placeholder</span></p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('actionEmployeeProfile_employeecontroller') }}">
-                            <p>Найти Юриста <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span></p>
+                            <p>Найти Юриста <span>placeholder</span></p>
                             <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
                                 <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>

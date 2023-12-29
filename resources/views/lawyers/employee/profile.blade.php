@@ -192,7 +192,6 @@
                         <h2 class="lawyer-wrapper_title">Заказать услугу по фикс прайсу с гарантией от нашего портала</h2>
                         <h3 class="lawyer-wrapper_subtitle _line-blue">Краткое описание логики заказа и зачем.</h3>
 
-                        <ul class="lawyer-services_block">
                             @include('component_build', [
                                 'component' => 'component.gridComponent.simpleGrid',
                                 'params_component' => [
@@ -200,22 +199,24 @@
                                     'name' => 'service_list',
                                     'url' => route__("actionGetServiceList_servicemainstaycontroller"),
 
-                                    'template' => '<li v-for="item in data" class="lawyer-service_line">
-                                        <div class="lawyer-service_left">
-                                            <div class="lawyer-service_title">@{{ item.name }}</div>
-                                            <p class="lawyer-service_text">
-                                                @{{ item.description }}
-                                                <button class="lawyer-service_red-more">
-                                                    ЧИТАТЬ ЕЩЕ
-                                                </button>
-                                            </p>
-                                        </div>
+                                    'template' => '<ul class="lawyer-services_block">
+                                        <li v-for="item in data" class="lawyer-service_line" style="justify-content: space-between;">
+                                            <div class="lawyer-service_left">
+                                                <div class="lawyer-service_title">@{{ item.name }}</div>
+                                                <p class="lawyer-service_text">
+                                                    @{{ item.description }}
+                                                    <button class="lawyer-service_red-more">
+                                                        ЧИТАТЬ ЕЩЕ
+                                                    </button>
+                                                </p>
+                                            </div>
 
-                                        <div class="lawyer-service_price">
-                                            <span>500&#8381;</span>
-                                            <button class="main-btn main-btn_white">Заказать услугу</button>
-                                        </div>
-                                    </li>',
+                                            <div class="lawyer-service_price">
+                                                <span>500&#8381;</span>
+                                                <button class="main-btn main-btn_white">Заказать услугу</button>
+                                            </div>
+                                        </li>
+                                    </ul>',
 
                                     'autostart' => 'true',
                                     'pagination' => [
@@ -231,24 +232,6 @@
                                     ],
                                 ]
                             ])
-                            <li class="lawyer-service_line">
-                                <div class="lawyer-service_left">
-                                    <div class="lawyer-service_title">Консультации юристов по трудовому законодательству</div>
-                                    <p class="lawyer-service_text">
-                                        Консультации по трудовому законодательству.
-                                        Возникли вопросы по юридическому ценообразованию или нужна правовая...<br>
-                                        <button class="lawyer-service_red-more">
-                                            ЧИТАТЬ ЕЩЕ
-                                        </button>
-                                    </p>
-                                </div>
-
-                                <div class="lawyer-service_price">
-                                    <span>500&#8381;</span>
-                                    <button class="main-btn main-btn_white">Заказать услугу</button>
-                                </div>
-                            </li>
-                        </ul>
 
                         <button class="more-services">Еще 2 услуги</button>
                     </div>
