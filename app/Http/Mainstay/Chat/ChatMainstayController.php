@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Mainstay\Chat;
-
 use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\System\ControllersModel\MainstayController;
