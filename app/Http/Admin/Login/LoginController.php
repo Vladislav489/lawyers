@@ -5,17 +5,13 @@
  * Date: 01.12.2022
  * Time: 18:43
  */
-
-namespace App\Http\Admin\Controllers\Login;
+namespace App\Http\Admin\Login;
 
 use App\Models\System\ControllersModel\CentralController;
-use App\Models\System\General\Routs;
-use App\Models\System\SystemLog;
-use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
 
-class LoginController extends CentralController{
+
+class LoginController extends CentralController {
     public function actionIndex(){
         return view('Site.Login.login');
     }
