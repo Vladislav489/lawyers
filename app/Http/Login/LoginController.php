@@ -5,7 +5,7 @@
  * Date: 01.12.2022
  * Time: 18:43
  */
-namespace App\Http\Admin\Login;
+namespace App\Http\Login;
 
 use App\Models\System\ControllersModel\CentralController;
 use Illuminate\Support\Facades\Auth;
