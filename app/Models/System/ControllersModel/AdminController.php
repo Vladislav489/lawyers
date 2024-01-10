@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends CentralController {
     public function callAction($method, $parameters){
-        if (!Auth::check()) {
+        if (!Auth::guard('admin')->check()) {
            //     return redirect(route__("actionIndex_logincontroller"));
         }
         $routs =  (new  Routs([],['id','name_title','url','open','site_id','physically','active']))->getRoute(

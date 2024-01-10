@@ -17,15 +17,16 @@ class LoginController extends CentralController {
     }
     public function actionIn(){
         $request = request();
+
         $credentials = $request->only('email','password');
-        if(Auth::attempt($credentials,true)){
+        if(Auth::guard('admin')->attempt($credentials,true)){
             return redirect(url('/'));
         } else {
             return  view('lawyers.Login.login',['mess'=>"User or Password do not current"]);
         }
     }
     public function actionLoguot(){
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return redirect(route__());
     }
 
