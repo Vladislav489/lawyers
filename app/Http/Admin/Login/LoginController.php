@@ -31,9 +31,9 @@ class LoginController extends CentralController {
 
     public  function getPageParams(){
         return [
-            "actionIndex" =>['name'=>"Главная",'chpu'=>[]],
-            "actionIn" =>['name'=>"Вход",'chpu'=>[]],
-            "actionLoguot" =>['name'=>"Выход",'chpu'=>[]],
+            "actionIndex" =>['name'=>"Логин",'chpu'=>[],'template' => 'lawyers.Login.login'],
+            "actionIn" =>['name'=>"Вход",'chpu'=>[], 'template' => ''],
+            "actionLoguot" =>['name'=>"Выход",'chpu'=>[], 'template' =>''],
         ];
     }
 }
