@@ -7,8 +7,6 @@ use App\Models\CoreEngine\ProjectModels\Service\Service;
 
 class ServiceLogic extends CoreEngine
 {
-    private $helpEngine;
-
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->engine = new Service();
@@ -45,5 +43,38 @@ class ServiceLogic extends CoreEngine
         $this->filter = array_merge($this->filter, parent::getFilter());
 
         return $this->filter;
+    }
+
+    public function store(array $data): array|bool
+    {
+        try {
+            $service = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+
+            if (isset($data['id'])) {
+                $service['id'] = $data['id'];
+            }
+
+            if ($data['id'] = $this->save($service)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
+
+    public function deleteService(array $data): bool
+    {
+        try {
+            $service = $this->setModel(new Service());
+            return $service->delete($data['id']);
+        } catch (\Throwable $e) {
+        }
+
+        return false;
     }
 }

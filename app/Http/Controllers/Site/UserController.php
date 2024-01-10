@@ -18,10 +18,7 @@ class UserController extends CentralController
 
     public function callAction($method, $parameters)
     {
-        if (
-            (Auth::check() && $method !== 'actionLogout')
-            || (!Auth::check() && $method === 'actionLogout')
-        ) {
+        if (Auth::check() && $method !== 'actionLogout') {
             return to_route('actionIndex_controller');
         }
 
@@ -52,7 +49,7 @@ class UserController extends CentralController
     public function actionLogout()
     {
         Auth::logout();
-        return to_route('actionLogout_usercontroller');
+        return to_route('actionIndex_controller');
     }
 
     public function actionSignupClient()

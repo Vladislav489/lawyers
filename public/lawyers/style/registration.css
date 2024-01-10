@@ -1,0 +1,169 @@
+.registration-section .container {
+    width: 580px;
+    padding-top: 30px;
+    padding-bottom: 170px;
+}
+.registration-section .section_header {
+    font-size: 35px;
+}
+.registration-section .round-top_nav {
+    margin-top: 24px;
+    grid-template-columns: 1fr 1fr;
+}
+.registration-section .round-top_nav li {
+    color: rgba(40, 40, 40, 0.50);
+}
+.registration-section .round-top_nav li.active {
+    color: white;
+}
+.registration-form {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 32px 30px 44px;
+    border-radius: 16px;
+    border: 2px solid var(--white-color);
+    background: rgba(255, 255, 255, 0.40);
+}
+.registration-form_block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.registration-form_block-header {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 140%;
+    width: 100%;
+}
+.registration-form_block input[type='file'] {
+    width: 100%;
+    display: none;
+}
+.registration-form_label {
+    width: calc(50% - 8px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.registration-form_label .label-title {
+    color: rgba(40, 40, 40, 0.80);
+    font-size: 14px;
+    line-height: 140%;
+}
+.registration-form_label input {
+    width: 100%;
+    height: 44px;
+    font-size: 16px;
+}
+.registration-form_label input::placeholder {
+    font-size: 16px;
+}
+.registration-form_label.date-label {
+    position: relative;
+}
+.registration-form_label.date-label img {
+    position: absolute;
+    width: 24px;
+    right: 16px;
+    top: 50%;
+    z-index: 0;
+}
+.registration-form_label.full {
+    width: 100%;
+}
+.file-label .choose-img {
+    padding: 10px;
+    height: 70px;
+    background-color: var(--white-color);
+    border-radius: var(--b-radius);
+    position: relative;
+}
+.file-label .downloaded_text {
+    color: rgba(40, 40, 40, 0.50);
+    font-size: 14px;
+    line-height: 140%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
+}
+.file-label .downloaded_text:after {
+    content: url('../images/icons/file-icon.svg');
+    position: absolute;
+    display: block;
+    width: 24px;
+    height: 24px;
+    top: 10px;
+}
+.registration-form .main-btn {
+    margin-top: 14px;
+    width: 100%;
+}
+.file-label .choose-img._downloaded .downloaded_text {
+    display: none;
+}
+.file-label .choose-img._downloaded:after {
+    content: none;
+}
+.file-label .choose-img._downloaded {
+    height: 104px;
+}
+.file-label .choose-img._downloaded .downloaded-img {
+    position: relative;
+    width: 85px;
+    display: flex;
+}
+.file-label .choose-img._downloaded .downloaded-img .cross {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    display: block;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+.file-label .choose-img._downloaded .downloaded-img .cross:after {
+    content: url('../images/icons/cross-img.svg');
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+.file-label .choose-img._downloaded img {
+    height: 100%;
+    width: 85px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--b-radius);
+}
+.file-label .choose-img._downloaded .downloaded-img .title {
+    font-size: 12px;
+    line-height: 140%;
+    border-radius: 0 0 var(--b-radius) var(--b-radius);
+    background: rgba(255, 255, 255, 0.69);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    /*height: 22px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -66,4 +66,15 @@ class ContractLogic extends CoreEngine
 
         return false;
     }
+
+    public function deleteContract(array $data): bool
+    {
+        try {
+            $contract = $this->setModel(new Contract());
+            return $contract->delete($data['id']);
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

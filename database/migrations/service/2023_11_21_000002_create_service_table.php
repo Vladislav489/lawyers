@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('service', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable();
             $table->string('name', 128);
             $table->text('description')->comment('описание');
             $table->boolean('is_deleted')->default(false);

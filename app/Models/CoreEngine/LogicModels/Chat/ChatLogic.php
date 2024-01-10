@@ -66,4 +66,15 @@ class ChatLogic extends CoreEngine
 
         return false;
     }
+
+    public function deleteChat(array $data): bool
+    {
+        try {
+            $chat = $this->setModel(new Chat());
+            return $chat->delete($data['id']);
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

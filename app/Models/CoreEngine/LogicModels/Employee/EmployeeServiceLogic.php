@@ -52,10 +52,15 @@ class EmployeeServiceLogic extends CoreEngine
     public function storeEmployeeServices(array $data): array
     {
         $result = [];
-        DB::table('user_employee_service')->where('user_id', Auth::id())->delete();
+        DB::table('user_employee_service')
+            ->where('user_id', Auth::id())
+            ->whereNotIn('service_id', $data)
+            ->delete();
 
         foreach ($data as $service_id) {
-            $result[] = $this->store(compact(['service_id']));
+            if (!EmployeeService::where(['user_id' => Auth::id(), 'service_id' => $service_id])->exists()) {
+                $result[] = $this->store(compact(['service_id']));
+            }
         }
 
         return $result;
@@ -63,7 +68,6 @@ class EmployeeServiceLogic extends CoreEngine
 
     public function store(array $data): array|bool
     {
-        // dd($data);
         $data['is_main'] = boolval($data['is_main'] ?? null);
         $data['user_id'] = Auth::id();
 

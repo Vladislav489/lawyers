@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
+use Illuminate\Database\Query\JoinClause;
 
 class EmployeeMainstayController extends MainstayController
 {
@@ -28,14 +29,14 @@ class EmployeeMainstayController extends MainstayController
 
     public function callAction($method, $parameters)
     {
-        if (!Auth::check() || Auth::user()->type->name !== 'client') {
+        if (true) {
             // return response()->json(['message' => 'forbidden']);
         }
 
         return parent::callAction($method, $parameters);
     }
 
-    public function actionStoreEmployee(Request $request)
+    public function actionEmployeeStore(Request $request)
     {
         $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
@@ -81,7 +82,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionStoreEmployeeServices(Request $request)
+    public function actionEmployeeServicesStore(Request $request)
     {
         $rules = [
             'service_ids.*' => 'required|integer|exists:' . Service::class . ',id',
@@ -100,7 +101,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionUpdateEmployeeService(Request $request)
+    public function actionEmployeeServiceUpdate(Request $request)
     {
         $rules = [
             'is_main' => 'boolean',
@@ -122,9 +123,14 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionGetServices()
     {
-        return response()->json(
-            DB::table('service')->limit(100)->get()
-        );
+        return response()->json(DB::table('service')
+            ->select(['service.*', 'user_employee_service.is_main', 'user_employee_service.user_id'])
+            ->leftJoin('user_employee_service', function (JoinClause $join) {
+                $join->on('user_employee_service.service_id', '=', 'service.id');
+                $join->where('user_employee_service.user_id', '=', Auth::id());
+            })
+            ->limit(100)
+            ->get());
     }
 
     public function actionGetUserServiceIds()
@@ -132,5 +138,18 @@ class EmployeeMainstayController extends MainstayController
         return response()->json(
             array_column(Auth::user()->services->toArray(), 'service_id')
         );
+    }
+
+    public function actionGetEmployeeList()
+    {
+        // return response()->json((new EmployeeLogic())->getList());
+
+        return response()->json(DB::table('user_employee')
+            ->select('user_entity.first_name', 'user_employee.avatar_path')
+            ->leftJoin('user_entity', function (JoinClause $join) {
+                $join->on('user_entity.id', '=', 'user_employee.user_id');
+            })
+            ->limit(100)
+            ->get());
     }
 }

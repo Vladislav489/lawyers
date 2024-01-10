@@ -1,6 +1,15 @@
 @extends('lawyers.layouts.main')
 @section('title', 'Регистрация аккаунта')
 
+@push('bootstrap')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        ul {
+            margin: 0 !important;
+        }
+    </style>
+@endpush
+
 @section('content')
     <section class="mt-5">
         <div class="container">
@@ -20,7 +29,7 @@
                         method="post"
                         enctype="multipart/form-data"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionStoreEmployee_employeemainstaycontroller') }}"
+                        data-request-url="{{ route__('actionEmployeeStore_employeemainstaycontroller') }}"
                         data-success-url="{{ route__('actionLogin_usercontroller') }}"
                     >
                         @csrf

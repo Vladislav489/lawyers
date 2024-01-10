@@ -1,0 +1,73 @@
+@extends('lawyers.layouts.main')
+@section('title', 'Сервисы (создание)')
+
+@push('bootstrap')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        ul {
+            margin: 0 !important;
+        }
+    </style>
+@endpush
+
+@section('content')
+    <section class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1 class="fs-2">Сервисы (создание)</h1>
+                    @include('lawyers.service._menu')
+
+                    <form
+                        id="vacancy-form"
+                        class="mt-4 mb-5 p-3 bg-primary-subtle"
+                        action=""
+                        method="post"
+                        enctype="application/x-www-form-urlencoded"
+                        style="border: 1px dashed"
+                        data-request-url="{{ route__('actionServiceStore_servicemainstaycontroller') }}"
+                        data-success-url="{{ route__('actionServiceList_servicecontroller')}}"
+                    >
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label" for="name">Название</label>
+                            <textarea
+                                id="name"
+                                class="form-control"
+                                name="name"
+                            ></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="desc">Описание</label>
+                            <textarea
+                                id="desc"
+                                class="form-control"
+                                name="description"
+                            ></textarea>
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <input type="hidden" name="type_id" value="1">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            style="pointer-events: all;"
+                            data-text="Создаю"
+                        >Создать</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @include('js.util')
+    @include('js.validation')
+    @include('js.async-api')
+    <script>
+        setSubmitHandler();
+    </script>
+@endsection

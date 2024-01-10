@@ -1,6 +1,15 @@
 @extends('lawyers.layouts.main')
 @section('title', 'Вход в систему')
 
+@push('bootstrap')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        ul {
+            margin: 0 !important;
+        }
+    </style>
+@endpush
+
 @section('content')
     <section class="mt-5">
         <div class="container">
