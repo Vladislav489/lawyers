@@ -94,32 +94,32 @@
                         </div>
                     </div>
 
-                    <div class="birja-block">
-                        <h2 class="birja-title _line-blue">Биржа юридических задач</h2>
+                    <div class="exchange-block">
+                        <h2 class="exchange-title _line-blue">Биржа юридических задач</h2>
 
-                        <div class="birja-info">
-                            <div class="birja-img">
+                        <div class="exchange-info">
+                            <div class="exchange-img">
                                 <img src="/lawyers/images/main/hammer-img.jpg" alt="hammer-img">
                             </div>
                             <ol class="block">
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>01</span></p>
-                                    <p class="birja-info_text">Опишите ситуацию</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>01</span></p>
+                                    <p class="exchange-info_text">Опишите ситуацию</p>
                                 </li>
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>02</span></p>
-                                    <p class="birja-info_text">Получите предложения по срокам и стоимости от юристов</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>02</span></p>
+                                    <p class="exchange-info_text">Получите предложения по срокам и стоимости от юристов</p>
                                 </li>
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>03</span></p>
-                                    <p class="birja-info_text">Выбирайте лучших по отзывам и цене</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>03</span></p>
+                                    <p class="exchange-info_text">Выбирайте лучших по отзывам и цене</p>
                                 </li>
                             </ol>
                         </div>
 
-                        <div class="birja-dogovor">
-                            <h2 class="birja-dogovor_title">Нужно составить договор дарения</h2>
-                            <p class="birja-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
+                        <div class="exchange-dogovor">
+                            <h2 class="exchange-dogovor_title">Нужно составить договор дарения</h2>
+                            <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
                         </div>
 
                         <button class="main-btn">
@@ -136,7 +136,7 @@
                 </div>
 
                 <div class="right">
-                    <ul class="lawyer-top_nav">
+                    <ul class="round-top_nav">
                         <li class="active"><button type="button">О себе</button></li>
                         <li><button type="button">Услуги</button></li>
                         <li><button type="button">Отзывы</button></li>

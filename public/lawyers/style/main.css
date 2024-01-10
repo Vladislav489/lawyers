@@ -116,6 +116,7 @@ header {
 @media screen and (max-width: 1280px) {
     .header-nav {
         gap: 15px;
+        padding: 12px 0;
     }
     .nav-ul {
         flex-wrap: wrap;
@@ -154,8 +155,11 @@ header {
     display: none;
     margin-left: auto;
 }
+.arrow-back-icon {
+    display: none;
+}
 @media screen and (max-width: 1024px) {
-    .burger-btn {
+    .burger-btn, .arrow-back-icon {
         display: block;
     }
 }
@@ -583,11 +587,13 @@ header {
 }
 .specialists-carousel .owl-nav .owl-next {
     transform: rotate(180deg) translateY(50%);
-    right: -20px;
+    right: -16px;
+    cursor: pointer;
 }
 .specialists-carousel .owl-nav .owl-prev {
-    left: -20px;
+    left: -16px;
     transform: translateY(-50%);
+    cursor: pointer;
 }
 
 .specialist {
@@ -625,10 +631,11 @@ header {
 .specialist .block ul {
     display: flex;
     gap: 4px;
+    flex-wrap: wrap;
 }
 .specialist .block ul > li {
     color: var(--dark-color);
-    font-size: 17px;
+    font-size: 16px;
     line-height: 140%;
 }
 
@@ -827,11 +834,14 @@ header {
     .specialist .block p {
         font-size: 14px;
     }
+    .specialist .block ul > li {
+        font-size: 14px;
+    }
     .specialist .specialist-top .lawyer-img {
         width: 70px;
         height: 70px;
     }
-    .specialist .specialist-top .specialist-name {
+        .specialist .specialist-top .specialist-name {
         font-size: 16px;
         position: absolute;
         top: 12px;
@@ -983,6 +993,29 @@ header {
     width: 100%;
 }
 
+.round-top_nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%;
+    background-color: #dee3fe;
+    border-radius: var(--b-radius-second);
+    border: 2px solid var(--white-color);
+}
+.round-top_nav li {
+    border-radius: var(--b-radius-second);
+    padding: 11px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    line-height: 25px;
+    cursor: pointer;
+}
+.round-top_nav li.active {
+    color: var(--white-color);
+    background: var(--blue-color);
+}
+
 @media screen and (max-width: 1280px) {
     .questions-container {
         grid-template-columns: repeat(3, 1fr);
@@ -1025,6 +1058,27 @@ header {
     .questions-form .block.right {
         grid-template-columns: 1fr;
     }
+    .round-top_nav {
+        margin-bottom: -12px;
+        border-radius: 0;
+        background-color: var(--white-color);
+        gap: 20px;
+        padding: 12px;
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+    .round-top_nav li {
+        width: max-content;
+        padding: 4px 30px;
+        color: rgba(40, 40, 40, 0.80);
+        display: block;
+        white-space: nowrap;
+    }
+    .round-top_nav li.active {
+        background: #EEF1FF;
+        color: var(--dark-color);
+    }
 }
 @media screen and (max-width: 480px) {
     .questions {
@@ -1051,6 +1105,9 @@ header {
     .questions-form .block p {
         font-size: 14px;
         text-align: center;
+    }
+    .round-top_nav li {
+        font-size: 14px;
     }
 }
 
@@ -1086,7 +1143,7 @@ header {
 .footer-container .footer_ul {
     max-width: 270px;
 }
-.footer-container .footer_ul li:first-of-type {
+.footer-container .footer_ul-block h3 {
     line-height: 230%;
     color: var(--white-color);
     font-size: 18px;
@@ -1126,7 +1183,8 @@ header {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
-    .footer-container .block:last-of-type .footer_ul li {
+    .footer-container .block:last-of-type .footer_ul li,
+    .footer-container .block:last-of-type .footer_ul-block h3 {
         text-align: right;
     }
     .footer-container .footer-logo {
@@ -1152,11 +1210,11 @@ header {
     .footer-container .block:last-of-type .footer_ul:last-of-type {
         border-bottom: none;
     }
-    .footer-container .footer_ul {
+    .footer-container .footer_ul-block {
         padding: 16px 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.10);
     }
-    .footer-container .footer_ul li:first-of-type {
+    .footer-container .footer_ul-block h3 {
         font-size: 16px;
     }
     .footer-container .footer_ul a {
@@ -1199,4 +1257,38 @@ header {
 }
 .breadcrumbs li:last-child a:after {
     content: none;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .breadcrumbs {
+        display: none;
+    }
+    .footer_mobile {
+        position: sticky;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        background-color: var(--dark-color);
+        z-index: 1;
+        padding: 10px 0;
+    }
+    .footer_mobile img {
+        width: 24px;
+    }
+    .footer_mobile a {
+        color: #7E7E7E;
+        text-align: center;
+        font-size: 12px;
+        line-height: 140%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        justify-content: center;
+        align-items: center;
+    }
+    .footer_mobile a.active {
+        color: var(--white-color)
+    }
 }

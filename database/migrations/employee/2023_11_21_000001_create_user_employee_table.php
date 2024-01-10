@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_employee', function (Blueprint $table) {
-            $table->id(),
+            $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->string('avatar_path', 128)->comment('url фотографии');

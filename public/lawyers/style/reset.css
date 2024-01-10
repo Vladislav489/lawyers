@@ -30,6 +30,7 @@
 }
 html, body {
     /*scrollbar-gutter: stable;*/
+    scroll-behavior: smooth;
 }
 body {
     font-family: Gilroy, sans-serif;
@@ -41,6 +42,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
+}
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
 }
 .body_hidden {
     overflow: hidden;
@@ -116,10 +122,12 @@ label input {
     color: var(--white-color);
     font-weight: 600;
     line-height: 140%;
-    transition-duration: var(--transition);
+    /*transition: transdorm var(--transition);*/
     text-transform: none !important;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
+    height: 50px;
 }
 .main-btn .first,
 .main-btn .second {
@@ -164,6 +172,7 @@ label input {
 .main-btn .first,
 .main-btn .second {
     transition-duration: var(--transition);
+    box-sizing: border-box;
 }
 .main-btn .second {
     transform: translate(-50%, -300%);
@@ -180,8 +189,15 @@ label input {
     transform: translate(-50%, -50%);
 }
 @media screen and (max-width: 1200px) {
-    .main-btn:hover {
-        scale: none;
+    .main-btn:hover .first {
+        transform: none;
+    }
+    .main-btn .second {
+        display: none;
+    }
+    .main-btn:hover .second {
+        transform: none;
+        display: none;
     }
 }
 @media screen and (max-width: 480px) {
@@ -213,6 +229,13 @@ input::placeholder {
 }
 input::-webkit-search-cancel-button {
     display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: transparent;
+    opacity: 0;
+    /*background: url(images/icons/calendar-icon.svg) no-repeat center;*/
+    /*background-size: contain;*/
 }
 @media screen and (max-width: 480px) {
     input {
@@ -284,7 +307,21 @@ input::-webkit-search-cancel-button {
     font-size: 22px;
     font-weight: 400;
 }
-
+@media screen and (max-width: 768px) {
+    .fs-section .container {
+        border-radius: 0;
+        padding: 0 16px 24px;
+        gap: 20px;
+    }
+}
+@media screen and (max-width: 480px) {
+    .find-section_header {
+        font-size: 18px;
+    }
+    .find-section_header span {
+        font-size: 18px;
+    }
+}
 
 
 .lawyer_rate-block {
@@ -313,7 +350,28 @@ input::-webkit-search-cancel-button {
     font-weight: 600;
     line-height: 140%;
 }
-
+@media screen and (max-width: 480px) {
+    .specialist-rate span {
+        font-size: 12px;
+        line-height: 140%;
+    }
+    .specialist-rate .stars img {
+        width: 18px;
+    }
+    .specialist-perm {
+        gap: 4px;
+    }
+    .specialist-perm p {
+        font-size: 14px;
+    }
+    .specialist-perm span {
+        font-size: 14px;
+        line-height: 100%;
+    }
+    .lawyer_rate-block {
+        flex-direction: column;
+    }
+}
 
 
 .mobile {
@@ -360,6 +418,7 @@ input::-webkit-search-cancel-button {
 @media screen and (max-width: 1280px) {
     ::-webkit-scrollbar {
         width: 0;
+        height: 0;
     }
     ::-webkit-scrollbar-thumb {
         display: none;

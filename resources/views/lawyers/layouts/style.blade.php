@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="/lawyers/style/reset.css">
     <link rel="stylesheet" href="/lawyers/style/main.css">
     <link rel="stylesheet" href="/lawyers/style/lawyer.css">
-    <link rel="stylesheet" href="/lawyers/style/findSpecialist.css">
+    <link rel="stylesheet" href="/lawyers/style/find-specialist.css">
+    <link rel="stylesheet" href="/lawyers/style/registration.css">
     <link rel="stylesheet" href="/lawyers/lib/OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/lawyers/lib/OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.theme.default.min.css">
 

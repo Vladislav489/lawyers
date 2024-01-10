@@ -25,7 +25,7 @@
         @include('lawyers.layouts._main-header')
     </header>
 
-    <main>
+    <main class="gradient-bg">
         @yield('content')
     </main>
 
