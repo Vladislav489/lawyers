@@ -16,6 +16,7 @@
 
 <header class="u-container main-bg">
     <nav class="container header-nav">
+        <a href="index.html" class="arrow-back-icon"><img src="images/icons/arrow-back-icon.svg" alt="arrow-icon"></a>
         <a href="index.html" class="image-container">Лого</a>
         <ul class="nav-ul">
             <li>
@@ -265,13 +266,16 @@
             </li>
         </ul>
         <a href="lawyer.html" class="signup-btn">Войти</a>
+        <button class="burger-btn popup-btn" data-popup="mobile-menu-popup">
+            <picture><img src="images/icons/burger-icon.svg" alt="burger-icon"></picture>
+        </button>
     </nav>
 </header>
 
 <main>
     <section class="gradient-bg u-container lawyer-section">
         <div class="container">
-            <ul class="breadcrumbs">
+            <ul class="breadcrumbs mobile-hidden">
                 <li class="cool-underline"><a href="#">Юрист</a></li>
                 <li class="cool-underline"><a href="#">Город</a></li>
             </ul>
@@ -328,12 +332,12 @@
                                 <div class="lawyer-info_row">
                                     <img src="images/icons/phone-icon-blue.svg" alt="phone-icon" class="icon">
 
-                                    <span>+7 (999) 999 99 99</span>
+                                    <a href="tel:+7 (999) 999 99 99" class="link">+7 (999) 999 99 99</a>
                                 </div>
                                 <div class="lawyer-info_row">
                                     <img src="images/icons/planet-icon-blue.svg" alt="planet-icon" class="icon">
 
-                                    <span>www.site.ru</span>
+                                    <a href="#" class="link">www.site.ru</a>
                                 </div>
                                 <div class="lawyer-info_row">
                                     <img src="images/icons/message-icon-blue.svg" alt="message-icon" class="icon">
@@ -345,13 +349,14 @@
                                     <img src="images/icons/clock-icon-blue.svg" alt="clock-icon" class="icon">
 
                                     <span>Время работы:</span>
-                                    <span class="bold">Пн-Сб 9:00 - 18:00</span>
+                                    <time class="bold">Пн-Сб 9:00 - 18:00</time>
                                 </div>
                             </div>
 
                             <div class="buttons-container">
                                 <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span><span class="second">Сообщение</span>
+                                    <span class="first">Сообщение</span>
+                                    <span class="second">Сообщение</span>
                                 </button>
                                 <button class="main-btn main-btn_blue">
                                     <span class="first">
@@ -367,35 +372,35 @@
                         </div>
                     </div>
 
-                    <div class="birja-block">
-                        <h2 class="birja-title _line-blue">Биржа юридических задач</h2>
+                    <div class="exchange-block">
+                        <h2 class="exchange-title _line-blue">Биржа юридических задач</h2>
 
-                        <div class="birja-info">
-                            <div class="birja-img">
+                        <div class="exchange-info">
+                            <div class="exchange-img">
                                 <img src="images/main/hammer-img.jpg" alt="hammer-img">
                             </div>
                             <ol class="block">
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>01</span></p>
-                                    <p class="birja-info_text">Опишите ситуацию</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>01</span></p>
+                                    <p class="exchange-info_text">Опишите ситуацию</p>
                                 </li>
 
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>02</span></p>
-                                    <p class="birja-info_text">Получите предложения по срокам и стоимости от юристов</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>02</span></p>
+                                    <p class="exchange-info_text">Получите предложения по срокам и стоимости от юристов</p>
                                 </li>
 
-                                <li class="birja-info_line">
-                                    <p class="birja-info_number"><span>03</span></p>
-                                    <p class="birja-info_text">Выбирайте лучших по отзывам и цене</p>
+                                <li class="exchange-info_line">
+                                    <p class="exchange-info_number"><span>03</span></p>
+                                    <p class="exchange-info_text">Выбирайте лучших по отзывам и цене</p>
                                 </li>
                             </ol>
                         </div>
 
-                        <div class="birja-dogovor">
-                            <h2 class="birja-dogovor_title">Нужно составить договор дарения</h2>
+                        <div class="exchange-dogovor">
+                            <h2 class="exchange-dogovor_title">Нужно составить договор дарения</h2>
 
-                            <p class="birja-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
+                            <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
                         </div>
 
                         <button class="main-btn">
@@ -412,7 +417,7 @@
                 </div>
 
                 <div class="right">
-                    <ul class="lawyer-top_nav">
+                    <ul class="round-top_nav">
                         <li class="active"><button type="button">О себе</button></li>
                         <li><button type="button">Услуги</button></li>
                         <li><button type="button">Отзывы</button></li>
@@ -465,6 +470,26 @@
                                     <img src="images/main/lawyer-cert-img.png" alt="cert-img">
                                     <p>Диплом о ВО юриста</p>
                                 </li>
+
+                                <li class="lawyer-cert">
+                                    <img src="images/main/lawyer-cert-img.png" alt="cert-img">
+                                    <p>Диплом о ВО юриста</p>
+                                </li>
+
+                                <li class="lawyer-cert">
+                                    <img src="images/main/lawyer-cert-img.png" alt="cert-img">
+                                    <p>Диплом о ВО юриста</p>
+                                </li>
+
+                                <li class="lawyer-cert">
+                                    <img src="images/main/lawyer-cert-img.png" alt="cert-img">
+                                    <p>Диплом о ВО юриста</p>
+                                </li>
+
+                                <li class="lawyer-cert">
+                                    <img src="images/main/lawyer-cert-img.png" alt="cert-img">
+                                    <p>Диплом о ВО юриста</p>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -479,16 +504,19 @@
                                     <div class="lawyer-service_title">Консультации юристов по трудовому законодательству</div>
                                     <p class="lawyer-service_text">
                                         Консультации по трудовому законодательству. Возникли вопросы по юридическому
-                                        ценообразованию или нужна правовая... <br>
+                                        ценообразованию или нужна правовая...
                                         <button class="lawyer-service_red-more">
-                                            ЧИТАТЬ ЕЩЕ
+                                            читать еще
                                         </button>
                                     </p>
                                 </div>
 
                                 <div class="lawyer-service_price">
                                     <span>500&#8381;</span>
-                                    <button class="main-btn main-btn_white">Заказать услугу</button>
+                                    <button class="main-btn main-btn_white">
+                                        <span class="first">Заказать услугу</span>
+                                        <span class="second">Заказать услугу</span>
+                                    </button>
                                 </div>
                             </li>
                             <li class="lawyer-service_line">
@@ -496,16 +524,19 @@
                                     <div class="lawyer-service_title">Консультации юристов по трудовому законодательству</div>
                                     <p class="lawyer-service_text">
                                         Консультации по трудовому законодательству. Возникли вопросы по юридическому
-                                        ценообразованию или нужна правовая... <br>
+                                        ценообразованию или нужна правовая...
                                         <button class="lawyer-service_red-more">
-                                            ЧИТАТЬ ЕЩЕ
+                                            читать еще
                                         </button>
                                     </p>
                                 </div>
 
                                 <div class="lawyer-service_price">
                                     <span>500&#8381;</span>
-                                    <button class="main-btn main-btn_white">Заказать услугу</button>
+                                    <button class="main-btn main-btn_white">
+                                        <span class="first">Заказать услугу</span>
+                                        <span class="second">Заказать услугу</span>
+                                    </button>
                                 </div>
                             </li>
                             <li class="lawyer-service_line">
@@ -513,16 +544,19 @@
                                     <div class="lawyer-service_title">Консультации юристов по трудовому законодательству</div>
                                     <p class="lawyer-service_text">
                                         Консультации по трудовому законодательству. Возникли вопросы по юридическому
-                                        ценообразованию или нужна правовая... <br>
+                                        ценообразованию или нужна правовая...
                                         <button class="lawyer-service_red-more">
-                                            ЧИТАТЬ ЕЩЕ
+                                            читать еще
                                         </button>
                                     </p>
                                 </div>
 
                                 <div class="lawyer-service_price">
                                     <span>500&#8381;</span>
-                                    <button class="main-btn main-btn_white">Заказать услугу</button>
+                                    <button class="main-btn main-btn_white">
+                                        <span class="first">Заказать услугу</span>
+                                        <span class="second">Заказать услугу</span>
+                                    </button>
                                 </div>
                             </li>
                             <li class="lawyer-service_line">
@@ -530,16 +564,19 @@
                                     <div class="lawyer-service_title">Консультации юристов по трудовому законодательству</div>
                                     <p class="lawyer-service_text">
                                         Консультации по трудовому законодательству. Возникли вопросы по юридическому
-                                        ценообразованию или нужна правовая... <br>
+                                        ценообразованию или нужна правовая...
                                         <button class="lawyer-service_red-more">
-                                            ЧИТАТЬ ЕЩЕ
+                                            читать еще
                                         </button>
                                     </p>
                                 </div>
 
                                 <div class="lawyer-service_price">
                                     <span>500&#8381;</span>
-                                    <button class="main-btn main-btn_white">Заказать услугу</button>
+                                    <button class="main-btn main-btn_white">
+                                        <span class="first">Заказать услугу</span>
+                                        <span class="second">Заказать услугу</span>
+                                    </button>
                                 </div>
                             </li>
                         </ul>
@@ -573,21 +610,25 @@
                                 <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>
                                 <span class="lawyer-practic_number">Дело №01-038/2019</span>
                                 <img src="images/icons/arrow-icon-gray.svg" alt="arrow-icon" class="icon">
+                                <button class="read-more mobile">Читать</button>
                             </li>
                             <li>
                                 <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>
                                 <span class="lawyer-practic_number">Дело №01-038/2019</span>
                                 <img src="images/icons/arrow-icon-gray.svg" alt="arrow-icon" class="icon">
+                                <button class="read-more mobile">Читать</button>
                             </li>
                             <li>
                                 <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>
                                 <span class="lawyer-practic_number">Дело №01-038/2019</span>
                                 <img src="images/icons/arrow-icon-gray.svg" alt="arrow-icon" class="icon">
+                                <button class="read-more mobile">Читать</button>
                             </li>
                             <li>
                                 <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>
                                 <span class="lawyer-practic_number">Дело №01-038/2019</span>
                                 <img src="images/icons/arrow-icon-gray.svg" alt="arrow-icon" class="icon">
+                                <button class="read-more mobile">Читать</button>
                             </li>
                         </ul>
 
@@ -610,14 +651,14 @@
 
                                     <p class="name">Алексеева Юлия</p>
 
-                                    <span class="date">16.05.2023</span>
+                                    <time class="date">16.05.2023</time>
 
                                     <img src="images/icons/check-icon-green-transparent.svg" alt="check-icon"
                                          class="check-icon icon">
                                 </div>
 
                                 <blockquote>
-                                    <p class="comment-text">
+                                    <blockquote class="comment-text">
                                         Спасибо большое владимиру Александровичу. Он по уголовному делу вел защиту в суде
                                         моего брата и вместо обещанных ему следователем 5-6 лет колонии, брат получил один
                                         год условно. Считаю это большой победой адвоката, который смог.
@@ -626,9 +667,9 @@
                                         моего брат...
 
                                         <span class="comment-read-more">
-                                        читать еще
-                                    </span>
-                                    </p>
+                                            читать еще
+                                        </span>
+                                    </blockquote>
                                 </blockquote>
                             </div>
 
@@ -739,20 +780,27 @@
                                 <img src="images/icons/clock-icon-blue.svg" alt="clock-icon" class="icon">
 
                                 <span>Время работы:</span>
-                                <span class="lawyer-info_span-black">Пн-Сб 9:00 - 18:00</span>
+                                <time class="lawyer-info_span-black">Пн-Сб 9:00 - 18:00</time>
                             </div>
                         </div>
 
                         <div class="buttons-container">
-                            <button class="main-btn main-btn_white">Сообщение</button>
-                            <button class="main-btn main-btn_white">Заказать звонок</button>
+                            <button class="main-btn main-btn_white">
+                                <span class="first">Сообщение</span>
+                                <span class="second">Сообщение</span>
+                            </button>
+                            <button class="main-btn main-btn_white">
+                                <span class="first">Заказать звонок</span>
+                                <span class="second">Заказать звонок</span>
+                            </button>
                         </div>
                     </div>
 
                     <div class="lawyer-answers lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title _line-blue">Посмотрите на ответы юриста на общие вопросы с сайта</h2>
+                        <h2 class="lawyer-wrapper_title _line-blue mobile-hidden">Посмотрите на ответы юриста на общие вопросы с сайта</h2>
+                        <h2 class="lawyer-wrapper_title _line-blue mobile">Судебная практика</h2>
 
-                        <div class="lawyer-answers_table">
+                        <div class="lawyer-answers_table mobile-hidden">
                             <div class="table-col col1">
                                 <h4 class="col-header">Вопрос</h4>
                                 <p>Апелляционная жалоба, как правильно составить?</p>
@@ -773,6 +821,26 @@
                             </div>
                         </div>
 
+                        <div class="lawyer-answers_table mobile">
+                            <div class="lawyer-answers_answer">
+                                <h3>Апелляционная жалоба, как правильно составить?</h3>
+                                <p>Сосногорск, 22.04.2022</p>
+                                <button>3 ответа</button>
+                            </div>
+
+                            <div class="lawyer-answers_answer">
+                                <h3>Апелляционная жалоба, как правильно составить?</h3>
+                                <p>Сосногорск, 22.04.2022</p>
+                                <button>3 ответа</button>
+                            </div>
+
+                            <div class="lawyer-answers_answer">
+                                <h3>Апелляционная жалоба, как правильно составить?</h3>
+                                <p>Сосногорск, 22.04.2022</p>
+                                <button>3 ответа</button>
+                            </div>
+                        </div>
+
                         <button class="more-services">Смотреть все ответы</button>
                     </div>
                 </div>
@@ -781,32 +849,357 @@
     </section>
 </main>
 
-<footer class="lawyer-footer u-container">
-    <div class="container">
-        <div class="lawyer-block_lil">
-            <img src="images/main/lawyer-img.png" alt="lawyer-img">
-            <div class="info">
-                <h4 class="lawyer-name">Соколовский Владимир <br> Александрович</h4>
-                <span>В сети 2 ч назад</span>
+<footer class="u-container main-bg">
+    <div class="container footer-container">
+        <div class="block">
+            <div class="footer_ul-block">
+                <h3>Сервис Право</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">ООО</a></li>
+                    <li><a href="#" class="cool-underline">Город Москва...</a></li>
+                    <li><a href="#" class="cool-underline">Контактная информация</a></li>
+                    <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
+                </ul>
+            </div>
+
+
+            <div class="footer_ul-block">
+                <h3>Контакты</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">ООО</a></li>
+                    <li><a href="#" class="cool-underline">Город Москва...</a></li>
+                    <li><a href="#" class="cool-underline">Контактная информация</a></li>
+                    <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
+                </ul>
             </div>
         </div>
+        <a href="index.html" class="footer-logo">
+            Логотип
+        </a>
+        <div class="block">
+            <div class="footer_ul-block">
+                <h3>Навигация</h3>
 
-        <div class="buttons-container">
-            <button class="main-btn main-btn_blue">Сообщение</button>
-            <button class="main-btn main-btn_white">Заказать звонок</button>
-            <button class="main-btn main-btn_white">Предложить работу
-                <img src="images/icons/arrow-icon-blue.svg" alt="arrow-icon" class="icon">
-            </button>
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">наши юристы</a></li>
+                    <li><a href="findSpecialist.html" class="cool-underline">наши услуги</a></li>
+                    <li><a href="#" class="cool-underline">юридическая помощь</a></li>
+                    <li><a href="#" class="cool-underline">юридический журнал</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_ul-block">
+                <h3>Правовая информация</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">Политика конфидициальности</a></li>
+                    <li><a href="#" class="cool-underline">Условия Пользовательского Соглашения</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+
+    <p class="all-rights">Все права защищены 2023</p>
 </footer>
 
-<script src="scripts/script.js"></script>
-<script>
-    document.querySelectorAll('.nav-ul > li').forEach(item => {
-        selectRow(item)
-    })
-</script>
+<ul class="footer_mobile mobile">
+    <li><a href="index.html" class="active">
+        <img src="images/icons/main-menu-icon.svg" alt="main-icon"><span>Главная</span>
+    </a></li>
+    <li><a href="lawyer.html">
+        <img src="images/icons/lawyers-menu-icon.svg" alt="lawyers-icon"><span>Юристы</span>
+    </a></li>
+    <li><a href="#">
+        <img src="images/icons/help-menu-icon.svg" alt="help-icon"><span>Юр. Помощь</span>
+    </a></li>
+    <li><a href="lawyer.html">
+        <img src="images/icons/profile-menu-icon.svg" alt="profile-icon"><span>Профиль</span>
+    </a></li>
+    <li><a href="#">
+        <img src="images/icons/journal-menu-icon.svg" alt="journal-icon"><span>Юр. Журнал</span>
+    </a></li>
+</ul>
+
+<div id="mobile-menu-popup" class="popup mobile popup_hide">
+    <div class="popup_shadow"></div>
+
+    <div class="step step1 mobile-step_top step_hide" data-step="1">
+        <div class="mob_header">
+            <button class="popup-close"><img src="images/icons/arrow-back-icon.svg" alt="arrow-icon"></button>
+            <a href="index.html" class="logo image-container">Лого</a>
+        </div>
+
+        <h2 class="mob-header_title">Личный кабинет</h2>
+
+        <ul class="nav-ul nav-ul_mobile">
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">Найти специалиста</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">наши юристы</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">наши услуги</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">юридическая помощь</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">юридический журнал</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="support-phone">
+            <span>Поддержка</span>
+            <p>+7 (999) 999 99 99</p>
+        </div>
+    </div>
+</div>
+
+<script src="scripts/index.js"></script>
+<script src="scripts/navSelect.js"></script>
 
 </body>
 </html>

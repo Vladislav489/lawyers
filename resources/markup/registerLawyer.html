@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Регистрация аккаунта</title>
+
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/registration.css">
+</head>
+<body>
+
+<header class="u-container main-bg">
+    <nav class="container header-nav">
+        <a href="index.html" class="image-container">Лого</a>
+
+        <a href="lawyer.html" class="signup-btn">Войти</a>
+
+        <button class="burger-btn popup-btn" data-popup="mobile-menu-popup">
+            <picture><img src="images/icons/burger-icon.svg" alt="burger-icon"></picture>
+        </button>
+    </nav>
+</header>
+
+<main class="gradient-bg">
+    <section class="registration-section u-container">
+        <div class="container">
+            <h1 class="section_header">Регистрация аккаунта</h1>
+
+            <ul class="round-top_nav">
+                <li><button type="button">Клиент</button></li>
+                <li class="active"><button type="button">Юрист</button></li>
+            </ul>
+
+            <form action="#" class="registration-form">
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Заполните информацию о себе</h3>
+
+                    <label class="registration-form_label">
+                        <span class="label-title">Имя</span>
+                        <input type="text" placeholder="Имя" name="name">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Фамилия</span>
+                        <input type="text" placeholder="Фамилия" name="lastname">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Отчество</span>
+                        <input type="text" placeholder="Отчество" name="middleName">
+                    </label>
+                    <label class="registration-form_label date-label">
+                        <span class="label-title">Дата рождения</span>
+                        <input type="date" placeholder="Дата рождения" name="birthday">
+                        <img src="images/icons/calendar-icon.svg" alt="calendar-icon">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Номер телефона</span>
+                        <input type="tel" placeholder="Номер телефона" name="phoneNumber">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Электронная почта</span>
+                        <input type="email" placeholder="Электронная почта" name="email">
+                    </label>
+                </div>
+
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Введите данные о местонахождении</h3>
+
+                    <label class="registration-form_label full">
+                        <span class="label-title">Почтовый индекс</span>
+                        <input type="text" placeholder="Почтовый индекс" name="postcode">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Страна</span>
+                        <input type="text" placeholder="Страна" name="country">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Область</span>
+                        <input type="text" placeholder="Область" name="cityArea">
+                    </label>
+                    <label class="registration-form_label date-label">
+                        <span class="label-title">Район</span>
+                        <input type="text" placeholder="Район" name="cityDistrict">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Город</span>
+                        <input type="tel" placeholder="Город" name="city">
+                    </label>
+                </div>
+
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Придумайте пароль</h3>
+
+                    <label class="registration-form_label full">
+                        <span class="label-title">Пароль</span>
+                        <input type="text" placeholder="Пароль" name="password">
+                    </label>
+                    <label class="registration-form_label full">
+                        <span class="label-title">Повторите пароль</span>
+                        <input type="text" placeholder="Повторите пароль" name="repeatPassword">
+                    </label>
+                </div>
+
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Заполните данные о работе</h3>
+
+                    <label class="registration-form_label">
+                        <span class="label-title">Стоимость консультации</span>
+                        <input type="text" placeholder="Стоимость консультации" name="consultPrice">
+                    </label>
+                    <label class="registration-form_label date-label">
+                        <span class="label-title">Дата начала юр. практики</span>
+                        <input type="date" placeholder="Дата начала юр. практики" name="dateOfPractice">
+                        <img src="images/icons/calendar-icon.svg" alt="calendar-icon">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Лицензионный номер</span>
+                        <input type="number" placeholder="Лицензионный номер" name="licenseNumber">
+                    </label>
+                    <label class="registration-form_label">
+                        <span class="label-title">Компания</span>
+                        <input type="text" placeholder="Компания" name="company">
+                    </label>
+                </div>
+
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Сертификаты</h3>
+
+                    <label class="registration-form_label full file-label">
+                        <span class="label-title">Выберите файл</span>
+                        <input type="file">
+                        <span class="choose-img _downloaded">
+                            <span class="downloaded_text">
+                                Загрузить файл
+                            </span>
+
+                            <span class="downloaded-img">
+                                <span class="cross"></span>
+                                <img src="images/main/lawyer-img.png" alt="lawyer-img">
+                                <span class="title">pdf/12345678..</span>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Аватар</h3>
+
+                    <label class="registration-form_label full file-label">
+                        <span class="label-title">Выберите файл</span>
+                        <input type="file" name="avatar">
+                        <span class="choose-img">
+                            <span class="downloaded_text">
+                                Загрузить файл
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="main-btn">
+                    <span class="first">Зарегистрироваться</span>
+                    <span class="second">Зарегистрироваться</span>
+                </button>
+            </form>
+        </div>
+    </section>
+
+
+</main>
+
+<div id="mobile-menu-popup" class="popup mobile popup_hide">
+    <div class="popup_shadow"></div>
+
+    <div class="step step1 mobile-step_top step_hide" data-step="1">
+        <div class="mob_header">
+            <button class="popup-close"><img src="images/icons/arrow-back-icon.svg" alt="arrow-icon"></button>
+            <a href="index.html" class="logo image-container">Лого</a>
+        </div>
+
+        <h2 class="mob-header_title">Личный кабинет</h2>
+
+        <ul class="nav-ul nav-ul_mobile">
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">Найти специалиста</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">наши юристы</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">наши услуги</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">юридическая помощь</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
+                    <span class="cool-underline select-btn">юридический журнал</span>
+                    <img src="images/icons/arrow-icon-white.svg" alt="arrow-icon" class="arrow-icon sub-icon">
+                </div>
+                <ul class="select-window">
+                    <li>
+                        <a href="#">
+                            <p>
+                                Найти Юриста
+                                <span>
+                                    Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.
+                                </span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Адвоката
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Нотариуса
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <p>Найти Детектива
+                                <span>Awo has 97% of all lawyersin the. Awo has 97% of all lawyersin the.</span>
+                            </p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="11" viewBox="0 0 6 11" fill="none">
+                                <path d="M1 1L5 5.5L1 10" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="support-phone">
+            <span>Поддержка</span>
+            <p>+7 (999) 999 99 99</p>
+        </div>
+    </div>
+</div>
+
+<script src="scripts/index.js"></script>
+<script src="scripts/navSelect.js"></script>
+
+</body>
+</html>

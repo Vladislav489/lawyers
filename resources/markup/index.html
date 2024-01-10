@@ -855,43 +855,57 @@
 <footer class="u-container main-bg">
     <div class="container footer-container">
         <div class="block">
-            <ul class="footer_ul">
-                <li>Сервис Право</li>
-                <li><a href="#" class="cool-underline">ООО</a></li>
-                <li><a href="#" class="cool-underline">Город Москва...</a></li>
-                <li><a href="#" class="cool-underline">Контактная информация</a></li>
-                <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
-            </ul>
-            <ul class="footer_ul">
-                <li>Контакты</li>
-                <li><a href="#" class="cool-underline">ООО</a></li>
-                <li><a href="#" class="cool-underline">Город Москва...</a></li>
-                <li><a href="#" class="cool-underline">Контактная информация</a></li>
-                <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
-            </ul>
+            <div class="footer_ul-block">
+                <h3>Сервис Право</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">ООО</a></li>
+                    <li><a href="#" class="cool-underline">Город Москва...</a></li>
+                    <li><a href="#" class="cool-underline">Контактная информация</a></li>
+                    <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
+                </ul>
+            </div>
+
+
+            <div class="footer_ul-block">
+                <h3>Контакты</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">ООО</a></li>
+                    <li><a href="#" class="cool-underline">Город Москва...</a></li>
+                    <li><a href="#" class="cool-underline">Контактная информация</a></li>
+                    <li><a href="#" class="cool-underline">mailmail@mail.com</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="footer-logo">
+        <a href="index.html" class="footer-logo">
             Логотип
-        </div>
+        </a>
         <div class="block">
-            <ul class="footer_ul">
-                <li>Навигация</li>
-                <li><a href="#" class="cool-underline">наши юристы</a></li>
-                <li><a href="findSpecialist.html" class="cool-underline">наши услуги</a></li>
-                <li><a href="#" class="cool-underline">юридическая помощь</a></li>
-                <li><a href="#" class="cool-underline">юридический журнал</a></li>
-            </ul>
-            <ul class="footer_ul">
-                <li>Правовая информация</li>
-                <li><a href="#" class="cool-underline">Политика конфидициальности</a></li>
-                <li><a href="#" class="cool-underline">Условия Пользовательского Соглашения</a></li>
-            </ul>
+            <div class="footer_ul-block">
+                <h3>Навигация</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">наши юристы</a></li>
+                    <li><a href="findSpecialist.html" class="cool-underline">наши услуги</a></li>
+                    <li><a href="#" class="cool-underline">юридическая помощь</a></li>
+                    <li><a href="#" class="cool-underline">юридический журнал</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_ul-block">
+                <h3>Правовая информация</h3>
+
+                <ul class="footer_ul">
+                    <li><a href="#" class="cool-underline">Политика конфидициальности</a></li>
+                    <li><a href="#" class="cool-underline">Условия Пользовательского Соглашения</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
     <p class="all-rights">Все права защищены 2023</p>
 </footer>
-
 
 <div id="mobile-menu-popup" class="popup mobile popup_hide">
     <div class="popup_shadow"></div>
@@ -1170,34 +1184,9 @@
 </div>
 
 
-<script src="scripts/script.js"></script>
-<script>
-    document.querySelectorAll('.nav-ul > li').forEach(item => {
-        selectRow(item)
-    })
-
-    $(document).ready(function(){
-        $(".specialists-carousel").owlCarousel({
-            items: 1,
-            dots: true,
-            nav: true,
-            margin: 16,
-            autoplay: true,
-            autoplayTimeout: 4000,
-            loop: true,
-            navElement: 'img src="images/icons/arrow-icon-gray.svg"',
-
-            responsive: {
-                1280 : {
-                    items: 3,
-                },
-                980 : {
-                    items: 2,
-                }
-            }
-        });
-    });
-</script>
+<script src="scripts/index.js"></script>
+<script src="scripts/mainSlider.js"></script>
+<script src="scripts/navSelect.js"></script>
 
 </body>
 </html>
