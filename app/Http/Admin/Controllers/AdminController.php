@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends BaseAdminController {
     public function callAction($method, $parameters){
-        //dd(Cache::get('controllerList'));
-        if (!Auth::check()) {
-           // return redirect(route__("actionIndex_logincontroller"));
-        }
         return parent::callAction($method, $parameters);
     }
     public function actionIndex(){return view('Admin.main');}
