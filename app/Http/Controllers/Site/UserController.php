@@ -54,11 +54,11 @@ class UserController extends CentralController
 
     public function actionSignupClient()
     {
-        return view('lawyers.user.signup-client');
+        return view('lawyers.user.bootstrap.signup-client');
     }
 
     public function actionSignupEmployee()
     {
-        return view('lawyers.user.signup-employee');
+        return view('lawyers.user.bootstrap.signup-employee');
     }
 }
