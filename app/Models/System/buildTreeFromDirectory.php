@@ -18,10 +18,12 @@ class buildTreeFromDirectory{
     private $filter;
 
     public function __construct($root_dir){
+        $t = $root_dir;
         $root_dir = realpath($root_dir);
-        if(!$root_dir)
-            throw new \Exception("This directory doesn't exist!");
-
+        if(!$root_dir) {
+            dd($t);
+            throw new \Exception("This directory doesn't exist! " . $root_dir);
+        }
         $this->root_dir = $root_dir;
         $this->setFilter();
         date_default_timezone_set(@date_default_timezone_get());
