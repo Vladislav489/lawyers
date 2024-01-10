@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends CentralController {
     public function actionIndex(){
-        return view('Site.Login.login');
+        return view('lawyers.Login.login');
     }
     public function actionIn(){
         $request = request();
@@ -21,7 +21,7 @@ class LoginController extends CentralController {
         if(Auth::attempt($credentials,true)){
             return redirect(url('/'));
         } else {
-            return  view('Site.Login.login',['mess'=>"User or Password do not current"]);
+            return  view('lawyers.Login.login',['mess'=>"User or Password do not current"]);
         }
     }
     public function actionLoguot(){
