@@ -27,7 +27,7 @@ class LoginController extends CentralController {
     }
     public function actionLoguot(){
         Auth::guard('admin')->logout();
-        return redirect(route__());
+        return redirect(url('/'));
     }
 
     public  function getPageParams(){
