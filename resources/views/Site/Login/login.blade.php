@@ -1,4 +1,4 @@
-@extends('Site.Forecast.layouts.short_layout')
+@extends('lawyers.layouts.short_layout')
 @push('content')
 <main class="main">
     <div class="container" style="text-align: center;">
