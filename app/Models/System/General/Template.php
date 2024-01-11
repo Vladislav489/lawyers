@@ -390,10 +390,12 @@ class Template extends CoreEngine {
    private function getAllTemplates(){
         $tree = new buildTreeFromDirectory(resource_path().self::_PATH_);
         $tree->setFilter($this->allow_ext, $this->prefix,['layouts']);
-        $this->rebuildTreeFolder($tree->getTree()['dirs']);
+        $dirs = $tree->getTree();
+        if(isset($dirs['dirs']))
+            $this->rebuildTreeFolder($dirs['dirs']);
         return $this;
     }
-   private function rebuildTreeFolder($dataTree){
+   private function rebuildTreeFolder($dataTree) {
         foreach ($dataTree as $key => $item){
             if(key_exists('files',$item)){
                 foreach ($item['files'] as $file) {
