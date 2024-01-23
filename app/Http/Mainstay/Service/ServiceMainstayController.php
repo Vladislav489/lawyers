@@ -4,7 +4,9 @@ namespace App\Http\Mainstay\Service;
 
 use App\Models\CoreEngine\LogicModels\Service\ServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
+use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use App\Models\System\ControllersModel\MainstayController;
+use App\Models\System\HelperFunction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +34,6 @@ class ServiceMainstayController extends MainstayController
                 'errors' => $validator->errors()
             ]);
         }
-
         return response()->json(
             (new ServiceLogic())->store($request->all())
         );
@@ -52,10 +53,15 @@ class ServiceMainstayController extends MainstayController
 
     public function actionServiceDelete(Request $request)
     {
-        if ($request->isMethod('delete')) {
-            return response()->json(
-                (new ServiceLogic())->deleteService($request->all())
-            );
-        }
+        return response()->json(
+            (new ServiceLogic())->deleteService($request->all())
+        );
+    }
+
+    public function actionGetServiceTypeList()
+    {
+        $return['result'] = ServiceType::all()->toArray();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($return['result'],'id','name');
+        return response()->json($return);
     }
 }
