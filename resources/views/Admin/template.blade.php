@@ -94,7 +94,7 @@
                               'autostart' => 'false',
                               'style' => '4',
                               "data"=>json_encode($component_tree),
-                              'url' => route__('actionGetListComponentWithCode_backcontroller'),
+                              'url' => route__('actionGetListComponentWithCode_admin_mainstay_backcontroller'),
                               'template'=>"<div id=\"\${this.id}\" v-bind:class=\"' nav_menu_component_'+style\" onselectstart=\"return false\">
                                               <ul class=\"topmenu_menu_component\" onselectstart=\"return false\">
                                                   <menu-tree v-for=\"hItem in data\" v-bind:item=\"hItem\"></menu-tree>
@@ -119,10 +119,10 @@
                     @include("component.htmlEditorComponent.htmlEditor",[
                            'autostart' => 'false',
                            'name' => "HtmlEditor",
-                           'url_buld_view' => route__("actionBuildView_backcontroller"),
+                           'url_buld_view' => route__("actionBuildView_admin_mainstay_backcontroller"),
                            'template' => $template,
                            'ConnectElement'=>'componentSite',
-                           'UrlForComponent'=>route__("actiongetNewCodeForComponent_backcontroller")
+                           'UrlForComponent'=>route__("actiongetNewCodeForComponent_admin_mainstay_backcontroller")
                        ])
                      @else
                         <p style="color: red">В темплейте компонентов есть не экранированые кавычки или нарушен структура компонента!!! </p>
@@ -148,7 +148,7 @@
                         @include('component.dragDropComponent.dragDropUlList',[
                                  "name" => 'paramsDescription',
                                  "autostart" => 'true',
-                                 "url" => route__("actionGetModuleLogic_backcontroller"),
+                                 "url" => route__("actionGetModuleLogic_admin_mainstay_backcontroller"),
                                  "container" => ["descriptionSeo","titleSeo"],
 
                                  "callDropFunction" => "function(event,ui) {
@@ -234,7 +234,7 @@
                 dataSend['seo'][$(seo[key]).data('name')] = $(seo[key]).val()
             var file = $('textarea[name*=include]').get();
 
-            page__.sendData('{{route__("actionTempateSave_backcontroller")}}', dataSend, function(data) {
+            page__.sendData('{{route__("actionTempateSave_admin_mainstay_backcontroller")}}', dataSend, function(data) {
                 if (data !== false) {window.close();}
             });
         })

@@ -27,7 +27,7 @@
                                 "autostart" => 'true',
                                 "name" => 'type_id_edit',
                                 "default_title" => 'Выбрать',
-                                "url" => route("actionGetServiceTypeList_servicemainstaycontroller"),
+                                "url" => route("actionGetServiceTypeList_mainstay_service_servicemainstaycontroller"),
                                 "template" => 'simpleSelect',
                                 "change" => "function(){}"
                             ]])
@@ -46,7 +46,7 @@
     'params_component' => [
     "autostart" => 'true',
     "name"=>"service_list",
-    "url"=>route("actionGetServiceList_servicemainstaycontroller"),
+    "url"=>route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
     "template"=>"<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
         <thead>
            <tr>
@@ -89,7 +89,7 @@
                         dataSend[key.replace('_edit', '')] = $(dataEdit[index]).val();
                     }
                 }
-                page__.sendData("{{route__("actionServiceStore_servicemainstaycontroller")}}",
+                page__.sendData("{{route__("actionServiceStore_mainstay_service_servicemainstaycontroller")}}",
                     dataSend,function(data){
                         if(data['result'] == 0){
                             jAlertError("Ошибка","  данные не сохранены!");
@@ -115,7 +115,7 @@
             }
             function DeleteItem(id){
                 if(confirm("Точно хотите удалить ?")){
-                    page__.sendData("{{route__("actionServiceDelete_servicemainstaycontroller")}}",
+                    page__.sendData("{{route__("actionServiceDelete_mainstay_service_servicemainstaycontroller")}}",
                         {'id':id},function(data){
                             if(data['result'] == 0){
                                 jAlertError("Ошибка","  данные не удалены!");

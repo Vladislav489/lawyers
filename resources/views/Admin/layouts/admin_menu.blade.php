@@ -5,7 +5,7 @@
                                         "sort_by"=>['sort'],
                                      ],
                                     'autostart' => 'false',
-                                    'url'=>route__('actionSystemsMenu_backcontroller'),
+                                    'url'=>route__('actionSystemsMenu_admin_mainstay_backcontroller'),
                                     'data'=> 'null',
                                     'template'=>"menu",
                                     'templateItem'=>"menuItem",

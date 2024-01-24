@@ -39,7 +39,7 @@
             var sendParams = {'site_setting':{}};
             sendParams['key'] ='site_setting';
             sendParams['value'] = {'includeFromHeadToDown':$(this).is(':checked')}
-            page__.sendData('{{route__('actionSetSetting_backcontroller')}}',sendParams);
+            page__.sendData('{{route__('actionSetSetting_admin_mainstay_backcontroller')}}',sendParams);
         });
     </script>
 @endpush

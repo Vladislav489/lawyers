@@ -225,7 +225,7 @@ class BackController extends MainstayAdminController {
         Artisan::call("route:clear");
         Artisan::call("cache:clear");
         Artisan::call("view:clear");
-        return redirect(route__('actionIndex_admincontroller'));
+        return redirect(route__('actionIndex_admin_controllers_admincontroller'));
     }
 
     public function actionGetListSiteSelect($param = []){

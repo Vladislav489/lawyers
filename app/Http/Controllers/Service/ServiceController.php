@@ -34,19 +34,4 @@ class ServiceController extends FrontController
 
         return parent::callAction($method, $parameters);
     }
-
-    public function actionServiceList()
-    {
-        return view('lawyers.service.service-list');
-    }
-
-    public function actionServiceCreate()
-    {
-        return view('lawyers.service.service-create');
-    }
-
-    public function actionServiceEdit()
-    {
-        return view('lawyers.service.service-edit');
-    }
 }

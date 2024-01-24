@@ -4,77 +4,91 @@ namespace App\Models\CoreEngine\LogicModels\Service;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
+use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 
 class ServiceLogic extends CoreEngine
 {
-    public function __construct($params = [], $select = ['*'], $callback = null)
-    {
+    public function __construct($params = [], $select = ['*'], $callback = null) {
         $this->engine = new Service();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
-
         parent::__construct($params, $select);
     }
 
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
-
-        return $this->group_params;
-    }
-
-    protected function defaultSelect(): array
-    {
+    protected function defaultSelect(): array {
         $tab = $this->engine->tableName();
         $this->default = [];
 
         return $this->default;
     }
 
-    protected function getFilter(): array
-    {
-        $tab = $this->engine->getTable();
-        $this->filter = [];
-        $this->filter = array_merge($this->filter, parent::getFilter());
-
-        return $this->filter;
-    }
-
-    public function store(array $data): array|bool
-    {
+    public function store(array $data): array|bool {
         try {
-            $service = array_intersect_key(
-                $data,
-                array_flip($this->engine->getFillable())
-            );
+            $service = array_intersect_key($data, array_flip($this->engine->getFillable()));
 
             if (isset($data['id'])) {
                 $service['id'] = $data['id'];
             }
 
-            if ($data['id'] = $this->save($service)) {
-                return $data;
-            }
+            $data['id'] = $this->save($service);
+            return $data;
 
         } catch (\Throwable $e) {
+            return false;
         }
-
-        return false;
     }
 
-    public function deleteService(array $data): bool
-    {
+    public function deleteService(array $data): bool {
         try {
             $service = $this->setModel(new Service());
             return $service->delete($data['id']);
         } catch (\Throwable $e) {
+            return false;
         }
-
-        return false;
     }
+
+    protected function getFilter() {
+        $tab = $this->engine->getTable();
+        $this->filter = [
+            [   'field' => $tab.'.type_id','params' => 'type_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.is_archive','params' => 'is_archive',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => 'ServiceType.name','params' => 'service_name',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+        ];
+
+        return $this->filter = array_merge($this->filter, parent::getFilter());;
+    }
+
+    protected function compileGroupParams() {
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' => [
+                'ServiceType' => [
+                    'entity' => new ServiceType(),
+                    'relationship' => ['type_id','id'],
+                    'field' => ['ServiceType.*'],
+                ],
+            ]
+        ];
+        return $this->group_params;
+    }
+
 }

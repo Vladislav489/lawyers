@@ -17,7 +17,7 @@
                                "params_component" => [
                                 "autostart" => 'true',
                                 "name" => 'route_id_edit',
-                                "url" => route__("actionGetListPageSite_backcontroller"),
+                                "url" => route__("actionGetListPageSite_admin_mainstay_backcontroller"),
                                 "template" => "simpleSelect",
                                 "change" => "function(){
                                  $('[name=url_edit]').val($(this).val());
@@ -61,7 +61,7 @@
     "params_component"=>[
     "autostart" => 'true',
     "name" => "routes",
-    "url"=>route__("actionGetListView_backcontroller"),
+    "url"=>route__("actionGetListView_admin_mainstay_backcontroller"),
     "template"=>"<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
         <thead v-if=\"typeof(column) !== 'undefined'\" v-bind:id=\"name+'_head'\">
            <tr><th v-for=\"items_col in column\">@{{items_col.name}}</th><th></th></tr>
@@ -71,7 +71,7 @@
                 <td v-for=\"items_col in column\"> @{{getByKey(items_,items_col.key)}}</td>
                 <td><div class='flex adm-ml20'>
                             <div><a v-on:click=\"Edit(items_,items_.physically)\"><i class='grid_admn_btn fa fa-pencil-square-o'>&nbsp;</i></a></div>
-                            <div><a target='blank' :href=\"'".route__("actionTemplateEdit_admincontroller")."?template='+items_.id\"><i class='grid_admn_btn fa fa-object-group'>&nbsp;</i></a></div>
+                            <div><a target='blank' :href=\"'".route__("actionTemplateEdit_admin_controllers_admincontroller")."?template='+items_.id\"><i class='grid_admn_btn fa fa-object-group'>&nbsp;</i></a></div>
                             <div><a v-on:click=\"showHide(items_,index)\"><i class='grid_admn_btn fa' v-bind:class=\"[items_.active ? 'fa-eye' : 'fa-eye-slash']\">&nbsp;</i></a></div>
                             <div><a v-on:click=\"DeleteItem(items_.id)\"><i class='grid_admn_btn fa fa-trash-o'>&nbsp;</i></a></div>
                 </div></td>
@@ -102,7 +102,7 @@
                     }
                 }
             }
-            page__.sendData("{{route__("actionViweSave_backcontroller")}}",
+            page__.sendData("{{route__("actionViweSave_admin_mainstay_backcontroller")}}",
                 dataSend,function(data){
                     if(data['result'] == 0){
                         jAlertError("Ошибка","  данные не сохранены!");
@@ -115,7 +115,7 @@
         });
         function showHide(data,index){
             data['active'] = (data['active'] == 1)?0:1;
-            page__.sendData("{{route__("actionViweSave_backcontroller")}}",
+            page__.sendData("{{route__("actionViweSave_admin_mainstay_backcontroller")}}",
                 {'active':data['active'],'id':data['id']},function(data){
                     if(data['result'] == 0) jAlertError("Ошибка","  данные не сохранены!");
                 })
@@ -144,7 +144,7 @@
         }
         function DeleteItem(id){
             if(confirm("Точно хотите удалить ?")){
-                page__.sendData("{{route__("actionViweDelete_backcontroller")}}",
+                page__.sendData("{{route__("actionViweDelete_admin_mainstay_backcontroller")}}",
                     {'id':id},function(data){
                         if(data['result'] == 0)
                             jAlertError("Ошибка","  данные не удвлены!");

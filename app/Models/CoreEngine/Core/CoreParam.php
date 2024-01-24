@@ -165,7 +165,7 @@ class CoreParam{
          return $return;
     }
     //ВЫПОЛНЯЕТ ОСНОВНУЮ ЛОГИКУ ПРОВЕРКИ И СОЗДАНИЯ ПАРАМЕТРОВ ДЛЯ WHERE
-    private function checkParams(){
+    private function checkParams() {
         $this->buildDefaultValue($this->checkParamsRule);
         $this->buildValidationRules($this->checkParamsRule);
         $this->objValidate->validata();
@@ -186,8 +186,6 @@ class CoreParam{
                     }
                 }
             }
-        } else {
-            throw new Exception("Filter array not set, call method filter in constructor");
         }
     }
     //если находит с одинаковыми ключами создает дополнительный ключ
@@ -235,9 +233,8 @@ class CoreParam{
                 break;
             case "string|array":
                     if(is_array($data)) {
-                        foreach ($data as $key => $item){
+                        foreach ($data as $key => $item)
                             $data[$key] = (string) urldecode($item);
-                        }
                         return $data;
                     } else {
                         return (string) urldecode($data);
@@ -316,6 +313,7 @@ class CoreParam{
     private function buildValidateRulesArray($dataValidation){
         $rulesValidation = array();
         try {
+            if(is_array($dataValidation) && !empty($dataValidation))
             foreach ($dataValidation as $key => $item) {
                 if (key_exists('validate', $item) !== false) {
                     $rulesValidation['validate'][$item['params']] = $item['validate'];
@@ -327,17 +325,8 @@ class CoreParam{
                     $rulesValidation['error_validate'][$item['params']] = $item['error_validate'];
                 }
             }
-        }catch (\Throwable $e){
-            SystemLog::addLog(
-                "CoreParasm",
-                [$dataValidation,$this->params  ],
-                " Проверьте правельность написание фильтров пример ".
-                "[   'field'=>tab.'.','id'  ,'params'=> 'id',
-                    'validate' =>['string'=>true,'empty'=>true],
-                    'type' => 'string|array',
-                    'action' => '=', 'concat' => 'AND'
-                ]"
-            );
+        } catch (\Throwable $e) {
+            $this->LogError($e, ['data' => $dataValidation,'params' => $this->params]);
         }
         return $rulesValidation;
     }
@@ -348,5 +337,23 @@ class CoreParam{
                 $item = self::lowerKey($item);
             return $item;
         },array_change_key_case($arr,CASE_LOWER));
+    }
+
+    protected function LogError( \Throwable|null $e = null,$dataFrom = [],$title = null) {
+        if (!is_null($e)) {
+            $dataMessage = [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'code' => $e->getCode(),
+                'file' => $e->getFile() . " line:" . $e->getLine(),
+                'revious' => $e->getPrevious()
+            ];
+            $dataMessage = array_merge($dataMessage,$dataFrom);
+        } else {
+            $dataMessage = $dataFrom;
+        }
+        $title_ = get_class($this)." => ".debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+        $title = (is_null($title))? "Core engin ".$title_: "Core params ".$title;
+        SystemLog::addLog($title,$dataMessage," Ошибка запроса ", SystemLog::CODE_ERROR);
     }
 }

@@ -4,21 +4,43 @@ $includeFileSystem = [];
 function route__($name,$params = []) {
     try {
         return route($name, $params, false);
-    }catch (\Throwable $e){
+    } catch (\Throwable $e) {
+        \App\Models\System\SystemLog::addLog(
+            "Route не найдет была сделане перезагрузка кеша",
+            [
+                'massage' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'file' => $e->getFile()." Line ",$e->getLine(),
+                'previous' => $e->getPrevious(),
+                'data' => [$name, $params]
+            ],
+            "сделане перезагрузка кеша",
+            \App\Models\System\SystemLog::CODE_ERROR
+        );
         Artisan::call("route:clear");
-        \Illuminate\Support\Facades\Cache::tags([\App\Models\System\General\Site::getSite()['domain_name']])
-            ->delete(\App\Models\System\RouteBilder::getCacheName());
+
         try {
             return route($name, $params, false);
-        }catch (\Throwable $e){
-          //  abort(404);
+        } catch (\Throwable $e) {
+            \App\Models\System\SystemLog::addLog(
+                "Route не найдет перезагрузка кеша не дала результат",
+                [
+                    'data' => [$name, $params],
+                    'massage' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                    'file' => $e->getFile()." Line ",$e->getLine(),
+                    'previous' => $e->getPrevious(),
+                ],
+                "Критическая ошибка Routr",
+                \App\Models\System\SystemLog::CODE_ERROR
+            );
+             abort(500,$name." Данный путь не существует !!!!!! ");
         }
     }
 }
 
 
 function getSetting($key,$site = true,$user = false){
-
     if($site && !$user) {
         return \App\Models\System\General\SettingStorage::getInstance()->getSetting($key);
     }

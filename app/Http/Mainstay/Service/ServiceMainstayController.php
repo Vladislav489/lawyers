@@ -3,6 +3,7 @@
 namespace App\Http\Mainstay\Service;
 
 use App\Models\CoreEngine\LogicModels\Service\ServiceLogic;
+use App\Models\CoreEngine\LogicModels\Service\ServiceTypeLogic;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use App\Models\System\ControllersModel\MainstayController;
@@ -22,46 +23,42 @@ class ServiceMainstayController extends MainstayController
         return parent::callAction($method, $parameters);
     }
 
-    public function actionServiceStore(Request $request)
+    public function actionServiceStore(array $param = [])
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'description' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
+        $this->params = (empty($param)) ? $this->params : $param;
         return response()->json(
-            (new ServiceLogic())->store($request->all())
+            (new ServiceLogic())->store($this->params)
         );
     }
 
-    public function actionGetService(Request $request)
+    public function actionGetService(array $param = [])
     {
+        $this->params = (empty($param)) ? $this->params : $param;
         return response()->json(
-            Service::find($request->input('id'))
+            (new ServiceLogic($this->params))->getSandartResultOne()
         );
     }
 
-    public function actionGetServiceList()
+    public function actionGetServiceList(array $param = [])
     {
-        return response()->json((new ServiceLogic())->getList());
+        $this->params = (empty($param)) ? $this->params : $param;
+        $this->params = array_merge($this->params, ['is_deleted' => 0]);
+        return response()->json((new ServiceLogic($this->params))->getList());
     }
 
-    public function actionServiceDelete(Request $request)
+    public function actionServiceDelete(array $param = [])
     {
+        $this->params = (empty($param)) ? $this->params : $param;
         return response()->json(
-            (new ServiceLogic())->deleteService($request->all())
+            (new ServiceLogic())->deleteService($this->params)
         );
     }
 
-    public function actionGetServiceTypeList()
+    public function actionGetServiceTypeList(array $param = [])
     {
-        $return['result'] = ServiceType::all()->toArray();
-        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($return['result'],'id','name');
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new ServiceTypeLogic())->getSandartResultList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }
 }

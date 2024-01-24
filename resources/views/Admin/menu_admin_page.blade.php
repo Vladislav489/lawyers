@@ -23,7 +23,7 @@
                                 "autostart" => 'true',
                                 "name" => 'parent_id_edit',
                                 "default_title" => 'Выбрать',
-                                "url" => route("actionGetAdminMenuList_backcontroller"),
+                                "url" => route("actionGetAdminMenuList_admin_mainstay_backcontroller"),
                                 "template" => 'simpleSelect',
                                 "change" => "function(){}"
                             ]])
@@ -59,7 +59,7 @@
     'params_component' => [
     "autostart" => 'true',
     "name"=>"menu_admin",
-    "url"=>route("actionAdminMenuList_backcontroller"),
+    "url"=>route("actionAdminMenuList_admin_mainstay_backcontroller"),
     "template"=>"<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
         <thead v-if=\"typeof(column) !== 'undefined'\" v-bind:id=\"name+'_head'\">
            <tr><th v-for=\"items_col in column\">@{{items_col.name}}</th><th></th></tr>
@@ -98,7 +98,7 @@
                     dataSend[key.replace('_edit', '')] = $(dataEdit[index]).val();
                 }
             }
-            page__.sendData("{{route__("actionAdminMenuSave_backcontroller")}}",
+            page__.sendData("{{route__("actionAdminMenuSave_admin_mainstay_backcontroller")}}",
                 dataSend,function(data){
                     if(data['result'] == 0){
                         jAlertError("Ошибка","  данные не сохранены!");
@@ -111,7 +111,7 @@
         }
         function showHide(data,index){
             data['active'] = (data['active'] == 1)?0:1;
-            page__.sendData("{{route__("actionAdminMenuSave_backcontroller")}}",
+            page__.sendData("{{route__("actionAdminMenuSave_admin_mainstay_backcontroller")}}",
                 {'active':data['active'],'id':data['id']},function(data){
                     if(data['result'] == 0) jAlertError("Ошибка","  данные не сохранены!");
                 })
@@ -131,7 +131,7 @@
         }
         function DeleteItem(id){
             if(confirm("Точно хотите удалить ?")){
-                page__.sendData("{{route__("actionGetAdminMenuDelete_backcontroller")}}",
+                page__.sendData("{{route__("actionGetAdminMenuDelete_admin_mainstay_backcontroller")}}",
                     {'id':id},function(data){
                         if(data['result'] == 0){
                             jAlertError("Ошибка","  данные не удвлены!");

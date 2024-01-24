@@ -12,7 +12,7 @@
                 @include("component.listComponent.selectComponent",[
                           'name'=>'teble_edit',
                           'default_title'=>"Выбрать",
-                          'url'=>route("actionGetListTable_backcontroller"),
+                          'url'=>route("actionGetListTable_admin_mainstay_backcontroller"),
                           'template'=>"simpleSelect",
                           'change'=>"function(event){
                                 if(event.data.obj_class!=null){
@@ -32,7 +32,7 @@
                 @include("component.listComponent.selectComponent",[
                           'name'=>'teble_field_edit',
                           'default_title'=>"Выбрать",
-                          'url'=>route("actionGetListFieldTable_backcontroller"),
+                          'url'=>route("actionGetListFieldTable_admin_mainstay_backcontroller"),
                           'template'=>"simpleSelect",
                           'change'=>"function(){}"
                 ])
