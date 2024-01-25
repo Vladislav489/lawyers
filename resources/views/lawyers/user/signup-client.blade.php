@@ -8,10 +8,10 @@
 
             <ul class="round-top_nav">
                 <li class="active">
-                    <a href="{{ route__('actionSignupClient_usercontroller') }}">Клиент</a>
+                    <a href="{{ route__('actionSignupClient_controllers_site_usercontroller') }}">Клиент</a>
                 </li>
                 <li>
-                    <a href="{{ route__('actionSignupEmployee_usercontroller') }}">Юрист</a>
+                    <a href="{{ route__('actionSignupEmployee_controllers_site_usercontroller') }}">Юрист</a>
                 </li>
             </ul>
 
@@ -20,8 +20,8 @@
                 action="#"
                 method="post"
                 enctype="application/x-www-form-urlencoded"
-                data-request-url="{{ route__('actionStoreClient_clientmainstaycontroller') }}"
-                data-success-url="{{ route__('actionLogin_usercontroller') }}"
+                data-request-url="{{ route__('actionStoreClient_mainstay_client_clientmainstaycontroller') }}"
+                data-success-url="{{ route__('actionLogin_controllers_site_usercontroller') }}"
             >
                 @csrf
                 <div class="registration-form_block">

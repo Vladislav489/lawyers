@@ -139,7 +139,7 @@
                     'params_component' => [
                         'autostart' => 'true',
                         'name' => 'service_list',
-                        'url' => route__("actionGetEmployeeList_employeemainstaycontroller"),
+                        'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
 
                         'template' => '<div class="found-specialists">
                             <div v-for="item in data" class="fs-block">

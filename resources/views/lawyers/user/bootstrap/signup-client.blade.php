@@ -18,8 +18,8 @@
                     <h1 class="fs-3">Регистрация аккаунта</h1>
                     <div class="d-grid gap-2">
                         <div class="btn-group btn-group-sm mt-3">
-                            <a href="{{ route__('actionSignupClient_usercontroller') }}" class="btn btn-outline-primary active">Клиент</a>
-                            <a href="{{ route__('actionSignupEmployee_usercontroller') }}" class="btn btn-outline-primary">Сотрудник</a>
+                            <a href="{{ route__('actionSignupClient_controllers_site_usercontroller') }}" class="btn btn-outline-primary active">Клиент</a>
+                            <a href="{{ route__('actionSignupEmployee_controllers_site_usercontroller') }}" class="btn btn-outline-primary">Сотрудник</a>
                         </div>
                     </div>
                     <form
@@ -29,8 +29,8 @@
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"
-                        data-request-url="{{ route__('actionStoreClient_clientmainstaycontroller') }}"
-                        data-success-url="{{ route__('actionLogin_usercontroller') }}"
+                        data-request-url="{{ route__('actionStoreClient_mainstay_client_clientmainstaycontroller') }}"
+                        data-success-url="{{ route__('actionLogin_controllers_site_usercontroller') }}"
                     >
                         @csrf
                         <div class="mb-3">
@@ -154,10 +154,10 @@
         ];
 
         getDataArray([
-            "{{ route__('actionGetCities_helpdatamainstaycontroller') }}",
-            "{{ route__('actionGetCountries_helpdatamainstaycontroller') }}",
-            "{{ route__('actionGetDistricts_helpdatamainstaycontroller') }}",
-            "{{ route__('actionGetStates2_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetCities_mainstay_helpdata_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetDistricts_mainstay_helpdata_helpdatamainstaycontroller') }}",
+            "{{ route__('actionGetStates2_mainstay_helpdata_helpdatamainstaycontroller') }}",
         ]).then(({data}) => {
             entities.forEach((entity, index) => {
                 const selectElement = document.getElementById(entity);
