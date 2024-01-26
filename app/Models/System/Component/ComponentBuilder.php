@@ -34,8 +34,8 @@ ComponentBuilder {
     private $codeComponent = "";
 
     public function __construct(){
-        $this->listShowOptionComponent[] = route__("actionTemplateEdit_admincontroller");
-        $this->listShowOptionComponent[] = route__("actionBuildView_backcontroller");
+        $this->listShowOptionComponent[] = route__("actionTemplateEdit_admin_controllers_admincontroller");
+        $this->listShowOptionComponent[] = route__("actionBuildView_admin_mainstay_backcontroller");
         $this->request = request();
     }
 
@@ -333,7 +333,7 @@ ComponentBuilder {
                         $response = $obj->{$listUrl[$params_component['url']]['action']}($paramSend);
 
                     } catch (\Throwable $e) {
-                        dd($paramSend ,$listUrl[$params_component['url']]['controller'],$params_component['url'],$listUrl[$params_component['url']]['action'],$response);
+//                        dd($paramSend ,$listUrl[$params_component['url']]['controller'],$params_component['url'],$listUrl[$params_component['url']]['action'],$response);
                         SystemLog::addLog("SSR Error Http Request",
                             [
                                 'component_param' => $params_component,

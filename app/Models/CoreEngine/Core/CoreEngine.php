@@ -29,11 +29,14 @@ class CoreEngine{
     protected $query;
     protected $default = [];
 
+    protected $lang_id = 1;
+
+    protected $class;
     protected $coreParams;
     protected $filter;
     protected $params;
 
-    protected $pagination = ['totalCount' =>0,'countPage'=>0,'pageSize' => false,'page'=> 1];
+    protected $pagination = ['totalCount' => 0,'countPage' => 0,'pageSize' => false,'page' => 1];
     protected $paginationOff = false;
     protected $limit = self::DEFAULT_LIMI;
     protected $union = false;
@@ -42,7 +45,12 @@ class CoreEngine{
     private   $checkJoin = [];
     private   $debug_sql = false;
     private   $query_debug_sql = true;
-    private   $error = [];
+    protected $error = [];
+
+    public function __destruct() {
+        if(count($this->error) > 1 && !empty($this->error))
+                SystemLog::query()->insert($this->error);
+    }
 
     public function __construct($params,$select = [],$callback = null ){
         $this->setSelect((is_array($select) && count($select) > 0)?$select:$this->defaultSelect());
@@ -51,18 +59,45 @@ class CoreEngine{
             unset($params['site_id']);
         }
         $this->union = (key_exists('union',$params))? true:false;
-        if (!isset($params['is_deleted']))
-            $params['is_deleted'] = 0;
-        $this->params = $params;
-        $this->setCoreParams($callback);
+        if (!isset($params['is_delete']))
+            $params['is_delete'] = 0;
+        $this->class = get_class($this);
+        $this->setCoreParams($params,$callback);
     }
 
-    public function setCoreParams($callback = null ){
+    public function setCoreParams($params = [] , $callback = null ){
+        $this->params = $params;
         $this->coreParams = new CoreParam();
         $this->coreParams->setParams($this->params);
         if(!is_null($callback)) $this->coreParams->specialValueCallBack($callback);
         $this->coreParams->setRules($this->filter);
+        return $this;
+    }
 
+    protected function LogError( \Throwable|null $e = null,$dataFrom = [],$title = null) {
+        try {
+            if (!is_null($e)) {
+                $dataMessage = [
+                    'message' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile() . " line:" . $e->getLine(),
+                    'revious' => $e->getPrevious()
+                ];
+                $dataMessage = array_merge($dataMessage, $dataFrom);
+            } else {
+                $dataMessage = $dataFrom;
+            }
+            $title_ = get_class($this) . " => " . debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+            $title = (is_null($title)) ? "Core engin " . $title_ : "Core engin " . $title;
+            $this->error[] = ['title' => $title,
+                    'log' => json_encode($dataMessage),
+                    'short_text' => " Ошибка запроса ",
+                    'code' => SystemLog::CODE_ERROR
+                   ];
+        } catch (\Throwable $e) {
+           dd($e->getMessage());
+        }
     }
 
     public function getRealExistFilter() {
@@ -74,13 +109,12 @@ class CoreEngine{
         return $return;
     }
     public function getParamsFilterAll() {
+        if (!is_array($this->filter) && count($this->filter) == 0 )
+            return [];
         $return = [];
-        if (is_array($this->filter) && count($this->filter) > 0 ) {
-            foreach ($this->filter as $item)
+        foreach ($this->filter as $item)
                 $return[] = $item['params'];
-            return $return;
-        }
-        return [];
+        return $return;
     }
     //ДЛЯ ДЕБАГА
     public function OffQuery() {
@@ -103,134 +137,136 @@ class CoreEngine{
     //Управление данными
     public function save($data){
         try {
-            if (isset($data['id'])) {
+            $id = false;
+            if(isset($data['id']) && !empty($data['id'])) {
                 $id = $data['id'];
                 unset($data['id']);
-                return $this->update($data, $id);
-            } else {
-                return $this->insert($data);
             }
-        }catch (\Throwable $e){
-            SystemLog::addLog(
-                get_class($this->engine)." Save ",
-                [$data,$e->getMessage(),$e->getFile(),$e->getLine(),$e->getTraceAsString()],
-                get_class($this->engine)." Save ".$e->getMessage()."=>".$e->getFile()." ".$e->getLine(),
-                SystemLog::CODE_ERROR
-            );
+            return ($id)?  $this->update($data, $id):$this->insert($data);
+        } catch (\Throwable $e) {
+            $this->LogError($e,['data'=>$data]);
             return false;
         }
     }
     //ПОЛУЧЕНИЕ ВНУТРЕННИХ ОБЪЕКТОВ
     public function getLable($cols,$lang,$ignory = []){
-        $lable = [];
-        $cols = array_combine($cols,$cols);
-        $lable[] = $this->engine->getLable($lang);
-        foreach ($this->joinTable as $item) {
-            $lable[] = $this->group_params['relatedModel'][$item]['entity']->getLable($lang);
-        }
-        foreach ($lable as  $key => $itemsLabel){
-            $lable[$key] = (!is_null($itemsLabel))?HelperFunction::getLableForQuery($cols,$itemsLabel,$ignory):$cols;
-        }
-        $column = HelperFunction::joinColumLabel($lable);
-        $column = HelperFunction::missingColumnLabel($column,$cols);
-        $column = HelperFunction::ignoryColumnLable($column,$ignory);
-        $column = HelperFunction::SortLableByArray($column,$cols);
-        return $column;
-    }
-    public function insert($data,$type = self::INSERT){
-        $result = null;
+        try {
+            $cols = array_combine($cols, $cols);
+            $lable = [$this->engine->getLable($lang)];
+            foreach ($this->joinTable as $item)
+                $lable[] = $this->group_params['relatedModel'][$item]['entity']->getLable($lang);
 
-        if($this->checkInsertColumn($data,$type)) {
-            if ($type == self::INSERT) {
-                if (!isset($data[0])) {
-                    $result = $this->query->insertGetId($data);
-                    return ($result)? $result:null;
-                } else {
-                    $this->error[] = "Используется одномерный массив где в роле ключей выступают название полей";
-                    return false;
-                }
-            }
-            if ($type == self::INSERT_IGNOR) {
-                if (!isset($data[0])) {
-                    $result = $this->query->insertOrIgnore($data);
-                    return ($result)? $result:null;
-                } else {
-                    $this->error[] = "Используется одномерный массив где в роле ключей выступают название полей";
-                    return false;
-                }
-            }
-            if ($type == self::INSERT_MULTI) {
-                if (is_array($data[0])) {
-                    return $this->query->insert($data);
-                } else {
-                    $this->error[] = "Используется многомерный массив где каждый элемент массива это массив где  в роле ключей выступают название полей";
-                    return false;
-                }
+            foreach ($lable as $key => $itemsLabel)
+                $lable[$key] = (!is_null($itemsLabel)) ? HelperFunction::getLableForQuery($cols, $itemsLabel, $ignory) : $cols;
 
-            }
-            if ($type == self::INSERT_MULTI_IGNORY) {
-                if (is_array($data[0])) {
-                    return $this->query->insertOrIgnore($data);
-                } else {
-                    $this->error[] = "Используется многомерный массив где каждый элемент массива это массив где  в роле ключей выступают название полей";
-                    return false;
-                }
-            }
-        }else{
-            $this->error[] = "Есть поля которые не сотвецтвуют таблице";
-            SystemLog::addLog(
-                get_class($this->engine)." Поля не соответствуют",
-                [$data,$this->engine->getFillable()],
-                get_class($this->engine)." query",
-                SystemLog::CODE_ERROR
-            );
-            return null;
+            $column = HelperFunction::joinColumLabel($lable);
+            $column = HelperFunction::missingColumnLabel($column, $cols);
+            $column = HelperFunction::ignoryColumnLable($column, $ignory);
+            $column = HelperFunction::SortLableByArray($column, $cols);
+            return $column;
+        } catch (\Throwable $e) {
+                $this->LogError($e,['cols' => $cols,'lang' => $lang,'ignory' => $ignory]);
+                return false;
         }
-        return $result;
     }
-    public function delete($id,$key = NULL){
-        $id = (!is_array($id))?[$id]:$id;
-        if(is_null($key)) {
-            return $this->query->newQuery()->whereIn('id', $id)->update(['is_deleted' => 1]);
-        } else {
-            if(in_array($key,$this->engine->getFillable())) {
-                return $this->query->newQuery()->whereIn($key, $id)->update(['is_deleted' => 1]);
-            } else {
+
+    public function insert($data, $type = self::INSERT) {
+        try {
+            if (empty($data)) return false;
+            if (!$this->checkInsertColumn($data, $type)) {
+                $this->LogError(null,['data' => $data,'type' => $type]," Поля не соответствуют");
                 return false;
             }
+            switch ($type) {
+                case self::INSERT:
+                    return (!isset($data[0]) && $id = $this->query->insertGetId($data)) ? $id : false;
+                    break;
+                case self::INSERT_IGNOR:
+                    return (!isset($data[0]) && $this->query->insertOrIgnore($data));
+                    break;
+                case self::INSERT_MULTI:
+                    return (is_array($data[0]) && $this->query->insert($data));
+                    break;
+                case self::INSERT_MULTI_IGNORY:
+                    return (is_array($data[0]) && $this->query->insertOrIgnore($data));
+                    break;
+                default:
+                    break;
+            }
+        }catch (\Throwable $e ){
+            $this->LogError($e,['data' => $data , 'flag' => $type]);
+            return false;
         }
     }
-    public function deleteForeva($id){
-        $id = (!is_array($id))?[$id]:$id;
-        return $this->query->newQuery()->where('is_deleted','=',1)->whereIn('id', $id)->delete();
+
+    public function delete($id, $key = NULL){
+        try {
+            if (empty($id)) return false;
+            $id = (is_array($id)) ? $id:[$id];
+            if (is_null($key))
+                return $this->query->newQuery()->whereIn('id',$id)->update(['is_delete' => 1]);
+            else
+                return (in_array($key, $this->engine->getFillable()))? $this->query->newQuery()->whereIn($key, $id)->update(['is_delete' => 1]):false;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['data' => $id]);
+        }
     }
-    public function update($data,$id,$key = null){
-        if($this->checkInsertColumn($data)) {
-            $id = (is_array($id))? $id:[$id];
-            if(is_null($key)) {
-               $result = $this->query->newQuery()->whereIn('id', $id)->update($data);
-               return ($result) ? $id : false;
+
+    public function deleteForeva($id, $key = NULL) {
+        try {
+            if (empty($id)) return false;
+            $id = (!is_array($id)) ? [$id] : $id;
+            if (is_null($key))
+                return $this->query->newQuery()->whereIn('id', $id)->delete();
+            else
+                return (in_array($key, $this->engine->getFillable()))? $this->query->newQuery()->whereIn($key, $id)->delete():false;
+        } catch (\Throwable $e) {
+                $this->LogError($e,['data' => $id]);
+                return false;
+        }
+    }
+
+    public function update($data, $id, $key = null) {
+        try {
+
+            if (empty($id)) return false;
+            if (!$this->checkInsertColumn($data)) {
+                $this->LogError(null, ['data' => $data, 'id' => $id, 'key' => $key]);
+                return false;
+            }
+            if (is_null($key)) {
+                 $ids = ((is_array($id)) ? $id : [$id]);
+                (DB::table($this->engine->getTable())->whereIn('id', $ids)->update($data)) ? $id : false;
+
+               return $id;
             } else {
-                if(in_array($key,$this->engine->getFillable())) {
-                    $result = $this->query->newQuery()->whereIn('id', $id)->update($data);
-                    return ($result) ? $id : false;
+                if (in_array($key, $this->engine->getFillable())) {
+                    $ids = ((is_array($id)) ? $id : [$id]);
+                    return (DB::table($this->engine->getTable())->whereIn($key, $ids)->update($data)) ? $id : false;
                 } else {
                     return false;
                 }
             }
-        }else{
-                SystemLog::addLog(
-                    get_class($this->engine) . " Поля не соответствуют",
-                    [$data, $this->engine->getFillable()],
-                    get_class($this->engine) . " query",
-                    SystemLog::CODE_ERROR
-                );
-            return null;
+            return false;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['data' => $id]);
+            return false;
         }
     }
-    public function updateByFilter($dataSave){
-        $this->executeFilter();
-        return $this->query->update($dataSave);
+
+    public function updateByFilter($data){
+        try {
+            if (empty($data)) return false;
+            if (!$this->checkInsertColumn($data)) {
+                $this->LogError(null,['data' => $data]," Поля не соответствуют");
+                return false;
+            }
+            $this->executeFilter();
+            return $this->query->update($data);
+        } catch (\Throwable $e){
+            $this->LogError($e,['data' => $data]);
+            return false;
+        }
     }
     ///////////////////////////////////////
     public function setGroupBy($group_by) {
@@ -242,35 +278,34 @@ class CoreEngine{
     public function get_first_common_parent($objects) {
         $common_ancestors = null;
         foreach($objects as $object) {
-            if (is_object($object)) {
-                $class_name = get_class($object);
-            } else {
-                $class_name = $object;
-            }
-
+            $class_name = (is_object($object))?get_class($object):$object;
             $parent_class_names = array();
             $parent_class_name = $class_name;
             do {
                 $parent_class_names[] = $parent_class_name;
-            } while($parent_class_name = get_parent_class($parent_class_name));
-
-            if ($common_ancestors === null) {
-                $common_ancestors = $parent_class_names;
-            } else {
-                $common_ancestors = array_intersect($common_ancestors, $parent_class_names);
-            }
+            } while ($parent_class_name = get_parent_class($parent_class_name));
+            $common_ancestors = ($common_ancestors === null)?$parent_class_names:array_intersect($common_ancestors, $parent_class_names);
         }
-
         return reset($common_ancestors);
     }
 
-    public function setModel($model) {
-        if(array_search(Model::class,class_parents($model))) {
-            $this->engine = $model;
-            $this->query = $this->engine->newQuery();
-        }else{
-            throw  new \Exception("Это не Модель");
+    public static function createTempLogic($model, $params = [], $select = []) {
+        if(!array_search(Model::class,class_parents($model))) {
+            (new self())->LogError(null,['model'=>get_class($model),'params' => $params,'select' => $select]," Это не Модель ");
+            throw new \Exception("Это не Модель");
         }
+        $ruls = (new self([]))->setModel($model)->getRuls();
+        return (new CoreEngine($params,$select))->setCoreParamsRule($ruls)->setModel($model);
+    }
+
+
+    public function setModel($model) {
+        if(!array_search(Model::class,class_parents($model))) {
+            $this->LogError(null,['model'=>get_class($model)]," Это не Модель ");
+            throw new \Exception("Это не Модель");
+        }
+        $this->engine = $model;
+        $this->query = $this->engine->newQuery();
         return $this;
     }
     public function setQuery($query) {
@@ -278,6 +313,10 @@ class CoreEngine{
         return $this;
     }
     //Входны данные для построения WHERE
+    protected function setCoreParamsRule(array $filte) {
+        $this->coreParams->setRules($filte);
+        return $this;
+    }
     public function setRequired($name) {
         $this->filter[$this->getFilterByName($name)['key']]['validate']['required'] = true;
         return $this;
@@ -302,21 +341,21 @@ class CoreEngine{
     }
     //ПРИНУДИТЕЛЬНО ПОДКЛЮЧЕНИЕ ПОДКЛЮЧАЕМЫХ ТАБЛИЦ.
     public function setJoin($join) {
-        $join = (is_string($join))?[$join]:$join;
+        $join = (is_string($join))? [$join]:$join;
         $this->joinTable = $join;
         foreach ($join as $item)
-            if(key_exists($item,$this->group_params['relatedModel']))
-                if($item && !in_array($item,$this->group_by))
+            if (key_exists($item,$this->group_params['relatedModel']))
+                if ($item && !in_array($item,$this->group_by))
                     $this->join_by[$item] = $item;
-
         return $this;
     }
     public function getcoreParamsClass() {return $this->coreParams;}
     public function getSchema() {
-      if(is_object($this->engine))
+      if (is_object($this->engine))
           return get_class($this->engine)::getTableSchema();
       return [];
     }
+    public function getRuls() {return  $this->getFilter();}
     public function getEngine() {return $this->engine;}
     public function getQuery() {return $this->query;}
     public function &getQueryLink() {return $this->query;}
@@ -324,8 +363,7 @@ class CoreEngine{
     public function getGroupBy() {return $this->group_by;}
     //ПОЛУЧЕНИЕ СВОЙСТВ ПО ИМЕНИ ПАРАМЕТРА
     public function getPropertyFilterByParam($name) {
-        $res = $this->getFilterByName($name);
-        return ($res)? $res['value']:$res;
+        return ($res = $this->getFilterByName($name))? $res['value']:$res;
     }
     //УДАЛИТЬ ИЗ ФИЛЬТРОВ ОПРЕДЕЛЕННЫЙ ФИЛЬТ ПО ПАРАМЕТРУ
     public function removeFilterByParam($name) {
@@ -333,21 +371,21 @@ class CoreEngine{
     }
     //ПРИМИТИВНАЯ ВЫБОРКА БЕЗ УЧЕТА ФИЛЬРА
     public function getSandartResultOne() {
-        $result = [];
-        $result['pagination'] = $result['result'] = [];
-        if($this->coreParams->getStatusValidate()) {
-            if($this->debug_sql) $this->debugQuery();
-            if($this->query_debug_sql) $result = $this->query->get()->toArray();
-
-            $result = (count($result) > 0 )? $result[0]:[];
-
-            if(in_array('url_icon',$result))
-                if (is_null($result['url_icon']) && empty($result['url_icon']))
-                    $result['url_icon'] = "icon_currence/NONE.png";
-
-            return $result;
+        try {
+            $result = [];
+            $result['pagination'] = $result['result'] = [];
+            if (!$this->coreParams->getStatusValidate()) {
+                $error = $this->coreParams->getErrorValidate();
+                $this->LogError(null, ['error' => $error, 'params' => $this->params], 'Ошибка в параметрах');
+                return $error;
+            }
+            if ($this->debug_sql) $this->debugQuery();
+            if ($this->query_debug_sql) $result = $this->query->get()->toArray();
+            return (count($result) > 0) ? $result[0] : [];
+        } catch (\Throwable $e){
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return  [];
         }
-        return $this->coreParams->getErrorValidate();
     }
     public function removeParams($nameParam) {
         unset($this->params[$nameParam]);
@@ -357,20 +395,32 @@ class CoreEngine{
     }
     //ДЛЯ ГРУПОВОГО ПЕЗУЛЬТАТА
     public function getSandartResultGroup() {
-        $result  = [];
-        $result['result'] = $result['pagination'] = [];
-        if($this->coreParams->getStatusValidate()){
-            if($this->debug_sql) $this->debugQuery();
-            if($this->query_debug_sql) $result['result'] = $this->query->get()->toArray();
+        try {
+            $result = [];
+            $result['result'] = $result['pagination'] = [];
+            if (!$this->coreParams->getStatusValidate()){
+                $error = $this->coreParams->getErrorValidate();
+                $this->LogError(null, ['error' => $error, 'params' => $this->params], 'Ошибка в параметрах');
+                return $error;
+            }
+            if ($this->debug_sql) $this->debugQuery();
+            if ($this->query_debug_sql) $result['result'] = $this->query->get()->toArray();
             $result['pagination'] = $this->pagination;
             return $result;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return [];
         }
-        return $this->coreParams->getErrorValidate();
     }
     public function getSandartResultList() {
-        $result = [];
-        $result['result'] = $result['pagination'] = [];
-        if ($this->coreParams->getStatusValidate()) {
+        try {
+            $result = [];
+            $result['result'] = $result['pagination'] = [];
+            if (!$this->coreParams->getStatusValidate()) {
+                $error = $this->coreParams->getErrorValidate();
+                $this->LogError(null, ['error' => $error, 'params' => $this->params], 'Ошибка в параметрах');
+                return $error;
+            }
             if ($this->debug_sql) $this->debugQuery();
             $result['pagination'] = $this->pagination;
             $result['totalCount'] = ($this->pagination['totalCount'] != 0) ? (int)$this->pagination['totalCount'] : 0;
@@ -383,32 +433,31 @@ class CoreEngine{
                     $result['result'] = $this->query->get()->toArray();
                 }
             return $result;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return ['result'=>['error'=>$e->getMessage()],'pagination' => $this->pagination];
         }
-        return $this->coreParams->getErrorValidate();
     }
 
     public function getFullQuery(){
         return (count($this->group_by))? $this->executeGroup():$this->executeFilter();
     }
 
-    public function getSqlToStrFromQuery(){
+    public function getSqlToStrFromQuery() {
         $data = $this->query->getBindings();
-        foreach ($data as $key => $item) $data[$key] = "'".$item."'";
+        foreach ($data as $key => $item) $data[$key] = "'" . $item . "'";
         return Str::replaceArray("?",$data,$this->query->toSql());
     }
 
     public function getSqlToStr(){
         (count($this->group_by))? $this->executeGroup():$this->executeFilter();
-
-         $data = $this->query->getBindings();
-        foreach ($data as $key => $item) $data[$key] = "'".$item."'";
+        $data = $this->query->getBindings();
+        foreach ($data as $key => $item) $data[$key] = "'" . $item . "'";
         return Str::replaceArray("?",$data,$this->query->toSql());
     }
 
     //СТАНДАРТНЫЙ ВЫВОД ДАНЫХ
-    public function getTotal() {
-        return $this->executeFilter()->count();
-    }
+    public function getTotal() { return $this->executeFilter()->count();}
     public function getGroup() {
         $this->executeGroup();
         return $this->getSandartResultGroup();
@@ -422,52 +471,63 @@ class CoreEngine{
         return $this->getSandartResultOne();
     }
     public function Exist() {
-        $this->offPagination();
-        $this->executeFilter();
-        if($this->coreParams->getStatusValidate()) {
+        try {
+            if (!$this->coreParams->getStatusValidate()) {
+                $error = $this->coreParams->getErrorValidate();
+                $this->LogError(null, ['error' => $error, 'params' => $this->params], 'Ошибка в параметрах');
+                return $error;
+            }
+            $this->offPagination()->executeFilter();
             if ($this->debug_sql) $this->debugQuery();
             return $this->query->exists();
+        } catch (\Throwable $e){
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return false;
         }
-        return false;
     }
     // ОСНОВНЫЕ ФУНКЦИИ ДЛЯ  ВЫПОЛНЕНИЯ ЗАПРОСОВ
     public function executeFilter() {
-        $this->selectQuery()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
-        $this->pagination();
-        $this->order();
-        if ($this->debug_sql) $this->debugQuery();
-        return $this->query;
+        try {
+            $this->selectQuery()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
+            $this->pagination();
+            $this->order();
+            if ($this->debug_sql) $this->debugQuery();
+            return $this->query;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return $this->query;
+        }
     }
     public function executeGroup() {
-        $this->selectQueryGroup()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
-             $this->pagination();
-        $this->groupQuery()->order();
-        if ($this->debug_sql) $this->debugQuery();
-        return $this->query;
+        try {
+            $this->selectQueryGroup()->connectEntityJoin()->whereQuery($this->coreParams->getWhereSql());
+            $this->pagination();
+            $this->groupQuery()->order();
+            if ($this->debug_sql) $this->debugQuery();
+            return $this->query;
+        } catch (\Throwable $e) {
+            $this->LogError($e,['params' => $this->params,'query' => $this->getSqlToStrFromQuery()],'Ошибка в Запросе');
+            return $this->query;
+        }
     }
     // ПАГИНАЦИЯ ВКЛЮЧАЕТСЯ ТОЛЬКО ЕСЛИ ЕСТЬ PAGESIZE ИЛИ LIMIT
     public function pagination($page = null,$pageSize = null) {
         $query = clone $this->query;
-        if (!$this->paginationOff) {
-            $totalCount = $query->count();
-        }else{
-            $totalCount = 1;
-        }
+        $totalCount = (!$this->paginationOff)?$query->count():1;
         if(is_null($page) && is_null($pageSize)){
             $pageSize = $this->coreParams->getParamsFilter('pageSize');
             $page = $this->coreParams->getParamsFilter('page');
-            if (!$pageSize) $pageSize = (empty($this->limit))?false:$this->limit;
+            if (!$pageSize) $pageSize = (empty($this->limit))? false:$this->limit;
             if ($pageSize == -1) $pageSize = false;
             $page = ($page > 0 && !is_null($page))?($page-1):0;
         }
         if($pageSize) {
-        $countPage = (int)($totalCount / $pageSize);
-        $countPage += (($totalCount % $pageSize) == 0)?0:1;
-        $this->pagination = ['totalCount' => $totalCount,'countPage' => $countPage,'pageSize' => $pageSize,'page' => $page+1];
-
+            $countPage = (int)($totalCount / $pageSize);
+            $countPage += (($totalCount % $pageSize) == 0)?0:1;
+            $this->pagination = ['totalCount' => $totalCount,'countPage' => $countPage,'pageSize' => $pageSize,'page' => $page+1];
             $this->limit = $pageSize;
-            $this->query->offset($page*$this->limit)->limit($this->limit);
-        }else{
+            $this->query->offset($page * $this->limit)->limit($this->limit);
+        } else {
             $this->pagination = ['totalCount' => $totalCount,'countPage' => 0,'pageSize' => 0,'page' => 1];
         }
         return $this->pagination;
@@ -478,7 +538,6 @@ class CoreEngine{
             $sort_dir = $this->coreParams->getParamsFilter('sort_dir') ?: 'asc';
             $sort_by = $this->coreParams->getParamsFilter('sort_by') ?: false;
         }
-
         if($sort_by) {
             $sort_by = (is_array($sort_by))? $sort_by:[$sort_by];
                 foreach ($sort_by as $item_sort)
@@ -486,14 +545,14 @@ class CoreEngine{
         }
         return $this;
     }
-    public function unionQueryOneObjectCore($queryParasm,$group = null,$typeUnion = "UNION") {
+    public function unionQueryOneObjectCore($queryParasm, $group = null, $typeUnion = "UNION") {
         $query = $listOject = [];
         $add_to_all_select = null;
         $class = get_class($this);
 
         $field = $this->getFilterByName($group);
         if($field && key_exists('field',$field['value']))
-                $field = $field['value']['field'];
+            $field = $field['value']['field'];
         else
             $field = ($field)?$group:$field;
         if (preg_match("/.*\..*/",$field)) {
@@ -511,12 +570,11 @@ class CoreEngine{
             if (!empty($this->params))
                 $paramsOneWhere =  array_merge($paramsOneWhere,$this->params);
             if (!is_null($add_to_all_select))
-                $selectUnion[] = DB::raw("'".$paramsOneWhere[$add_to_all_select]."' as `".$add_to_all_select."`");
+                $selectUnion[] = DB::raw("'" . $paramsOneWhere[$add_to_all_select] . "' as `" . $add_to_all_select . "`");
 
             $listOject[$key] = new $class($paramsOneWhere,$selectUnion);
 
-            if (!empty($this->joinTable))
-                $listOject[$key]->setJoin($this->joinTable);
+            if (!empty($this->joinTable)) $listOject[$key]->setJoin($this->joinTable);
 
             (isset($paramsOneWhere['group']) && $paramsOneWhere['group'] == true) ? $listOject[$key]->executeGroup() : $listOject[$key]->executeFilter();
             $query[] = "(".$listOject[$key]->queryText().")";
@@ -525,8 +583,7 @@ class CoreEngine{
 
         if (!is_null($group)) {
             $group_list = [];
-
-            foreach ($res as $item)  $group_list[$item[$group]][] = $item;
+            foreach ($res as $item) $group_list[$item[$group]][] = $item;
 
             $res = $group_list;
             unset($group_list);
@@ -535,14 +592,11 @@ class CoreEngine{
     }
     public function queryText() {
         $dataWhere = $this->query->getBindings();
-
         foreach ($dataWhere as &$item)  $item = "'".str_replace(['"',"'"],['\"',"\'"],$item)."'";
-
         return Str::replaceArray("?", $dataWhere,$this->query->toSql());
     }
     // в перспективе
-    public function unionQueryBuild($listObjct ,$group = null,$groupQuery = false){
-        $unionQuery =  DB::query();
+    public function unionQueryBuild($listObjct, $group = null, $groupQuery = false) {
         $select = [];
         foreach ($listObjct as $class){
             if(strpos(get_parent_class($class),"CoreEngine")  !== false ){
@@ -566,8 +620,7 @@ class CoreEngine{
         return $this;
     }
     private function selectQuery() {
-        $select = $this->coreParams->getParamsFilter('select');
-        if ($select) {
+        if ($select = $this->coreParams->getParamsFilter('select')) {
             $this->select = $this->prepareRequest($select);
             $flagMainColum = true;
             foreach ($this->select as  $key => $value) {
@@ -591,7 +644,6 @@ class CoreEngine{
                     }
                 }
             }
-
             if($flagMainColum)
                 foreach ($this->defaultSelect() as $value) $this->query->addSelect($value);
         } else {
@@ -625,7 +677,6 @@ class CoreEngine{
         foreach ($this->filter as $key => $value)
             if($value['params'] == $name)
                 return ["key" => $key,"value" => $value];
-
         return false;
     }
     //УСТАНОВКА ФИЛЬТРОВ WHERE
@@ -668,7 +719,6 @@ class CoreEngine{
                         $this->query->whereRaw($item[0], $item[2], $item[3]);
                     }
                    break;
-
                case "CHECK_NULL":
                    if((int)$item[2] == 0)
                         $this->query->whereNull(DB::raw($item[0]));
@@ -686,7 +736,7 @@ class CoreEngine{
     private function filterJionQuery(){
         foreach ($this->join_by as $key => $value) {
             if (isset($this->group_params['relatedModel'][$key])) {
-                if(!in_array($key,$this->checkJoin)){
+                if (!in_array($key,$this->checkJoin)) {
                     $this->checkJoin[] = $key;
                     $this->relatedData($this->group_params['relatedModel'][$key],$key);
                 }
@@ -696,33 +746,27 @@ class CoreEngine{
     }
     //ЕСЛИ ПРИШЛО ЗНАЧЕНИЕ НЕ МАСИВ ПЕРЕВОДИМ В МАССИВ
     private function prepareRequest($data) {
-        $data = ($data) ? $data : [];
-        $data = (is_array($data)) ? $data : [$data];
-        return $data;
+        $data = ($data) ? $data:[];
+        return (is_array($data)) ? $data:[$data];
     }
     // ВСПОМАГАТЕЛЬНЫ ФУНКЦИИ ДЛЯ ЗАПРОСОВ ОБЩИЕ ДЛЯ ГРУПП И СПИСКОВ
     private function customSelect($code, $value) {
-        if(!empty($value))
-            $this->query->addSelect($value);
+        if(!empty($value)) $this->query->addSelect($value);
         $this->query->groupBy($code);
         return $this;
     }
     //ДЛЯ ГРУППИРОВКИ ПОЛЕЙ  (ВЫБОРКА И ГРУППИРОВКА ПО ПОЛЮ)
 
-    private function  getTableSchema(){
-        $table = $this->engine->getTable();
-        $list = DB::select("DESCRIBE ".$table);
+    private function  getTableSchema() {
+        $list = DB::select("DESCRIBE ".$this->engine->getTable());
         $newList = [];
         foreach ($list as $item) $newList[$item->Field] = $item;
-
         return $newList;
     }
 
     private function standartField($field) {
         $colums = $this->getTableSchema();
-        $keys =  array_keys($colums);
-
-
+        $keys = array_keys($colums);
         if(!is_array($field)) {
             if (in_array($field, $keys)) {
                 if (in_array($colums[$field]->Type, array("datetime", "date", 'timestamp'))) {
@@ -731,58 +775,51 @@ class CoreEngine{
                 } else {
                     if (is_object($field) && $field::class == 'Illuminate\Database\Query\Expression') {
                         $this->query->groupBy($field);
-                        if (!empty($field)) {
+                        if (!empty($field))
                             $this->query->addSelect(DB::raw($field));
-                        }
                     } else {
                         $this->query->groupBy($this->engine->getTable() . '.' . $field);
-                        if (!empty($field)) {
+                        if (!empty($field))
                             $this->query->addSelect($this->engine->getTable() . '.' . $field);
-                        }
                     }
                 }
             } else {
                 $this->query->groupBy(DB::raw($field));
-                if (!empty($field)) {
+                if (!empty($field))
                     $this->query->addSelect(DB::raw($field));
-                }
             }
-        }else{
+        } else {
             if (is_object($field['group']) && $field['group']::class == 'Illuminate\Database\Query\Expression') {
                 $this->query->groupBy($field['group']);
-                if (!empty($field['field'])) {
+                if (!empty($field['field']))
                     $this->query->addSelect(DB::raw($field['field']));
-                }
             } else {
                 $this->query->groupBy($this->engine->getTable() . '.' . $field['group']);
-                if (!empty($field['field'])) {
+                if (!empty($field['field']))
                     $this->query->addSelect($this->engine->getTable() . '.' . $field['field']);
-                }
             }
         }
         return $this;
     }
     // ДЕЛАЙЕТ ДЖОЙН ТАБЛИЦ ДЛЯ ПОДКЛЮЧЕНИЯ   ЕСЛИ НЕ ПОЛЯ ТО ГРУПИРОВКА И ЫЕЛЕК ПО ПОЛЮ НЕ ДЕЛАЕТСЯКАК
     private function relatedData($related,$nameJoin = ""){
-        $table ="";
-        if(!empty($nameJoin))
-            $nameAs = " AS ".$nameJoin;
-
-        if(is_string($related['entity'])) {
+        $table = "";
+        $nameAs = (!empty($nameJoin))?" AS ".$nameJoin:"";
+        if (is_string($related['entity'])) {
             $table = $related['entity'];
             $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
-        }else if(is_array($related['entity'])){
+        } else if(is_array($related['entity'])) {
             $join = each($related['entity']);
             $table = $join['key'];
             $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
-        }else if($related['entity']::class == 'Illuminate\Database\Query\Expression'){
+        } else if($related['entity']::class == 'Illuminate\Database\Query\Expression') {
             $joinQuery = $related['entity'];
-        }else{
+        } else {
             $table = $related['entity']->getTable();
             $joinQuery = DB::raw( $table." $nameAs ON ".$this->relatedConfig($related,$nameJoin));
         }
 
-       if(isset($related['type']) && $related['type'] === "right")
+       if (isset($related['type']) && $related['type'] === "right")
             $this->query->rightJoin( $joinQuery,function(){});
        else if (isset($related['type']) && $related['type'] === "inner")
             $this->query->join( $joinQuery,function(){});
@@ -792,37 +829,36 @@ class CoreEngine{
             $this->query->leftJoin( $joinQuery,function(){});
 
 
-        if(isset($related['field']))
+        if (isset($related['field']))
             foreach ($related['field'] as $item ) {
-                if($table != "") {
-                    if(!empty($nameJoin)) {
+                if ($table != "") {
+                    if (!empty($nameJoin)) {
                         $this->query->addSelect(DB::raw($nameJoin . "." .$item));
-                    }else{
+                    } else {
                         $this->query->addSelect(DB::raw($table . "." . $item));
                     }
-                }else if(!empty($nameJoin)){
+                } else if (!empty($nameJoin)) {
                     $this->query->addSelect(DB::raw($nameJoin . "." . $item));
-                }else{
+                } else {
                     $this->query->addSelect(DB::raw($item));
                 }
             }
-
         return $this;
     }
     //КОНФИГУРАЦИИ СВЯЗ ТАБЛИЦ
     private function relatedConfig($config,$nameJoin = "") {
         $joinOn  = "";
         if(is_string($config['entity'])) {
-            if(stripos($config['entity']," as ")!= false){
+            if (stripos($config['entity']," as ") != false) {
                 $joinOn = sprintf("%s.%s",substr($config['entity'],stripos($config['entity']," as ")+strlen(" as ")),$config['relationship'][0]);
-            }else{
+            } else {
                 $joinOn = sprintf("%s.%s",$config['entity'],$config['relationship'][0]);
             }
-        }else if(is_array($config['entity'])){
+        } else if (is_array($config['entity'])) {
             $join =  each($config['entity']);
             $joinOn = (empty($join['value']))?$config['relationship'][0]:sprintf("%s.%s",$join['value'] , $config['relationship'][0]);
-        }else{
-            if(!empty($nameJoin )) {
+        } else {
+            if (!empty($nameJoin )) {
                 $joinOn = sprintf("%s.%s", $nameJoin, $config['relationship'][0]);
             } else {
                 $joinOn = sprintf("%s.%s", $config['entity']->getTable(), $config['relationship'][0]);
@@ -840,26 +876,20 @@ class CoreEngine{
             }
         }
         //собирает условие в одну кучу джойна
-        if (strpos($config['relationship'][1],'.') === false){
-            $return = sprintf("%s.%s  =  %s %s",
-                $this->engine->getTable(), $config['relationship'][1],
-                $joinOn, $joinOnMore
-            );
+        if (strpos($config['relationship'][1],'.') === false) {
+            $return = sprintf("%s.%s  =  %s %s", $this->engine->getTable(), $config['relationship'][1], $joinOn, $joinOnMore);
         } else {
-            $return = sprintf("%s  =  %s %s",
-                $config['relationship'][1],
-                $joinOn, $joinOnMore
-            );
+            $return = sprintf("%s  =  %s %s", $config['relationship'][1], $joinOn, $joinOnMore);
         }
         return  (isset($config['pаrams_filter']))?$this->replaceParamsFlag($return,$config['pаrams_filter']):$return;
     }
-    private function replaceParamsFlag($strSql,$params){
+    private function replaceParamsFlag($strSql,$params) {
         foreach ($params as $key=>$value)
             $strSql = (is_callable($value))? str_replace("%f_".$key,$value($this),$strSql):str_replace("%f_".$key,$value,$strSql);
         return $strSql;
     }
     //ДЛЯ СПИСКА ПОДКЛЮЧЕНИЕ ДРУГИХ ТАБЛИЦ ПО ПАРАМЕТРАМ ФИЛЬТРОВ
-    private function connectEntityJoin(){
+    private function connectEntityJoin() {
         $existFilte = $this->coreParams->getAllParams();
         foreach ($existFilte as $key => $valFilter) {
             $optionFiltret = $this->getPropertyFilterByParam($key);
@@ -867,18 +897,15 @@ class CoreEngine{
                 // если массив запиывается нсколько
                 $join = (key_exists('relatedModel', $optionFiltret)) ? $optionFiltret['relatedModel'] : false;
                 if (is_array($join)) {
-                    foreach ($join as $item) {
+                    foreach ($join as $item)
                         if ($item && !in_array($item, $this->join_by))
                             $this->join_by[$item] = $item;
-                    }
                 } else {
                     if ($join && !in_array($join, $this->join_by))
                         $this->join_by[$join] = $join;
                 }
             }
-
         }
-
         $this->filterJionQuery();
         return $this;
     }
@@ -889,47 +916,84 @@ class CoreEngine{
     //ПАРАМЕТРЫ ФИЛЬТРАЦИИ
     protected function getFilter(){
         $this->filter =[
-            [   'field'=>$this->engine->getTable().'.is_deleted','params'=>'is_deleted',
-                'type'=>'int','action'=>"=",'concat'=>"AND",'validate' =>['string'=>true,'empty'=>true]],
-            [   'field'=>$this->engine->getTable().'.site_id','params' => 'site_id',
-                'validate' =>['string'=>true,"empty"=>true], 'type' => 'string|array',
+            [   'field' => $this->engine->getTable().'.is_deleted','params' => 'is_deleted',
+                'type' => 'int','action' => "=",'concat' => "AND",'validate' => ['string' => true,'empty' => true]],
+            [   'field' => $this->engine->getTable().'.site_id','params' => 'site_id',
+                'validate' => ['string' => true,"empty" => true], 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-            [ 'field'=>$this->engine->getTable().'.id','params'=>'id',
-                'type'=>'string','action'=>"=",'concat'=>"AND",'validate' =>['number'=>true,'empty'=>true]],
-            [   'params'=>'page','type'=>'string','validate' =>['number'=>true,'empty'=>true]],
-            [   'params'=>'pageSize','type'=>'string','validate' =>['string'=>true,'empty'=>true]],
-            [   'params'=>'sort_by','type'=>'string|array','validate' =>["template" =>"/.*/",'empty'=>true]],
-            [   'params'=>'sort_dir','type'=>'string','validate' =>['list'=>['asc','desc'],'empty'=>true]],
-            [   'params' => 'select',   'type' => 'array','validate' => ["array" =>true,'empty'=>true]],
+            [ 'field' => $this->engine->getTable().'.id', 'params' => 'id',
+              'type' => 'string','action' => "=",'concat' => "AND",'validate' => ['number' => true,'empty' => true]
+            ],
+            [ 'field' => $this->engine->getTable().'.id', 'params' => 'ids',
+              'type' => 'string|array','action' => "IN",'concat' => "AND",'validate' => ['number' => true,'empty' => true]
+            ],
+            [   'params' => 'page','type' => 'string','validate' => ['number' => true,'empty' => true]],
+            [   'params' => 'pageSize','type' => 'string','validate' => ['string' => true,'empty' => true]],
+            [   'params' => 'sort_by', 'type' => 'string|array','validate' => ["template" => "/.*/",'empty' => true]],
+            [   'params' => 'sort_dir','type' => 'string','validate' =>['list' => ['asc','desc'],'empty' => true]],
+            [   'params' => 'select',  'type' => 'array','validate' => ["array" => true,'empty' => true]],
+            [   'params' => 'join',    'type' => 'array','validate' => ["array" => true,'empty' => true]],
         ];
         return  $this->filter;
     }
-    private function checkInsertColumn($data,$type = self::INSERT){
+
+
+
+
+    public function getInfoAPI() {
+       $class = $class_name =  get_called_class();
+       $class = new $class();
+       $property = $mathod = [];
+       $property = get_object_vars(new $class());
+       foreach (get_class_methods(new $class()) as $key => $item){
+           $mathod[$item] = [
+               'function_name' => $item,
+               'description' =>'',
+               'params' => (new \ReflectionMethod($class_name,$item))->getParameters(),
+               'return' => '',
+               'description_return' => ''
+           ];
+       }
+
+       return  [
+           'title'=>"",
+           'description' => "",
+           'filter' => $this->getFilter(),
+           'field' => $this->engine->getFillable(),
+           'join' => $this->group_params,
+           'name_logic' => $class_name,
+           'property' => $property,
+           'mathod_logic' => $mathod
+       ];
+    }
+
+    private function checkInsertColumn($data,$type = self::INSERT) {
           $column = $this->engine->getFillable();
           $column1 = array_keys($data);
-          if($type == self::INSERT || $type == self::INSERT_IGNOR){
-              return (count(array_diff($column1,$column)) == 0)?true:false;
-          }else{
-              return (count(array_diff($column1[0],$column)) == 0)?true:false;
+          if($type == self::INSERT || $type == self::INSERT_IGNOR) {
+              return (count(array_diff($column1,$column)) == 0)? true:false;
+          } else {
+              return (count(array_diff($column1[0],$column)) == 0)? true:false;
           }
     }
 
-    protected function claerQuery(){
+    public function getLangFromData($data) {
+        return (isset($data['lang_id']) && !empty($data['lang_id']))? $data['lang_id']:$this->lang_id;
+    }
+    protected function claerQuery() {
         $this->coreParams = new CoreParam();
-        $this->coreParams->setParams($this->params);
-        $this->coreParams->setRules($this->filter);
+        $this->coreParams->setParams($this->params)->setRules($this->filter);
         $this->checkJoin = [];
         $this->query = $this->engine->newQuery();
         return $this;
     }
-    public function debug() {$this->debugQuery();}
-    private function debugQuery(){
+
+    public function debug() { $this->debugQuery(); }
+    private function debugQuery() {
         var_dump($this->queryText());
         echo "<br>";
     }
 
-    public static function getTable(){
-        return (new static())->engine->getTable();
-    }
+    public static function getTable() {return (new static())->engine->getTable();}
 }

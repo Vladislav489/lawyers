@@ -20,7 +20,7 @@
                                "autostart" => 'true',
                                "name" => 'parent_id_edit',
                                "default_title" => 'Выбрать',
-                               "url" => route("actionGetListCategorySelect_backcontroller"),
+                               "url" => route("actionGetListCategorySelect_admin_mainstay_backcontroller"),
                                "template" => 'simpleSelect',
                                "change" => "function(){}"
                            ]])</div>
@@ -38,7 +38,7 @@
                               "autostart" => 'true',
                               "name" => 'site_id_edit',
                               "default_title" => 'Выбрать',
-                              "url" => route("actionGetListSiteSelect_backcontroller"),
+                              "url" => route("actionGetListSiteSelect_admin_mainstay_backcontroller"),
                               "template" => 'simpleSelect',
                               "change" => "function(){}"
                             ]])
@@ -67,7 +67,7 @@
     "params_component" => [
     "autostart" => 'true',
     "name" => "routes",
-    "url" => route("actionGetListCategory_backcontroller"),
+    "url" => route("actionGetListCategory_admin_mainstay_backcontroller"),
     "template"=>"<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
         <thead v-if=\"typeof(column) !== 'undefined'\" v-bind:id=\"name+'_head'\">
            <tr><th v-for=\"items_col in column\">@{{items_col.name}}</th><th></th></tr>
@@ -89,7 +89,7 @@
     ]])
     @pushOnce('js-lib-component-head')
     <script>
-        
+
         $(document).ready(function () {
             Init();
         })
@@ -115,7 +115,7 @@
                     }
                 }
             }
-            page__.sendData("{{route__("actionCategorySave_backcontroller")}}",
+            page__.sendData("{{route__("actionCategorySave_admin_mainstay_backcontroller")}}",
                 dataSend,function(data){
                     if(data['result'] == 0){
                         jAlertError("Ошибка","  данные не сохранены!");
@@ -128,7 +128,7 @@
         }
         function showHide(data,index){
             data['active'] = (data['active'] == 1)?0:1;
-            page__.sendData("{{route__("actionCategorySave_backcontroller")}}",
+            page__.sendData("{{route__("actionCategorySave_admin_mainstay_backcontroller")}}",
                 {'active':data['active'],'id':data['id']},function(data){
                     if(data['result'] == 0) jAlertError("Ошибка","  данные не сохранены!");
                 })
@@ -147,7 +147,7 @@
         }
         function DeleteItem(id){
             if(confirm("Точно хотите удалить ?")){
-                page__.sendData("{{route__("actionCategoryDelete_backcontroller")}}",
+                page__.sendData("{{route__("actionCategoryDelete_admin_mainstay_backcontroller")}}",
                     {'id':id},function(data){
                         if(data['result'] == 0){
                             jAlertError("Ошибка","  данные не удвлены!");

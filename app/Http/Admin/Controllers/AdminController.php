@@ -85,6 +85,8 @@ class AdminController extends BaseAdminController {
     public function actionAdminSiteMap(){return view('Admin.sitemap');}
     public function actionAdminCacheMap(){}
 
+    public function actionServicePage() {return view('Admin.service-list');}
+
 
     public function actionAdmiTest(){
             $parama["union"] = [
@@ -117,7 +119,8 @@ class AdminController extends BaseAdminController {
             "actionRouteReal"=>['name'=>"Все доступные Пути",'chpu'=>[]],
             "actionAdminType"=>['name'=>"Административное Тип",'chpu'=>[]],
             "actionAdminCategory"=>['name'=>"Административное Категория",'chpu'=>[]],
-            "actionAdminImport"=>['name'=>"Импорт Данных",'chpu'=>[]]
+            "actionAdminImport"=>['name'=>"Импорт Данных",'chpu'=>[]],
+            "actionServicePage"=>['name'=>"Сервисы",'chpu'=>[]]
         ];
     }
 }

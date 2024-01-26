@@ -27,7 +27,7 @@
                 "params_component" => [
                     "autostart" => 'true',
                     "name" => 'type',
-                    "url" => route__("actiongetListTypeLog_backcontroller"),
+                    "url" => route__("actiongetListTypeLog_admin_mainstay_backcontroller"),
                     "template" => "simpleSelect"
                 ]])
                 </td>
@@ -43,7 +43,7 @@
         "params_component" => [
         "autostart" => 'true',
         "name"=>"logsystems",
-        "url"=>route__("actionSystemLog_backcontroller"),
+        "url"=>route__("actionSystemLog_admin_mainstay_backcontroller"),
         "column"=>[['name'=>'Ид'],['name'=>'Тип'],['name'=>'Заголовок'],['name'=>'Дискрипция'],['name'=>'Дата добавления']],
         "template"=>
         "<div v-bind:id='name' class='card-item-info'>

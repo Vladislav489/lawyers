@@ -9,7 +9,7 @@
         "params_component" => [
         "autostart" => 'true',
         "name" => 'sitemapfile',
-        "url" => route__("actionGetListSiteMap_backcontroller"),
+        "url" => route__("actionGetListSiteMap_admin_mainstay_backcontroller"),
         "template" => "<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
             <thead v-bind:id=\"name+'_head'\">
                <tr><th>Имя файла</th><th>Размер</th><th>Дата Создания</th></tr>
@@ -37,7 +37,7 @@
         $('#CreateSiteMap').click(function () {createSiteMap()});
     }
     function createSiteMap(){
-        page__.sendData("{{route__("actionCreateSiteMap_backcontroller")}}",
+        page__.sendData("{{route__("actionCreateSiteMap_admin_mainstay_backcontroller")}}",
             {},function(data) {
                 if (data['result'] == false) {
                     jAlertError('Ошибка',' данные не сохранены!');

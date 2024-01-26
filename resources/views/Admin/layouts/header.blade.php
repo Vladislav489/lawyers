@@ -7,7 +7,7 @@
                     <span class="header-logo__text">Forecast Agency</span>
                 </a>
                 <div>
-                    <a href="{{route__('actionClearCache_backcontroller')}}"><i class="fa fa-refresh"> Очистить кэш</i></a>
+                    <a href="{{route__('actionClearCache_admin_mainstay_backcontroller')}}"><i class="fa fa-refresh"> Очистить кэш</i></a>
                 </div>
             </div>
         </div>

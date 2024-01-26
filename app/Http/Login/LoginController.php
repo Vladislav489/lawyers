@@ -20,7 +20,7 @@ class LoginController extends CentralController {
 
         $credentials = $request->only('email','password');
         if(Auth::guard('admin')->attempt($credentials,true)){
-            return redirect(route__('actionIndex_admincontroller'));
+            return redirect(route__('actionIndex_admin_controllers_admincontroller'));
         } else {
             return  view('lawyers.Login.login',['mess'=>"User or Password do not current"]);
         }

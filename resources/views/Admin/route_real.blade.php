@@ -5,7 +5,7 @@
     "params_component" => [
     "autostart" => 'true',
     "name" => 'routes',
-    "url" => route__("actionRouteList_backcontroller"),
+    "url" => route__("actionRouteList_admin_mainstay_backcontroller"),
     "template" => "<table v-bind:id=\"name+'_body'\" class='table' style='width:100%'>
         <thead v-bind:id=\"name+'_head'\">
            <tr>
