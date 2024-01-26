@@ -20,8 +20,6 @@
                 action="#"
                 method="post"
                 enctype="application/x-www-form-urlencoded"
-                data-request-url="{{ route__('actionStoreClient_mainstay_client_clientmainstaycontroller') }}"
-                data-success-url="{{ route__('actionLogin_controllers_site_usercontroller') }}"
             >
                 @csrf
                 <div class="registration-form_block">
@@ -30,6 +28,9 @@
                     <label class="registration-form_label">
                         <span class="label-title">Имя</span>
                         <input type="text" name="first_name" placeholder="Имя">
+                        @error('first_name')
+                        <div>{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Фамилия</span>
@@ -42,7 +43,7 @@
                     <label class="registration-form_label date-label">
                         <span class="label-title">Дата рождения</span>
                         <input type="date" name="date_birthday" placeholder="Дата рождения">
-                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">
+{{--                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">--}}
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Номер телефона</span>
@@ -88,7 +89,7 @@
                     </label>
                     <label class="registration-form_label full">
                         <span class="label-title">Повторите пароль</span>
-                        <input type="password" name="password_repeat" placeholder="Повторите пароль">
+                        <input type="password" name="password_confirmation" placeholder="Повторите пароль">
                     </label>
                 </div>
 

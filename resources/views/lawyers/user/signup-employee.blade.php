@@ -17,11 +17,9 @@
 
             <form
                 class="registration-form"
-                action="#"
+                action="{{ route__('actionEmployeeStore_mainstay_employee_employeemainstaycontroller') }}"
                 method="post"
                 enctype="multipart/form-data"
-                data-request-url="{{ route__('actionEmployeeStore_mainstay_employee_employeemainstaycontroller') }}"
-                data-success-url="{{ route__('actionLogin_controllers_site_usercontroller') }}"
             >
                 @csrf
                 <div class="registration-form_block">
@@ -29,28 +27,46 @@
 
                     <label class="registration-form_label">
                         <span class="label-title">Имя</span>
-                        <input type="text" name="first_name" placeholder="Имя">
+                        <input type="text" name="first_name" id="name" placeholder="Имя">
+                        @error('first_name')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Фамилия</span>
                         <input type="text" name="last_name" placeholder="Фамилия">
+                        @error('last_name')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Отчество</span>
                         <input type="text" name="middle_name" placeholder="Отчество">
+                        @error('middle_name')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label date-label">
                         <span class="label-title">Дата рождения</span>
                         <input type="date" name="date_birthday" placeholder="Дата рождения">
-                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">
+{{--                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">--}}
+                        @error('date_birthday')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Номер телефона</span>
                         <input type="tel" name="phone_number" placeholder="Номер телефона">
+                        @error('phone_number')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Электронная почта</span>
                         <input type="email" name="email" placeholder="Электронная почта">
+                        @error('email')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                 </div>
 
@@ -60,22 +76,69 @@
                     <label class="registration-form_label full">
                         <span class="label-title">Почтовый индекс</span>
                         <input type="text" name="post_code" placeholder="Почтовый индекс">
+                        @error('post_code')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Страна</span>
-                        <input type="text" name="country_id" placeholder="Страна">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'country_id',
+                                "default_title" => 'Страна',
+                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('country_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Область</span>
-                        <input type="text" name="state_id" placeholder="Область">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'state_id',
+                                "default_title" => 'Область',
+                                "url" => route("actionGetStates2_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('state_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label date-label">
                         <span class="label-title">Район</span>
-                        <input type="text" name="district_id" placeholder="Район">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'district_id',
+                                "default_title" => 'Район',
+                                "url" => route("actionGetDistricts_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('district_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Город</span>
-                        <input type="tel" name="city_id" placeholder="Город">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'city_id',
+                                "default_title" => 'Город',
+                                "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('city_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                 </div>
 
@@ -85,10 +148,13 @@
                     <label class="registration-form_label full">
                         <span class="label-title">Пароль</span>
                         <input type="password" name="password" placeholder="Пароль">
+                        @error('password')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label full">
                         <span class="label-title">Повторите пароль</span>
-                        <input type="password" name="password_repeat" placeholder="Повторите пароль">
+                        <input type="password" name="password_confirmation" placeholder="Повторите пароль">
                     </label>
                 </div>
 
@@ -98,19 +164,39 @@
                     <label class="registration-form_label">
                         <span class="label-title">Стоимость консультации</span>
                         <input type="text" name="consultation_price" placeholder="Стоимость консультации">
+                        @error('consultation_price')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label date-label">
                         <span class="label-title">Дата начала юр. практики</span>
                         <input type="date" name="dt_practice_start" placeholder="Дата начала юр. практики">
-                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">
+{{--                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">--}}
+                        @error('dt_practice_start')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Лицензионный номер</span>
                         <input type="number" name="license_number" placeholder="Лицензионный номер">
+                        @error('license_number')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Компания</span>
-                        <input type="text" name="company_id" placeholder="Компания">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'company_id',
+                                "default_title" => 'Компания',
+                                "url" => route("actionGetCompanies_mainstay_company_companymainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('company_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                 </div>
 
@@ -133,7 +219,6 @@
                         </span>
                     </label>
                 </div>
-
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Аватар</h3>
 

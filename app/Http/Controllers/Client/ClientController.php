@@ -2,33 +2,20 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Models\System\ControllersModel\FrontController;
-use Illuminate\Support\Facades\Auth;
+use App\Models\System\ControllersModel\ClientController as BaseClientController;
 
-class ClientController extends FrontController
+class ClientController extends BaseClientController
 {
-    public function getPageParams(): array
-    {
+    public function actionClientCabinet() {
+        return view('lawyers.client.cabinet');
+    }
+
+    public function getPageParams(): array {
         return [
             'actionClientCabinet' => [
                 'name' => 'Сlient Profile',
                 'template' => 'lawyers.client.cabinet'
             ],
         ];
-    }
-
-    // TODO
-    public function callAction($method, $parameters)
-    {
-        if (true) {
-            // return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
-    public function actionClientCabinet()
-    {
-        return view('lawyers.client.cabinet');
     }
 }

@@ -27,63 +27,34 @@ class EmployeeMainstayController extends MainstayController
 {
     const MAX_FILE_SIZE = 5;
 
-    public function callAction($method, $parameters)
-    {
-        if (true) {
-            // return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
-    public function actionEmployeeStore(Request $request)
-    {
+    public function actionEmployeeStore(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
-            'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
-            'password' => 'required|string',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
             'middle_name' => 'required|string|max:64',
-            'post_code' => 'required|string|max:7',
             'date_birthday' => 'required|date',
-            'city_id' => 'required|integer|exists:' . City::class . ',id',
-            'state_id' => 'required|integer|exists:' . State::class . ',id',
+            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
+            'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
+            'post_code' => 'required|string|max:7',
             'country_id' => 'required|integer|exists:' . Country::class . ',id',
+            'state_id' => 'required|integer|exists:' . State::class . ',id',
             'district_id' => 'required|integer|exists:' . District::class . ',id',
-            'type_id' => 'required|integer|exists:' . UserType::class . ',id',
-
-            'avatar' => File::types(['jpg', 'png'])->max(1024 * self::MAX_FILE_SIZE),
-            'avatar_path' => 'required|string|max:128|unique:' . Employee::class . ',avatar_path',
-            'license_number' => 'required|string|max:128',
-            'dt_practice_start' => 'required|date',
+            'city_id' => 'required|integer|exists:' . City::class . ',id',
+            'password' => 'required|string|confirmed',
             'consultation_price' => 'required|integer',
+            'dt_practice_start' => 'required|date',
+            'license_number' => 'required|string|max:128',
             'company_id' => 'required|integer|exists:' . Company::class . ',id',
-        ];
+            ];
 
-        if ($request->hasFile('avatar')) {
-            $dir = 'public';
-            $path = mb_substr($request->avatar->store($dir), strlen("$dir/"));
-            $request->merge(['avatar_path' => $path]);
-        }
-
-        if (($validator = Validator::make($request->all(), $rules))->fails()) {
-            if (isset($dir, $path)) {
-                Storage::delete("$dir/$path");
-            }
-
-            return response()->json([
-                'errors' => $validator->errors(),
-            ]);
-        }
-
-        return response()->json(
-            (new EmployeeLogic())->store($request->all())
-        );
+        $validated = Validator::validate($this->params, $rules);
+        dd($validated);
+        return response()->json((new EmployeeLogic())->store($validated));
     }
 
-    public function actionEmployeeServicesStore(Request $request)
-    {
+
+    public function actionEmployeeServicesStore(Request $request) {
         $rules = [
             'service_ids.*' => 'required|integer|exists:' . Service::class . ',id',
         ];
@@ -101,8 +72,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionEmployeeServiceUpdate(Request $request)
-    {
+    public function actionEmployeeServiceUpdate(Request $request) {
         $rules = [
             'is_main' => 'boolean',
             'price' => "exclude_if:is_main,'1'|required|integer",
@@ -121,8 +91,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionGetServices()
-    {
+    public function actionGetServices() {
         return response()->json(DB::table('service')
             ->select(['service.*', 'user_employee_service.is_main', 'user_employee_service.user_id'])
             ->leftJoin('user_employee_service', function (JoinClause $join) {
@@ -133,15 +102,13 @@ class EmployeeMainstayController extends MainstayController
             ->get());
     }
 
-    public function actionGetUserServiceIds()
-    {
+    public function actionGetUserServiceIds() {
         return response()->json(
             array_column(Auth::user()->services->toArray(), 'service_id')
         );
     }
 
-    public function actionGetEmployeeList()
-    {
+    public function actionGetEmployeeList() {
         // return response()->json((new EmployeeLogic())->getList());
 
         return response()->json(DB::table('user_employee')
