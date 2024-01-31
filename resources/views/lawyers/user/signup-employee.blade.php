@@ -25,6 +25,8 @@
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Заполните информацию о себе</h3>
 
+                    <input type="hidden" name="type_id" value="2">
+
                     <label class="registration-form_label">
                         <span class="label-title">Имя</span>
                         <input type="text" name="first_name" id="name" placeholder="Имя">
@@ -205,17 +207,17 @@
 
                     <label class="registration-form_label full file-label">
                         <span class="label-title">Выберите файл</span>
-                        <input type="file">
+                        <input type="file" name="achievements[]" multiple>
                         <span class="choose-img _downloaded">
                             <span class="downloaded_text">
                                 Загрузить файл
                             </span>
 
-                            <span class="downloaded-img">
-                                <span class="cross"></span>
-                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
-                                <span class="title">pdf/12345678..</span>
-                            </span>
+{{--                            <span class="downloaded-img">--}}
+{{--                                <span class="cross"></span>--}}
+{{--                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">--}}
+{{--                                <span class="title">pdf/12345678..</span>--}}
+{{--                            </span>--}}
                         </span>
                     </label>
                 </div>

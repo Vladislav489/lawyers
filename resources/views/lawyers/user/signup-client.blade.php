@@ -17,13 +17,15 @@
 
             <form
                 class="registration-form"
-                action="#"
+                action="{{route__('actionStoreClient_mainstay_client_clientmainstaycontroller')}}"
                 method="post"
                 enctype="application/x-www-form-urlencoded"
             >
                 @csrf
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Заполните информацию о себе</h3>
+
+                    <input type="hidden" name="type_id" value="1">
 
                     <label class="registration-form_label">
                         <span class="label-title">Имя</span>
@@ -64,20 +66,63 @@
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Страна</span>
-                        <input type="text" name="country_id" placeholder="Страна">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'country_id',
+                                "default_title" => 'Страна',
+                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('country_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Область</span>
-                        <input type="text" name="state_id" placeholder="Область">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'state_id',
+                                "default_title" => 'Область',
+                                "url" => route("actionGetStates2_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('state_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label date-label">
                         <span class="label-title">Район</span>
-                        <input type="text" name="district_id" placeholder="Район">
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'district_id',
+                                "default_title" => 'Район',
+                                "url" => route("actionGetDistricts_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('district_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror
                     </label>
                     <label class="registration-form_label">
                         <span class="label-title">Город</span>
-                        <input type="tel" name="city_id" placeholder="Город">
-                    </label>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'city_id',
+                                "default_title" => 'Город',
+                                "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" => 'simpleSelect',
+                                "change" => "function(){}"
+                            ]])
+                        @error('city_id')
+                        <div style="color: red">{{ $message }}</div>
+                        @enderror</label>
                 </div>
 
                 <div class="registration-form_block">

@@ -2,28 +2,40 @@
 
 namespace App\Http\Mainstay\HelpData;
 
+use App\Models\CoreEngine\LogicModels\HelpData\CityLogic;
+use App\Models\CoreEngine\LogicModels\HelpData\CountryLogic;
+use App\Models\CoreEngine\LogicModels\HelpData\DistrictLogic;
+use App\Models\CoreEngine\LogicModels\HelpData\StateLogic;
 use App\Models\System\ControllersModel\MainstayController;
-use Illuminate\Support\Facades\DB;
+use App\Models\System\HelperFunction;
 
 class HelpDataMainstayController extends MainstayController
 {
-    public function actionGetCities()
-    {
-        return response()->json(DB::table('city')->limit(100)->get());
+    public function actionGetCities(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new CityLogic($this->params))->getSandartResultList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
+        return response()->json($return);
     }
 
-    public function actionGetDistricts()
-    {
-        return response()->json(DB::table('district')->limit(100)->get());
+    public function actionGetDistricts(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new DistrictLogic($this->params))->getSandartResultList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
+        return response()->json($return);
     }
 
-    public function actionGetCountries()
-    {
-        return response()->json(DB::table('country')->limit(100)->get());
+    public function actionGetCountries(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new CountryLogic($this->params))->getSandartResultList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
+        return response()->json($return);
     }
 
-    public function actionGetStates2()
-    {
-        return response()->json(DB::table('state')->limit(100)->get());
+    public function actionGetStates2(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new StateLogic($this->params))->getSandartResultList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
+        return response()->json($return);
     }
 }

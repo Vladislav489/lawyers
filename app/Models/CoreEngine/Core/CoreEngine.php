@@ -996,4 +996,20 @@ class CoreEngine{
     }
 
     public static function getTable() {return (new static())->engine->getTable();}
+
+    public function storeEntity(array $data): array|bool {
+        try {
+            $entity = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+            if ($data['id'] = $this->save($entity)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
 }

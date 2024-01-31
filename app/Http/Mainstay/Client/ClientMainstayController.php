@@ -3,36 +3,22 @@
 namespace App\Http\Mainstay\Client;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
-use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\HelpData\District;
 use App\Models\CoreEngine\ProjectModels\HelpData\State;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
-use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\System\ControllersModel\MainstayController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class ClientMainstayController extends MainstayController
-{
-    public function callAction($method, $parameters)
-    {
-        if (true) {
-            // return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
-    public function actionStoreClient(Request $request)
-    {
+class ClientMainstayController extends MainstayController {
+    public function actionStoreClient(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
             'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
-            'password' => 'required|string',
+            'password' => 'required|string|confirmed',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
             'middle_name' => 'required|string|max:64',
@@ -45,14 +31,10 @@ class ClientMainstayController extends MainstayController
             'type_id' => 'required|integer|exists:' . UserType::class . ',id',
         ];
 
-        if (($validator = Validator::make($request->all(), $rules))->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
-            ]);
+        $validated = Validator::validate($this->params, $rules);
+        if ((new UserLogic())->storeUser($validated)) {
+            return redirect(route__('actionLogin_controllers_site_usercontroller'));
         }
-
-        return response()->json(
-            (new UserLogic())->store($request->all())
-        );
+        return redirect()->back();
     }
 }

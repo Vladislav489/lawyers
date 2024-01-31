@@ -197,7 +197,7 @@
                                 'params_component' => [
                                     'autostart' => 'true',
                                     'name' => 'service_list',
-                                    'url' => route__("actionGetServiceList_servicemainstaycontroller"),
+                                    'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
 
                                     'template' => '<ul class="lawyer-services_block">
                                         <li v-for="item in data" class="lawyer-service_line" style="justify-content: space-between;">

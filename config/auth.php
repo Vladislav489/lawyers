@@ -45,11 +45,6 @@ return [
             'driver' => 'session',
             'provider' => 'admin',
         ],
-
-        'employee' => [
-            'driver' => 'session',
-            'provider' => 'employee',
-        ],
     ],
 
     /*
@@ -77,10 +72,6 @@ return [
         'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-        ],
-        'employee' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\CoreEngine\ProjectModels\User\UserEntity::class,
         ],
 
         // 'users' => [

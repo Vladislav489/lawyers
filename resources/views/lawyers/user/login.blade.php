@@ -19,7 +19,7 @@
                     <form
                         id="login-form"
                         class="mt-3 p-3 bg-primary-subtle"
-                        action="http://lawyers/site/login"
+                        action="{{ route__('actionUserLogin_logincontroller') }}"
                         method="post"
                         enctype="application/x-www-form-urlencoded"
                         style="border: 1px dashed"

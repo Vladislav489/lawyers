@@ -8,6 +8,8 @@ class Controller extends FrontController {
     public function getPageParams(): array {
         return [
             'actionIndex' => ['template' => 'lawyers.site.index'],
+            'actionFindSpecialist' => ['template' => 'lawyers.employee.find-specialist'],
+            'actionSpecialistCard' => ['template' => 'lawyers.employee.profile'],
         ];
     }
 

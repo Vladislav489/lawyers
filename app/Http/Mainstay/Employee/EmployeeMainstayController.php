@@ -5,7 +5,6 @@ namespace App\Http\Mainstay\Employee;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
-use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
@@ -15,13 +14,11 @@ use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
-use Illuminate\Database\Query\JoinClause;
 
 class EmployeeMainstayController extends MainstayController
 {
@@ -46,11 +43,16 @@ class EmployeeMainstayController extends MainstayController
             'dt_practice_start' => 'required|date',
             'license_number' => 'required|string|max:128',
             'company_id' => 'required|integer|exists:' . Company::class . ',id',
+            'achievements.*' => 'nullable|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'avatar' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'type_id' => 'required|integer|exists:' . UserType::class . ',id',
             ];
 
         $validated = Validator::validate($this->params, $rules);
-        dd($validated);
-        return response()->json((new EmployeeLogic())->store($validated));
+        if ((new EmployeeLogic())->storeEmployee($validated)) {
+            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+        }
+        return redirect()->back();
     }
 
 

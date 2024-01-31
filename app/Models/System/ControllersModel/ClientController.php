@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ClientController extends CentralController {
     public function callAction($method, $parameters) {
-        if (!Auth::guard('web')->check()) {
-            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+        if (Auth::check() && request()->session()->get('type_id') == 1) {
+            return parent::callAction($method, $parameters);
         }
-        return parent::callAction($method, $parameters);
+        return redirect(route__('actionLogin_controllers_site_usercontroller'));
     }
 
     public function getPageParams() {

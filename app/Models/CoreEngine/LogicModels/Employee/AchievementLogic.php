@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Models\CoreEngine\LogicModels\User;
+namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\ProjectModels\User\UserEntity;
-use Illuminate\Support\Facades\Hash;
+use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\ProjectModels\Employee\Employee;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
-class UserLogic extends CoreEngine
+class AchievementLogic extends CoreEngine
 {
-    const EMPLOYEE_TYPE_ID = 2;
-
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->engine = new UserEntity();
+        $this->engine = new EmployeeAchievement();
         $this->query = $this->engine->newQuery();
+        $this->params = $params;
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -42,11 +46,5 @@ class UserLogic extends CoreEngine
         $this->filter = array_merge($this->filter, parent::getFilter());
 
         return $this->filter;
-    }
-
-    public function storeUser(array $data): array|bool {
-        $data['modifier_id'] = 1;
-        $data['password'] = Hash::make($data['password']);
-        return $this->storeEntity($data) ?: false;
     }
 }

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models\CoreEngine\LogicModels\Company;
+namespace App\Models\CoreEngine\LogicModels\HelpData;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\ProjectModels\Company\Company;
-use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\State;
 
-class CompanyLogic extends CoreEngine
-{
+class StateLogic extends CoreEngine {
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->engine = new Company();
+        $this->engine = new State();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -31,12 +30,7 @@ class CompanyLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.is_archive','params' => 'is_archive',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => $tab.'.owner_id','params' => 'owner_id',
+            [   'field' => $tab.'.country_id','params' => 'country_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
@@ -51,11 +45,11 @@ class CompanyLogic extends CoreEngine
             'select' => [],
             'by' => [],
             'relatedModel' => [
-                'Owner' => [
-                    'entity' => new UserEntity(),
-                    'relationship' => ['owner_id', 'id'],
-                    'field' => ['Owner.*']
-                ]
+                'Country' => [
+                    'entity' => new Country(),
+                    'relationship' => ['country_id','id'],
+                    'field' => ['Country.*'],
+                ],
             ]
         ];
         return $this->group_params;
