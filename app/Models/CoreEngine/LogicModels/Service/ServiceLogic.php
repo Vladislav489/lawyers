@@ -73,7 +73,7 @@ class ServiceLogic extends CoreEngine
             ],
         ];
 
-        return $this->filter = array_merge($this->filter, parent::getFilter());;
+        return $this->filter = array_merge($this->filter, parent::getFilter());
     }
 
     protected function compileGroupParams() {
@@ -83,8 +83,8 @@ class ServiceLogic extends CoreEngine
             'relatedModel' => [
                 'ServiceType' => [
                     'entity' => new ServiceType(),
-                    'relationship' => ['type_id','id'],
-                    'field' => ['ServiceType.*'],
+                    'relationship' => ['id', 'type_id'],
+                    'field' => ['*'],
                 ],
             ]
         ];

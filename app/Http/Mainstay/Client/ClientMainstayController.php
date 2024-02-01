@@ -2,6 +2,7 @@
 
 namespace App\Http\Mainstay\Client;
 
+use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
@@ -32,8 +33,9 @@ class ClientMainstayController extends MainstayController {
         ];
 
         $validated = Validator::validate($this->params, $rules);
-        if ((new UserLogic())->storeUser($validated)) {
-            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+        if ($data = (new UserLogic())->save($validated)) {
+            $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
+            return (new LoginController())->actionUserLogin($credentials);
         }
         return redirect()->back();
     }

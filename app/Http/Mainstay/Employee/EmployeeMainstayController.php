@@ -2,6 +2,7 @@
 
 namespace App\Http\Mainstay\Employee;
 
+use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
@@ -49,8 +50,9 @@ class EmployeeMainstayController extends MainstayController
             ];
 
         $validated = Validator::validate($this->params, $rules);
-        if ((new EmployeeLogic())->storeEmployee($validated)) {
-            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+        if ($data = (new EmployeeLogic())->save($validated)) {
+            $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
+            return (new LoginController())->actionUserLogin($credentials);
         }
         return redirect()->back();
     }
@@ -110,15 +112,16 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionGetEmployeeList() {
-        // return response()->json((new EmployeeLogic())->getList());
+    public function actionGetEmployeeList(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+         return response()->json((new EmployeeLogic())->setJoin('User')->getList());
 
-        return response()->json(DB::table('user_employee')
-            ->select('user_entity.first_name', 'user_employee.avatar_path')
-            ->leftJoin('user_entity', function (JoinClause $join) {
-                $join->on('user_entity.id', '=', 'user_employee.user_id');
-            })
-            ->limit(100)
-            ->get());
+//        return response()->json(DB::table('user_employee')
+//            ->select('user_entity.first_name', 'user_employee.avatar_path')
+//            ->leftJoin('user_entity', function (JoinClause $join) {
+//                $join->on('user_entity.id', '=', 'user_employee.user_id');
+//            })
+//            ->limit(100)
+//            ->get());
     }
 }

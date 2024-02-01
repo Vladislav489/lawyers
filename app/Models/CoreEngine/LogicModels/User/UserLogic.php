@@ -47,6 +47,38 @@ class UserLogic extends CoreEngine
     public function storeUser(array $data): array|bool {
         $data['modifier_id'] = 1;
         $data['password'] = Hash::make($data['password']);
-        return $this->storeEntity($data) ?: false;
+        return $this->save($data);
     }
+
+    public function save($data)
+    {
+        $data['modifier_id'] = 1;
+        $data['input_password'] = $data['password'];
+        $data['password'] = Hash::make($data['password']);
+        if (isset($data) && !empty($data)) {
+            $user = array_intersect_key($data, array_flip($this->engine->getFillable()));
+            if ($data['id'] = parent::save($user)) {
+                return $data;
+            } else return false;
+        }
+        return false;
+    }
+
+    public function storeEntity(array $data): array|bool {
+        try {
+            $entity = array_intersect_key(
+                $data,
+                array_flip($this->engine->getFillable())
+            );
+            if ($data['id'] = $this->save($entity)) {
+                return $data;
+            }
+
+        } catch (\Throwable $e) {
+        }
+
+        return false;
+    }
+
+
 }

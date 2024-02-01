@@ -31,9 +31,11 @@ class LoginController extends CentralController {
         return redirect(url('/'));
     }
 
-    public function actionUserLogin() {
-        $request = request();
-        $credentials = $request->only('phone_number', 'password');
+    public function actionUserLogin($credentials = []) {
+        if (empty($credentials)) {
+            $request = request();
+            $credentials = $request->only('phone_number', 'password');
+        }
         if (Auth::attempt($credentials)) {
             $typeId = Auth::user()->type_id;
             session()->put('type_id', $typeId);
