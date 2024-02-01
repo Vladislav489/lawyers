@@ -2,10 +2,10 @@
 
 namespace App\Http\Mainstay\Employee;
 
+use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
-use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
@@ -15,75 +15,50 @@ use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\File;
-use Illuminate\Database\Query\JoinClause;
 
 class EmployeeMainstayController extends MainstayController
 {
     const MAX_FILE_SIZE = 5;
 
-    public function callAction($method, $parameters)
-    {
-        if (true) {
-            // return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
-    public function actionEmployeeStore(Request $request)
-    {
+    public function actionEmployeeStore(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
-            'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
-            'password' => 'required|string',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
             'middle_name' => 'required|string|max:64',
-            'post_code' => 'required|string|max:7',
             'date_birthday' => 'required|date',
-            'city_id' => 'required|integer|exists:' . City::class . ',id',
-            'state_id' => 'required|integer|exists:' . State::class . ',id',
+            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
+            'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
+            'post_code' => 'required|string|max:7',
             'country_id' => 'required|integer|exists:' . Country::class . ',id',
+            'state_id' => 'required|integer|exists:' . State::class . ',id',
             'district_id' => 'required|integer|exists:' . District::class . ',id',
-            'type_id' => 'required|integer|exists:' . UserType::class . ',id',
-
-            'avatar' => File::types(['jpg', 'png'])->max(1024 * self::MAX_FILE_SIZE),
-            'avatar_path' => 'required|string|max:128|unique:' . Employee::class . ',avatar_path',
-            'license_number' => 'required|string|max:128',
-            'dt_practice_start' => 'required|date',
+            'city_id' => 'required|integer|exists:' . City::class . ',id',
+            'password' => 'required|string|confirmed',
             'consultation_price' => 'required|integer',
+            'dt_practice_start' => 'required|date',
+            'license_number' => 'required|string|max:128',
             'company_id' => 'required|integer|exists:' . Company::class . ',id',
-        ];
+            'achievements.*' => 'nullable|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'avatar' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'type_id' => 'required|integer|exists:' . UserType::class . ',id',
+            ];
 
-        if ($request->hasFile('avatar')) {
-            $dir = 'public';
-            $path = mb_substr($request->avatar->store($dir), strlen("$dir/"));
-            $request->merge(['avatar_path' => $path]);
+        $validated = Validator::validate($this->params, $rules);
+        if ($data = (new EmployeeLogic())->save($validated)) {
+            $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
+            return (new LoginController())->actionUserLogin($credentials);
         }
-
-        if (($validator = Validator::make($request->all(), $rules))->fails()) {
-            if (isset($dir, $path)) {
-                Storage::delete("$dir/$path");
-            }
-
-            return response()->json([
-                'errors' => $validator->errors(),
-            ]);
-        }
-
-        return response()->json(
-            (new EmployeeLogic())->store($request->all())
-        );
+        return redirect()->back();
     }
 
-    public function actionEmployeeServicesStore(Request $request)
-    {
+
+    public function actionEmployeeServicesStore(Request $request) {
         $rules = [
             'service_ids.*' => 'required|integer|exists:' . Service::class . ',id',
         ];
@@ -101,8 +76,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionEmployeeServiceUpdate(Request $request)
-    {
+    public function actionEmployeeServiceUpdate(Request $request) {
         $rules = [
             'is_main' => 'boolean',
             'price' => "exclude_if:is_main,'1'|required|integer",
@@ -121,8 +95,7 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionGetServices()
-    {
+    public function actionGetServices() {
         return response()->json(DB::table('service')
             ->select(['service.*', 'user_employee_service.is_main', 'user_employee_service.user_id'])
             ->leftJoin('user_employee_service', function (JoinClause $join) {
@@ -133,23 +106,22 @@ class EmployeeMainstayController extends MainstayController
             ->get());
     }
 
-    public function actionGetUserServiceIds()
-    {
+    public function actionGetUserServiceIds() {
         return response()->json(
             array_column(Auth::user()->services->toArray(), 'service_id')
         );
     }
 
-    public function actionGetEmployeeList()
-    {
-        // return response()->json((new EmployeeLogic())->getList());
+    public function actionGetEmployeeList(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+         return response()->json((new EmployeeLogic())->setJoin('User')->getList());
 
-        return response()->json(DB::table('user_employee')
-            ->select('user_entity.first_name', 'user_employee.avatar_path')
-            ->leftJoin('user_entity', function (JoinClause $join) {
-                $join->on('user_entity.id', '=', 'user_employee.user_id');
-            })
-            ->limit(100)
-            ->get());
+//        return response()->json(DB::table('user_employee')
+//            ->select('user_entity.first_name', 'user_employee.avatar_path')
+//            ->leftJoin('user_entity', function (JoinClause $join) {
+//                $join->on('user_entity.id', '=', 'user_employee.user_id');
+//            })
+//            ->limit(100)
+//            ->get());
     }
 }

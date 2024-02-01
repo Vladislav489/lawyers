@@ -187,8 +187,8 @@
         </ul>
 
         @guest
-            <a class="signup-btn" href="{{ route__('actionLogin_usercontroller') }}" style="text-decoration: none;">Войти</a>
-            <a class="signup-btn" href="{{ route__('actionSignupClient_usercontroller') }}" style="margin-left: initial; text-decoration: none;">Регистрация</a>
+            <a class="signup-btn" href="{{ route__('actionLogin_controllers_site_usercontroller') }}" style="text-decoration: none;">Войти</a>
+            <a class="signup-btn" href="{{ route__('actionSignupClient_controllers_site_usercontroller') }}" style="margin-left: initial; text-decoration: none;">Регистрация</a>
         @endguest
 
         @auth

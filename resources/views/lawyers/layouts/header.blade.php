@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Route;
                         <a @class([
                         'nav-link',
                         'active' => str_contains(Route::currentRouteName(), 'actionSignup')
-                        ]) href="{{ route__('actionSignupClient_usercontroller') }}">Регистрация</a>
+                        ]) href="{{ route__('actionSignupClient_controllers_site_usercontroller') }}">Регистрация</a>
                     </li>
                     <li class="nav-item">
                         <a @class([
                         'nav-link',
-                        'active' => Route::currentRouteName() === 'actionLogin_usercontroller'
-                        ]) href="{{ route__('actionLogin_usercontroller') }}">Вход</a>
+                        'active' => Route::currentRouteName() === 'actionLogin_controllers_site_usercontroller'
+                        ]) href="{{ route__('actionLogin_controllers_site_usercontroller') }}">Вход</a>
                     </li>
                 @endguest
 

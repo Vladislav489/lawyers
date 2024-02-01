@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Models\CoreEngine\LogicModels\Service;
+namespace App\Models\CoreEngine\LogicModels\HelpData;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\ProjectModels\Service\Service;
-use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
+use App\Models\CoreEngine\ProjectModels\HelpData\City;
+use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\District;
+use App\Models\CoreEngine\ProjectModels\HelpData\State;
 
-class ServiceLogic extends CoreEngine
-{
+class CityLogic extends CoreEngine {
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->engine = new Service();
+        $this->engine = new City();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -23,57 +24,32 @@ class ServiceLogic extends CoreEngine
         return $this->default;
     }
 
-    public function store(array $data): array|bool {
-        try {
-            $service = array_intersect_key($data, array_flip($this->engine->getFillable()));
-
-            if (isset($data['id'])) {
-                $service['id'] = $data['id'];
-            }
-
-            $data['id'] = $this->save($service);
-            return $data;
-
-        } catch (\Throwable $e) {
-            return false;
-        }
-    }
-
-    public function deleteService(array $data): bool {
-        try {
-            $service = $this->setModel(new Service());
-            return $service->delete($data['id']);
-        } catch (\Throwable $e) {
-            return false;
-        }
-    }
-
     protected function getFilter() {
         $tab = $this->engine->getTable();
         $this->filter = [
-            [   'field' => $tab.'.type_id','params' => 'type_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
             [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.is_archive','params' => 'is_archive',
+            [   'field' => $tab.'.country_id','params' => 'country_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => 'ServiceType.name','params' => 'service_name',
+            [   'field' => $tab.'.state_id','params' => 'state_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.district_id','params' => 'district_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
         ];
 
-        return $this->filter = array_merge($this->filter, parent::getFilter());
+        return $this->filter = array_merge($this->filter, parent::getFilter());;
     }
 
     protected function compileGroupParams() {
@@ -81,14 +57,23 @@ class ServiceLogic extends CoreEngine
             'select' => [],
             'by' => [],
             'relatedModel' => [
-                'ServiceType' => [
-                    'entity' => new ServiceType(),
-                    'relationship' => ['id', 'type_id'],
-                    'field' => ['*'],
+                'Country' => [
+                    'entity' => new Country(),
+                    'relationship' => ['country_id','id'],
+                    'field' => ['Country.*'],
+                ],
+                'State' => [
+                    'entity' => new State(),
+                    'relationship' => ['state_id','id'],
+                    'field' => ['State.*'],
+                ],
+                'District' => [
+                    'entity' => new District(),
+                    'relationship' => ['district_id','id'],
+                    'field' => ['District.*'],
                 ],
             ]
         ];
         return $this->group_params;
     }
-
 }

@@ -3,9 +3,11 @@
 namespace App\Models\CoreEngine\ProjectModels\Company;
 
 use App\Models\CoreEngine\ProjectModels\BaseModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends BaseModel
 {
+    use HasFactory;
     protected $table = 'company';
 
     protected $fillable = [
@@ -14,4 +16,6 @@ class Company extends BaseModel
         'is_archive',
         'owner_id',
     ];
+
+    public $timestamps = false;
 }

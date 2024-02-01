@@ -7,6 +7,7 @@
  */
 namespace App\Http\Login;
 
+use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\System\ControllersModel\CentralController;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,6 +28,30 @@ class LoginController extends CentralController {
     }
     public function actionLoguot(){
         Auth::guard('admin')->logout();
+        return redirect(url('/'));
+    }
+
+    public function actionUserLogin($credentials = []) {
+        if (empty($credentials)) {
+            $request = request();
+            $credentials = $request->only('phone_number', 'password');
+        }
+        if (Auth::attempt($credentials)) {
+            $typeId = Auth::user()->type_id;
+            session()->put('type_id', $typeId);
+            if ($typeId != 1) {
+                return redirect(route__('actionEmployeeProfile_controllers_employee_employeecontroller'));
+            } else {
+                return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'));
+            }
+        } else {
+            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+        }
+    }
+
+    public function actionUserLogout()
+    {
+        Auth::logout();
         return redirect(url('/'));
     }
 
