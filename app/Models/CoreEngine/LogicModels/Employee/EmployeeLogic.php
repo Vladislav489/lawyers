@@ -6,9 +6,10 @@ use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class EmployeeLogic extends UserLogic
@@ -20,11 +21,11 @@ class EmployeeLogic extends UserLogic
         $this->helpEngine['employee'] = self::createTempLogic(new Employee());
         $this->helpEngine['achievement'] = self::createTempLogic(new EmployeeAchievement());
         $this->query = $this->engine->newQuery();
-        $this->params = $params;
+        $this->params = array_merge($params, ['type_id' => '2']);
         $this->getFilter();
         $this->compileGroupParams();
 
-        parent::__construct($params, $select);
+        parent::__construct($this->params, $select);
     }
 
     protected function defaultSelect(): array {
@@ -32,30 +33,6 @@ class EmployeeLogic extends UserLogic
         $this->default = [];
 
         return $this->default;
-    }
-
-    public function storeEmployee(array $data): array|bool {
-        $data['modifier_id'] = 1;
-        $data['password'] = Hash::make($data['password']);
-        $employeeData = (new UserLogic())->storeEntity($data);
-        $employeeData['user_id'] = $employeeData['id'];
-        unset($employeeData['id']);
-        $employeeData['avatar_path'] = $this->storeImage($data['avatar'], 'avatar', $employeeData['user_id']);
-        unset($employeeData['avatar']);
-        if ($employee = $this->storeEntity($employeeData)) {
-            if (isset($data['achievements'])) {
-                foreach ($data['achievements'] as $achievement) {
-                    $achievementData['path'] = $this->storeImage($achievement, 'achievement', $employeeData['user_id']);
-                    $achievementData['employee_id'] = $employee['id'];
-                    ((new AchievementLogic())->storeEntity($achievementData)) ?: $this->deleteImage($achievementData['path']);
-                }
-            }
-            return $employee;
-        } else {
-            $this->deleteImage($employeeData['avatar_path']);
-            $this->query->where('id', '=', $employeeData['user_id'])->delete();
-        }
-        return false;
     }
 
     public function save($data) {
@@ -99,7 +76,7 @@ class EmployeeLogic extends UserLogic
         $image_path = '/' . $userId . '/'. $type . '/' . md5($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
         try {
             Storage::disk('public')->putFileAs('/employee', $image, $image_path);
-            return '/public/employee' . $image_path;
+            return '/employee' . $image_path;
         } catch (\Throwable $e) {
             return false;
         }
@@ -119,7 +96,7 @@ class EmployeeLogic extends UserLogic
     }
 
     public function deleteImage($path) {
-        return Storage::delete($path);
+        return Storage::disk('public')->delete($path);
     }
 
     protected function getFilter(): array {
@@ -130,27 +107,32 @@ class EmployeeLogic extends UserLogic
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
+            [   'field' => $tab.'.type_id','params' => 'type_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
             [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.is_confirmed','params' => 'is_confirmed',
+            [   'field' => $tab.'.type_id','params' => 'type_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.is_confirmed','params' => 'is_confirmed',
+            [   'field' => 'Employee.is_confirmed','params' => 'is_confirmed',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.dt_practice_start','params' => 'start_practice_date',
+            [   'field' => 'Employee.dt_practice_start','params' => 'start_practice_date',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.consultation_price','params' => 'consultation_price',
+            [   'field' => 'Employee.consultation_price','params' => 'consultation_price',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
@@ -160,6 +142,41 @@ class EmployeeLogic extends UserLogic
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
+            [   'field' => $tab .'.country_id','params' => 'country_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab .'.city_id','params' => 'city_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => 'EmployeeService.service_id','params' => 'service_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)",'params' => 'search_spec',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => "TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW()))",'params' => 'experience',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '>=', 'concat' => 'AND',
+            ],
+//            [   'field' => "",'params' => 'rating',
+//                'validate' => ['string' => true,"empty" => true],
+//                'type' => 'string|array',
+//                "action" => '>=', 'concat' => 'AND',
+//            ],
+//            [   'field' => "",'params' => 'evaluation',
+//                'validate' => ['string' => true,"empty" => true],
+//                'type' => 'string|array',
+//                "action" => '>=', 'concat' => 'AND',
+//            ],
         ];
 
         return $this->filter = array_merge($this->filter, parent::getFilter());
@@ -170,15 +187,24 @@ class EmployeeLogic extends UserLogic
             'select' => [],
             'by' => [],
             'relatedModel' => [
-                'User' => [
-                    'entity' => new UserEntity(),
-                    'relationship' => ['id', 'user_id'],
+                'Employee' => [
+                    'entity' => new Employee(),
+                    'relationship' => ['user_id', 'id'],
                     'field' => ['*'],
                 ],
                 'Company' => [
                     'entity' => new Company(),
-                    'relationship' => ['id', 'company_id'],
+                    'relationship' => ['Employee.company_id', 'company_id'],
                     'field' => ['*'],
+                ],
+                'EmployeeService' => [
+                    'entity' => new EmployeeService(),
+                    'relationship' => ['user_id', 'id'],
+                    'field' => [],
+                ],
+                'Service' => [
+                    'entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'),
+                    'field' => [],
                 ],
             ]
         ];

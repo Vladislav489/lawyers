@@ -9,11 +9,13 @@ use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 class ServiceLogic extends CoreEngine
 {
     public function __construct($params = [], $select = ['*'], $callback = null) {
+        $this->params = array_merge($params, ['is_deleted' => 0]);
         $this->engine = new Service();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
-        parent::__construct($params, $select);
+        parent::__construct($this->params, $select);
+//        dd($this->pagination);
     }
 
     protected function defaultSelect(): array {
@@ -54,12 +56,12 @@ class ServiceLogic extends CoreEngine
             [   'field' => $tab.'.type_id','params' => 'type_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.is_archive','params' => 'is_archive',
                 'validate' => ['string' => true,"empty" => true],

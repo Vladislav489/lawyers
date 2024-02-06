@@ -11,13 +11,10 @@ class ServiceTypeLogic extends CoreEngine
     public function __construct($params = [], $select = ['*'], $callback = null) {
         $this->engine = new ServiceType();
         $this->query = $this->engine->newQuery();
+        $this->params = array_merge($params, ['is_deleted' => 0]);
         $this->getFilter();
         $this->compileGroupParams();
-        parent::__construct($params, $select);
-    }
-
-    public function getList() {
-
+        parent::__construct($this->params, $select);
     }
 
     protected function getFilter() {
@@ -46,7 +43,7 @@ class ServiceTypeLogic extends CoreEngine
                 'Service' => [
                     'entity' => new Service(),
                     'relationship' => ['id','type_id'],
-                    'field' => ['Service.*'],
+                    'field' => ['*'],
                 ],
             ]
         ];

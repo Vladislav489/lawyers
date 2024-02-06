@@ -13,3 +13,4 @@ yarn-error.log
 /storage
 /.idea
 /.vscode
+/public/storage
