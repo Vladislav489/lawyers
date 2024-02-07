@@ -109,8 +109,10 @@ class EmployeeMainstayController extends MainstayController
         $employees = (new EmployeeLogic($this->params, $select))->offPagination()->setJoin(['Employee', 'EmployeeService', 'Service']);
         $employees->getQueryLink()->groupBy('user_entity.id');
         $result = $employees->getList();
-        $employees = (new EmployeeLogic($this->params, $select));
+
+        $employees = (new EmployeeLogic($this->params))->setJoin(['Employee']);
         $pagination = $employees->getList();
+
         $result['pagination'] = $pagination['pagination'];
         return response()->json($result);
     }

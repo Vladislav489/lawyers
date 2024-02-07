@@ -110,14 +110,9 @@ class EmployeeLogic extends UserLogic
             [   'field' => $tab.'.type_id','params' => 'type_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => $tab.'.type_id','params' => 'type_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
@@ -152,10 +147,11 @@ class EmployeeLogic extends UserLogic
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-            [   'field' => 'EmployeeService.service_id','params' => 'service_id',
+            [   'field' => 'InnerJoinService.service_id','params' => 'service_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
+                'relatedModel' => 'InnerJoinService'
             ],
             [   'field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)",'params' => 'search_spec',
                 'validate' => ['string' => true,"empty" => true],
@@ -205,6 +201,12 @@ class EmployeeLogic extends UserLogic
                 'Service' => [
                     'entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'),
                     'field' => [],
+                ],
+                'InnerJoinService' => [
+                    'entity' => new EmployeeService(),
+                    'relationship' => ['user_id', 'id'],
+                    'field' => [],
+                    'type' => 'inner'
                 ],
             ]
         ];

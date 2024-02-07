@@ -256,11 +256,11 @@
                         'pagination'=>
                         [
 							'page'=> 1,
-							'pageSize'=> 3,
+							'pageSize'=> 4,
 							'countPage'=> 1,
 							'typePagination'=> 1,
 							'showPagination'=> 1,
-							'showInPage'=> 3,
+							'showInPage'=> 4,
 							'count_line'=> 1,
 							'all_load'=> 0,
 							'physical_presence'=> 0
