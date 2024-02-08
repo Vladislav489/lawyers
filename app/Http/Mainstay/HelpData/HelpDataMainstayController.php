@@ -13,28 +13,28 @@ class HelpDataMainstayController extends MainstayController
 {
     public function actionGetCities(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $list = (new CityLogic($this->params))->getSandartResultList();
+        $list = (new CityLogic($this->params))->getList();
         $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }
 
     public function actionGetDistricts(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $list = (new DistrictLogic($this->params))->getSandartResultList();
+        $list = (new DistrictLogic($this->params))->getList();
         $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }
 
     public function actionGetCountries(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $list = (new CountryLogic($this->params))->getSandartResultList();
+        $list = (new CountryLogic($this->params))->getList();
         $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }
 
     public function actionGetStates2(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $list = (new StateLogic($this->params))->getSandartResultList();
+        $list = (new StateLogic($this->params))->getList();
         $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }

@@ -12,8 +12,10 @@ class CityLogic extends CoreEngine {
     public function __construct($params = [], $select = ['*'], $callback = null) {
         $this->engine = new City();
         $this->query = $this->engine->newQuery();
+        $this->params = $params;
         $this->getFilter();
         $this->compileGroupParams();
+
         parent::__construct($params, $select);
     }
 
@@ -35,7 +37,7 @@ class CityLogic extends CoreEngine {
             [   'field' => $tab.'.country_id','params' => 'country_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.state_id','params' => 'state_id',
                 'validate' => ['string' => true,"empty" => true],
@@ -49,7 +51,7 @@ class CityLogic extends CoreEngine {
             ],
         ];
 
-        return $this->filter = array_merge($this->filter, parent::getFilter());;
+        return $this->filter = array_merge($this->filter, parent::getFilter());
     }
 
     protected function compileGroupParams() {
@@ -59,8 +61,8 @@ class CityLogic extends CoreEngine {
             'relatedModel' => [
                 'Country' => [
                     'entity' => new Country(),
-                    'relationship' => ['country_id','id'],
-                    'field' => ['Country.*'],
+                    'relationship' => ['id','country_id'],
+                    'field' => ['*'],
                 ],
                 'State' => [
                     'entity' => new State(),

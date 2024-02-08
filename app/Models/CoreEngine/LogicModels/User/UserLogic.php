@@ -11,12 +11,13 @@ class UserLogic extends CoreEngine
     const EMPLOYEE_TYPE_ID = 2;
 
     public function __construct($params = [], $select = ['*'], $callback = null) {
+        $this->params = array_merge($params, ['is_deleted' => 0]);
         $this->engine = new UserEntity();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
 
-        parent::__construct($params, $select);
+        parent::__construct($this->params, $select);
     }
 
     protected function compileGroupParams(): array {
@@ -44,12 +45,6 @@ class UserLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function storeUser(array $data): array|bool {
-        $data['modifier_id'] = 1;
-        $data['password'] = Hash::make($data['password']);
-        return $this->save($data);
-    }
-
     public function save($data)
     {
         $data['modifier_id'] = 1;
@@ -63,22 +58,5 @@ class UserLogic extends CoreEngine
         }
         return false;
     }
-
-    public function storeEntity(array $data): array|bool {
-        try {
-            $entity = array_intersect_key(
-                $data,
-                array_flip($this->engine->getFillable())
-            );
-            if ($data['id'] = $this->save($entity)) {
-                return $data;
-            }
-
-        } catch (\Throwable $e) {
-        }
-
-        return false;
-    }
-
 
 }

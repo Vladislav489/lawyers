@@ -15,9 +15,7 @@ use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -95,33 +93,27 @@ class EmployeeMainstayController extends MainstayController
         );
     }
 
-    public function actionGetServices() {
-        return response()->json(DB::table('service')
-            ->select(['service.*', 'user_employee_service.is_main', 'user_employee_service.user_id'])
-            ->leftJoin('user_employee_service', function (JoinClause $join) {
-                $join->on('user_employee_service.service_id', '=', 'service.id');
-                $join->where('user_employee_service.user_id', '=', Auth::id());
-            })
-            ->limit(100)
-            ->get());
-    }
+    public function actionGetServices(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return (new EmployeeServiceLogic())->setJoin('Service')->getList();
 
-    public function actionGetUserServiceIds() {
-        return response()->json(
-            array_column(Auth::user()->services->toArray(), 'service_id')
-        );
     }
 
     public function actionGetEmployeeList(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-         return response()->json((new EmployeeLogic())->setJoin('User')->getList());
+        $select = [
+            '*', DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
+            DB::raw("IF(EmployeeService.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('description',
+            EmployeeService.description, 'service_name', Service.name)), ']')) as service")
+            ];
+        $employees = (new EmployeeLogic($this->params, $select))->offPagination()->setJoin(['Employee', 'EmployeeService', 'Service']);
+        $employees->getQueryLink()->groupBy('user_entity.id');
+        $result = $employees->getList();
 
-//        return response()->json(DB::table('user_employee')
-//            ->select('user_entity.first_name', 'user_employee.avatar_path')
-//            ->leftJoin('user_entity', function (JoinClause $join) {
-//                $join->on('user_entity.id', '=', 'user_employee.user_id');
-//            })
-//            ->limit(100)
-//            ->get());
+        $employees = (new EmployeeLogic($this->params))->setJoin(['Employee']);
+        $pagination = $employees->getList();
+
+        $result['pagination'] = $pagination['pagination'];
+        return response()->json($result);
     }
 }

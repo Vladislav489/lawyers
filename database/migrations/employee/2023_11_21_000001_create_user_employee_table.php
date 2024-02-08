@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('license_number', 128)->comment('лицензионный номер');
             $table->date('dt_practice_start')->comment('начало юридической практики');
             $table->integer('consultation_price')->comment('стоимость консультации');
+            $table->string('about', 500)->nullable()->comment('о себе');
             $table->boolean('is_deleted')->default(false);
             $table->boolean('is_confirmed')->default(false)->comment('подтверждён');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');

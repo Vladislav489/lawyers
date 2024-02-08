@@ -9,101 +9,155 @@
                 <li class="cool-underline"><a href="#">Город</a></li>
             </ul>
 
-            <form action="#" class="find-block find-form">
+            <form action="#" class="find-block find-form" id="search_form">
                 <label class="search-label">
-                    <input type="search" name="search-spec" placeholder="Имя и фамилия специалиста...">
-                    <input class="search-icon" type="image" src="/lawyers/images/icons/search-icon-blue-full.svg" alt="search-icon">
+                    <input type="search" name="search-spec" id="search-spec" placeholder="Имя и фамилия специалиста...">
+                    <button type="submit" id="send" class="search-icon">
+                        <img type="image" src="/lawyers/images/icons/search-icon-blue-full.svg" alt="search-icon">
+                    </button>
                 </label>
-
                 <div class="unit-select">
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Страна</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Россия</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>Россия</li>
-                            <li>Германия</li>
-                        </ul>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'country_id',
+                                "default_title" => 'Страна',
+                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select" name="country_id" :id="name" style="width:100%">
+                                    <option value="" selected>Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){
+                                            if($(this).val() !== '') {
+                                                const param = {'country_id': $(this).find('option:selected').val()}
+                                                page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                                                }
+                                            }"
+                            ]])
                     </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Город</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Санкт-Петербург</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>Санкт-Петербург</li>
-                            <li>Москва</li>
-                        </ul>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'false',
+                                "name" => 'city_id',
+                                "default_title" => 'Город',
+                                "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select" name="city_id" :id="name" style="width:100%">
+                                    <option value="" selected="true">Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){}"
+                            ]])
                     </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Категория услуг</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Категория услуг1</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>Категория услуг1</li>
-                            <li>Категория услуг2</li>
-                        </ul>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'service_id',
+                                "default_title" => 'Сервис',
+                                "url" => route("actionGetServiceTypeList_mainstay_service_servicemainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select" name="service_type_id" :id="name" style="width:100%">
+                                    <option value="" selected="true">Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){
+                                            if($(this).val() !== '') {
+                                                const param = {'type_id': $(this).find('option:selected').val()}
+                                                page__.getElementsGroup('type_id')[0]['obj'].setUrlParams(param)
+                                                }
+                                            }"
+                            ]])
                     </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Тема услуги</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Тема услуги1</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>Тема услуги1</li>
-                            <li>Тема услуги2</li>
-                        </ul>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'false',
+                                "name" => 'type_id',
+                                "default_title" => 'Сервис',
+                                "url" => route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select" name="service_id" :id="name" style="width:100%">
+                                    <option value="" selected="true">Выбрать</option>
+                                    <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
+                                </select>',
+                                "change" => "function(){}"
+                            ]])
                     </div>
                 </div>
 
                 <div class="unit-select">
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Рейтинг</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Не важен</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>1 звезда</li>
-                            <li>2 звезды</li>
-                            <li>5 звезд</li>
-                            <li>Не важен</li>
-                        </ul>
+{{--                        <div class="unit-select_select select-btn">--}}
+{{--                            <p class="unit-select_text">Не важен</p>--}}
+{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+{{--                        </div>--}}
+{{--                        <ul class="select-window">--}}
+{{--                            <li>1 звезда</li>--}}
+{{--                            <li>2 звезды</li>--}}
+{{--                            <li>5 звезд</li>--}}
+{{--                            <li>Не важен</li>--}}
+{{--                        </ul>--}}
+                        <select class="unit-select_select" name="rating" id="rating">
+                            <option value="" selected="true">Любой</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Оценка</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">Не важна</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>Не важна</li>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                        </ul>
+{{--                        <div class="unit-select_select select-btn">--}}
+{{--                            <p class="unit-select_text">Не важна</p>--}}
+{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+{{--                        </div>--}}
+{{--                        <ul class="select-window">--}}
+{{--                            <li>Не важна</li>--}}
+{{--                            <li>1</li>--}}
+{{--                            <li>2</li>--}}
+{{--                            <li>3</li>--}}
+{{--                        </ul>--}}
+                        <select class="unit-select_select" name="evaluation" id="evaluation">
+                            <option value="" selected="true">Любая</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                     </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Опыт работы</span>
-                        <div class="unit-select_select select-btn">
-                            <p class="unit-select_text">От 10 лет</p>
-                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                        </div>
-                        <ul class="select-window">
-                            <li>От 20 лет</li>
-                            <li>От 30 лет</li>
-                        </ul>
+{{--                        <div class="unit-select_select select-btn">--}}
+{{--                            <p class="unit-select_text">От 10 лет</p>--}}
+{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+{{--                        </div>--}}
+{{--                        <ul class="select-window">--}}
+{{--                            <li>От 20 лет</li>--}}
+{{--                            <li>От 30 лет</li>--}}
+{{--                        </ul>--}}
+                        <select class="unit-select_select" name="experience" id="experience">
+                            <option value="" selected="true">Любой</option>
+                            <option value="1">От 1 года</option>
+                            <option value="3">От 3 лет</option>
+                            <option value="6">От 6 лет</option>
+                            <option value="10">От 10 лет</option>
+                        </select>
                     </div>
 
                     <button class="find_reset-filter" type="reset">сбросить фильтр</button>
@@ -117,14 +171,18 @@
                     Командапрофессионалов поможет решить задачу в юридическом поле и дать консультацию.
                 </p>
                 <div class="buttons-container">
+                    <a href="#">
                     <button class="main-btn main-btn_orange">
                         Бесплатная консультация
                         <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                     </button>
+                    </a>
+                    <a href="#1">
                     <button class="main-btn">
                         Создать задачу на бирже
                         <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                     </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -132,98 +190,142 @@
 
     <section class="fs-section u-container">
         <div class="container">
-            <h2 class="find-section_header">Найдено: <span>177 специалистов</span></h2>
+
 
                 @include('component_build', [
                     'component' => 'component.gridComponent.simpleGrid',
                     'params_component' => [
                         'autostart' => 'true',
-                        'name' => 'service_list',
+                        'name' => 'employee_list',
                         'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
 
-                        'template' => '<div class="found-specialists">
-                            <div v-for="item in data" class="fs-block">
-                                <div class="fs-img">
-                                    <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
+                        'template' =>
+                        "<div :id=\"name + '_body'\">
+                        <h2 class=\"find-section_header\">Найдено: <span>@{{ data.length }} специалистов</span></h2>
+                        <div class=\"found-specialists\" >
+                            <div v-for=\"item in data\" class=\"fs-block\" >
+                                <div class=\"fs-img\">
+                                    <img :src=\"`/storage` + item.avatar_path\" alt=\"lawyer-img\">
                                 </div>
 
-                                <div class="fs-info">
-                                    <h3 class="fs-name">@{{ item.first_name }}</h3>
-                                    <p class="fs-row">
-                                        <img class="icon" src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon">
-                                        <span class="fs-text">Москва и МО, пр. Роберта Рождественского, 522</span>
+                                <div class=\"fs-info\">
+                                    <a href=\"#\"><h3 class=\"fs-name\">@{{ item.last_name + \" \" + item.first_name + \" \" + item.middle_name }}</h3></a>
+                                    <p class=\"fs-row\">
+                                        <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-gray.svg\" alt=\"loc-icon\">
+                                        <span class=\"fs-text\">Москва и МО, пр. Роберта Рождественского, 522</span>
                                     </p>
-                                    <p class="fs-row">
-                                        <img class="icon" src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon">
-                                        <span class="fs-text">15 лет практики</span>
+                                    <p class=\"fs-row\">
+                                        <img class=\"icon\" src=\"/lawyers/images/icons/bag-icon-gray.svg\" alt=\"bag-icon\">
+                                        <span class=\"fs-text\">@{{ item.practice_years }} лет практики</span>
                                     </p>
 
-                                    <div class="lawyer_rate-block">
-                                        <div class="specialist-rate">
-                                            <div class="stars">
-                                                <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                                <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                                <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                                <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                                <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
+                                    <div class=\"lawyer_rate-block\">
+                                        <div class=\"specialist-rate\">
+                                            <div class=\"stars\">
+                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                                <img src=\"/lawyers/images/icons/star-icon-empty.svg\" alt=\"star-icon\">
                                             </div>
                                             <span>32 ответа</span>
                                         </div>
-                                        <div class="specialist-perm">
+                                        <div class=\"specialist-perm\">
                                             <p>Право рейтинг:</p>
                                             <span>4.0</span>
-                                            <img class="icon" src="/lawyers/images/icons/info-icon-gray.svg" alt="info-icon">
+                                            <img class=\"icon\" src=\"/lawyers/images/icons/info-icon-gray.svg\" alt=\"info-icon\">
                                         </div>
                                     </div>
 
-                                    <p class="fs-text">
-                                        Строжайшая политика конфиденциальности и заинтересованность в долгосрочномсотрудничестве исключают возможность утечки информации.
-                                        Доверие клиентов и деловая репутация стоят на первом месте.
+                                    <p class=\"fs-text\">
+                                        @{{ item.about }}
                                     </p>
-                                    <ul class="fs-text_bold">
-                                        <li>Контракты,</li>
-                                        <li>Разводы,</li>
-                                        <li>ДТП,</li>
-                                        <li>Гражданское право</li>
+                                    <ul class=\"fs-text_bold\" v-for=\"service in JSON.parse(item.service)\">
+                                        <li>@{{ service.service_name }} </li>
                                     </ul>
                                 </div>
 
-                                <div class="buttons-container">
-                                    <button class="main-btn main-btn_blue">Консультация: 3 000 &#8381;</button>
-                                    <button class="main-btn main-btn_white">Заказать звонок</button>
-                                    <button class="main-btn main-btn_white">Сообщение</button>
+                                <div class=\"buttons-container\">
+                                    <button class=\"main-btn main-btn_blue\">Консультация: @{{ item.consultation_price }} &#8381;</button>
+                                    <button class=\"main-btn main-btn_white\">Заказать звонок</button>
+                                    <button class=\"main-btn main-btn_white\">Сообщение</button>
                                 </div>
                             </div>
-                        </div>',
-
-                        'autostart' => 'true',
-                        'pagination' => [
-                            'page' => 1,
-                            'pageSize' => 14,
-                            'countPage' => 1,
-                            'typePagination' => 0,
-                            'showPagination' => 1,
-                            'showInPage' => 14,
-                            'count_line' => 1,
-                            'all_load' => 0,
-                            'physical_presence' => 0
-                        ],
+                        </div>
+                        </div>",
+                        'pagination'=>
+                        [
+							'page'=> 1,
+							'pageSize'=> 4,
+							'countPage'=> 1,
+							'typePagination'=> 1,
+							'showPagination'=> 1,
+							'showInPage'=> 4,
+							'count_line'=> 1,
+							'all_load'=> 0,
+							'physical_presence'=> 0
+						],
                     ]
                 ])
-
-            <div class="fs-section_pages">
-                <a class="fs-page_nav disabled" href="#">Предыдущая страница</a>
-                <a class="fs-page_nav active" href="#">Следующая страница</a>
-
-                <ul class="gaps">
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a class="active" href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">...</a></li>
-                    <li><a href="#">28</a></li>
-                </ul>
-            </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            filter()
+            resetFilters()
+        })
+
+        function filter() {
+            $('#send').on('click', function (e) {
+                e.preventDefault()
+                let params = getFilterParams()
+                console.log(page__.getElementsGroup('employee_list')[0]['obj'].pagination);
+                page__.getElementsGroup('employee_list')[0]['obj'].setUrlParams(params)
+            })
+        }
+
+        function clearFilterInputs() {
+            const form = $('form')
+            form.find('input').val('')
+            const selects = form.find('select')
+            for(let index = 0; index < selects.length;index++){
+                let key = $(selects[index]).attr("name");
+                if(key){
+                    $(selects[index]).prop('selectedIndex', 0)
+                }
+            }
+        }
+
+        function resetFilters() {
+            $('.find_reset-filter').on('click', function () {
+                const params = page__.getElementsGroup('employee_list')[0]['obj'].getUrlParams()
+                delete params['page']
+                delete params['pageSize']
+                let hasParams = false
+                for (let index = 0; index < Object.keys(params).length; index++) {
+                    if (params[index] !== undefined || params[index] !== null || params[index] !== '') {
+                        hasParams = true;
+                    }
+                }
+                if (hasParams) {
+                    clearFilterInputs()
+                    page__.getElementsGroup('employee_list')[0]['obj'].setUrlParams({})
+                }
+                clearFilterInputs()
+            })
+        }
+
+        function getFilterParams() {
+            return {
+                'search_spec': $('#search-spec').val(),
+                'country_id': $('[name = country_id]').val(),
+                'city_id': $('[name = city_id]').val(),
+                'service_type_id': $('[name = service_type_id]').val(),
+                'service_id': $('[name = service_id]').val(),
+                'rating': $('#rating').val(),
+                'evaluation': $('#evaluation').val(),
+                'experience': $('#experience').val(),
+            }
+        }
+    </script>
 @endsection

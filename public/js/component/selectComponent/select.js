@@ -188,6 +188,14 @@ class selectComponent{
             console.log(c)
         }
     }
+    setUrlParams(params){
+        this.params = params;
+        this.option['params'] = params;
+        this.loadFromAajax();
+    }
+    getUrlParams(){
+        return this.params;
+    }
 }
 
 

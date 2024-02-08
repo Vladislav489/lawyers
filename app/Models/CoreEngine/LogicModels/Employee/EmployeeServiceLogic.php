@@ -4,6 +4,7 @@ namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use App\Models\CoreEngine\ProjectModels\Service\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,16 +22,6 @@ class EmployeeServiceLogic extends CoreEngine
         parent::__construct($params, $select);
     }
 
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
-
-        return $this->group_params;
-    }
 
     protected function defaultSelect(): array
     {
@@ -38,15 +29,6 @@ class EmployeeServiceLogic extends CoreEngine
         $this->default = [];
 
         return $this->default;
-    }
-
-    protected function getFilter(): array
-    {
-        $tab = $this->engine->getTable();
-        $this->filter = [];
-        $this->filter = array_merge($this->filter, parent::getFilter());
-
-        return $this->filter;
     }
 
     public function storeEmployeeServices(array $data): array
@@ -89,5 +71,35 @@ class EmployeeServiceLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    protected function getFilter() {
+        $tab = $this->engine->getTable();
+        $this->filter = [
+            [   'field' => $tab.'.user_id','params' => 'user_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+        ];
+
+        return $this->filter = array_merge($this->filter, parent::getFilter());
+    }
+
+    protected function compileGroupParams() {
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' => [
+                'Service' => [
+                    'entity' => new Service(),
+                    'relationship' => ['id', 'service_id'],
+                    'field' => [
+                        'name',
+                    ],
+                ],
+            ]
+        ];
+        return $this->group_params;
     }
 }

@@ -432,33 +432,33 @@ class simpleGrid{
                 ul.append(li)
             }
         }
-        var pageNumbEnter = $("<div data-input_on='1' id='"+$this.id+"_numb'>...</div>").mouseenter(function(target){
-             var obj = $(this);
-             if(obj.data('input_on') == '1'){
-                 obj.data('input_on','0')
-                 var input  = $("<input type='number' style='width:40px' value='"+$this.pagination['page']+"' min='1' id='"+$this.id+"_input' name='page_number'/>").keypress(function(event) {
-                    if(event.keyCode === 13){
-                        $this.pagination['page'] = $(this).val();
-                        $this.loadFromAajax();
-                        obj.data('input_on','1')
-                    }
-                }).blur(function (event) {
-                     setTimeout(function () {
-                         obj.html("...");
-                         obj.data('input_on','1')
-                     },1000)
-                 });
-                var button = $("<button>&#10132;</button>").click(function () {
-                    $this.pagination['page'] = $("#"+$this.id+"_input").val();
-                    $this.loadFromAajax();
-                    obj.data('input_on','1')
-                })
-                obj.html("")
-                obj.append(input).append(button);
-             }
-        })
-
-        ul.append($("<li class='button-right'>").append(pageNumbEnter))
+        // var pageNumbEnter = $("<div data-input_on='1' id='"+$this.id+"_numb'>...</div>").mouseenter(function(target){
+        //      var obj = $(this);
+        //      if(obj.data('input_on') == '1'){
+        //          obj.data('input_on','0')
+        //          var input  = $("<input type='number' style='width:40px' value='"+$this.pagination['page']+"' min='1' id='"+$this.id+"_input' name='page_number'/>").keypress(function(event) {
+        //             if(event.keyCode === 13){
+        //                 $this.pagination['page'] = $(this).val();
+        //                 $this.loadFromAajax();
+        //                 obj.data('input_on','1')
+        //             }
+        //         }).blur(function (event) {
+        //              setTimeout(function () {
+        //                  obj.html("...");
+        //                  obj.data('input_on','1')
+        //              },1000)
+        //          });
+        //         var button = $("<button>&#10132;</button>").click(function () {
+        //             $this.pagination['page'] = $("#"+$this.id+"_input").val();
+        //             $this.loadFromAajax();
+        //             obj.data('input_on','1')
+        //         })
+        //         obj.html("")
+        //         obj.append(input).append(button);
+        //      }
+        // })
+        //
+        // ul.append($("<li class='button-right'>").append(pageNumbEnter))
         if( parseInt(this.pagination['page']) < (this.pagination['countPage'] - 9)) {
             var li = $("<li><i>" + this.pagination['countPage'] + "</i></li>").attr("data-page", this.pagination['countPage']).click(function () {
                 $this.pageClick($(this).data('page'))

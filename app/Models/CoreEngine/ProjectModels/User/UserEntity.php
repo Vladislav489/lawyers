@@ -31,6 +31,10 @@ class UserEntity extends Authenticatable
         'modifier_id',
     ];
 
+    protected $hidden = [
+        'password'
+    ];
+
     // FIXME:
     public function type()
     {
