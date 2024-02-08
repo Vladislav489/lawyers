@@ -85,11 +85,11 @@ class EmployeeLogic extends UserLogic
     public function saveAchievements(array $data)
     {
         if (empty($data)) return false;
-        if (isset($data['achievements']) && !empty($data['achievements']) && $data['employee_id']) {
+        if (!empty($data['achievements']) && $data['user_id']) {
             foreach ($data['achievements'] as $achievement) {
                 $achievementData['path'] = $this->storeImage($achievement, 'achievement', $data['user_id']);
-                $achievementData['employee_id'] = $data['employee_id'];
-                $achievementIds = $this->helpEngine['achievement']->insert($achievementData);
+                $achievementData['user_id'] = $data['user_id'];
+                $achievementIds[] = $this->helpEngine['achievement']->insert($achievementData);
             }
         }
         return !empty($achievementIds);
@@ -102,7 +102,7 @@ class EmployeeLogic extends UserLogic
     protected function getFilter(): array {
         $tab = $this->engine->getTable();
         $this->filter = [
-            [   'field' => $tab.'.id','params' => 'id',
+            [   'field' => $tab.'.id','params' => 'user_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
@@ -111,11 +111,6 @@ class EmployeeLogic extends UserLogic
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
             ],
             [   'field' => 'Employee.is_confirmed','params' => 'is_confirmed',
                 'validate' => ['string' => true,"empty" => true],
@@ -208,6 +203,11 @@ class EmployeeLogic extends UserLogic
                     'field' => [],
                     'type' => 'inner'
                 ],
+                'Achievements' => [
+                    'entity' => new EmployeeAchievement(),
+                    'relationship' => ['user_id', 'id'],
+                    'field' => ['path'],
+                ]
             ]
         ];
         return $this->group_params;

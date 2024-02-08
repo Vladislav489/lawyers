@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->string('path', 128)->unique()->comment('url фотографии');
-            $table->bigInteger('employee_id')->unsigned()->index()->comment('ID сотрудника');
+            $table->bigInteger('user_id')->unsigned()->index()->comment('ID юзера(сотрудника)');
         });
     }
 
