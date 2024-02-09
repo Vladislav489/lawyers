@@ -95,8 +95,19 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionGetServices(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        return (new EmployeeServiceLogic())->setJoin('Service')->getList();
+        return (new EmployeeServiceLogic($this->params))->setJoin('Service')->getList();
 
+    }
+
+    public function actionGetEmployee(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $select = [
+            '*', DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
+            DB::raw("IF(Achievements.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('path',
+            Achievements.path)), ']')) as achievements"),
+        ];
+
+        return response()->json((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements'])->getList());
     }
 
     public function actionGetEmployeeList(array $param = []) {
@@ -116,4 +127,7 @@ class EmployeeMainstayController extends MainstayController
         $result['pagination'] = $pagination['pagination'];
         return response()->json($result);
     }
+
+//DB::raw("(select CONCAT('[', GROUP_CONCAT(json_object('name', S.name,'description', S.description,'price', US.price)), ']')
+//from service as S left join user_employee_service as US on S.id = US.service_id WHERE US.user_id = " . $this->params['user_id'] . ") as 'services'")
 }

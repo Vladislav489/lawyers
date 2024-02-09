@@ -4,10 +4,6 @@
 @section('content')
     <section class="gradient-bg u-container lawyer-section">
         <div class="container">
-            <ul class="breadcrumbs">
-                <li class="cool-underline"><a href="#">Юрист</a></li>
-                <li class="cool-underline"><a href="#">Город</a></li>
-            </ul>
 
             <div class="lawyer-container">
                 <div class="left">
@@ -18,10 +14,10 @@
                             </div>
 
                             <div class="lawyer-info">
-                                <h2 class="lawyer-name">Соколовский Владимир Александрович</h2>
+                                <h2 class="lawyer-name"></h2>
                                 <span class="lawyer-check">
                                     Проверенный юрист
-                                    <img class="icon" src="/lawyers/images/icons/check-icon-white.svg" alt="check-icon">
+                                    <img class="icon" src="" alt="check-icon">
                                 </span>
                             </div>
                         </div>
@@ -53,11 +49,11 @@
                                 </div>
                                 <div class="lawyer-info_row">
                                     <img class="icon" src="/lawyers/images/icons/bah-icon-blue.svg" alt="bah-icon">
-                                    <span>15 лет практики</span>
+                                    <span name="practice_years">15 лет практики</span>
                                 </div>
                                 <div class="lawyer-info_row">
                                     <img class="icon" src="/lawyers/images/icons/phone-icon-blue.svg" alt="phone-icon">
-                                    <span>+7 (999) 999 99 99</span>
+                                    <span name="phone_number">+7 (999) 999 99 99</span>
                                 </div>
                                 <div class="lawyer-info_row">
                                     <img class="icon" src="/lawyers/images/icons/planet-icon-blue.svg" alt="planet-icon">
@@ -152,7 +148,7 @@
                             </span>
                         </div>
 
-                        <p class="lawyer-text_p lawyer-text_blue bold">Главный тезис от юриста с лимитом символа</p>
+{{--                        <p class="lawyer-text_p lawyer-text_blue bold">Главный тезис от юриста с лимитом символа</p>--}}
                         <p class="lawyer-text_p">
                             Имею многолетний опыт работы по всем направлениям правового поля РФ и успешную судебную практику.
                             Профессионально и добросовестно оказываю юридическую помощь и по доступным ценам.
@@ -176,14 +172,14 @@
                         <div class="lawyer-card_block">
                             <h2 class="lawyer-card_block-title">Документы и сертификаты <span>2</span></h2>
                             <ul class="lawyer-certs_container">
-                                <li class="lawyer-cert">
-                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">
-                                    <p>Сертификат о повышении квалифи...</p>
-                                </li>
-                                <li class="lawyer-cert">
-                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">
-                                    <p>Диплом о ВО юриста</p>
-                                </li>
+{{--                                <li class="lawyer-cert">--}}
+{{--                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">--}}
+{{--                                    <p>Сертификат о повышении квалифи...</p>--}}
+{{--                                </li>--}}
+{{--                                <li class="lawyer-cert">--}}
+{{--                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">--}}
+{{--                                    <p>Диплом о ВО юриста</p>--}}
+{{--                                </li>--}}
                             </ul>
                         </div>
                     </div>
@@ -199,33 +195,32 @@
                                     'name' => 'service_list',
                                     'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
 
-                                    'template' => '<ul class="lawyer-services_block">
-                                        <li v-for="item in data" class="lawyer-service_line" style="justify-content: space-between;">
-                                            <div class="lawyer-service_left">
-                                                <div class="lawyer-service_title">@{{ item.name }}</div>
-                                                <p class="lawyer-service_text">
+                                    'template' => "<ul class=\"lawyer-services_block\" :id=\"name + '_body'\">
+                                        <li v-for=\"item in data\" class=\"lawyer-service_line\" style=\"justify-content: space-between;\">
+                                            <div class=\"lawyer-service_left\">
+                                                <div class=\"lawyer-service_title\">@{{ item.name }}</div>
+                                                <p class=\"lawyer-service_text\">
                                                     @{{ item.description }}
-                                                    <button class="lawyer-service_red-more">
+                                                    <button class=\"lawyer-service_red-more\">
                                                         ЧИТАТЬ ЕЩЕ
                                                     </button>
                                                 </p>
                                             </div>
 
-                                            <div class="lawyer-service_price">
+                                            <div class=\"lawyer-service_price\">
                                                 <span>500&#8381;</span>
-                                                <button class="main-btn main-btn_white">Заказать услугу</button>
+                                                <button class=\"main-btn main-btn_white\">Заказать услугу</button>
                                             </div>
                                         </li>
-                                    </ul>',
+                                    </ul>",
 
-                                    'autostart' => 'true',
                                     'pagination' => [
                                         'page' => 1,
-                                        'pageSize' => 14,
+                                        'pageSize' => 3,
                                         'countPage' => 1,
-                                        'typePagination' => 0,
+                                        'typePagination' => 2,
                                         'showPagination' => 1,
-                                        'showInPage' => 14,
+                                        'showInPage' => 3,
                                         'count_line' => 1,
                                         'all_load' => 0,
                                         'physical_presence' => 0
@@ -233,24 +228,38 @@
                                 ]
                             ])
 
-                        <button class="more-services">Еще 2 услуги</button>
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="lawyer-all-services lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Оказываемые услуги</h2>
-                        <ul>
-                            <li>Юридическое обслуживание</li>
-                            <li>Ведение дел в судебных делах</li>
-                            <li>Ведение уголовных дел</li>
-                            <li>Ведение уголовных дел</li>
-                            <li>Сопровождение разводов</li>
-                            <li>Ведение административных дел</li>
-                            <li>Ведение дел по наследству</li>
-                            <li>Ведение гражданских дел</li>
-                            <li>Ведение дел в арбитражных судах</li>
-                        </ul>
+                            @include('component_build', [
+                                'component' => 'component.gridComponent.simpleGrid',
+                                'params_component' => [
+                                    'autostart' => 'true',
+                                    'name' => 'employee_services',
+                                    'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"),
+									'globalParams' => 'true',
 
-                        <button class="more-services">Еще 2 услуги</button>
+                                    'template' => "<ul name=\"lawyer_services\" :id=\"name + '_body'\">
+                                        <li v-for=\"item in data\">@{{item.name}}</li>
+                                    </ul>",
+
+                                    'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
+                                ]
+                            ])
+
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="lawyer-practice lawyer-wrapper">
@@ -383,11 +392,11 @@
                             </div>
                             <div class="lawyer-info_row">
                                 <img class="icon" src="/lawyers/images/icons/bah-icon-blue.svg" alt="bah-icon">
-                                <span>15 лет практики</span>
+                                <span name="practice_years">15 лет практики</span>
                             </div>
                             <div class="lawyer-info_row">
                                 <img class="icon" src="/lawyers/images/icons/phone-icon-blue.svg" alt="phone-icon">
-                                <a href="tel:+71234567890" class="span-link">+7 (123) 456 78 90</a>
+                                <a name="phone_number" href="tel:+71234567890" class="span-link">+7 (123) 456 78 90</a>
                             </div>
                             <div class="lawyer-info_row">
                                 <img class="icon" src="/lawyers/images/icons/planet-icon-blue.svg" alt="planet-icon">
@@ -440,4 +449,63 @@
             </div>
         </div>
     </section>
+    <script>
+        $(document).ready(function () {
+            const userId = page__.params.user_id
+
+            $.ajax({
+                method: 'POST',
+                data: {user_id: userId},
+                url: '{{ route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (data) {
+                    fillThePage(data.result[0])
+                }
+            })
+            // console.log(page__.object);
+            // console.log(page__.getElementsGroup('employee_services'));
+        })
+
+        function fillThePage(userData) {
+            $('.lawyer-name').text(userData.last_name + " " + userData.first_name + " " + userData.middle_name)
+            $('.lawyer-img').find('img').attr('src', '/storage' + userData.avatar_path)
+            $('[name = practice_years]').text(agetostr(userData.practice_years) + ' практики')
+            $('[name = phone_number]').text(userData.phone_number)
+            $('.lawyer-text_p').text(userData.about)
+
+            if(userData.achievements) {
+                let achievementArr = JSON.parse(userData.achievements)
+                for (let i = 0; i < achievementArr.length; i++) {
+                    $('.lawyer-certs_container')
+                        .append($('<li class="lawyer-cert">').append($('<img src="" alt="cert-img">')
+                            .attr('src', '/storage' + achievementArr[i].path)))
+                }
+            }
+
+            if(userData.services) {
+                let serviceArr = JSON.parse(userData.services)
+                for (let i = 0; i < serviceArr.length; i++) {
+                    $('[name = lawyer_services]')
+                        .append($('<li>').text(serviceArr[i].name))
+                }
+            }
+        }
+
+        function agetostr(age) {
+            var txt;
+            count = age % 100;
+            if (count >= 5 && count <= 20) {
+                txt = 'лет';
+            } else {
+                count = count % 10;
+                if (count == 1) {
+                    txt = 'год';
+                } else if (count >= 2 && count <= 4) {
+                    txt = 'года';
+                } else {
+                    txt = 'лет';
+                }
+            }
+            return age+" "+txt;
+        }
+    </script>
 @endsection

@@ -209,14 +209,15 @@
                                 </div>
 
                                 <div class=\"fs-info\">
-                                    <a href=\"#\"><h3 class=\"fs-name\">@{{ item.last_name + \" \" + item.first_name + \" \" + item.middle_name }}</h3></a>
+                                    <a :href=\"'".route__('actionSpecialistCard_controller')."/'+item.user_id\">
+                                    <h3 class=\"fs-name\">@{{ item.last_name + \" \" + item.first_name + \" \" + item.middle_name }}</h3></a>
                                     <p class=\"fs-row\">
                                         <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-gray.svg\" alt=\"loc-icon\">
                                         <span class=\"fs-text\">Москва и МО, пр. Роберта Рождественского, 522</span>
                                     </p>
                                     <p class=\"fs-row\">
                                         <img class=\"icon\" src=\"/lawyers/images/icons/bag-icon-gray.svg\" alt=\"bag-icon\">
-                                        <span class=\"fs-text\">@{{ item.practice_years }} лет практики</span>
+                                        <span class=\"fs-text\">@{{ agetostr(item.practice_years) }} практики</span>
                                     </p>
 
                                     <div class=\"lawyer_rate-block\">
@@ -279,7 +280,7 @@
             $('#send').on('click', function (e) {
                 e.preventDefault()
                 let params = getFilterParams()
-                console.log(page__.getElementsGroup('employee_list')[0]['obj'].pagination);
+                console.log(page__.getElementsGroup('employee_list')[0]['obj']);
                 page__.getElementsGroup('employee_list')[0]['obj'].setUrlParams(params)
             })
         }
@@ -326,6 +327,24 @@
                 'evaluation': $('#evaluation').val(),
                 'experience': $('#experience').val(),
             }
+        }
+
+        function agetostr(age) {
+            var txt;
+            count = age % 100;
+            if (count >= 5 && count <= 20) {
+                txt = 'лет';
+            } else {
+                count = count % 10;
+                if (count == 1) {
+                    txt = 'год';
+                } else if (count >= 2 && count <= 4) {
+                    txt = 'года';
+                } else {
+                    txt = 'лет';
+                }
+            }
+            return age+" "+txt;
         }
     </script>
 @endsection

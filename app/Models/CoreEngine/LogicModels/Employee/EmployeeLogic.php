@@ -91,6 +91,7 @@ class EmployeeLogic extends UserLogic
                 $achievementData['user_id'] = $data['user_id'];
                 $achievementIds[] = $this->helpEngine['achievement']->insert($achievementData);
             }
+            dd($achievementIds);
         }
         return !empty($achievementIds);
     }
@@ -191,7 +192,7 @@ class EmployeeLogic extends UserLogic
                 'EmployeeService' => [
                     'entity' => new EmployeeService(),
                     'relationship' => ['user_id', 'id'],
-                    'field' => [],
+                    'field' => ['*'],
                 ],
                 'Service' => [
                     'entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'),

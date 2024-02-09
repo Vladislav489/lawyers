@@ -387,7 +387,7 @@ class simpleGrid{
     }
     createPaginationMore(){
         var $this = this;
-        $("<div><div class='paginationMore'>More</div></div>").click(function(){
+        $("<div><div class='paginationMore'>Еще</div></div>").click(function(){
             $this.pagination['page'] += 1;
             if($this.pagination['all_load'] == 0) {
                 $this.addloadFromAajax();

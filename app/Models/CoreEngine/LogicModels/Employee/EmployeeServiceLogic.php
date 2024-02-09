@@ -16,6 +16,7 @@ class EmployeeServiceLogic extends CoreEngine
     {
         $this->engine = new EmployeeService();
         $this->query = $this->engine->newQuery();
+        $this->params = array_merge($params, ['is_deleted' => '0']);
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -79,7 +80,12 @@ class EmployeeServiceLogic extends CoreEngine
             [   'field' => $tab.'.user_id','params' => 'user_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
             ],
         ];
 
