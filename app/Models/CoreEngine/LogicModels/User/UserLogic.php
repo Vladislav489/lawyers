@@ -47,14 +47,28 @@ class UserLogic extends CoreEngine
 
     public function save($data)
     {
-        $data['modifier_id'] = 1;
-        $data['input_password'] = $data['password'];
-        $data['password'] = Hash::make($data['password']);
-        if (isset($data) && !empty($data)) {
-            $user = array_intersect_key($data, array_flip($this->engine->getFillable()));
-            if ($data['id'] = parent::save($user)) {
-                return $data;
-            } else return false;
+        if (isset($data['password'])) {
+            $data['modifier_id'] = 1;
+            $data['input_password'] = $data['password'];
+            $data['password'] = Hash::make($data['password']);
+            if (isset($data) && !empty($data)) {
+                $user = array_intersect_key($data, array_flip($this->engine->getFillable()));
+                if ($data['id'] = parent::insert($user)) {
+                    return $data;
+                } else return false;
+            }
+        } else {
+            if (isset($data) && !empty($data)) {
+                foreach ($data as $k => $v) {
+                    if (empty($v)) {
+                        unset($data[$k]);
+                    }
+                }
+                $user = array_intersect_key($data, array_flip($this->engine->getFillable()));
+                if ($data['id'] = parent::update($user, auth()->id())) {
+                    return $data;
+                } else return false;
+            }
         }
         return false;
     }

@@ -49,10 +49,12 @@
                                 "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
                                 "template" =>
                                 '<select class="unit-select_select" name="city_id" :id="name" style="width:100%">
-                                    <option value="" selected="true">Выбрать</option>
+                                    <option id="stub" value="" selected="true">Выбрать</option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
-                                "change" => "function(){}"
+                                "change" => "function(){
+
+                                    }"
                             ]])
                     </div>
 
@@ -195,7 +197,8 @@
                 @include('component_build', [
                     'component' => 'component.gridComponent.simpleGrid',
                     'params_component' => [
-                        'autostart' => 'true',
+                        'autostart' => 'false',
+						'ssr' => 'true',
                         'name' => 'employee_list',
                         'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
 
@@ -205,7 +208,7 @@
                         <div class=\"found-specialists\" >
                             <div v-for=\"item in data\" class=\"fs-block\" >
                                 <div class=\"fs-img\">
-                                    <img :src=\"`/storage` + item.avatar_path\" alt=\"lawyer-img\">
+                                    <img :src=\"'/storage' + item.avatar_path\" alt=\"lawyer-img\">
                                 </div>
 
                                 <div class=\"fs-info\">

@@ -6,17 +6,15 @@ use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class EmployeeServiceLogic extends CoreEngine
 {
     private $helpEngine;
 
-    public function __construct($params = [], $select = ['*'], $callback = null)
-    {
+    public function __construct($params = [], $select = ['*'], $callback = null) {
         $this->engine = new EmployeeService();
-        $this->query = $this->engine->newQuery();
         $this->params = array_merge($params, ['is_deleted' => '0']);
+        $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -24,35 +22,17 @@ class EmployeeServiceLogic extends CoreEngine
     }
 
 
-    protected function defaultSelect(): array
-    {
+    protected function defaultSelect(): array {
         $tab = $this->engine->tableName();
         $this->default = [];
 
         return $this->default;
     }
 
-    public function storeEmployeeServices(array $data): array
-    {
-        $result = [];
-        DB::table('user_employee_service')
-            ->where('user_id', Auth::id())
-            ->whereNotIn('service_id', $data)
-            ->delete();
-
-        foreach ($data as $service_id) {
-            if (!EmployeeService::where(['user_id' => Auth::id(), 'service_id' => $service_id])->exists()) {
-                $result[] = $this->store(compact(['service_id']));
-            }
+    public function store(array $data): array|bool {
+        if ($data['user_id'] != Auth::id()) {
+            return false;
         }
-
-        return $result;
-    }
-
-    public function store(array $data): array|bool
-    {
-        $data['is_main'] = boolval($data['is_main'] ?? null);
-        $data['user_id'] = Auth::id();
 
         try {
             $service = array_intersect_key(
@@ -74,15 +54,33 @@ class EmployeeServiceLogic extends CoreEngine
         return false;
     }
 
+    public function deleteService(array $data) {
+        if (empty($data)) {
+            return false;
+        }
+        $id = $data['id'];
+        $userId = $data['user_id'];
+
+        if ($userId == \auth()->id()) {
+            return $this->delete($id);
+        }
+        return false;
+    }
+
     protected function getFilter() {
         $tab = $this->engine->getTable();
         $this->filter = [
+            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
             [   'field' => $tab.'.user_id','params' => 'user_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
+            [   'field' => $tab.'.id','params' => 'id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',

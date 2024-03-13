@@ -1,4 +1,14 @@
 @extends('lawyers.layouts.main')
+@include('component_build',[
+	'component' => 'component.loadComponent.loadGlobalData',
+        'params_component' => [
+        'name' => "EmployeeInfo",
+        'autostart' => 'false',
+        'ssr' => 'true',
+        'url' => route__("actionGetEmployee_mainstay_employee_employeemainstaycontroller"),
+        'params' => ['user_id' => request()->route('user_id')],
+    ]
+])
 @section('title', 'Профиль сотрудника')
 
 @section('content')
@@ -7,88 +17,84 @@
 
             <div class="lawyer-container">
                 <div class="left">
-                    <div class="lawyer-block">
-                        <div class="lawyer-top">
-                            <div class="lawyer-img">
-                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
+                    @include('component_build', [
+                            'component' => 'component.infoComponent.textInfo',
+                            'params_component' => [
+                                'autostart' => 'false',
+                                'name' => 'employee_info_main',
+								'globalData' => 'EmployeeInfo',
+								'change' => 'function() {}',
+                                'template' =>
+                    "
+                    <div:id=\"name\">
+                    <div class=\"lawyer-block\">
+                        <div class=\"lawyer-top\">
+                            <div class=\"lawyer-img\">
+                                <img :src=\"data.avatar_full_path\" alt=\"lawyer-img\">
                             </div>
 
-                            <div class="lawyer-info">
-                                <h2 class="lawyer-name"></h2>
-                                <span class="lawyer-check">
+                            <div class=\"lawyer-info\">
+                                <h2 class=\"lawyer-name\">@{{getFullName(data)}}</h2>
+                                <span class=\"lawyer-check\">
                                     Проверенный юрист
-                                    <img class="icon" src="" alt="check-icon">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/check-icon-white.svg\" alt=\"check-icon\">
                                 </span>
                             </div>
                         </div>
 
-                        <div class="lawyer-bottom">
-                            <div class="lawyer_rate-block">
-                                <div class="specialist-rate">
-                                    <div class="stars">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
+                        <div class=\"lawyer-bottom\">
+                            <div class=\"lawyer_rate-block\">
+                                <div class=\"specialist-rate\">
+                                    <div class=\"stars\">
+                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
+                                        <img src=\"/lawyers/images/icons/star-icon-empty.svg\" alt=\"star-icon\">
                                     </div>
                                     <span>32 ответа</span>
                                 </div>
 
-                                <div class="specialist-perm">
+                                <div class=\"specialist-perm\">
                                     <p>Право рейтинг:</p>
                                     <span>4.0</span>
-                                    <img class="icon" src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/info-icon-blue.svg\" alt=\"info-icon\">
                                 </div>
                             </div>
 
-                            <div class="lawyer-info">
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/loc-icon-blue.svg" alt="loc-icon">
-                                    <span>Москва и МО</span>
+                            <div class=\"lawyer-info\">
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-blue.svg\" alt=\"loc-icon\">
+                                    <span>@{{data.city_name}}</span>
                                 </div>
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/bah-icon-blue.svg" alt="bah-icon">
-                                    <span name="practice_years">15 лет практики</span>
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
+                                    <span name=\"practice_years\">@{{agetostr(data.practice_years)}} практики</span>
                                 </div>
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/phone-icon-blue.svg" alt="phone-icon">
-                                    <span name="phone_number">+7 (999) 999 99 99</span>
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
+                                    <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                                 </div>
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/planet-icon-blue.svg" alt="planet-icon">
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
                                     <span>www.site.ru</span>
                                 </div>
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/message-icon-blue.svg" alt="message-icon">
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
                                     <span>Консультации онлайн:</span>
-                                    <span class="bold">Да</span>
+                                    <span class=\"bold\">Да</span>
                                 </div>
-                                <div class="lawyer-info_row">
-                                    <img class="icon" src="/lawyers/images/icons/clock-icon-blue.svg" alt="clock-icon">
+                                <div class=\"lawyer-info_row\">
+                                    <img class=\"icon\" src=\"/lawyers/images/icons/clock-icon-blue.svg\" alt=\"clock-icon\">
                                     <span>Время работы:</span>
-                                    <span class="bold">Пн-Сб 9:00 - 18:00</span>
+                                    <span class=\"bold\">Пн-Сб 9:00 - 18:00</span>
                                 </div>
-                            </div>
-
-                            <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">
-                                        Предложить работу
-                                        <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                                    </span>
-                                    <span class="second">
-                                        Предложить работу
-                                        <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                                    </span>
-                                </button>
                             </div>
                         </div>
-                    </div>
+                    </div></div>",
+                            ]
+                        ])
+
 
                     <div class="exchange-block">
                         <h2 class="exchange-title _line-blue">Биржа юридических задач</h2>
@@ -139,50 +145,53 @@
                         <li><button type="button">Ответы юриста</button></li>
                     </ul>
 
-                    <div class="lawyer-card">
-                        <div class="lawyer-info">
-                            <h2 class="lawyer-name">Соколовский Владимир Александрович</h2>
-                            <span class="lawyer-check">
-                                Проверенный юрист
-                                <img src="/lawyers/images/icons/check-icon-white.svg" alt="check-icon">
-                            </span>
-                        </div>
+                    @include('component_build', [
+                   'component' => 'component.infoComponent.textInfo',
+                   'params_component' => [
+                       'autostart' => 'false',
+                       'name' => 'employee_info_more',
+                       'globalData' => "EmployeeInfo",
 
-{{--                        <p class="lawyer-text_p lawyer-text_blue bold">Главный тезис от юриста с лимитом символа</p>--}}
-                        <p class="lawyer-text_p">
-                            Имею многолетний опыт работы по всем направлениям правового поля РФ и успешную судебную практику.
-                            Профессионально и добросовестно оказываю юридическую помощь и по доступным ценам.
-                            <br>
-                            Являюсь высококалифицированным, практикующим юристом, имею многолетний опыт работы в юриспруденции.
-                            Специализируюсь на гражданских и административных делах.
-                        </p>
+                       'template' =>
+                       "<div class='lawyer-card'>
+                       <div class='lawyer-info'>
+                           <h2 class='lawyer-name'>
+                               @{{getFullName(data)}}
+                           </h2>
+                           <span class='lawyer-check'>
+                               Проверенный юрист
+                               <img src='/lawyers/images/icons/check-icon-white.svg' alt='check-icon'>
+                           </span>
+                       </div>
 
-                        <div class="lawyer-card_block">
-                            <h2 class="lawyer-card_block-title">Фото и видео <span>5</span></h2>
-                            <ul class="lawyer-photos">
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                                <li><img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img"></li>
-                            </ul>
-                        </div>
+                       <p class='lawyer-text_p'>
+                           @{{data.about}}
+                       </p>
 
-                        <div class="lawyer-card_block">
-                            <h2 class="lawyer-card_block-title">Документы и сертификаты <span>2</span></h2>
-                            <ul class="lawyer-certs_container">
-{{--                                <li class="lawyer-cert">--}}
-{{--                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">--}}
-{{--                                    <p>Сертификат о повышении квалифи...</p>--}}
-{{--                                </li>--}}
-{{--                                <li class="lawyer-cert">--}}
-{{--                                    <img src="/lawyers/images/main/lawyer-cert-img.png" alt="cert-img">--}}
-{{--                                    <p>Диплом о ВО юриста</p>--}}
-{{--                                </li>--}}
-                            </ul>
-                        </div>
-                    </div>
+                       <div class='lawyer-card_block'>
+                           <h2 class='lawyer-card_block-title'>Фото<span>
+                           @{{data.photos === null ? 0 : JSON.parse(data.photos).length}}
+                           </span></h2>
+                           <ul class='lawyer-photos' v-for=\"item in JSON.parse(data.photos)\">
+                               <li>
+                                   <img :src='item.path' alt='lawyer-img'>
+                               </li>
+                           </ul>
+                       </div>
+
+                       <div class='lawyer-card_block'>
+                           <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
+                           @{{data.achievements === null ? 0 : JSON.parse(data.achievements).length}}
+                           </span></h2>
+                           <ul class='lawyer-certs_container' v-for=\"item in JSON.parse(data.achievements)\">
+                               <li class='lawyer-cert'>
+                                   <img :src=\"item.path\" alt='cert-img'>
+                               </li>
+                           </ul>
+                       </div>
+                   </div>"
+                   ]
+               ])
 
                     <div class="lawyer-services lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title">Заказать услугу по фикс прайсу с гарантией от нашего портала</h2>
@@ -239,7 +248,7 @@
                                     'autostart' => 'true',
                                     'name' => 'employee_services',
                                     'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"),
-									'globalParams' => 'true',
+									'params' => ['user_id' => auth()->id()],
 
                                     'template' => "<ul name=\"lawyer_services\" :id=\"name + '_body'\">
                                         <li v-for=\"item in data\">@{{item.name}}</li>
@@ -378,42 +387,50 @@
                     <div class="lawyer-contacts lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Контакты и Адрес</h2>
                         <div class="lawyer-contacts_map">
-                            <img src="/lawyers/images/main/map.png" alt="map-img">
-                            <div class="lawyer-contacts_loc">
-                                <span>ул. Морская, 178/20</span>
-                                <img src="/lawyers/images/icons/loc-icon-blue.svg" alt="loc-icon">
-                            </div>
+                            {{--                            <div style="position:relative;overflow:hidden;">--}}
+                            {{--                                <a href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a href="https://yandex.ru/maps/geo/moskva/53000094/?ll=37.608537%2C55.754059&utm_medium=mapframe&utm_source=maps&z=12.96" style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.608537%2C55.754059&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzAwMDA5NBIa0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAiCg2GeBZCFQEGX0I%2C&z=12.96" width="600" height="150" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>--}}
+                            {{--                            </div>--}}
+                            {{--                            <img src="/lawyers/images/main/map.png" alt="map-img">--}}
                         </div>
 
-                        <div class="lawyer-info">
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/loc-icon-blue.svg" alt="loc-icon">
-                                <span>Москва и МО</span>
+                        @include('component_build', [
+                            'component' => 'component.infoComponent.textInfo',
+                            'params_component' => [
+                                'autostart' => 'true',
+                                'name' => 'employee_info_place',
+								'globalData' => 'EmployeeInfo',
+
+                                'template' =>
+                    "<div class=\"lawyer-info\">
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-blue.svg\" alt=\"loc-icon\">
+                                <span>@{{data.city_name}}</span>
                             </div>
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/bah-icon-blue.svg" alt="bah-icon">
-                                <span name="practice_years">15 лет практики</span>
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
+                                <span name=\"data.practice_years\">@{{agetostr(data.practice_years)}}</span>
                             </div>
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/phone-icon-blue.svg" alt="phone-icon">
-                                <a name="phone_number" href="tel:+71234567890" class="span-link">+7 (123) 456 78 90</a>
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
+                                <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                             </div>
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/planet-icon-blue.svg" alt="planet-icon">
-                                <a href="#" class="span-link">www.site.ru</a>
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
+                                <a href=\"#\" class=\"span-link\">www.site.ru</a>
                             </div>
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/message-icon-blue.svg" alt="message-icon">
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
                                 <span>Консультации онлайн:</span>
-                                <span class="lawyer-info_span-black">Да</span>
+                                <span class=\"lawyer-info_span-black\">Да</span>
                             </div>
-                            <div class="lawyer-info_row">
-                                <img class="icon" src="/lawyers/images/icons/clock-icon-blue.svg" alt="clock-icon">
+                            <div class=\"lawyer-info_row\">
+                                <img class=\"icon\" src=\"/lawyers/images/icons/clock-icon-blue.svg\" alt=\"clock-icon\">
                                 <span>Время работы:</span>
-                                <span class="lawyer-info_span-black">Пн-Сб 9:00 - 18:00</span>
+                                <span class=\"lawyer-info_span-black\">Пн-Сб 9:00 - 18:00</span>
                             </div>
-                        </div>
-
+                        </div>",
+                            ]
+                        ])
                         <div class="buttons-container">
                             <button class="main-btn main-btn_white">Сообщение</button>
                             <button class="main-btn main-btn_white">Заказать звонок</button>
@@ -450,46 +467,6 @@
         </div>
     </section>
     <script>
-        $(document).ready(function () {
-            const userId = page__.params.user_id
-
-            $.ajax({
-                method: 'POST',
-                data: {user_id: userId},
-                url: '{{ route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller') }}',
-                success: function (data) {
-                    fillThePage(data.result[0])
-                }
-            })
-            // console.log(page__.object);
-            // console.log(page__.getElementsGroup('employee_services'));
-        })
-
-        function fillThePage(userData) {
-            $('.lawyer-name').text(userData.last_name + " " + userData.first_name + " " + userData.middle_name)
-            $('.lawyer-img').find('img').attr('src', '/storage' + userData.avatar_path)
-            $('[name = practice_years]').text(agetostr(userData.practice_years) + ' практики')
-            $('[name = phone_number]').text(userData.phone_number)
-            $('.lawyer-text_p').text(userData.about)
-
-            if(userData.achievements) {
-                let achievementArr = JSON.parse(userData.achievements)
-                for (let i = 0; i < achievementArr.length; i++) {
-                    $('.lawyer-certs_container')
-                        .append($('<li class="lawyer-cert">').append($('<img src="" alt="cert-img">')
-                            .attr('src', '/storage' + achievementArr[i].path)))
-                }
-            }
-
-            if(userData.services) {
-                let serviceArr = JSON.parse(userData.services)
-                for (let i = 0; i < serviceArr.length; i++) {
-                    $('[name = lawyer_services]')
-                        .append($('<li>').text(serviceArr[i].name))
-                }
-            }
-        }
-
         function agetostr(age) {
             var txt;
             count = age % 100;
@@ -506,6 +483,10 @@
                 }
             }
             return age+" "+txt;
+        }
+
+        function getFullName(data) {
+            return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
         }
     </script>
 @endsection

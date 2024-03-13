@@ -6,7 +6,7 @@
     $listStyle = ['1'=>'menuVDrop.css','2'=>'menuGSDrop.css','3'=>'menuVSDrop.css','4'=>'menurectangl.css'];
     if(!isset($style)) $style ='1';
     $include = (isset($include))?$include:false;
-    $textComponet = (isset($admin))?"Add component Menu double click for set setting":"Loading";
+    $textComponet = (isset($admin))?"Add component Menu double click for set setting":"";
 @endphp
 @pushOnce('css-style')
     <link type="text/css"  rel="stylesheet" href="/js/component/menuComponent/{{$listStyle[$style]}}">
@@ -16,7 +16,7 @@
 @endPushOnce
 
 @if(!$include)
-<component id="component_menu_{{$name}}" data-name="{{$name}}">
+    <component id="component_menu_{{$name}}" data-name="{{$name}}">
     <div id="component_{{$name}}" class="menu"><span>{{$textComponet}}</span></div>
 </component>
     @if($includeToComponent__ != true)
@@ -39,7 +39,10 @@
                 'data':@php echo isset($data)? $data:'null'; @endphp,
                 'globalData':@php echo isset($globalData)?"'".$globalData."'":'false'; @endphp,
                 'params':@php echo isset($params)?json_encode($params):"undefined"; @endphp,
-                'style': '{{isset($style)?$style:'undefined'}}'
+                'style':'{{isset($style)?$style:'undefined'}}',
+                'callBeforloadComponent':@php echo isset($callBeforloadComponent)?preg_replace('/\r|\r|/u', "", $callBeforloadComponent):"null";@endphp,
+                'callAfterloadComponent':@php echo isset($callAfterloadComponent)?preg_replace('/\r|\r|/u', "", $callAfterloadComponent):"null";@endphp,
+                'callAjaxSuccess':@php echo isset($callAjaxSuccess)?preg_replace('/\r|\r|/u', "", $callAjaxSuccess):"null";@endphp,
             }
             var component_{{$name}} = new Menu('#component_{{$name}}', params_{{$name}});
             page__.addNewElement(component_{{$name}}, 'component_{{$name}}')

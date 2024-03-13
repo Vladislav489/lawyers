@@ -11,13 +11,16 @@
 
     <script src="/js/jquery/jquery-3.6.0.min.js"></script>
     <script src="/js/vue/vue.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/component/parentComponent.js"></script>
 
     @stack('bootstrap')
-    @stack('js-lib-component-head')
     @include('lawyers.layouts.script')
+    @stack('js-lib-component-head')
 
     <link rel="canonical" href="{{ request()->getScheme() . '://' . request()->httpHost() .request()->getPathInfo() }}">
+    <link type="text/css"  rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
 </head>
 <body style="background-color: #F1F2F2;">
 
@@ -39,6 +42,6 @@
 
     @include('lawyers.layouts.ivan-script')
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{{--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>--}}
 </body>
 </html>

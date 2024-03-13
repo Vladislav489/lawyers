@@ -4,12 +4,13 @@
     $includeFromHeadToDown = (isset($includeFromHeadToDown) && $includeFromHeadToDown == "true" )?true:false;
     $stackNameScript = (isset($includeFromHeadToDown) && $includeFromHeadToDown)? 'js-lib-component-head':'js-lib-component';
     $include =(isset($include))?$include:false;
-    $textComponet = (isset($admin))?"Add component SimpleGrid double click for set setting":"Loading";
+    $textComponet = (isset($admin))?"Add component SimpleGrid double click for set setting":"";
 @endphp
 @pushOnce('css-style')
     <link type="text/css"  rel="stylesheet" href="/js/component/gridComponent/simpleGrid.css">
 @endpushOnce
 @pushOnce($stackNameScript)
+{{--    <script src="/js/component/parentComponent.js"></script>--}}
     <script src="/js/component/gridComponent/simpleGrid.js"></script>
 @endPushOnce
 @if(!$include)
@@ -27,7 +28,6 @@
         @endif
 
         <script date-id_script="{{$name}}">
-
             @if($includeToComponent__ != true )
                 @if(!$includeFromHeadToDown)
                     $(document).ready(function() {
@@ -37,6 +37,7 @@
             var pagination_{{$name}} = {
                 'pageSize':{{(isset($pagination['pageSize']))?$pagination['pageSize']:'false'}},
                 'page':{{(isset($pagination['page']))?$pagination['page']:1}},
+                'countPage':{{(isset($pagination['countPage']))?$pagination['countPage']:'false'}},
                 'totalCount':{{(isset($pagination['totalCount']))?$pagination['totalCount']:'false'}},
                 'typePagination':{{(isset($pagination['typePagination']))?$pagination['typePagination']:'false'}},
                 'showPagination':{{(isset($pagination['showPagination']))?$pagination['showPagination']:'false'}},
@@ -44,7 +45,6 @@
                 'showInPage':{{(isset($pagination['showInPage']))?$pagination['showInPage']:'false'}},
                 'physical_presence':{{(isset($pagination['physical_presence']))?$pagination['physical_presence']:'false'}}
             };
-
             var params_{{$name}} = {
                 'autostart':{{(isset($autostart) && $autostart)?$autostart:'false'}},
                 'url': '{{isset($url)?$url:'undefined'}}',
@@ -60,21 +60,19 @@
                 pagination: pagination_{{$name}},
             };
 
-            var obj_{{$name}}  = new simpleGrid('#component_{{$name}}', params_{{$name}})
-            page__.addNewElement(obj_{{$name}}, 'component_{{$name}}')
-
-                @if($includeToComponent__ != true )
+            var component_{{$name}}  = new simpleGrid('#component_{{$name}}', params_{{$name}})
+            component_{{$name}}.startWidget()
+            page__.addNewElement(component_{{$name}}, 'component_{{$name}}')
+            @if($includeToComponent__ != true )
                 @if(!$includeFromHeadToDown)
                     });
                 @endif
             @endif
 
     </script>
-
     @if($includeToComponent__ != true )
         @if(!$includeFromHeadToDown)
             @endpush
         @endif
     @endif
-
 @endif
