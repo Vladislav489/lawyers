@@ -121,7 +121,7 @@ label input {
     width: max-content;
     color: var(--white-color);
     font-weight: 600;
-    line-height: 140%;
+    line-height: 100%;
     /*transition: transdorm var(--transition);*/
     text-transform: none !important;
     position: relative;
@@ -139,6 +139,9 @@ label input {
 .main-btn .icon {
     margin-top: 2px;
     width: 7px !important;
+}
+.main-btn svg {
+    margin-top: 2px;
 }
 .main-btn path {
     transition-duration: var(--transition);
@@ -205,6 +208,9 @@ label input {
         font-size: 16px;
         padding: 11px 20px;
         height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -429,9 +435,49 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 
+.hidden {
+    display: none !important;
+}
 
 
 
+.select {
+    position: relative;
+}
+.select .select-window {
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+    transition-duration: var(--transition);
+    background-color: var(--white-color);
+    border-right: 1px solid rgba(0, 0, 0, 0.10);
+    border-left: 1px solid rgba(0, 0, 0, 0.10);
+    border-radius: 0 0 var(--b-radius) var(--b-radius);
+    right: 18px;
+    left: 18px;
+    z-index: 1;
+}
+.select .select-window._open {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+.select .select-window li {
+    padding: 10px;
+}
+.select .select-window li:hover {
+    background-color: #F5F7FF;
+    cursor: pointer;
+}
+.select .sub-icon {
+    width: 6px;
+    position: absolute;
+    right: 18px;
+    top: 19px;
+    rotate: 180deg;
+    transition-duration: var(--transition);
+}
+.select .sub-icon._open {
+    rotate: 270deg;
+}
 
 
 

@@ -1,0 +1,242 @@
+.payment-section .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding-top: 30px;
+    align-items: flex-start;
+    padding-bottom: 151px;
+}
+.payment {
+    background-color: var(--white-color);
+    border-radius: 16px;
+    padding: 16px 24px 117px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px 20px;
+    width: 975px;
+}
+.payment-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.payment_header {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 140%;
+}
+.payment-container {
+    padding: 32px 24px;
+    border-radius: var(--b-radius);
+    border: 2px solid rgba(0, 0, 0, 0.10);
+    flex: 1 1 auto;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+.payment-container p {
+    font-weight: 600;
+    line-height: 140%;
+}
+.payment-section .lawyer-block {
+    flex: 1 1 445px;
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+    border-radius: 16px;
+    border: 2px solid #FFF;
+    background: rgba(255, 255, 255, 0.40);
+    backdrop-filter: blur(2px);
+    padding: 20px 27px;
+}
+
+
+.payment-message {
+    background-color: var(--white-color);
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+    padding: 10px 16px;
+    width: 200px;
+    border-radius: var(--b-radius-second);
+}
+.payment-message .message-icon {
+    position: relative;
+    display: flex;
+    width: 21px;
+    height: 16px;
+}
+.payment-message .message-icon:after {
+    content: url("../images/icons/message-icon.svg");
+    position: absolute;
+    inset: 0;
+}
+.payment-message .message-icon span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    aspect-ratio: 1;
+    position: absolute;
+    color: var(--white-color);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+    background-color: var(--blue-color);
+    top: -8px;
+    right: -10px;
+    border-radius: 50%;
+}
+.payment-message .name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+    text-transform: capitalize;
+    flex: 1 1 auto;
+    text-align: right;
+}
+.payment-message .icon {
+    width: 6px;
+    rotate: 90deg;
+}
+
+
+.finance-block {
+    width: 340px;
+}
+.finance-block .line {
+    margin: 12px 0;
+}
+.finance-line {
+    display: flex;
+    justify-content: space-between;
+}
+.finance-line.text-gray p {
+    color: rgba(40, 40, 40, 0.50);
+}
+.finance-block .finance-line:last-of-type {
+    margin-top: 12px;
+}
+
+
+form.payment-container {
+    width: 567px;
+    padding-top: 18px;
+}
+form.payment-container label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+form.payment-container .label_text {
+    max-width: 186px;
+    width: 100%;
+    font-weight: 600;
+    line-height: 140%;
+    display: block;
+}
+form.payment-container .label_subtext {
+    font-weight: 600;
+    line-height: 140%;
+}
+form.payment-container input {
+    border-radius: var(--b-radius-second);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FFF;
+    width: 148px;
+}
+form.payment-container input[name="execution-sum"] {
+    text-align: center;
+}
+form.payment-container .payment-type input {
+    width: 100%;
+}
+form.payment-container .code {
+    width: max-content;
+    color: rgba(40, 40, 40, 0.50);
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: 132px;
+    margin-top: 20px;
+}
+form.payment-container .code a {
+    color: var(--blue-color);
+    font-weight: 600;
+    line-height: 140%;
+    text-decoration: underline;
+}
+form.payment-container p {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+form.payment-container p.text_lil {
+    color: rgba(40, 40, 40, 0.50);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+}
+form.payment-container .main-btn {
+    width: 210px;
+    margin: 24px auto 0 auto;
+}
+form.payment-container .main-btn img {
+    width: 10px;
+}
+.payment-type .select-window {
+    right: 18px;
+    width: calc(313px - 36px);
+    left: auto;
+}
+
+
+.transaction-block {
+    width: 100%;
+}
+.transaction-history {
+    border: 1px solid rgb(207,214,251);
+    border-radius: var(--b-radius);
+    overflow: hidden;
+}
+.transaction-history th,
+.transaction-history td {
+    padding: 10px 12px;
+    color: #282828;
+    text-align: center;
+    font-size: 14px;
+    line-height: 130%;
+}
+.transaction-history th {
+    background-color: rgb(239,242,255);
+}
+.transaction-history td {
+    border-top: 1px solid rgb(207,214,251);
+    border-right: 1px solid rgb(207,214,251);
+}
+.transaction-history td:last-child {
+    border-right: none;
+}
+.transaction-sum.green {
+    color: var(--green-color)
+}
+.transaction-sum.red {
+    color: #CF4040;
+}
+
+
+.payment-section .lawyer-avatar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+.payment-section .lawyer-avatar img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.payment-section .lawyer-name {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 140%;
+}
