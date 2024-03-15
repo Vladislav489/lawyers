@@ -6,16 +6,13 @@ use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
-use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\HelpData\District;
 use App\Models\CoreEngine\ProjectModels\HelpData\State;
-use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -55,48 +52,45 @@ class EmployeeMainstayController extends MainstayController
         return redirect()->back();
     }
 
-
-    public function actionEmployeeServicesStore(Request $request) {
-        $rules = [
-            'service_ids.*' => 'required|integer|exists:' . Service::class . ',id',
-        ];
-
-        if (($validator = Validator::make($request->all(), $rules))->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        $data = $request->all()['service_ids'] ?? [];
-
-        return response()->json(
-            (new EmployeeServiceLogic())->storeEmployeeServices($data)
-        );
-    }
-
-    public function actionEmployeeServiceUpdate(Request $request) {
-        $rules = [
-            'is_main' => 'boolean',
-            'price' => "exclude_if:is_main,'1'|required|integer",
-            'description' => "exclude_if:is_main,'1'|required|string",
-            'id' => 'required|integer|exists:' . EmployeeService::class . ',id',
-        ];
-
-        if (($validator = Validator::make($request->all(), $rules))->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        return response()->json(
-            (new EmployeeServiceLogic())->store($request->all())
-        );
+    public function actionEmployeeServiceStore(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new EmployeeServiceLogic())->store($this->params);
+        return $this->actionGetServices(['user_id' => auth()->id()]);
     }
 
     public function actionGetServices(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        return (new EmployeeServiceLogic())->setJoin('Service')->getList();
+        return response()->json((new EmployeeServiceLogic($this->params))->setJoin('Service')->getList());
+    }
 
+    public function actionGetService(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json(['result' => (new EmployeeServiceLogic($this->params))->setJoin('Service')->getOne()]);
+    }
+
+    public function actionDeleteService(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $deleteResult = (new EmployeeServiceLogic())->deleteService($this->params);
+        if ($deleteResult) {
+            return $this->actionGetServices([
+                'user_id' => (string)auth()->id(),
+            ]);
+        }
+        return response()->json(['msg' => 'error',]);
+    }
+
+    public function actionGetEmployee(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $select = [
+            '*', DB::raw("CONCAT('/storage', Employee.avatar_path) as avatar_full_path") ,
+            DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
+            DB::raw("IF(Achievements.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Achievements.id,'path',
+            CONCAT('/storage', Achievements.path)))), ']')) as achievements"),
+            DB::raw("IF(Photos.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Photos.id, 'path',
+            CONCAT('/storage', Photos.path)))), ']')) as photos"), DB::raw("City.id as city_id, City.name as city_name, Country.id as country_id, Country.name as country_name")
+            ];
+//        dd((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
+        return response()->json((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
     }
 
     public function actionGetEmployeeList(array $param = []) {
@@ -114,6 +108,20 @@ class EmployeeMainstayController extends MainstayController
         $pagination = $employees->getList();
 
         $result['pagination'] = $pagination['pagination'];
+//        dd($result);
         return response()->json($result);
     }
+
+    public function actionUpdateEmployeeInfo(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new EmployeeLogic())->save($this->params);
+        return $this->actionGetEmployee(['id' => (string)auth()->id()]);
+    }
+
+    public function actionDeleteImage(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new EmployeeLogic())->deleteImage($this->params);
+        return $this->actionGetEmployee(['id' => (string)auth()->id()]);
+    }
+
 }

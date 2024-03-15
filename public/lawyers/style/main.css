@@ -148,6 +148,9 @@ header {
         line-height: 140%;
         height: auto;
     }
+    .nav-ul > li .select-window a > p {
+        font-weight: 400;
+    }
 }
 
 
@@ -274,6 +277,8 @@ header {
     padding: 18px 26px;
     border-radius: 18px;
     border: 2px solid var(--white-color);
+    background: rgba(255, 255, 255, 0.40);
+    backdrop-filter: blur(2px);
 }
 .main-banner .form-block .text {
     color: var(--dark-color);
@@ -950,19 +955,18 @@ header {
     align-items: center;
     border-radius: 17px;
     background: var(--white-color);
-    padding: 18px 48px;
+    padding: 34px;
 }
 .questions-form .block {
     display: flex;
 }
 .questions-form .block h3 {
-    font-size: 30px;
+    font-size: 22px;
     font-weight: 600;
     line-height: 140%;
 }
 .questions-form .block p {
     color: rgba(40, 40, 40, 0.80);
-    font-size: 24px;
     font-weight: 400;
     line-height: 140%;
 }
@@ -1050,8 +1054,10 @@ header {
     }
     .questions-container {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
     .questions-form {
+        margin-top: 68px;
         padding: 18px 12px;
         gap: 24px;
     }
@@ -1214,6 +1220,16 @@ header {
         padding: 16px 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.10);
     }
+    .footer-container .block:last-of-type .footer_ul-block:last-of-type {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+    .footer-container .block:last-of-type .footer_ul li,
+    .footer-container .block:last-of-type .footer_ul-block h3 {
+        text-align: left;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
     .footer-container .footer_ul-block h3 {
         font-size: 16px;
     }
@@ -1291,4 +1307,46 @@ header {
     .footer_mobile a.active {
         color: var(--white-color)
     }
+}
+
+
+.balance-block {
+    border-radius: var(--b-radius);
+    background: var(--background-color);
+    padding: 12px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+}
+.balance-block_left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.balance-block .balance-text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 140%;
+}
+.balance-block .balance_balance {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    line-height: 140%;
+}
+.balance-block .balance_balance span {
+    width: 33px;
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FF9E0C;
+    border-radius: 50%;
+}
+.balance-block .main-btn {
+    display: block;
+    width: 100%;
+    max-width: 210px;
 }

@@ -4,12 +4,13 @@
     $includeFromHeadToDown = (isset($includeFromHeadToDown) && $includeFromHeadToDown == "true" )?true:false;
     $stackNameScript = (isset($includeFromHeadToDown) && $includeFromHeadToDown)? 'js-lib-component-head':'js-lib-component';
     $include =(isset($include))?$include:false;
-    $textComponet = (isset($admin))?"Add component Select double click for set setting":"Loading";
+    $textComponet = (isset($admin))?"Add component Select double click for set setting":"";
 @endphp
 @pushOnce('css-style')
     <link type="text/css"  rel="stylesheet" href="/js/component/selectComponent/select.css">
 @endpushOnce
 @pushOnce($stackNameScript)
+{{--    <script src="/js/component/parentComponent.js"></script>--}}
     <script src="/js/component/selectComponent/select.js"></script>
 @endPushOnce
 @if(!$include)
@@ -43,9 +44,13 @@
                 'change':@php echo isset($change)?preg_replace('/\r|\r|/u', "", $change):'undefined';@endphp,
                 'focus':@php echo isset($focus)?preg_replace('/\r|\r|/u', "", $focus):"null";@endphp,
                 'select':@php echo isset($select)?preg_replace('/\r|\r|/u', "", $select):"null";@endphp,
+                'callBeforloadComponent':@php echo isset($callBeforloadComponent)?preg_replace('/\r|\r|/u', "", $callBeforloadComponent):"null";@endphp,
+                'callAfterloadComponent':@php echo isset($callAfterloadComponent)?preg_replace('/\r|\r|/u', "", $callAfterloadComponent):"null";@endphp,
+                'callAjaxSuccess':@php echo isset($callAjaxSuccess)?preg_replace('/\r|\r|/u', "", $callAjaxSuccess):"null";@endphp,
             }
-            var obj_{{$name}}  = new selectComponent('#component_{{$name}}', params_{{$name}})
-            page__.addNewElement(obj_{{$name}}, 'component_{{$name}}')
+            var component_{{$name}} = new selectComponent('#component_{{$name}}', params_{{$name}})
+            component_{{$name}}.startWidget()
+            page__.addNewElement(component_{{$name}}, 'component_{{$name}}')
             @if($includeToComponent__ != true )
                 @if(!$includeFromHeadToDown)
                     });

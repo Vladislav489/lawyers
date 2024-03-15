@@ -14,7 +14,7 @@ class EmployeeController extends BaseEmployeeController {
     }
 
     public function actionEmployeeProfile() {
-        return view('lawyers.employee.profile');
+        return view('lawyers.employee.edit-profile');
     }
 
     public function actionEmployeeSettings() {
@@ -32,8 +32,8 @@ class EmployeeController extends BaseEmployeeController {
                 'template' => '1'
             ],
             'actionEmployeeProfile' => [
-                'name' => '1',
-                'template' => '1'
+                'name' => 'Мой профиль',
+                'template' => 'lawyers.employee.edit-profile'
             ],
             'actionEmployeeSettings' => [
                 'name' => '1',

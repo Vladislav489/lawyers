@@ -4,13 +4,13 @@
     $includeFromHeadToDown = (isset($includeFromHeadToDown) && $includeFromHeadToDown == "true" )?true:false;
     $stackNameScript = (isset($includeFromHeadToDown) && $includeFromHeadToDown)? 'js-lib-component-head':'js-lib-component';
     $include =(isset($include))?$include:false;
-    $textComponet = (isset($admin))?"Add component GroupGrid double click for set setting":"Loading";
+    $textComponet = (isset($admin))?"Add component GroupGrid double click for set setting":"";
 @endphp
 @pushOnce('css-style')
-    <link type="text/css" rel="stylesheet" href="/js/component/gridComponent/groupGrid.css">
+    <link type='text/css' rel='stylesheet' href='/js/component/gridComponent/groupGrid.css'>
 @endpushOnce
 @pushOnce($stackNameScript)
-    <script src="/js/component/gridComponent/groupGrid.js"></script>
+    <script src='/js/component/gridComponent/groupGrid.js'></script>
 @endPushOnce
 @if(!$include)
     @php
@@ -36,6 +36,7 @@
         var pagination_{{$name}} = {
             'pageSize':{{(isset($pagination['pageSize']))?$pagination['pageSize']:'false'}},
             'page':{{(isset($pagination['page']))?$pagination['page']:1}},
+            'countPage':{{(isset($pagination['countPage']))?$pagination['countPage']:'false'}},
             'totalCount':{{(isset($pagination['totalCount']))?$pagination['totalCount']:'false'}},
             'typePagination':{{(isset($pagination['typePagination']))?$pagination['typePagination']:'false'}},
             'showPagination':{{(isset($pagination['showPagination']))?$pagination['showPagination']:'false'}},

@@ -21,6 +21,12 @@
     margin-bottom: 2px;
 
 }
+.nav_menu_component_1 .topmenu_menu_component > li > ul{
+    display: none;
+}
+.nav_menu_component_1 .topmenu_menu_component > li.open > ul{
+    display: block;
+}
 .nav_menu_component_1 .topmenu_menu_component > li > a {
     font-weight: bold;
     text-align: center;

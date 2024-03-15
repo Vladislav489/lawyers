@@ -241,9 +241,28 @@
     }
 }
 @media screen and (max-width: 768px) {
+    .lawyer-container {
+        gap: 52px;
+    }
     .lawyer-section {
         padding-top: 16px;
         padding-bottom: 12px;
+    }
+    .lawyer-container .left {
+        gap: 8px;
+    }
+    .lawyer-container .round-top_nav {
+        gap: 20px;
+        position: sticky;
+        top: 60px;
+        z-index: 1;
+        background-color: var(--white-color);
+    }
+    .round-top_nav li {
+        padding: 4px 0;
+    }
+    .round-top_nav li.active {
+        padding: 4px 30px;
     }
 }
 @media screen and (max-width: 480px) {
@@ -465,8 +484,8 @@
     }
 }
 @media screen and (max-width: 480px) {
-        .lawyer-card {
-        padding-top: 20px;
+    .lawyer-card {
+        padding-top: 40px;
         padding-bottom: 40px;
     }
     .lawyer-card .lawyer-check {
@@ -500,6 +519,19 @@
     flex-direction: column;
     gap: 16px;
 }
+.lawyer-bottom-btns {
+    display: none;
+    padding: 50px 16px 50px;
+}
+.lawyer-bottom-btns .main-btn {
+    width: 100%;
+}
+.lawyer-bottom-btns .main-btn .first {
+    gap: 12px;
+}
+.lawyer-bottom-btns .main-btn .icon {
+    width: 9px !important;
+}
 .lawyer-wrapper_title {
     text-align: center;
     font-size: 22px;
@@ -508,6 +540,13 @@
     position: relative;
     width: 100%;
     justify-content: center;
+}
+.lawyer-wrapper_title-left {
+    text-align: left;
+    margin-bottom: -8px;
+}
+.lawyer-wrapper_title span {
+    color: rgba(40, 40, 40, 0.50);
 }
 .lawyer-wrapper_subtitle {
     position: relative;
@@ -552,6 +591,7 @@
     line-height: 140%;
     letter-spacing: 1px;
     width: max-content;
+    text-transform: uppercase;
 }
 .lawyer-service_price {
     display: flex;
@@ -669,6 +709,9 @@
 .lawyer-comment_block .specialist-comment .comment-text {
     margin-top: 10px;
     line-height: 140%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 .lawyer-comment_block .more-services {
     margin-top: auto;
@@ -789,6 +832,9 @@
         width: 100%;
         order: 1;
     }
+    .lawyer-bottom-btns {
+        display: flex;
+    }
 }
 @media screen and (max-width: 480px) {
     .lawyer-wrapper_title {
@@ -799,7 +845,7 @@
     }
     .lawyer-service_line {
         flex-direction: column;
-        padding: 12px 15px;
+        padding: 12px 15px 20px;
     }
     .lawyer-service_title {
         font-size: 16px;
@@ -814,8 +860,14 @@
         justify-content: space-between;
         margin-top: 4px;
     }
+    .lawyer-service_price .main-btn {
+        max-width: 190px;
+        width: 100%;
+    }
     .more-services {
         text-align: center;
+        font-size: 16px;
+        margin-top: 0;
     }
     .lawyer-all-services ul {
         margin-top: 14px;
@@ -1089,6 +1141,9 @@
         width: auto;
 
     }
+    .lawyer-answers_table .table-col.col3 .col-header {
+        text-align: center;
+    }
 }
 @media screen and (max-width: 768px) {
     .lawyer-contacts .lawyer-wrapper_title {
@@ -1129,7 +1184,7 @@
     .lawyer-answers_table.mobile {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 8px;
     }
     .lawyer-answers_answer {
         line-height: 140%;
@@ -1152,6 +1207,7 @@
         font-weight: 600;
         line-height: 140%;
     }
+
 }
 @media screen and (max-width: 480px) {
     .lawyer-contacts .buttons-container {
@@ -1164,3 +1220,110 @@
         font-size: 14px;
     }
 }
+
+
+.my-orders .lawyer-wrapper_title {
+    text-align: left;
+    margin-bottom: -8px;
+}
+.my-orders_ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.my-orders_ul > li {
+    border-radius: var(--b-radius);
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    padding: 15px 20px;
+}
+.my-orders_ul li {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+.my-orders_info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.my-orders_text {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 140%;
+}
+.my-orders_price {
+    color: var(--blue-color);
+    font-weight: 600;
+    line-height: 140%;
+}
+.my-orders_price span {
+    color: rgba(40, 40, 40, 0.50);
+}
+.my-orders_stage {
+    padding: 0 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    flex: 0 0 114px;
+    text-align: center;
+}
+.my-orders_stage.moderation-status {
+    color: var(--blue-color)
+}
+.my-orders_stage.closed-status {
+    color: var(--green-color)
+}
+.my-orders_sub-ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.my-orders_sub-ul li {
+    width: max-content;
+    padding: 10px 21px;
+    font-size: 14px;
+    line-height: 140%;
+    border-radius: var(--b-radius-second);
+    background: rgba(198, 208, 253, 0.30);
+}
+.lawsuit .main-btn {
+    flex: 0 0 198px;
+    display: block;
+}
+
+
+.subscribe-block .subscribe {
+    display: flex;
+    justify-content: space-between;
+    border-radius: var(--b-radius-second);
+    border: 2px solid rgba(0, 0, 0, 0.10);
+    padding: 14px 20px;
+    align-items: center;
+}
+.subscribe_text {
+    font-weight: 600;
+    line-height: 140%;
+}
+.subscribe-status {
+    color: var(--green-color);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+    text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

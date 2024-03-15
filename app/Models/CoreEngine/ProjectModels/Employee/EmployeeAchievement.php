@@ -10,6 +10,6 @@ class EmployeeAchievement extends BaseModel
 
     protected $fillable = [
         'path',
-        'employee_id',
+        'user_id',
     ];
 }

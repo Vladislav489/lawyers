@@ -10,6 +10,10 @@ class ClientController extends BaseClientController
         return view('lawyers.client.cabinet');
     }
 
+    public function actionPaymentPage() {
+        return view('lawyers.client.payment');
+    }
+
     public function getPageParams(): array {
         return [
             'actionClientCabinet' => [

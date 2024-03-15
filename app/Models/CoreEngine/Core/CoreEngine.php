@@ -59,8 +59,8 @@ class CoreEngine{
             unset($params['site_id']);
         }
         $this->union = (key_exists('union',$params))? true:false;
-        if (!isset($params['is_delete']))
-            $params['is_delete'] = 0;
+        if (!isset($params['is_deleted']))
+            $params['is_deleted'] = 0;
         $this->class = get_class($this);
         $this->setCoreParams($params,$callback);
     }
@@ -204,9 +204,9 @@ class CoreEngine{
             if (empty($id)) return false;
             $id = (is_array($id)) ? $id:[$id];
             if (is_null($key))
-                return $this->query->newQuery()->whereIn('id',$id)->update(['is_delete' => 1]);
+                return $this->query->newQuery()->whereIn('id',$id)->update(['is_deleted' => 1]);
             else
-                return (in_array($key, $this->engine->getFillable()))? $this->query->newQuery()->whereIn($key, $id)->update(['is_delete' => 1]):false;
+                return (in_array($key, $this->engine->getFillable()))? $this->query->newQuery()->whereIn($key, $id)->update(['is_deleted' => 1]):false;
         } catch (\Throwable $e) {
             $this->LogError($e,['data' => $id]);
         }
@@ -228,14 +228,13 @@ class CoreEngine{
 
     public function update($data, $id, $key = null) {
         try {
-
             if (empty($id)) return false;
             if (!$this->checkInsertColumn($data)) {
                 $this->LogError(null, ['data' => $data, 'id' => $id, 'key' => $key]);
                 return false;
             }
             if (is_null($key)) {
-                 $ids = ((is_array($id)) ? $id : [$id]);
+                $ids = ((is_array($id)) ? $id : [$id]);
                 (DB::table($this->engine->getTable())->whereIn('id', $ids)->update($data)) ? $id : false;
 
                return $id;

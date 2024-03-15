@@ -16,7 +16,7 @@
         if(strpos($name,'view_component_') !== false) $name = uniqid(str_replace('view_component_','',$name));
     @endphp
 <component id="component_dragDropUlList_{{$name}}" data-name="{{$name}}">
-    <div id="component_{{$name}}"><span>Loading...</span></div>
+    <div id="component_{{$name}}"><span></span></div>
 </component>
     @if($includeToComponent__ != true)
         @if(!$includeFromHeadToDown)
@@ -51,7 +51,10 @@
                 'callDropFunction':@php echo isset($callDropFunction)?$callDropFunction:'null'; @endphp,
                 'params':@php echo isset($urlparams)?json_encode($urlparams):'undefined'; @endphp,
                 'target':@php echo isset($target)?json_encode($target):'undefined'; @endphp,
-                pagination: pagination_{{$name}},
+                'pagination': pagination_{{$name}},
+                'callBeforloadComponent':@php echo isset($callBeforloadComponent)?preg_replace('/\r|\r|/u', "", $callBeforloadComponent):"null";@endphp,
+                'callAfterloadComponent':@php echo isset($callAfterloadComponent)?preg_replace('/\r|\r|/u', "", $callAfterloadComponent):"null";@endphp,
+                'callAjaxSuccess':@php echo isset($callAjaxSuccess)?preg_replace('/\r|\r|/u', "", $callAjaxSuccess):"null";@endphp,
             };
             @php
                 $query = "";

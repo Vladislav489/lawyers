@@ -3,6 +3,8 @@
 
     <link rel="stylesheet" href="/lawyers/style/reset.css">
     <link rel="stylesheet" href="/lawyers/style/main.css">
+    <link rel="stylesheet" href="/lawyers/style/payment.css">
+    <link rel="stylesheet" href="/lawyers/style/request.css">
     <link rel="stylesheet" href="/lawyers/style/lawyer.css">
     <link rel="stylesheet" href="/lawyers/style/find-specialist.css">
     <link rel="stylesheet" href="/lawyers/style/registration.css">
