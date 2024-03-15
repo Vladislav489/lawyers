@@ -3,7 +3,9 @@
 namespace App\Http\Mainstay\Client;
 
 use App\Http\Login\LoginController;
+use App\Models\CoreEngine\LogicModels\Question\QuestionLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\HelpData\District;
@@ -11,6 +13,7 @@ use App\Models\CoreEngine\ProjectModels\HelpData\State;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ClientMainstayController extends MainstayController {
@@ -39,4 +42,36 @@ class ClientMainstayController extends MainstayController {
         }
         return redirect()->back();
     }
+
+    public function actionUpdateClient($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new UserLogic())->save($this->params);
+        return $this->actionGetClient();
+    }
+
+    public function actionGetClient($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $select = ['*', DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name"),
+            DB::raw("City.name as city_name, Country.name as country_name"),
+            DB::raw("IFNULL(Balance.balance, 0) as balance"),
+            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions")
+        ];
+        return response()->json((new UserLogic($this->params, $select))->offPagination()->setLimit(false)
+            ->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
+    }
+
+    public function actionGetClientQuestions($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $select = ['*', DB::raw("IFNULL(COUNT(Answer.id), 0) as count_answers")];
+        return response()->json((new QuestionLogic($this->params, $select))->setJoin('Answer')->getList());
+    }
+
+    public function actionGetVacancies($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $select = ['*',
+            DB::raw("IFNULL(COUNT(VacancyOffer.id), 0) as count_offers"),
+            ];
+        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['GroupVacancy', 'VacancyOffer'])->OnDebug()->getList());
+    }
 }
+

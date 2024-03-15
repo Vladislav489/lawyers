@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\Question;
 
 use App\Models\CoreEngine\Core\CoreEngine;
+use App\Models\CoreEngine\ProjectModels\Question\EmployeeAnswer;
 use App\Models\CoreEngine\ProjectModels\Question\UserQuestion;
 
 class QuestionLogic extends CoreEngine
@@ -11,21 +12,11 @@ class QuestionLogic extends CoreEngine
     {
         $this->engine = new UserQuestion();
         $this->query = $this->engine->newQuery();
+        $this->params = array_merge($params, ['is_deleted' => '0']);
         $this->getFilter();
         $this->compileGroupParams();
 
         parent::__construct($params, $select);
-    }
-
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
-
-        return $this->group_params;
     }
 
     protected function defaultSelect(): array
@@ -34,15 +25,6 @@ class QuestionLogic extends CoreEngine
         $this->default = [];
 
         return $this->default;
-    }
-
-    protected function getFilter(): array
-    {
-        $tab = $this->engine->getTable();
-        $this->filter = [];
-        $this->filter = array_merge($this->filter, parent::getFilter());
-
-        return $this->filter;
     }
 
     public function store(array $data): array|bool
@@ -65,5 +47,52 @@ class QuestionLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    protected function getFilter(): array
+    {
+        $tab = $this->engine->getTable();
+        $this->filter = [
+            [   'field' => $tab.'.user_id','params' => 'user_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.period_start','params' => 'start_date',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '>=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.period_end','params' => 'end_date',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '<=', 'concat' => 'AND',
+            ],
+        ];
+        $this->filter = array_merge($this->filter, parent::getFilter());
+
+        return $this->filter;
+    }
+
+    protected function compileGroupParams(): array
+    {
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' => [
+                'Answer' => [
+                    'entity' => new EmployeeAnswer(),
+                    'relationship' => ['question_id', 'id'],
+                    'field' => [],
+                ]
+            ]
+        ];
+
+        return $this->group_params;
     }
 }

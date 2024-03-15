@@ -9,6 +9,7 @@
     <!--js-lib-component-head-start-->
     @pushOnce('js-lib-component-head')
     <script src="/js/component/menuComponent/menu.js"></script>
+        <script src="/js/component/parentComponent.js"></script>
     @endPushOnce
 
     @stack('js-lib-component-head')
