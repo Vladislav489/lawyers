@@ -51,56 +51,6 @@
 }
 
 
-.payment-message {
-    background-color: var(--white-color);
-    margin-left: auto;
-    display: flex;
-    gap: 10px;
-    padding: 10px 16px;
-    width: 200px;
-    border-radius: var(--b-radius-second);
-}
-.payment-message .message-icon {
-    position: relative;
-    display: flex;
-    width: 21px;
-    height: 16px;
-}
-.payment-message .message-icon:after {
-    content: url("../images/icons/message-icon.svg");
-    position: absolute;
-    inset: 0;
-}
-.payment-message .message-icon span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 16px;
-    aspect-ratio: 1;
-    position: absolute;
-    color: var(--white-color);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: capitalize;
-    background-color: var(--blue-color);
-    top: -8px;
-    right: -10px;
-    border-radius: 50%;
-}
-.payment-message .name {
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 140%;
-    text-transform: capitalize;
-    flex: 1 1 auto;
-    text-align: right;
-}
-.payment-message .icon {
-    width: 6px;
-    rotate: 90deg;
-}
-
-
 .finance-block {
     width: 340px;
 }

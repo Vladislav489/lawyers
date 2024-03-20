@@ -3,6 +3,9 @@
 namespace App\Models\CoreEngine\LogicModels\Vacancy;
 
 use App\Models\CoreEngine\Core\CoreEngine;
+use App\Models\CoreEngine\LogicModels\Another\FileSystemLogic;
+use App\Models\CoreEngine\LogicModels\File\FileLogic;
+use App\Models\CoreEngine\ProjectModels\File\File;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
@@ -12,6 +15,12 @@ use Illuminate\Support\Facades\Auth;
 
 class VacancyLogic extends CoreEngine
 {
+    CONST STATUS_NEW = 1;
+    CONST STATUS_MODERATION = 2;
+    CONST STATUS_OPEN = 3;
+    CONST STATUS_CLOSE = 4;
+    CONST STATUS_DISPUTE = 5;
+
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->engine = new Vacancy();
@@ -30,8 +39,8 @@ class VacancyLogic extends CoreEngine
         return $this->default;
     }
 
-    public function store(array $data): array|bool
-    {
+    public function store(array $data): array|bool {
+        if (empty($data)) return false;
         try {
             $vacancy = array_intersect_key(
                 $data,
@@ -43,6 +52,7 @@ class VacancyLogic extends CoreEngine
             }
 
             if ($data['id'] = $this->save($vacancy)) {
+                $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
 

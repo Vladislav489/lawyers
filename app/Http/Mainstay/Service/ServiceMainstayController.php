@@ -40,10 +40,25 @@ class ServiceMainstayController extends MainstayController
         );
     }
 
+    public function actionGetServiceTypeListForSelect(array $param = [])
+    {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new ServiceTypeLogic())->getList();
+        $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
+        return response()->json($return);
+    }
+
     public function actionGetServiceTypeList(array $param = [])
     {
         $this->params = (empty($param)) ? $this->params : $param;
         $list = (new ServiceTypeLogic())->getList();
+        return response()->json($list);
+    }
+
+    public function actionGetServiceListForSelect(array $param = [])
+    {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $list = (new ServiceLogic($this->params))->offPagination()->getList();
         $return['result'] = HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name');
         return response()->json($return);
     }

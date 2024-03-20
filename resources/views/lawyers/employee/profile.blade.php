@@ -130,7 +130,7 @@
                                 <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                             </span>
                             <span class="second">
-                                Создать задачу
+                                <a href="{{ route__('actionCreateRequest_controllers_client_clientcontroller') }}">Создать задачу</a>
                                 <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                             </span>
                         </button>

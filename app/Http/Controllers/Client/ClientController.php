@@ -14,6 +14,10 @@ class ClientController extends BaseClientController
         return view('lawyers.client.payment');
     }
 
+    public function actionCreateVacancy() {
+        return view('lawyers.client.create-vacancy');
+    }
+
     public function getPageParams(): array {
         return [
             'actionClientCabinet' => [

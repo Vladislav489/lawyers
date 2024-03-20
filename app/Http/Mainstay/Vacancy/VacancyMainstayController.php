@@ -11,15 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class VacancyMainstayController extends MainstayController
 {
-    public function callAction($method, $parameters)
-    {
-        if (true) {
-            // return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
     public function actionGetVacancy(Request $request)
     {
         return response()->json(
@@ -32,27 +23,25 @@ class VacancyMainstayController extends MainstayController
         return response()->json((new VacancyLogic())->getList());
     }
 
-    public function actionVacancyStore(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+    public function actionVacancyStore($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $user = \auth()->user();
+        $rules = [
+            'service_id' => 'required|integer|exists:service,id',
             'description' => 'required|string',
-            'payment' => 'required|integer',
-        ]);
+            'payment' => 'required',
+            'files' => 'array|nullable',
+            'files.*' => 'file|max:5120'
+        ];
+        $data = Validator::validate($this->params, $rules);
+        $data['status'] = VacancyLogic::STATUS_NEW;
+        $data['priority_id'] = 1;
+        $data['user_id'] = $user->id;
+        $data['country_id'] = $user->country_id;
+        $data['state_id'] = $user->state_id;
+        $data['city_id'] = $user->city_id;
 
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
-        }
-
-        $request->merge([
-            'user_id' => Auth::id(),
-            'defendant' => json_encode([])
-        ]);
-
-        return response()->json(
-            (new VacancyLogic())->store($request->all())
-        );
+        return response()->json((new VacancyLogic())->store($data));
     }
 
     public function actionVacancyDelete(Request $request)

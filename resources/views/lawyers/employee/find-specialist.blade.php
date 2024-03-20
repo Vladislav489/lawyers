@@ -65,7 +65,7 @@
                                 "autostart" => 'true',
                                 "name" => 'service_id',
                                 "default_title" => 'Сервис',
-                                "url" => route("actionGetServiceTypeList_mainstay_service_servicemainstaycontroller"),
+                                "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
                                 "template" =>
                                 '<select class="unit-select_select" name="service_type_id" :id="name" style="width:100%">
                                     <option value="" selected="true">Выбрать</option>
@@ -179,7 +179,7 @@
                         <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
                     </button>
                     </a>
-                    <a href="#1">
+                    <a href="{{route__('actionCreateVacancy_controllers_client_clientcontroller')}}">
                     <button class="main-btn">
                         Создать задачу на бирже
                         <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">

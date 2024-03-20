@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/component/parentComponent.js"></script>
+    <script src="/js/dropzone/dropzone1/dropzone.min.js"></script>
 
     @stack('bootstrap')
     @include('lawyers.layouts.script')

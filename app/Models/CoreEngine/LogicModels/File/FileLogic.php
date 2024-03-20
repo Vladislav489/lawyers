@@ -3,10 +3,13 @@
 namespace App\Models\CoreEngine\LogicModels\File;
 
 use App\Models\CoreEngine\Core\CoreEngine;
+use App\Models\CoreEngine\LogicModels\Another\FileSystemLogic;
 use App\Models\CoreEngine\ProjectModels\File\File;
 
-class FileLogic extends CoreEngine
+class FileLogic extends FileSystemLogic
 {
+    const FILE_VACANCY = 'vacancy';
+
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->engine = new File();
@@ -19,11 +22,7 @@ class FileLogic extends CoreEngine
 
     protected function compileGroupParams(): array
     {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
+        $this->group_params = ['select' => [], 'by' => [], 'relatedModel' => []];
 
         return $this->group_params;
     }
@@ -45,25 +44,27 @@ class FileLogic extends CoreEngine
         return $this->filter;
     }
 
-    public function store(array $data): array|bool
-    {
-        try {
-            $file = array_intersect_key(
-                $data,
-                array_flip($this->engine->getFillable())
-            );
+    public function store(array $data, string $type): array|bool {
+        if (empty($data)) return false;
+        $data['files'] = is_array($data['files']) ? $data['files'] : [$data['files']];
+        $files = $data['files'];
+        if (empty($files)) return false;
+        unset($data['files']);
+        foreach ($files as $file) {
+            $fileName = $file->getClientOriginalName();
+            $savedFileInfo = $this->saveFile($type . '/' . $data['id'], $fileName, $file);
+            $savedFileInfo['user_id'] = $data['user_id'];
+            $savedFileInfo['name'] = $savedFileInfo['fileName'];
+            $fileRecord = array_intersect_key($savedFileInfo, array_flip($this->engine->getFillable()));
 
-            if (isset($data['id'])) {
-                $file['id'] = $data['id'];
+            if (isset($fileRecord['id'])) {
+                $fileRecord['id'] = $savedFileInfo['id'];
             }
 
-            if ($data['id'] = $this->save($file)) {
-                return $data;
+            if ($savedFileInfo['id'] = $this->save($fileRecord)) {
+                $data['files'][] = $savedFileInfo;
             }
-
-        } catch (\Throwable $e) {
         }
-
-        return false;
+        return $data;
     }
 }

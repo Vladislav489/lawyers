@@ -27,7 +27,7 @@
                                 "autostart" => 'true',
                                 "name" => 'type_id_edit',
                                 "default_title" => 'Выбрать',
-                                "url" => route("actionGetServiceTypeList_mainstay_service_servicemainstaycontroller"),
+                                "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
                                 "template" => 'simpleSelect',
                                 "change" => "function(){}"
                             ]])
