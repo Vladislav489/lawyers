@@ -53,9 +53,18 @@
                                 <select class="form-row_header select-btn" mark="service_id" :id="name">
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>
-                                ',
+                                '
                             ]])
 
+                    </div>
+
+                    <div class="form-row">
+                        <h3 class="form-row_header">Мне нужно</h3>
+
+                        <label class="form-row_label">
+                        <textarea name="what-i-need" mark="title" rows="3"
+                                  placeholder="Например: Подготовить документы для регистрации ООО"></textarea>
+                        </label>
                     </div>
 
                         <div class="form-row">
@@ -184,6 +193,7 @@
             const formData = setFiles()
             formData.append('service_id', $('[mark = service_id]').val())
             formData.append('description', $('[mark = description]').val())
+            formData.append('title', $('[mark = title]').val())
             formData.append('payment', setPaymentType())
             return formData
         }
@@ -261,12 +271,6 @@
             }
             return name
         }
-
-        {{--function setupDropzone() {--}}
-        {{--    --}}{{--let dropzone = new Dropzone($('label#myDropzone'), {url: '{{ route__('actionVacancyStore_mainstay_vacancy_vacancymainstaycontroller') }}'})--}}
-        {{--    $('label#myDropzone').dropzone({url: '{{ route__('actionVacancyStore_mainstay_vacancy_vacancymainstaycontroller') }}'})--}}
-        {{--}--}}
-
 
     </script>
 @endsection

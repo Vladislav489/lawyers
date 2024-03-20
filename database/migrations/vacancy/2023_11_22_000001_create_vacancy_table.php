@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
 
+            $table->string('title')->comment('суть обращения');
             $table->text('description')->comment('описание');
             $table->integer('payment')->unsigned()->comment('оплата')->nullable();
             $table->json('defendant')->comment('ответчик')->nullable();

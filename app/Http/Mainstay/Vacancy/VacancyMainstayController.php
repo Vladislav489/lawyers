@@ -28,7 +28,8 @@ class VacancyMainstayController extends MainstayController
         $user = \auth()->user();
         $rules = [
             'service_id' => 'required|integer|exists:service,id',
-            'description' => 'required|string',
+            'title' => 'required|string|min:5|max:150',
+            'description' => 'required|string|min:5|max:1200',
             'payment' => 'required',
             'files' => 'array|nullable',
             'files.*' => 'file|max:5120'
