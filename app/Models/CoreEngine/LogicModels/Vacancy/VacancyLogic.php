@@ -5,13 +5,17 @@ namespace App\Models\CoreEngine\LogicModels\Vacancy;
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\LogicModels\Another\FileSystemLogic;
 use App\Models\CoreEngine\LogicModels\File\FileLogic;
+use App\Models\CoreEngine\ProjectModels\Chat\Chat;
+use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
 use App\Models\CoreEngine\ProjectModels\File\File;
+use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyGroup;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VacancyLogic extends CoreEngine
 {
@@ -23,6 +27,7 @@ class VacancyLogic extends CoreEngine
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
+        $this->params = $params;
         $this->engine = new Vacancy();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
@@ -135,16 +140,58 @@ class VacancyLogic extends CoreEngine
                     'relationship' => ['executor_id', 'id'],
                     'field' => []
                 ],
-                'GroupVacancy' => [
-                    'entity' => new VacancyGroup(),
-                    'relationship' => ['vacancy_id', 'id'],
-                    'field' => []
+                'VacancyGroup' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'is_appruv', is_appruv, 'user_id', user_id)) as group_users,
+                                JSON_LENGTH(JSON_ARRAYAGG(JSON_OBJECT('id', id, 'is_appruv', is_appruv,
+                                'user_id', user_id))) as count_group_users,
+                                vacancy_id FROM vacancy_group GROUP BY vacancy_id) as VacancyGroup ON VacancyGroup.vacancy_id = vacancy.id"),
+                    'field' => ['group_users', 'count_group_users']
                 ],
+                'VacancyGroupForApprove' => [
+                    'entity' => DB::raw("(SELECT
+                                JSON_LENGTH(JSON_ARRAYAGG(JSON_OBJECT('id', id, 'is_appruv', is_appruv,
+                                'user_id', user_id))) as count_not_approved,
+                                vacancy_id FROM vacancy_group WHERE is_appruv = 0 GROUP BY vacancy_id) as VacancyGroupForApprove ON VacancyGroupForApprove.vacancy_id = vacancy.id"),
+                    'field' => ['count_not_approved']
+                ],
+//                'VacancyOffer' => [
+//                    'entity' => new VacancyOffer(),
+//                    'relationship' => ['vacancy_id', 'id'],
+//                    'field' => []
+//                ],
                 'VacancyOffer' => [
-                    'entity' => new VacancyOffer(),
-                    'relationship' => ['vacancy_id', 'id'],
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'payment', payment, 'employee_response_id',
+                                employee_response_id)) as lawyers_offers,
+                                JSON_LENGTH(JSON_ARRAYAGG(JSON_OBJECT('id', id, 'payment', payment,
+                                'employee_response_id', employee_response_id))) as count_offers,
+                                vacancy_id FROM vacancy_offer ) as VacancyOffer ON VacancyOffer.vacancy_id = vacancy.id"),
+                    'field' => ['lawyers_offers', 'count_offers']
+                ],
+                'Service' => [
+                    'entity' => new Service(),
+                    'relationship' => ['id', 'service_id'],
+                    'field' => ['name as service_name']
+                ],
+                'Chat' => [
+                    'entity' => new Chat(),
+                    'relationship' => ['id', 'chat_id'],
                     'field' => []
                 ],
+//                'ChatMessage' => [
+//                    'entity' => new ChatMessage(),
+//                    'relationship' => ['chat_id', 'Chat.id'],
+//                    'relationship_more' => ['target_user_id', $this->params['user_id']],
+//                    'field' => []
+//                ],
+                'ChatMessage' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT('message', message, 'sender_user_id', sender_user_id, 'target_user_id',
+                    target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$this->params['user_id']}
+                    GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
+                    'field' => ['messages']
+                ]
             ]
         ];
 

@@ -46,7 +46,7 @@ class ClientMainstayController extends MainstayController {
     public function actionUpdateClient($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         (new UserLogic())->save($this->params);
-        return $this->actionGetClient();
+        return $this->actionGetClient(['id' => (string)auth()->id()]);
     }
 
     public function actionGetClient($param = []) {
@@ -54,7 +54,8 @@ class ClientMainstayController extends MainstayController {
         $select = ['*', DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name"),
             DB::raw("City.name as city_name, Country.name as country_name"),
             DB::raw("IFNULL(Balance.balance, 0) as balance"),
-            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions")
+            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions"),
+//            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Vacancy.id, 'text', Question.text, 'status', Question.status)), ']') as questions")
         ];
         return response()->json((new UserLogic($this->params, $select))->offPagination()->setLimit(false)
             ->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
@@ -69,9 +70,16 @@ class ClientMainstayController extends MainstayController {
     public function actionGetVacancies($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         $select = ['*',
-            DB::raw("IFNULL(COUNT(VacancyOffer.id), 0) as count_offers"),
+//            DB::raw("JSON_ARRAYAGG(JSON_OBJECT('id', VacancyOffer.id, 'payment', VacancyOffer.payment, 'employee_response_id',
+//            VacancyOffer.employee_response_id)) as lawyers_offers"),
+//            DB::raw("IF(VacancyOffer.id IS NULL, NULL,
+//            CONCAT('[', GROUP_CONCAT(DISTINCT
+//            (JSON_OBJECT('id', VacancyOffer.id, 'payment', VacancyOffer.payment, 'employee_response_id',
+//             VacancyOffer.employee_response_id)), ']'))) as lawyers_offers"),
+//            DB::raw("IF(ChatMessage.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', ChatMessage.id, 'message', ChatMessage.message, 'sender_user_id', ChatMessage.sender_user_id)), ']'))) as chat_messages"),
+//            DB::raw("IF(GroupVacancy.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('user_id', GroupVacancy.user_id, 'is_appruv', GroupVacancy.is_appruv)), ']'))) as vacancy_group"),
             ];
-        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['GroupVacancy', 'VacancyOffer'])->OnDebug()->getList());
+        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])->getList());
     }
 }
 
