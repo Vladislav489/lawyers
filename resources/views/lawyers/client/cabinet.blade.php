@@ -207,10 +207,22 @@
                                 </p>
                             </li>
                         </ul>',
+
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
                             ]
                         ])
 
-                        <button class="more-services">Еще</button>
+{{--                        <button class="more-services">Еще</button>--}}
                     </div>
 
                     <div class="lawsuit lawyer-wrapper">
@@ -244,11 +256,23 @@
                             </li>
 
                         </ul>',
+
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
                             ]
                         ])
 
 
-                        <button class="more-services">Еще 2 услуги</button>
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="lawsuit lawyer-wrapper">
@@ -283,10 +307,21 @@
                                 </a>
                             </li>
                         </ul>',
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
                             ]
                         ])
 
-                        <button class="more-services">Еще 2 услуги</button>
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="subscribe-block lawyer-wrapper">
