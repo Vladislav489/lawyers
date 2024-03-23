@@ -12,6 +12,7 @@ class FileLogic extends FileSystemLogic
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
+        $this->params = $params;
         $this->engine = new File();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
@@ -20,35 +21,11 @@ class FileLogic extends FileSystemLogic
         parent::__construct($params, $select);
     }
 
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = ['select' => [], 'by' => [], 'relatedModel' => []];
-
-        return $this->group_params;
-    }
-
-    protected function defaultSelect(): array
-    {
-        $tab = $this->engine->tableName();
-        $this->default = [];
-
-        return $this->default;
-    }
-
-    protected function getFilter(): array
-    {
-        $tab = $this->engine->getTable();
-        $this->filter = [];
-        $this->filter = array_merge($this->filter, parent::getFilter());
-
-        return $this->filter;
-    }
-
     public function store(array $data, string $type): array|bool {
         if (empty($data)) return false;
         $data['files'] = is_array($data['files']) ? $data['files'] : [$data['files']];
         $files = $data['files'];
-        if (empty($files)) return false;
+        if (empty($files)) return $data;
         unset($data['files']);
         foreach ($files as $file) {
             $fileName = $file->getClientOriginalName();
@@ -66,5 +43,42 @@ class FileLogic extends FileSystemLogic
             }
         }
         return $data;
+    }
+
+    protected function getFilter(): array
+    {
+        $tab = $this->engine->getTable();
+        $this->filter = [
+            [   'field' => $tab.'.name','params' => 'name',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.path','params' => 'path_start',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'LIKE%', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.path','params' => 'path',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.user_id','params' => 'user_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+        ];
+        $this->filter = array_merge($this->filter, parent::getFilter());
+
+        return $this->filter;
+    }
+
+    protected function compileGroupParams(): array
+    {
+        $this->group_params = ['select' => [], 'by' => [], 'relatedModel' => []];
+
+        return $this->group_params;
     }
 }

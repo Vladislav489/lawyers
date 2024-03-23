@@ -236,26 +236,26 @@
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
 
-                                'template' => '<ul class="my-orders_ul" :id="name + \'_body\'">
-                            <li v-for="item in data">
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
+                                'template' => "<ul class='my-orders_ul' :id=\"name + '_body'\">
+                            <li v-for=\"item in data\">
+                                <div class='my-orders_info'>
+                                    <p class='my-orders_text'>
                                         @{{ item.title }}
                                     </p>
 
-                                    <ul class="my-orders_sub-ul">
+                                    <ul class='my-orders_sub-ul'>
                                         <li>@{{ item.count_messages ?? 0 }} сообщений</li>
                                         <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
                                     </ul>
                                 </div>
 
-                                <a href="#" type="button" class="main-btn main-btn_white">
-                                    <span class="first">Открыть</span>
-                                    <span class="second">Открыть</span>
+                                <a :href=\"'" . route__('actionEditVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>
+                                    <span class='first'>Открыть</span>
+                                    <span class='second'>Открыть</span>
                                 </a>
                             </li>
 
-                        </ul>',
+                        </ul>",
 
                         'pagination' => [
                                         'page' => 1,

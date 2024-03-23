@@ -204,55 +204,55 @@
 
                         'template' =>
                         "<div :id=\"name + '_body'\">
-                        <h2 class=\"find-section_header\">Найдено: <span>@{{ data.length }} специалистов</span></h2>
-                        <div class=\"found-specialists\" >
-                            <div v-for=\"item in data\" class=\"fs-block\" >
-                                <div class=\"fs-img\">
-                                    <img :src=\"'/storage' + item.avatar_path\" alt=\"lawyer-img\">
+                        <h2 class='find-section_header'>Найдено: <span>@{{ data.length }} специалистов</span></h2>
+                        <div class='found-specialists' >
+                            <div v-for=\"item in data\" class='fs-block' >
+                                <div class='fs-img'>
+                                    <img :src=\"'/storage' + item.avatar_path\" alt='lawyer-img'>
                                 </div>
 
-                                <div class=\"fs-info\">
+                                <div class='fs-info'>
                                     <a :href=\"'".route__('actionSpecialistCard_controller')."/'+item.user_id\">
-                                    <h3 class=\"fs-name\">@{{ item.last_name + \" \" + item.first_name + \" \" + item.middle_name }}</h3></a>
-                                    <p class=\"fs-row\">
-                                        <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-gray.svg\" alt=\"loc-icon\">
-                                        <span class=\"fs-text\">Москва и МО, пр. Роберта Рождественского, 522</span>
+                                    <h3 class='fs-name'>@{{ item.last_name + ' ' + item.first_name + ' ' + item.middle_name }}</h3></a>
+                                    <p class='fs-row'>
+                                        <img class='icon' src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
+                                        <span class='fs-text'>Москва и МО, пр. Роберта Рождественского, 522</span>
                                     </p>
-                                    <p class=\"fs-row\">
-                                        <img class=\"icon\" src=\"/lawyers/images/icons/bag-icon-gray.svg\" alt=\"bag-icon\">
-                                        <span class=\"fs-text\">@{{ agetostr(item.practice_years) }} практики</span>
+                                    <p class='fs-row'>
+                                        <img class='icon' src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon'>
+                                        <span class='fs-text'>@{{ agetostr(item.practice_years) }} практики</span>
                                     </p>
 
-                                    <div class=\"lawyer_rate-block\">
-                                        <div class=\"specialist-rate\">
-                                            <div class=\"stars\">
-                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                                <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                                <img src=\"/lawyers/images/icons/star-icon-empty.svg\" alt=\"star-icon\">
+                                    <div class='lawyer_rate-block'>
+                                        <div class='specialist-rate'>
+                                            <div class='stars'>
+                                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                <img src='/lawyers/images/icons/star-icon-empty.svg' alt='star-icon'>
                                             </div>
                                             <span>32 ответа</span>
                                         </div>
-                                        <div class=\"specialist-perm\">
+                                        <div class='specialist-perm'>
                                             <p>Право рейтинг:</p>
                                             <span>4.0</span>
-                                            <img class=\"icon\" src=\"/lawyers/images/icons/info-icon-gray.svg\" alt=\"info-icon\">
+                                            <img class='icon' src='/lawyers/images/icons/info-icon-gray.svg' alt='info-icon'>
                                         </div>
                                     </div>
 
-                                    <p class=\"fs-text\">
+                                    <p class='fs-text'>
                                         @{{ item.about }}
                                     </p>
-                                    <ul class=\"fs-text_bold\" v-for=\"service in JSON.parse(item.service)\">
+                                    <ul class='fs-text_bold' v-for=\"service in JSON.parse(item.service)\">
                                         <li>@{{ service.service_name }} </li>
                                     </ul>
                                 </div>
 
-                                <div class=\"buttons-container\">
-                                    <button class=\"main-btn main-btn_blue\">Консультация: @{{ item.consultation_price }} &#8381;</button>
-                                    <button class=\"main-btn main-btn_white\">Заказать звонок</button>
-                                    <button class=\"main-btn main-btn_white\">Сообщение</button>
+                                <div class='buttons-container'>
+                                    <button class='main-btn main-btn_blue'>Консультация: @{{ item.consultation_price }} &#8381;</button>
+                                    <button class='main-btn main-btn_white'>Заказать звонок</button>
+                                    <button class='main-btn main-btn_white'>Сообщение</button>
                                 </div>
                             </div>
                         </div>

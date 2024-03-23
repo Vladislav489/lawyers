@@ -11,11 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class VacancyMainstayController extends MainstayController
 {
-    public function actionGetVacancy(Request $request)
-    {
-        return response()->json(
-            Vacancy::find($request->input('id'))
-        );
+    public function actionGetVacancy($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new VacancyLogic($this->params))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove', 'Service', 'ServiceType'])->getOne());
     }
 
     public function actionGetVacancyList()
@@ -42,7 +40,24 @@ class VacancyMainstayController extends MainstayController
         $data['state_id'] = $user->state_id;
         $data['city_id'] = $user->city_id;
 
-        return response()->json((new VacancyLogic())->store($data));
+        return response()->json((new VacancyLogic(['user_id' => $user->id]))->store($data));
+    }
+
+    public function actionVacancyUpdate($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $userId = \auth()->id();
+        $rules = [
+            'service_id' => 'required|integer|exists:service,id',
+            'title' => 'required|string|min:5|max:150',
+            'description' => 'required|string|min:5|max:1200',
+            'payment' => 'required',
+            'files' => 'array|nullable',
+            'files.*' => 'file|max:5120',
+            'id' => 'required|integer|exists:vacancy,id'
+        ];
+        $data = Validator::validate($this->params, $rules);
+        $data['user_id'] = $userId;
+        return response()->json((new VacancyLogic(['user_id' => $userId]))->store($data));
     }
 
     public function actionVacancyDelete(Request $request)

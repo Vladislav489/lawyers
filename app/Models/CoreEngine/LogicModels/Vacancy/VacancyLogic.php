@@ -9,6 +9,7 @@ use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
 use App\Models\CoreEngine\ProjectModels\File\File;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
+use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
@@ -55,7 +56,6 @@ class VacancyLogic extends CoreEngine
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
             }
-
             if ($data['id'] = $this->save($vacancy)) {
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
@@ -83,6 +83,11 @@ class VacancyLogic extends CoreEngine
     {
         $tab = $this->engine->getTable();
         $this->filter = [
+            [   'field' => $tab.'.id','params' => 'id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
             [   'field' => $tab.'.user_id','params' => 'user_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
@@ -172,7 +177,12 @@ class VacancyLogic extends CoreEngine
                 'Service' => [
                     'entity' => new Service(),
                     'relationship' => ['id', 'service_id'],
-                    'field' => ['name as service_name']
+                    'field' => []
+                ],
+                'ServiceType' => [
+                    'entity' => new ServiceType(),
+                    'relationship' => ['id', 'Service.type_id'],
+                    'field' => ['id as service_type_id']
                 ],
                 'Chat' => [
                     'entity' => new Chat(),
@@ -191,7 +201,7 @@ class VacancyLogic extends CoreEngine
                     target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$this->params['user_id']}
                     GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
                     'field' => ['messages']
-                ]
+                ],
             ]
         ];
 

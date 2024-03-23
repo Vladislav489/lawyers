@@ -179,7 +179,7 @@
     </section>
 
     <script>
-        let price = null
+        let price = 0
         $(document).ready(function () {
             saveVacancy()
             $('#files').change(function () {
@@ -209,7 +209,9 @@
         function setPaymentType() {
             $('input[type = radio][name = request-price]').change(function () {
                 let priceField = $('#price')
+                priceField.val(null)
                 priceField.prop('disabled', true)
+                price = 0
                 if ($(this).val() === 'set_price') {
                     priceField.prop('disabled', false)
                     priceField.change(function () {
@@ -252,6 +254,8 @@
         }
 
         function showFilesInfo() {
+            $('ul.attached-files > li').remove()
+            $('ul.attached-files > div').remove()
             let names = [];
             for(var i = 0; i < $("#files")[0].files.length; i++){
                 names.push($("#files")[0].files.item(i).name);

@@ -81,5 +81,10 @@ class ClientMainstayController extends MainstayController {
             ];
         return response()->json((new VacancyLogic($this->params, $select))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])->getList());
     }
+
+    public function actionGetVacancy($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new VacancyLogic($this->params))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])->getOne());
+    }
 }
 
