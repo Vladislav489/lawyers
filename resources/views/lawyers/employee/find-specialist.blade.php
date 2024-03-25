@@ -204,7 +204,7 @@
 
                         'template' =>
                         "<div :id=\"name + '_body'\">
-                        <h2 class='find-section_header'>Найдено: <span>@{{ data.length }} специалистов</span></h2>
+                        <h2 class='find-section_header'>Найдено: <span>@{{ pagination.totalCount }} специалистов</span></h2>
                         <div class='found-specialists' >
                             <div v-for=\"item in data\" class='fs-block' >
                                 <div class='fs-img'>

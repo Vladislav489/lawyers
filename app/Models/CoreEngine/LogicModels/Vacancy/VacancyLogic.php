@@ -8,6 +8,10 @@ use App\Models\CoreEngine\LogicModels\File\FileLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
 use App\Models\CoreEngine\ProjectModels\File\File;
+use App\Models\CoreEngine\ProjectModels\HelpData\City;
+use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\District;
+use App\Models\CoreEngine\ProjectModels\HelpData\State;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
@@ -123,6 +127,26 @@ class VacancyLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '<=', 'concat' => 'AND',
             ],
+            [   'field' => $tab.'.country_id','params' => 'country_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.city_id','params' => 'city_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.service_id','params' => 'service_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.title','params' => 'search_spec',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '%LIKE%', 'concat' => 'AND',
+            ],
             [   'field' => 'Vacancy.is_appruv','params' => 'is_approved',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
@@ -201,6 +225,21 @@ class VacancyLogic extends CoreEngine
                     target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$this->params['user_id']}
                     GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
                     'field' => ['messages']
+                ],
+                'Country' => [
+                    'entity' => new Country(),
+                    'relationship' => ['id', 'country_id'],
+                    'field' => []
+                ],
+                'State' => [
+                    'entity' => new State(),
+                    'relationship' => ['id', 'state_id'],
+                    'field' => []
+                ],
+                'City' => [
+                    'entity' => new City(),
+                    'relationship' => ['id', 'city_id'],
+                    'field' => []
                 ],
             ]
         ];

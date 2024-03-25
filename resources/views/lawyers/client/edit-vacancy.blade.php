@@ -158,46 +158,47 @@
                             </span>
                         </label>
                     </div>
+                </div>
 
-                    <div class="reasons-block">
-                        <h2>3 причины оставить заявку</h2>
+                <div class="reasons-block">
+                    <h2>3 причины оставить заявку</h2>
 
-                        <ol class="reasons">
-                            <li>
-                                <p class="num"><span>01</span></p>
-                                <h3>Это бесплатно</h3>
-                                <p class="text">Вы оставляете заявку бесплатно и ничего не теряете, если никто из
-                                    юристов не подойдет.</p>
-                            </li>
-                            <li>
-                                <p class="num"><span>02</span></p>
-                                <h3>У вас появится выбор</h3>
-                                <p class="text">Вы сравниваете предложения разных юристов и выбираете выгодные
-                                    условия.</p>
-                            </li>
-                            <li>
-                                <p class="num"><span>03</span></p>
-                                <h3>Мы на Вашей стороне</h3>
-                                <p class="text">Если Вы останетесь недовольны результатом, напишите нам, и мы вернем Вам
-                                    деньги!</p>
-                            </li>
-                        </ol>
+                    <ol class="reasons">
+                        <li>
+                            <p class="num"><span>01</span></p>
+                            <h3>Это бесплатно</h3>
+                            <p class="text">Вы оставляете заявку бесплатно и ничего не теряете, если никто из
+                                юристов не подойдет.</p>
+                        </li>
+                        <li>
+                            <p class="num"><span>02</span></p>
+                            <h3>У вас появится выбор</h3>
+                            <p class="text">Вы сравниваете предложения разных юристов и выбираете выгодные
+                                условия.</p>
+                        </li>
+                        <li>
+                            <p class="num"><span>03</span></p>
+                            <h3>Мы на Вашей стороне</h3>
+                            <p class="text">Если Вы останетесь недовольны результатом, напишите нам, и мы вернем Вам
+                                деньги!</p>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="request_bottom">
+                    <div class="desc">
+                        <p class="desc-text">Описание увидят только юристы сервиса Контакты увидит только выбранный
+                            исполнитель</p>
+                        <ul class="desc-users">
+                            <li><img src="/lawyers/images/icons/user1.svg" alt="user-img"></li>
+                            <li><img src="/lawyers/images/icons/user2.svg" alt="user-img"></li>
+                            <li><img src="/lawyers/images/icons/user3.svg" alt="user-img"></li>
+                            <li><img src="/lawyers/images/icons/user4.svg" alt="user-img"></li>
+                            <li><span class="other-users">+2000</span></li>
+                        </ul>
                     </div>
 
-                    <div class="request_bottom">
-                        <div class="desc">
-                            <p class="desc-text">Описание увидят только юристы сервиса Контакты увидит только выбранный
-                                исполнитель</p>
-                            <ul class="desc-users">
-                                <li><img src="/lawyers/images/icons/user1.svg" alt="user-img"></li>
-                                <li><img src="/lawyers/images/icons/user2.svg" alt="user-img"></li>
-                                <li><img src="/lawyers/images/icons/user3.svg" alt="user-img"></li>
-                                <li><img src="/lawyers/images/icons/user4.svg" alt="user-img"></li>
-                                <li><span class="other-users">+2000</span></li>
-                            </ul>
-                        </div>
-
-                        <button class="main-btn main-btn_blue">
+                    <button class="main-btn main-btn_blue">
                         <span class="first">
                             Разместить заказ
 
@@ -208,7 +209,7 @@
                             </svg>
                         </span>
 
-                            <span class="second">
+                        <span class="second">
                         Разместить заказ
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19"
@@ -217,15 +218,14 @@
                                       stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </span>
-                        </button>
+                    </button>
 
-                        <label class="private-policy">
-                            <input type="checkbox" name="private-policy">
-                            <span class="label-text">
+                    <label class="private-policy">
+                        <input type="checkbox" name="private-policy">
+                        <span class="label-text">
                             Я принимаю <a href="#">Правила</a> и <a href="#">Политику Конфидициальности</a>
                         </span>
-                        </label>
-                    </div>
+                    </label>
                 </div>
             </div>
         </div>
