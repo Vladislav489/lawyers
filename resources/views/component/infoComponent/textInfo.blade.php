@@ -1,12 +1,12 @@
 @php
-    if(!isset($includeToComponent__)) $includeToComponent__ = false;
-    if( $includeToComponent__  == true)$name = $clear_name;
-    $includeFromHeadToDown = (isset($includeFromHeadToDown) && $includeFromHeadToDown = "true" )?true:false;
-    $stackNameScript = (isset($includeFromHeadToDown) && $includeFromHeadToDown)? 'js-lib-component-head':'js-lib-component';
-   //$listStyle = ['1'=>'menuVDrop.css','2'=>'menuGSDrop.css','3'=>'menuVSDrop.css','4'=>'menurectangl.css'];
-    if(!isset($style)) $style ='1';
-    $include =(isset($include))?$include:false;
-    $textComponet = (isset($admin))?"Add component Text Info double click for set setting":"";
+        if(!isset($includeToComponent__)) $includeToComponent__ = false;
+        if( $includeToComponent__  == true)$name = $clear_name;
+        $includeFromHeadToDown = (isset($includeFromHeadToDown) && $includeFromHeadToDown = "true" )?true:false;
+        $stackNameScript = (isset($includeFromHeadToDown) && $includeFromHeadToDown)? 'js-lib-component-head':'js-lib-component';
+       //$listStyle = ['1'=>'menuVDrop.css','2'=>'menuGSDrop.css','3'=>'menuVSDrop.css','4'=>'menurectangl.css'];
+        if(!isset($style)) $style ='1';
+        $include =(isset($include))?$include:false;
+        $textComponet = (isset($admin))?"Add component Text Info double click for set setting":"";
 @endphp
 @pushOnce('css-style')
 @endpushOnce
@@ -39,7 +39,7 @@
                 'data':@php echo isset($data)?$data:'null'; @endphp,
                 'globalData':@php echo isset($globalData)?"'".$globalData."'":'false'; @endphp,
                 'template':@php echo isset($template)?str_replace("\/","/",json_encode($template)):'undefined';@endphp,
-                'params':@php echo isset($urlparams)?json_encode($urlparams):'undefined';@endphp,
+                'params':@php echo isset($params)?json_encode($params):'undefined';@endphp,
                 'callBeforloadComponent':@php echo isset($callBeforloadComponent)?preg_replace('/\r|\r|/u', "", $callBeforloadComponent):"null";@endphp,
                 'callAfterloadComponent':@php echo isset($callAfterloadComponent)?preg_replace('/\r|\r|/u', "", $callAfterloadComponent):"null";@endphp,
                 'callAjaxSuccess':@php echo isset($callAjaxSuccess)?preg_replace('/\r|\r|/u', "", $callAjaxSuccess):"null";@endphp,

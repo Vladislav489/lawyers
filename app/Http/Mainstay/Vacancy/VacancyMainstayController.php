@@ -17,11 +17,29 @@ class VacancyMainstayController extends MainstayController
         return response()->json((new VacancyLogic($this->params))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove', 'Service', 'ServiceType'])->getOne());
     }
 
+    public function actionGetVacancyForEmployeeRespond($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $select = [
+            'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
+            DB::raw("Service.name as service_name"),
+            DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
+            DB::raw("(CASE
+        WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')
+        WHEN TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()), ' часов назад')
+        ELSE CONCAT(TIMESTAMPDIFF(DAY, vacancy.created_at, NOW()), ' дней назад')
+        END) AS time_ago"),
+            DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
+            DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name) as owner_name"),
+            DB::raw("Owner.online as owner_online"),
+        ];
+        return response()->json(['result' => (new VacancyLogic($this->params, $select))->setJoin(['Service', 'Country', 'State', 'City', 'Owner', 'Status'])->getOne()]);
+    }
+
     public function actionGetVacancyList($param = []) {
         $this->params = empty($param) ? $this->params : $param;
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
-//            DB::raw("IFNULL(period_end, 'Срок не установлен') as period_end"),
+            DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
             DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
             DB::raw("(CASE
         WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')

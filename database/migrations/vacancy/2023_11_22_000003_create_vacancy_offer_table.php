@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->float('payment', 8, 2)->comment('оплата');
+            $table->unsignedBigInteger('employee_user_id')->comment('ID сотрудника');
             $table->boolean('is_deleted')->default(false);
             $table->bigInteger('vacancy_id')->unsigned()->index()->comment('ID вакансии');
             $table->bigInteger('employee_response_id')->unsigned()->index()->comment('ID ответа сотрудника');

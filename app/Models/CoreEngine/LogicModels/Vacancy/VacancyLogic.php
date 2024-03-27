@@ -19,6 +19,7 @@ use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyGroup;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
+use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyStatusLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -26,9 +27,11 @@ class VacancyLogic extends CoreEngine
 {
     CONST STATUS_NEW = 1;
     CONST STATUS_MODERATION = 2;
-    CONST STATUS_OPEN = 3;
-    CONST STATUS_CLOSE = 4;
-    CONST STATUS_DISPUTE = 5;
+    CONST STATUS_PAYED = 3;
+    CONST STATUS_IN_PROGRESS = 4;
+    CONST STATUS_INSPECTION = 5;
+    CONST STATUS_ACCEPTED = 6;
+    CONST STATUS_CLOSED = 7;
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
@@ -160,6 +163,7 @@ class VacancyLogic extends CoreEngine
 
     protected function compileGroupParams(): array
     {
+        $userId = $this->params['user_id'] ?? '';
         $this->group_params = [
             'select' => [],
             'by' => [],
@@ -222,7 +226,7 @@ class VacancyLogic extends CoreEngine
                 'ChatMessage' => [
                     'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                     JSON_OBJECT('message', message, 'sender_user_id', sender_user_id, 'target_user_id',
-                    target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$this->params['user_id']}
+                    target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$userId}
                     GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
                     'field' => ['messages']
                 ],
@@ -241,6 +245,26 @@ class VacancyLogic extends CoreEngine
                     'relationship' => ['id', 'city_id'],
                     'field' => []
                 ],
+                'Status' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT('status',
+                    CASE WHEN status = 1 THEN 'создан'
+                    WHEN status = 2 THEN 'на модерации'
+                    WHEN status = 3 THEN 'оплачен'
+                    WHEN status = 4 THEN 'в работе'
+                    WHEN status = 5 THEN 'на проверке'
+                    WHEN status = 6 THEN 'принят'
+                    WHEN status = 7 THEN 'закрыт'
+                    END,
+                    'id', id, 'status_code', status, 'time', TIME(created_at), 'date', DATE(created_at))) as status_history, vacancy_id
+                    FROM vacancy_status_log) as Status ON Status.vacancy_id = vacancy.id"),
+                    'field' => ['status_history']
+                ],
+                'Owner' => [
+                    'entity' => new UserEntity(),
+                    'relationship' => ['id', 'user_id'],
+                    'field' => []
+                ]
             ]
         ];
 
