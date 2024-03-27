@@ -21,6 +21,10 @@ class EmployeeController extends BaseEmployeeController {
         return view('lawyers.employee.settings');
     }
 
+    public function actionVacancyExchange() {
+        return view('lawyers.employee.find-vacancy');
+    }
+
     public function getPageParams(): array {
         return [
             'actionEmployeeCabinet' => [

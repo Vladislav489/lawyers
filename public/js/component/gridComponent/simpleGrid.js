@@ -119,49 +119,59 @@ class simpleGrid extends parentComponent {
 
     createPaginationArrow(){
         var $this = this;
-        if(this.pagination['all_load'] == 0) {
-            this.pagination['page'] += 1;
-            this.addloadFromAajax();
+        var pagination = null;
+        // if(this.pagination['all_load'] == 0) {
+        //     this.pagination['page'] += 1;
+        //     this.addloadFromAajax();
+        // }
+        if($("#"+this.id+"_footer").length == 0 && this.data !='null' && Array.isArray(this.data)  &&  this.pagination['totalCount'] > this.data.length){
+            pagination = $("<div id='"+this.id+"_footer' class='simple_grid_footer'></div>").append($("<div id='pagination' class='pagination fs-section_pages'></div>"));
+            pagination.insertAfter("#"+this.id+"_body");
         }
-        this.HeightItem = $("#"+this.id+"_body")[0].childNodes[0].clientHeight;
-        $("#"+$this.id+"_body").scrollTop(100)
+        // this.HeightItem = $("#"+this.id+"_body")[0].childNodes[0].clientHeight;
+        // $("#"+$this.id+"_body").scrollTop(100)
+        //
+        // var Size = (this.pagination['all_load'] == 0)?
+        //     this.HeightItem*this.pagination['pageSize']:this.HeightItem*this.pagination['showInPage']
+        // $("#"+this.id+"_body").css("height",Size)
 
-        var Size = (this.pagination['all_load'] == 0)?
-            this.HeightItem*this.pagination['pageSize']:this.HeightItem*this.pagination['showInPage']
-        $("#"+this.id+"_body").css("height",Size)
+        var prev = $("<a href='#' class='fs-page_nav disabled mobile-hidden'>Предыдущая страница</a>")
+        var next = $("<a href='#' class='fs-page_nav active mobile-hidden'>Следующая страница</a>")
 
-        var up = $("<div><div class='paginationUp'><i class='fa fa-arrow-circle-up'>&nbsp;</i></div></div>")
-        var down = $("<div><div class='paginationDown'><i class='fa fa-arrow-circle-down'>&nbsp;</i></div></div>")
+        $('#pagination').append(prev)
+        $('#pagination').append(next)
 
-        up.click(function(){
-            document.getElementById($this.id+"_body").scrollTop -= $this.HeightItem;
-        }).insertBefore("#"+this.id+'_body');
-        down.click(function() {
-            if ($this.pagination['all_load'] == 0) {
-                $this.postionItem += 1;
-                $this.pagination['page'] += 1;
-                if($this.postionItem >= $this.option['data'].length - 2)
-                    $this.addloadFromAajax();
-            } else {
-                $this.postionItem += 1;
-                if($this.pagination['physical_presence'] == 1)
-                    $this.showItem();
-                else
-                    $this.setOption('data',$this.arrayPagination[$this.pagination['page']-1]);
+        prev.click(function(){
+            if ($this.pagination['page'] > 1) {
+                prev.prop('disabled', false)
+                $this.pagination['page'] -= 1
+                if($this.pagination['all_load'] == 0) {
+                    $this.loadFromAajax();
+                    $('#pagination').remove(prev)
+                    $("#"+this.id+"_footer").find("#pagination").append(prev)
+                }
             }
-            $("#"+$this.id+"_body").scrollTop($("#"+$this.id+"_body").scrollTop()+$this.HeightItem)
-        }).insertAfter("#" + this.id + '_body');
+        });
+        next.click(function() {
+            $this.pagination['page'] += 1
+            if($this.pagination['all_load'] == 0) {
+                $this.loadFromAajax();
+                $('#pagination').remove(next)
+                $("#"+this.id+"_footer").find("#pagination").append(next)
+            }
+        });
+
     }
     createPaginationMore(){
         var $this = this;
-        $("<div><div class='paginationMore'>More</div></div>").click(function(){
+        $("<button class=\"more-services\">Еще</button>").click(function(){
             $this.pagination['page'] += 1;
             if($this.pagination['all_load'] == 0) {
                 $this.addloadFromAajax();
             } else {
                 ($this.pagination['physical_presence'] == 1 )? $this.showItem():$this.setOption('data',$this.arrayPagination[$this.pagination['page']-1]);
             }
-        }).insertAfter("#"+this.id+'_body');
+        }).insertAfter("#"+this.id+'_footer');
     }
     createPaginationNum() {
         var pagination = null;
@@ -186,7 +196,7 @@ class simpleGrid extends parentComponent {
         var ul = $("<ul id='"+this.id+"_pagination'>");
         var buttomLeft = parseInt(this.pagination['page']) - 1;
         var buttomRight = parseInt(this.pagination['page']) + 1;
-        if(buttomLeft > 1) {
+        if(buttomLeft >= 1) {
             var li = $("<li class='button-left'><i class='fa fa-caret-left'></i></li>").attr("data-page", buttomLeft).click(function () {
                 $this.pageClick($(this).data('page'))
             })
@@ -201,40 +211,40 @@ class simpleGrid extends parentComponent {
                 ul.append(li)
             }
         }
-        var pageNumbEnter = $("<div data-input_on='1' id='"+$this.id+"_numb'>...</div>").mouseenter(function(target){
-            var obj = $(this);
-            if(obj.data('input_on') == '1'){
-                obj.data('input_on','0')
-                var input  = $("<input type='number' style='width:40px' value='"+$this.pagination['page']+"' min='1' id='"+$this.id+"_input' name='page_number'/>").keypress(function(event) {
-                    if(event.keyCode === 13){
-                        $this.pagination['page'] = $(this).val();
-                        $this.loadFromAajax();
-                        obj.data('input_on','1')
-                    }
-                }).blur(function (event) {
-                    setTimeout(function () {
-                        obj.html("...");
-                        obj.data('input_on','1')
-                    },1000)
-                });
-                var button = $("<button>&#10132;</button>").click(function () {
-                    $this.pagination['page'] = $("#"+$this.id+"_input").val();
-                    $this.loadFromAajax();
-                    obj.data('input_on','1')
-                })
-                obj.html("")
-                obj.append(input).append(button);
-            }
-        })
+        // var pageNumbEnter = $("<div data-input_on='1' id='"+$this.id+"_numb'>...</div>").mouseenter(function(target){
+        //     var obj = $(this);
+        //     if(obj.data('input_on') == '1'){
+        //         obj.data('input_on','0')
+        //         var input  = $("<input type='number' style='width:40px' value='"+$this.pagination['page']+"' min='1' id='"+$this.id+"_input' name='page_number'/>").keypress(function(event) {
+        //             if(event.keyCode === 13){
+        //                 $this.pagination['page'] = $(this).val();
+        //                 $this.loadFromAajax();
+        //                 obj.data('input_on','1')
+        //             }
+        //         }).blur(function (event) {
+        //             setTimeout(function () {
+        //                 obj.html("...");
+        //                 obj.data('input_on','1')
+        //             },1000)
+        //         });
+        //         var button = $("<button>&#10132;</button>").click(function () {
+        //             $this.pagination['page'] = $("#"+$this.id+"_input").val();
+        //             $this.loadFromAajax();
+        //             obj.data('input_on','1')
+        //         })
+        //         obj.html("")
+        //         obj.append(input).append(button);
+        //     }
+        // })
 
-        ul.append($("<li class='button-right'>").append(pageNumbEnter))
+        // ul.append($("<li class='button-right'>").append(pageNumbEnter))
         if( parseInt(this.pagination['page']) < (this.pagination['countPage'] - 9)) {
             var li = $("<li><i>" + this.pagination['countPage'] + "</i></li>").attr("data-page", this.pagination['countPage']).click(function () {
                 $this.pageClick($(this).data('page'))
             })
             ul.append(li)
         }
-        if( buttomRight < this.pagination['countPage'] ){
+        if( buttomRight <= this.pagination['countPage'] ){
             var li = $("<li class='button-right'><i class='fa fa-caret-right'></i></li>").attr("data-page",buttomRight).click(function() {
                 $this.pageClick($(this).data('page'))
             })

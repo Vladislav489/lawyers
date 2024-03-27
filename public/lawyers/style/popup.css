@@ -220,7 +220,28 @@
 }
 
 
-
-
-
+#chat-popup .step1 img[alt="arrow-icon"] {
+    width: 32px;
+}
+#chat-popup .step1 .chat-header_left h4 {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+#chat-popup .step1 .chat-header_left h4 img {
+    width: 24px;
+}
+@media screen and (max-width: 1024px) {
+    #chat-popup {
+        display: flex;
+    }
+    #chat-popup .chat-window {
+        display: flex;
+    }
+}
+@media screen and (max-width: 480px) {
+    #chat-popup .step1 img[alt="arrow-icon"] {
+        margin-right: 8px;
+    }
+}
 

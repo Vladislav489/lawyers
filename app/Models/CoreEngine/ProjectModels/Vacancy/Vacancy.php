@@ -9,6 +9,7 @@ class Vacancy extends BaseModel
     protected $table = 'vacancy';
 
     protected $fillable = [
+        'title',
         'description',
         'payment',
         'defendant',

@@ -207,10 +207,72 @@
                                 </p>
                             </li>
                         </ul>',
+
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
                             ]
                         ])
 
-                        <button class="more-services">Еще</button>
+{{--                        <button class="more-services">Еще</button>--}}
+                    </div>
+
+                    <div class="lawsuit lawyer-wrapper">
+                        <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Мои заказы </h2>
+
+                        @include('component_build', [
+                            'component' => 'component.gridComponent.simpleGrid',
+                            'params_component' => [
+                                'autostart' => 'true',
+                                'name' => 'client_orders',
+                                'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
+								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
+
+                                'template' => "<ul class='my-orders_ul' :id=\"name + '_body'\">
+                            <li v-for=\"item in data\">
+                                <div class='my-orders_info'>
+                                    <p class='my-orders_text'>
+                                        @{{ item.title }}
+                                    </p>
+
+                                    <ul class='my-orders_sub-ul'>
+                                        <li>@{{ item.count_messages ?? 0 }} сообщений</li>
+                                        <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
+                                    </ul>
+                                </div>
+
+                                <a :href=\"'" . route__('actionEditVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>
+                                    <span class='first'>Открыть</span>
+                                    <span class='second'>Открыть</span>
+                                </a>
+                            </li>
+
+                        </ul>",
+
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
+                            ]
+                        ])
+
+
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="lawsuit lawyer-wrapper">
@@ -220,7 +282,7 @@
                             'component' => 'component.gridComponent.simpleGrid',
                             'params_component' => [
                                 'autostart' => 'true',
-                                'name' => 'client_questions',
+                                'name' => 'client_group_orders',
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 1],
 
@@ -228,33 +290,14 @@
                             <li v-for="item in data">
                                 <div class="my-orders_info">
                                     <p class="my-orders_text">
-                                        @{{ item.description }}
+                                        @{{ item.title }}
                                     </p>
 
                                     <ul class="my-orders_sub-ul">
-                                        <li>@{{ item.description }} заявителей (Ожидают подтверждение 4)</li>
-                                        <li>5 сообщений</li>
-                                        <li>3 предложения от юристов</li>
-                                    </ul>
-                                </div>
-
-                                <a href="#" type="button" class="main-btn main-btn_white">
-                                    <span class="first">Открыть</span>
-                                    <span class="second">Открыть</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
-                                        Иск собственников многоквартирного дома в признании права общей долевой
-                                        собственности на подвальные помещения здания
-                                    </p>
-
-                                    <ul class="my-orders_sub-ul">
-                                        <li>5 заявителей (Ожидают подтверждение 4)</li>
-                                        <li>5 сообщений</li>
-                                        <li>3 предложения от юристов</li>
+                                        <li>
+                                        @{{ item.count_group_users ?? 0 }} заявителей (Ожидают подтверждение @{{ item.count_not_approved ?? 0 }})</li>
+                                        <li>@{{ item.count_messages ?? 0 }} сообщений</li>
+                                        <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
                                     </ul>
                                 </div>
 
@@ -264,53 +307,21 @@
                                 </a>
                             </li>
                         </ul>',
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
                             ]
                         ])
 
-
-                        <ul class="my-orders_ul">
-                            <li>
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
-                                        Иск собственников многоквартирного дома в признании права общей долевой
-                                        собственности на подвальные помещения здания
-                                    </p>
-
-                                    <ul class="my-orders_sub-ul">
-                                        <li>5 заявителей (Ожидают подтверждение 4)</li>
-                                        <li>5 сообщений</li>
-                                        <li>3 предложения от юристов</li>
-                                    </ul>
-                                </div>
-
-                                <a href="#" type="button" class="main-btn main-btn_white">
-                                    <span class="first">Открыть</span>
-                                    <span class="second">Открыть</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
-                                        Иск собственников многоквартирного дома в признании права общей долевой
-                                        собственности на подвальные помещения здания
-                                    </p>
-
-                                    <ul class="my-orders_sub-ul">
-                                        <li>5 заявителей (Ожидают подтверждение 4)</li>
-                                        <li>5 сообщений</li>
-                                        <li>3 предложения от юристов</li>
-                                    </ul>
-                                </div>
-
-                                <a href="#" type="button" class="main-btn main-btn_white">
-                                    <span class="first">Открыть</span>
-                                    <span class="second">Открыть</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                        <button class="more-services">Еще 2 услуги</button>
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
                     <div class="subscribe-block lawyer-wrapper">

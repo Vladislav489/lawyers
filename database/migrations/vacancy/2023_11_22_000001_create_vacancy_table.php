@@ -18,14 +18,15 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
 
+            $table->string('title')->comment('суть обращения');
             $table->text('description')->comment('описание');
-            $table->integer('payment')->unsigned()->comment('оплата');
-            $table->json('defendant')->comment('ответчик');
+            $table->integer('payment')->unsigned()->comment('оплата')->nullable();
+            $table->json('defendant')->comment('ответчик')->nullable();
             $table->string('status', 128)->comment('статус');
-            $table->string('lawsuit_number', 40)->comment('номер юриста');
-            $table->string('address_judgment', 128)->comment('адрес суда');
-            $table->date('period_start');
-            $table->date('period_end');
+            $table->string('lawsuit_number', 40)->comment('номер юриста')->nullable();
+            $table->string('address_judgment', 128)->comment('адрес суда')->nullable();
+            $table->date('period_start')->nullable();
+            $table->date('period_end')->nullable();
 
             $table->boolean('is_group')->default(false)->comment('групповой иск');
             $table->boolean('is_public')->default(false)->comment('открыта');
@@ -34,7 +35,7 @@ return new class extends Migration
             $table->boolean('is_consultation')->default(false)->comment('консультация');
 
             $table->bigInteger('priority_id')->unsigned()->index()->comment('ID приоритета');
-            $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата');
+            $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата')->nullable();
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
             $table->bigInteger('service_id')->unsigned()->index()->comment('ID сервиса');
             $table->bigInteger('executor_id')->unsigned()->index()->nullable()->comment('ID сотрудника-исполнителя');

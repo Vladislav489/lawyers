@@ -62,8 +62,8 @@
     @php
         if(strpos($name,'view_component_') !== false) $name = uniqid(str_replace('view_component_','',$name));
     @endphp
-    <component id="component_dropzone_{{$name}}"  data-name="{{$name}}">
-           <div id="dropzone_{{$name}}" class="dropzone image-carousel_wrap app-part" style="height: {{(isset($heightboby))?$heightboby:300}}px;overflow:auto "></div>
+    <component id="component_dropzone_{{$name}}" data-name="{{$name}} ">
+           <div id="dropzone_{{$name}}" class="dropzone image-carousel_wrap app-part"></div>
     </component>
     @if($includeToComponent__ != true)
         @if(!$includeFromHeadToDown)
@@ -113,7 +113,7 @@
                             maxFiles:10,
                             paramName:true,
                             addRemoveLinks:true,
-                            dictDefaultMessage:"Перетащите изображение или нажмите",
+                            dictDefaultMessage:"Перетащите файл или нажмите",
                             dictRemoveFile:"<span onclick=\"deleteImage(this,'component_dropzone_{{$name}}','{{(isset($deleteRout))?$deleteRout:''}}')\">Удалить</span>",
                             thumbnailWidth:{{(isset($thumbnailWidth))?$thumbnailWidth:150}},
                             thumbnailHeight:{{(isset($thumbnailWidth))?$thumbnailHeight:270}},

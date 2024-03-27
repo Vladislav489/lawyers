@@ -56,3 +56,5 @@ Route::any('/{file?}', function (Request $r) {
         }
     }
 })->where('file', '(.*?)\.(xml)$')->name('sitemap');
+
+Route::any('/download', [\App\Http\Controllers\Client\ClientController::class, 'actionViewFile'])->middleware('auth')->name('download');
