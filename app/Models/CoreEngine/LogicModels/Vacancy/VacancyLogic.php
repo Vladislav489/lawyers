@@ -256,7 +256,7 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
                     END,
-                    'id', id, 'status_code', status, 'time', TIME(created_at), 'date', DATE(created_at))) as status_history, vacancy_id
+                    'id', id, 'status_code', status, 'time', DATE_FORMAT(created_at, '%H:%i'), 'date', DATE_FORMAT(created_at, '%e %M'))) as status_history, vacancy_id
                     FROM vacancy_status_log) as Status ON Status.vacancy_id = vacancy.id"),
                     'field' => ['status_history']
                 ],
