@@ -22,7 +22,10 @@ class ClientController extends BaseClientController
 
     public function actionViewVacancy() {
         if ($this->checkUserVacancyAccess()) {
-            return view('lawyers.client.vacancy-details');
+            if ($this->checkVacancyHasExecutor()) {
+                return view('lawyers.client.vacancy-details');
+            }
+            return view('lawyers.client.vacancy-responses');
         } else {
             return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'))->with('error', 'No access!');
         }
@@ -60,5 +63,10 @@ class ClientController extends BaseClientController
     protected function checkUserVacancyAccess() {
         $vacancyId = request()->route('vacancy_id');
         return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne();
+    }
+
+    protected function checkVacancyHasExecutor() {
+        $vacancyId = request()->route('vacancy_id');
+        return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne()['executor_id'];
     }
 }

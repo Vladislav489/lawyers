@@ -13,6 +13,7 @@ use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -255,6 +256,11 @@ class EmployeeLogic extends UserLogic
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
+            [   'field' => 'Offer.vacancy_id','params' => 'vacancy_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
             [   'field' => $tab .'.city_id','params' => 'city_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
@@ -340,7 +346,17 @@ class EmployeeLogic extends UserLogic
                     'entity' => new Country(),
                     'relationship' => ['id', 'country_id'],
                     'field' => ['*'],
-                ]
+                ],
+                'Offer' => [
+                    'entity' => new VacancyOffer(),
+                    'relationship' => ['employee_user_id', 'id'],
+                    'field' => [],
+                ],
+                'Vacancy' => [
+                    'entity' => new Vacancy(),
+                    'relationship' => ['executor_id', 'id'],
+                    'field' => [],
+                ],
             ]
         ];
         return $this->group_params;

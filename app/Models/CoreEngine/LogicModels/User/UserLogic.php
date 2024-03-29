@@ -17,7 +17,7 @@ class UserLogic extends CoreEngine
     const EMPLOYEE_TYPE_ID = 2;
 
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->params = array_merge($params, ['is_deleted' => '0']);
+        $this->params = array_merge($params);
         $this->engine = new UserEntity();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
@@ -77,7 +77,7 @@ class UserLogic extends CoreEngine
             [   'field' => $tab.'.is_deleted','params' => 'is_deleted',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
+                "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.city_id','params' => 'city_id',
                 'validate' => ['string' => true,"empty" => true],

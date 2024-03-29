@@ -2,7 +2,9 @@
 
 namespace App\Http\Mainstay\Vacancy;
 
+use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\System\ControllersModel\MainstayController;
 use Illuminate\Http\Request;
@@ -21,6 +23,14 @@ class VacancyMainstayController extends MainstayController
         $this->params = empty($param) ? $this->params : $param;
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
+            DB::raw("CASE WHEN status = 1 THEN 'создан'
+                    WHEN status = 2 THEN 'на модерации'
+                    WHEN status = 3 THEN 'оплачен'
+                    WHEN status = 4 THEN 'в работе'
+                    WHEN status = 5 THEN 'на проверке'
+                    WHEN status = 6 THEN 'принят'
+                    WHEN status = 7 THEN 'закрыт'
+                    END as current_status_text"),
             DB::raw("Service.name as service_name"),
             DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
             DB::raw("(CASE
@@ -37,6 +47,7 @@ class VacancyMainstayController extends MainstayController
 
     public function actionGetVacancyList($param = []) {
         $this->params = empty($param) ? $this->params : $param;
+        $this->params['executor'] = '1';
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
             DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
@@ -96,5 +107,17 @@ class VacancyMainstayController extends MainstayController
                 (new VacancyLogic())->deleteVacancy($request->all())
             );
         }
+    }
+
+    public function actionGetEmployeeRespondsList($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $select = [
+            '*',
+            DB::raw("CONCAT(User.last_name, ' ', User.first_name, ' ', User.middle_name) as full_name"),
+            DB::raw("CONCAT('/storage', Employee.avatar_path) as avatar"),
+            DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
+            DB::raw("Response.text as response_text"),
+        ];
+        return response()->json((new VacancyOfferLogic($this->params, $select))->setJoin(['User', 'Employee', 'Response'])->getList());
     }
 }
