@@ -114,9 +114,13 @@
                         'callBeforloadComponent' => "function() {
                                 let globalData = page__.getGolobalData('VacancyInfo')
                                 let statusData = globalData.status_history
-                                statusData = JSON.parse(statusData).sort((a, b) => a.id > b.id ? 1 : -1)
-                                this.option['currentStatus'] = statusData[statusData.length - 1].status
-                                this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                                if(statusData !== null) {
+                                    statusData = JSON.parse(statusData).sort((a, b) => a.id > b.id ? 1 : -1)
+                                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                                }
+                                this.option['currentStatus'] = null
+                                this.option['currentStatusCode'] = null
                                 this.option['statusData'] = statusData
 
                                 return this.option

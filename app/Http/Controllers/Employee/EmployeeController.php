@@ -14,7 +14,7 @@ class EmployeeController extends BaseEmployeeController {
             ],
             'actionViewVacancy' => [
                 'name' => 'Вакансия',
-                'template' => 'lawyers.employee.vacancy',
+                'template' => 'lawyers.employee.vacancy-',
                 'chpu' => ['vacancy_id']
             ],
         ];
@@ -41,6 +41,6 @@ class EmployeeController extends BaseEmployeeController {
     }
 
     public function actionViewVacancy() {
-        return view('lawyers.employee.vacancy');
+        return view('lawyers.employee.vacancy-');
     }
 }

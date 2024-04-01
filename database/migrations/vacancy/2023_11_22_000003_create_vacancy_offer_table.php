@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('is_deleted')->default(false);
             $table->bigInteger('vacancy_id')->unsigned()->index()->comment('ID вакансии');
             $table->bigInteger('employee_response_id')->unsigned()->index()->comment('ID ответа сотрудника');
+            $table->integer('period')->comment('Срок исполнения');
         });
     }
 

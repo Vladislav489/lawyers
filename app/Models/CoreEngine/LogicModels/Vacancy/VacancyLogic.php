@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\DB;
 
 class VacancyLogic extends CoreEngine
 {
+    private $helpEngine;
+
     CONST STATUS_NEW = 1;
     CONST STATUS_MODERATION = 2;
     CONST STATUS_PAYED = 3;
@@ -37,6 +39,7 @@ class VacancyLogic extends CoreEngine
     {
         $this->params = $params;
         $this->engine = new Vacancy();
+        $this->helpEngine['status_log'] = self::createTempLogic(new VacancyStatusLog());
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -64,6 +67,7 @@ class VacancyLogic extends CoreEngine
                 $vacancy['id'] = $data['id'];
             }
             if ($data['id'] = $this->save($vacancy)) {
+                $this->addToStatusLog($data);
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
@@ -72,6 +76,20 @@ class VacancyLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    public function addToStatusLog($data) {
+        if (empty($data)) return false;
+        if (!isset($data['vacancy_id'])) {
+            $data['vacancy_id'] = $data['id'];
+            unset($data['id']);
+        }
+        $data = setTimestamps($data, 'create');
+        $logRow = array_intersect_key(
+            $data,
+            array_flip($this->helpEngine['status_log']->getEngine()->getFillable())
+        );
+        return $this->helpEngine['status_log']->insert($logRow);
     }
 
     public function deleteVacancy(array $data): bool

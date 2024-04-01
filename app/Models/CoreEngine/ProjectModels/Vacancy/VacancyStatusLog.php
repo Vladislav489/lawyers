@@ -10,6 +10,8 @@ class VacancyStatusLog extends BaseModel
 
     protected $fillable = [
         'vacancy_id',
-        'status'
+        'status',
+        'created_at',
+        'updated_at'
     ];
 }
