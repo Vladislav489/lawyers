@@ -19,21 +19,27 @@ use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\Model\InformationCategoryName;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyGroup;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
+use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyStatusLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VacancyLogic extends CoreEngine
 {
+    private $helpEngine;
+
     CONST STATUS_NEW = 1;
     CONST STATUS_MODERATION = 2;
-    CONST STATUS_OPEN = 3;
-    CONST STATUS_CLOSE = 4;
-    CONST STATUS_DISPUTE = 5;
+    CONST STATUS_PAYED = 3;
+    CONST STATUS_IN_PROGRESS = 4;
+    CONST STATUS_INSPECTION = 5;
+    CONST STATUS_ACCEPTED = 6;
+    CONST STATUS_CLOSED = 7;
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->params = $params;
         $this->engine = new Vacancy();
+        $this->helpEngine['status_log'] = self::createTempLogic(new VacancyStatusLog());
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -61,6 +67,7 @@ class VacancyLogic extends CoreEngine
                 $vacancy['id'] = $data['id'];
             }
             if ($data['id'] = $this->save($vacancy)) {
+                $this->addToStatusLog($data);
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
@@ -69,6 +76,20 @@ class VacancyLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    public function addToStatusLog($data) {
+        if (empty($data)) return false;
+        if (!isset($data['vacancy_id'])) {
+            $data['vacancy_id'] = $data['id'];
+            unset($data['id']);
+        }
+        $data = setTimestamps($data, 'create');
+        $logRow = array_intersect_key(
+            $data,
+            array_flip($this->helpEngine['status_log']->getEngine()->getFillable())
+        );
+        return $this->helpEngine['status_log']->insert($logRow);
     }
 
     public function deleteVacancy(array $data): bool
@@ -103,6 +124,11 @@ class VacancyLogic extends CoreEngine
                 "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.executor_id','params' => 'executor_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.executor_id IS NULL','params' => 'executor',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
@@ -160,6 +186,7 @@ class VacancyLogic extends CoreEngine
 
     protected function compileGroupParams(): array
     {
+        $userId = $this->params['user_id'] ?? '';
         $this->group_params = [
             'select' => [],
             'by' => [],
@@ -222,7 +249,7 @@ class VacancyLogic extends CoreEngine
                 'ChatMessage' => [
                     'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                     JSON_OBJECT('message', message, 'sender_user_id', sender_user_id, 'target_user_id',
-                    target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$this->params['user_id']}
+                    target_user_id)) as messages, chat_id FROM chat_message WHERE target_user_id = {$userId}
                     GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
                     'field' => ['messages']
                 ],
@@ -241,6 +268,26 @@ class VacancyLogic extends CoreEngine
                     'relationship' => ['id', 'city_id'],
                     'field' => []
                 ],
+                'Status' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT('status',
+                    CASE WHEN status = 1 THEN 'создан'
+                    WHEN status = 2 THEN 'на модерации'
+                    WHEN status = 3 THEN 'оплачен'
+                    WHEN status = 4 THEN 'в работе'
+                    WHEN status = 5 THEN 'на проверке'
+                    WHEN status = 6 THEN 'принят'
+                    WHEN status = 7 THEN 'закрыт'
+                    END,
+                    'id', id, 'status_code', status, 'time', DATE_FORMAT(created_at, '%H:%i'), 'date', DATE_FORMAT(created_at, '%e %M'))) as status_history, vacancy_id
+                    FROM vacancy_status_log) as Status ON Status.vacancy_id = vacancy.id"),
+                    'field' => ['status_history']
+                ],
+                'Owner' => [
+                    'entity' => new UserEntity(),
+                    'relationship' => ['id', 'user_id'],
+                    'field' => []
+                ]
             ]
         ];
 

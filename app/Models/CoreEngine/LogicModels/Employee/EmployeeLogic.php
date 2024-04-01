@@ -6,12 +6,15 @@ use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeOfferResponse;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeePhoto;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
+use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,6 +30,8 @@ class EmployeeLogic extends UserLogic
         $this->helpEngine['achievement'] = self::createTempLogic(new EmployeeAchievement());
         $this->helpEngine['photo'] = self::createTempLogic(new EmployeePhoto());
         $this->helpEngine['service'] = self::createTempLogic(new EmployeeService());
+        $this->helpEngine['offer_response'] = self::createTempLogic(new EmployeeOfferResponse());
+        $this->helpEngine['vacancy_offer'] = self::createTempLogic(new VacancyOffer());
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -191,6 +196,28 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
+    public function respondToVacancy(array $data) {
+        if (empty($data)) return false;
+        $record = $this->helpEngine['vacancy_offer']->getEngine()->newQuery();
+        if($record->where([['employee_user_id', '=', $data['user_id']], ['vacancy_id', '=', $data['vacancy_id']]])->exists()) {
+            return false;
+        }
+        $offerResponse = array_intersect_key($data, array_flip($this->helpEngine['offer_response']->getEngine()->getFillable()));
+        $offerResponse = setTimestamps($offerResponse, 'create');
+        $responseId = $this->helpEngine['offer_response']->save($offerResponse);
+        if ($responseId) {
+            $data['employee_response_id'] = $responseId;
+            $data['employee_user_id'] = $data['user_id'];
+            $vacancyOffer = array_intersect_key($data, array_flip($this->helpEngine['vacancy_offer']->getEngine()->getFillable()));
+            if($vacancyOfferId = $this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
+                return $vacancyOfferId;
+            }
+            return false;
+        }
+        return false;
+
+    }
+
     protected function getFilter(): array {
         $tab = $this->engine->getTable();
         $this->filter = [
@@ -225,6 +252,11 @@ class EmployeeLogic extends UserLogic
                 "action" => 'IN', 'concat' => 'AND',
             ],
             [   'field' => $tab .'.country_id','params' => 'country_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => 'Offer.vacancy_id','params' => 'vacancy_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
@@ -314,7 +346,17 @@ class EmployeeLogic extends UserLogic
                     'entity' => new Country(),
                     'relationship' => ['id', 'country_id'],
                     'field' => ['*'],
-                ]
+                ],
+                'Offer' => [
+                    'entity' => new VacancyOffer(),
+                    'relationship' => ['employee_user_id', 'id'],
+                    'field' => [],
+                ],
+                'Vacancy' => [
+                    'entity' => new Vacancy(),
+                    'relationship' => ['executor_id', 'id'],
+                    'field' => [],
+                ],
             ]
         ];
         return $this->group_params;

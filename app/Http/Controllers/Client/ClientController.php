@@ -20,9 +20,19 @@ class ClientController extends BaseClientController
         return view('lawyers.client.create-vacancy');
     }
 
+    public function actionViewVacancy() {
+        if ($this->checkUserVacancyAccess()) {
+            if ($this->checkVacancyHasExecutor()) {
+                return view('lawyers.client.vacancy-details');
+            }
+            return view('lawyers.client.vacancy-responses');
+        } else {
+            return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'))->with('error', 'No access!');
+        }
+    }
+
     public function actionEditVacancy() {
-        $vacancyId = request()->route('vacancy_id');
-        if ((new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne()) {
+        if ($this->checkUserVacancyAccess()) {
             return view('lawyers.client.edit-vacancy');
         } else {
             return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'))->with('error', 'No access!');
@@ -42,6 +52,21 @@ class ClientController extends BaseClientController
                 'chpu' => ['vacancy_id'],
                 'template' => 'lawyers.client.edit-vacancy'
             ],
+            'actionViewVacancy' => [
+                'name' => 'Страница заказа',
+                'chpu' => ['vacancy_id'],
+                'template' => 'lawyers.client.vacancy-details'
+            ],
         ];
+    }
+
+    protected function checkUserVacancyAccess() {
+        $vacancyId = request()->route('vacancy_id');
+        return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne();
+    }
+
+    protected function checkVacancyHasExecutor() {
+        $vacancyId = request()->route('vacancy_id');
+        return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne()['executor_id'];
     }
 }

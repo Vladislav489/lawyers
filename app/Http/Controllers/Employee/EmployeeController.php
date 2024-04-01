@@ -5,6 +5,21 @@ namespace App\Http\Controllers\Employee;
 use App\Models\System\ControllersModel\EmployeeController as BaseEmployeeController;
 
 class EmployeeController extends BaseEmployeeController {
+
+    public function getPageParams(): array {
+        return [
+            'actionEmployeeProfile' => [
+                'name' => 'Мой профиль',
+                'template' => 'lawyers.employee.edit-profile'
+            ],
+            'actionViewVacancy' => [
+                'name' => 'Вакансия',
+                'template' => 'lawyers.employee.vacancy-',
+                'chpu' => ['vacancy_id']
+            ],
+        ];
+    }
+
     public function actionSignupEmployee() {
         return view('lawyers.user.bootstrap.signup-employee');
     }
@@ -25,24 +40,7 @@ class EmployeeController extends BaseEmployeeController {
         return view('lawyers.employee.find-vacancy');
     }
 
-    public function getPageParams(): array {
-        return [
-            'actionEmployeeCabinet' => [
-                'name' => '1',
-                'template' => '1'
-            ],
-            'actionFindSpecialist' => [
-                'name' => '1',
-                'template' => '1'
-            ],
-            'actionEmployeeProfile' => [
-                'name' => 'Мой профиль',
-                'template' => 'lawyers.employee.edit-profile'
-            ],
-            'actionEmployeeSettings' => [
-                'name' => '1',
-                'template' => '1'
-            ],
-        ];
+    public function actionViewVacancy() {
+        return view('lawyers.employee.vacancy-');
     }
 }

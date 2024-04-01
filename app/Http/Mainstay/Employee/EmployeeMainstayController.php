@@ -124,4 +124,9 @@ class EmployeeMainstayController extends MainstayController
         return $this->actionGetEmployee(['id' => (string)auth()->id()]);
     }
 
+    public function actionRespondToVacancy(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json((new EmployeeLogic())->respondToVacancy($this->params));
+    }
+
 }

@@ -52,3 +52,16 @@ function componetBuild($data){
     $componemt = new \App\Models\System\Component\ComponentBuilder();
     return $componemt->buildComponent($data);
 }
+
+function setTimestamps(array $data, string $type) {
+    switch ($type) {
+        case 'create':
+            $data['created_at'] = date('Y-m-d h:i:s');
+            break;
+        case 'update':
+            $data['updated_at'] = date('Y-m-d h:i:s');
+            break;
+    }
+return $data;
+
+}

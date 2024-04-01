@@ -204,7 +204,7 @@
                         "<div class='exchanges' :id=\"name + '_body'\">
                         <h2 class='find-section_header mobile-hidden'>Найдено: <span>@{{ pagination.totalCount }} предложений</span></h2>
                         <div class='exchange' v-for=\"item in data\">
-                        <div class='exchange_left'>
+                        <div class='exchange_left' @click=\"viewVacancy(item.id)\">
                             <h3 class='exchange_title'>
                                 <span>@{{ item.title }}</span> <span class='exchange_status'>Только для PRO</span>
                             </h3>
@@ -232,7 +232,7 @@
                                         <img src='/lawyers/images/icons/lil-clock-gray.svg' alt='clock-icon'>@{{ item.time_ago }}
                                     </li>
                                     <li>
-                                        <img src='/lawyers/images/icons/lil-fire-gray.svg' alt='fire-icon'>@{{ item.period_end == null ? 'Срок не установлен' : item.period_end + ' дней до конца' }}
+                                        <img src='/lawyers/images/icons/lil-fire-gray.svg' alt='fire-icon'>@{{ item.days_to_end == null ? 'Срок не установлен' : item.days_to_end + ' дней до конца' }}
                                     </li>
                                 </ul>
                             </div>
@@ -827,6 +827,10 @@
             'service_id': $('[name = service_id]').val(),
             'user_id': ''
         }
+    }
+
+    function viewVacancy(id) {
+        window.location.href = `{{ route__('actionViewVacancy_controllers_employee_employeecontroller') }}/${id}`
     }
 </script>
 @endsection

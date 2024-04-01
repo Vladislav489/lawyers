@@ -86,5 +86,20 @@ class ClientMainstayController extends MainstayController {
         $this->params = empty($param) ? $this->params : $param;
         return response()->json((new VacancyLogic($this->params))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])->getOne());
     }
+
+    public function actionSetExecutorForVacancy($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|integer|exists:vacancy,id',
+            'executor_id' => 'required|integer|exists:user_entity,id'
+        ];
+
+        $data = Validator::validate($this->params, $rules);
+        $data['id'] = $data['vacancy_id'];
+
+        return response()->json((new VacancyLogic())->store($data));
+
+
+    }
 }
 

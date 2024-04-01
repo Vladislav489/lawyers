@@ -13,5 +13,6 @@ class VacancyOffer extends BaseModel
         'is_deleted',
         'vacancy_id',
         'employee_response_id',
+        'employee_user_id',
     ];
 }

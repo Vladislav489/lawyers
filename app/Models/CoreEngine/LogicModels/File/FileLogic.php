@@ -23,9 +23,9 @@ class FileLogic extends FileSystemLogic
 
     public function store(array $data, string $type): array|bool {
         if (empty($data)) return false;
+        if (empty($data['files'])) return $data;
         $data['files'] = is_array($data['files']) ? $data['files'] : [$data['files']];
         $files = $data['files'];
-        if (empty($files)) return $data;
         unset($data['files']);
         foreach ($files as $file) {
             $fileName = $file->getClientOriginalName();
