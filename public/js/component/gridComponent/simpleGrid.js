@@ -164,6 +164,10 @@ class simpleGrid extends parentComponent {
     }
     createPaginationMore(){
         var $this = this;
+        if($("#"+this.id+"_footer").length == 0){
+            let pagination = $("<div id='"+this.id+"_footer' class='simple_grid_footer'></div>").append($("<div class='pagination'></div>"));
+            pagination.insertAfter("#"+this.id+"_body");
+        }
         $("<button class=\"more-services\">Еще</button>").click(function(){
             $this.pagination['page'] += 1;
             if($this.pagination['all_load'] == 0) {

@@ -68,8 +68,8 @@
                             <div class='response-info'>
                                 <ul>
                                     <li><span>Покупатель</span><span class='bold'>@{{ data.owner_name }}</span></li>
-                                    <li><span>Размешено проектов</span><span>94</span></li>
-                                    <li><span>Нанято</span><span>47%</span></li>
+                                    <!-- <li><span>Размешено проектов</span><span>94</span></li> -->
+                                    <!-- <li><span>Нанято</span><span>47%</span></li> -->
                                     <li><span>Статус заказа</span><span class='green'>@{{ data.current_status_text }}</span></li>
                                     <li><span>Цена заказа</span><span>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</span></li>
                                 </ul>
@@ -109,13 +109,13 @@
                     <h3 class='fs-name'>@{{ item.full_name }}</h3>
                     <p class='fs-row'>
                         <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon' class='icon'>
-                        <span class='fs-text'>Москва и МО, пр. Роберта Рождественского, 522</span>
+                        <span class='fs-text'>@{{ item.location }}</span>
                     </p>
                     <p class='fs-row'>
                         <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='icon'>
                         <span class='fs-text'>@{{ agetostr(item.practice_years) }} практики</span>
                     </p>
-                    <div class='lawyer_rate-block'>
+                    <!--<div class='lawyer_rate-block'>
                         <div class='specialist-rate'>
                             <div class='stars'>
                                 <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
@@ -137,20 +137,20 @@
                         <p class='fs-text'>16 заказов</p>
                         <p class='fs-text'>94% сдано</p>
                         <p class='fs-text'><span class='green'>100% </span> сдано вовремя</p>
-                    </div>
+                    </div>-->
                     <p class='fs-text'>@{{ item.response_text }}</p>
                 </div>
 
                 <div class='buttons-container'>
                     <div class='blue-container mobile-hidden'>
-                        <span>14 дней</span><span>@{{ item.payment }} ₽</span>
+                        <span>@{{ item.period }} дней</span><span>@{{ item.payment }} ₽</span>
                     </div>
                     <ul class='mobile blue-container_mobile'>
-                        <li><span>Стоимость</span><span class='b-price'>15,000 ₽</span></li>
-                        <li><span>Срок выполнения</span><span class='b-days'>12 дней</span></li>
+                        <li><span>Стоимость</span><span class='b-price'>@{{ item.payment }} ₽</span></li>
+                        <li><span>Срок выполнения</span><span class='b-days'>@{{ item.period }} дней</span></li>
                     </ul>
                     <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id)\">
-                        <span class='first'>Заказать</span>
+                        <span class='first' @click.prevent=\"setEmployeeForOrder(employee_user_id)\">Заказать</span>
                         <span class='second'>Заказать</span>
                     </button>
                     <button class='main-btn main-btn_white'>

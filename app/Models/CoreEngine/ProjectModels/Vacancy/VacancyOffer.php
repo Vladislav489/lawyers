@@ -14,5 +14,8 @@ class VacancyOffer extends BaseModel
         'vacancy_id',
         'employee_response_id',
         'employee_user_id',
+        'period',
+        'created_at',
+        'updated_at',
     ];
 }

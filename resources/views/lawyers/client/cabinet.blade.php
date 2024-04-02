@@ -249,7 +249,7 @@
                                     </ul>
                                 </div>
 
-                                <a :href=\"'" . route__('actionEditVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>
+                                <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>
                                     <span class='first'>Открыть</span>
                                     <span class='second'>Открыть</span>
                                 </a>

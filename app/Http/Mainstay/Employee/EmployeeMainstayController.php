@@ -60,12 +60,12 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionGetServices(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        return response()->json((new EmployeeServiceLogic($this->params))->setJoin('Service')->getList());
+        return response()->json((new EmployeeServiceLogic($this->params))->setJoin(['Service'])->getList());
     }
 
     public function actionGetService(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        return response()->json(['result' => (new EmployeeServiceLogic($this->params))->setJoin('Service')->getOne()]);
+        return response()->json(['result' => (new EmployeeServiceLogic($this->params))->setJoin(['Service'])->getOne()]);
     }
 
     public function actionDeleteService(array $param = []) {
@@ -127,6 +127,11 @@ class EmployeeMainstayController extends MainstayController
     public function actionRespondToVacancy(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         return response()->json((new EmployeeLogic())->respondToVacancy($this->params));
+    }
+
+    public function actionGetResponse(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json(['result' => (new EmployeeLogic())->getMyResponse($this->params)]);
     }
 
 }

@@ -115,7 +115,7 @@
                                 let globalData = page__.getGolobalData('VacancyInfo')
                                 let statusData = globalData.status_history
                                 if(statusData !== null) {
-                                    statusData = JSON.parse(statusData).sort((a, b) => a.id > b.id ? 1 : -1)
+                                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
                                     this.option['currentStatus'] = statusData[statusData.length - 1].status
                                     this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
                                 }

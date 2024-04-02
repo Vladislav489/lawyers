@@ -78,66 +78,67 @@
 
 
 
-                <div class="order-answers mobile-hidden">
-                    <span>11 ответов</span>
-                    <div class="comments">
-                        <div class="order-row comment">
-                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">
-                            <div class="order-history_right commentator">
-                                <h4> Соколовский Владимир
-                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">
-                                    <time>18:12</time>
-                                </h4>
-                                <p>
-                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в
-                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем
-                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>
-                                    <span>Могли бы помочь?</span>
-                                </p>
-                            </div>
-                        </div>
+{{--                <div class="order-answers mobile-hidden">--}}
+{{--                    <span>11 ответов</span>--}}
+{{--                    <div class="comments">--}}
+{{--                        <div class="order-row comment">--}}
+{{--                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">--}}
+{{--                            <div class="order-history_right commentator">--}}
+{{--                                <h4> Соколовский Владимир--}}
+{{--                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">--}}
+{{--                                    <time>18:12</time>--}}
+{{--                                </h4>--}}
+{{--                                <p>--}}
+{{--                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в--}}
+{{--                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем--}}
+{{--                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>--}}
+{{--                                    <span>Могли бы помочь?</span>--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
-                        <div class="order-row comment">
-                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">
-                            <div class="order-history_right commentator">
-                                <h4> Victor
-                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">
-                                    <time>18:12</time>
-                                </h4>
-                                <p>
-                                    Добрый день, да. Что конкретно планируете??
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+{{--                        <div class="order-row comment">--}}
+{{--                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">--}}
+{{--                            <div class="order-history_right commentator">--}}
+{{--                                <h4> Victor--}}
+{{--                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">--}}
+{{--                                    <time>18:12</time>--}}
+{{--                                </h4>--}}
+{{--                                <p>--}}
+{{--                                    Добрый день, да. Что конкретно планируете??--}}
+{{--                                </p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="order-history mobile-hidden">
                     @include('component_build', [
                 'component' => 'component.infoComponent.textInfo',
                 'params_component' => [
-                'autostart' => 'false',
+                'autostart' => 'true',
                 'name' => 'vacancy_history',
                 'globalData' => 'VacancyInfo',
                 'callBeforloadComponent' => "function (component) {
-                        let history = JSON.parse(page__.getGolobalData('VacancyInfo').status_history)
+                        let history = page__.getGolobalData('VacancyInfo').status_history
                         let groupHistory = history.reduce((acc, obj) => {
-                                const key = obj.date;
+                                let key = obj.date;
                                 if (!acc[key]) {
                                   acc[key] = [];
                                 }
                                 acc[key].push(obj);
                                 return acc;
                                 }, {})
+
                         component.option['groupHistoryByDate'] = groupHistory
                         return component.option
                     }",
                 'template' => "
-                    <div v-for=\"(dataForDate, date) in groupHistoryByDate\" class='order-history-block'>
+                <div>
+                    <div v-for=\"(historyForDate, date) in groupHistoryByDate\" :key=\"date\" class='order-history-block'>
                         <time>@{{ date }}</time>
-                        <div v-for=\"item in dataForDate\" class='order-history_row order-row'>
+                        <div v-for=\"item in historyForDate\" :key=\"item.id\" class='order-history_row order-row'>
                             <img src='/lawyers/images/icons/order-created-icon.svg' alt='order-created-icon'>
-
                             <div class='order-history_right'>
                                 <h4>Заказ @{{ item.status }}
                                     <time>@{{ item.time }}</time>
@@ -148,11 +149,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
                 "
                 ]
                 ])
 
                 </div>
+
+
+
+
 
                 <form action="#" class="send-message-input mobile-hidden">
                     <label>
@@ -172,17 +178,14 @@
                 'name' => 'vacancy_owner_info',
                 'globalData' => 'VacancyInfo',
                 'callBeforloadComponent' => "function() {
-                let globalData = page__.getGolobalData('VacancyInfo')
-                let statusData = globalData.status_history
-                statusData = JSON.parse(statusData).sort((a, b) => a.id > b.id ? 1 : -1)
-                this.option['currentStatus'] = statusData[statusData.length - 1].status
-                this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
-                this.option['statusData'] = statusData
-
-                return this.option
+                    let globalData = page__.getGolobalData('VacancyInfo')
+                    let statusData = globalData.status_history
+                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
+                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    this.option['statusData'] = statusData
+                    return this.option
                 }",
-                //	                	'url' => route__('actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller'),
-                //	                	'params' => ['id' => request()->route('vacancy_id')],
 
                 'template' => "
                 <div class='order-process'>

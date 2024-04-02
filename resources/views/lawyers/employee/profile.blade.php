@@ -170,9 +170,9 @@
 
                        <div class='lawyer-card_block'>
                            <h2 class='lawyer-card_block-title'>Фото<span>
-                           @{{data.photos === null ? 0 : JSON.parse(data.photos).length}}
+                           @{{data.photos === null ? 0 : data.photos.length}}
                            </span></h2>
-                           <ul class='lawyer-photos' v-for=\"item in JSON.parse(data.photos)\">
+                           <ul class='lawyer-photos' v-for=\"item in data.photos\">
                                <li>
                                    <img :src='item.path' alt='lawyer-img'>
                                </li>
@@ -181,9 +181,9 @@
 
                        <div class='lawyer-card_block'>
                            <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
-                           @{{data.achievements === null ? 0 : JSON.parse(data.achievements).length}}
+                           @{{data.achievements === null ? 0 : data.achievements.length}}
                            </span></h2>
-                           <ul class='lawyer-certs_container' v-for=\"item in JSON.parse(data.achievements)\">
+                           <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
                                <li class='lawyer-cert'>
                                    <img :src=\"item.path\" alt='cert-img'>
                                </li>
@@ -248,7 +248,7 @@
                                     'autostart' => 'true',
                                     'name' => 'employee_services',
                                     'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"),
-									'params' => ['user_id' => auth()->id()],
+									'params' => ['user_id' => request()->route('employee_id')],
 
                                     'template' => "<ul name=\"lawyer_services\" :id=\"name + '_body'\">
                                         <li v-for=\"item in data\">@{{item.name}}</li>

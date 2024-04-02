@@ -55,6 +55,14 @@ class VacancyLogic extends CoreEngine
         return $this->default;
     }
 
+    public function getOne() {
+        $result = parent::getOne();
+        if (isset($result['status_history'])) {
+            $result['status_history'] = json_decode($result['status_history'], true);
+        }
+        return $result;
+    }
+
     public function store(array $data): array|bool {
         if (empty($data)) return false;
         try {
@@ -108,11 +116,6 @@ class VacancyLogic extends CoreEngine
     {
         $tab = $this->engine->getTable();
         $this->filter = [
-            [   'field' => $tab.'.id','params' => 'id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
             [   'field' => $tab.'.user_id','params' => 'user_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
@@ -222,7 +225,7 @@ class VacancyLogic extends CoreEngine
                                 employee_response_id)) as lawyers_offers,
                                 JSON_LENGTH(JSON_ARRAYAGG(JSON_OBJECT('id', id, 'payment', payment,
                                 'employee_response_id', employee_response_id))) as count_offers,
-                                vacancy_id FROM vacancy_offer ) as VacancyOffer ON VacancyOffer.vacancy_id = vacancy.id"),
+                                vacancy_id FROM vacancy_offer GROUP BY vacancy_id) as VacancyOffer ON VacancyOffer.vacancy_id = vacancy.id"),
                     'field' => ['lawyers_offers', 'count_offers']
                 ],
                 'Service' => [
@@ -280,8 +283,8 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 7 THEN 'закрыт'
                     END,
                     'id', id, 'status_code', status, 'time', DATE_FORMAT(created_at, '%H:%i'), 'date', DATE_FORMAT(created_at, '%e %M'))) as status_history, vacancy_id
-                    FROM vacancy_status_log) as Status ON Status.vacancy_id = vacancy.id"),
-                    'field' => ['status_history']
+                    FROM vacancy_status_log GROUP BY vacancy_id) as Status ON Status.vacancy_id = vacancy.id"),
+                    'field' => ['status_history'],
                 ],
                 'Owner' => [
                     'entity' => new UserEntity(),
