@@ -112,11 +112,12 @@ class VacancyMainstayController extends MainstayController
     public function actionGetEmployeeRespondsList($param = []) {
         $this->params = empty($param) ? $this->params : $param;
         $select = [
-            '*',
+            '*', 'period',
             DB::raw("CONCAT(User.last_name, ' ', User.first_name, ' ', User.middle_name) as full_name"),
             DB::raw("CONCAT('/storage', Employee.avatar_path) as avatar"),
             DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
             DB::raw("Response.text as response_text"),
+            DB::raw("(SELECT CONCAT(City.name) FROM city as City WHERE City.id = User.city_id) as location"),
         ];
         return response()->json((new VacancyOfferLogic($this->params, $select))->setJoin(['User', 'Employee', 'Response'])->getList());
     }

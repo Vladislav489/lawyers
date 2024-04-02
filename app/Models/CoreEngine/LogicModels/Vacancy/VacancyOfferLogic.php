@@ -28,6 +28,11 @@ class VacancyOfferLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
+            [   'field' => $tab.'.employee_user_id','params' => 'employee_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
 
         ];
 

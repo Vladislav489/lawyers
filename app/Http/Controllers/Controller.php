@@ -9,7 +9,7 @@ class Controller extends FrontController {
         return [
             'actionIndex' => ['template' => 'lawyers.site.index'],
             'actionFindSpecialist' => ['template' => 'lawyers.employee.find-specialist'],
-            'actionSpecialistCard' => ['name'=>"Профиль юриста",'type_page'=>'home','chpu'=>['user_id'],'template' => 'lawyers.employee.profile'],
+            'actionSpecialistCard' => ['name'=>"Профиль юриста",'type_page'=>'home','chpu'=>['employee_id'],'template' => 'lawyers.employee.profile'],
         ];
     }
 

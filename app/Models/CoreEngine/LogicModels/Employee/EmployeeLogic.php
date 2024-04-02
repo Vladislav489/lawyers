@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
@@ -43,6 +44,17 @@ class EmployeeLogic extends UserLogic
         $this->default = [];
 
         return $this->default;
+    }
+
+    public function getOne() {
+        $result = parent::getOne();
+        if (isset($result['photos'])) {
+            $result['photos'] = json_decode($result['photos'], true);
+        }
+        if (isset($result['achievements'])) {
+            $result['achievements'] = json_decode($result['achievements'], true);
+        }
+        return $result;
     }
 
     public function save($data) {
@@ -198,17 +210,26 @@ class EmployeeLogic extends UserLogic
 
     public function respondToVacancy(array $data) {
         if (empty($data)) return false;
-        $record = $this->helpEngine['vacancy_offer']->getEngine()->newQuery();
-        if($record->where([['employee_user_id', '=', $data['user_id']], ['vacancy_id', '=', $data['vacancy_id']]])->exists()) {
-            return false;
-        }
+
         $offerResponse = array_intersect_key($data, array_flip($this->helpEngine['offer_response']->getEngine()->getFillable()));
-        $offerResponse = setTimestamps($offerResponse, 'create');
+
+        if (!is_null($data['employee_response_id'])) {
+            $offerResponse['id'] = $data['employee_response_id'];
+            $offerResponse = setTimestamps($offerResponse, 'update');
+        } else {
+            $offerResponse = setTimestamps($offerResponse, 'create');
+        }
         $responseId = $this->helpEngine['offer_response']->save($offerResponse);
         if ($responseId) {
             $data['employee_response_id'] = $responseId;
             $data['employee_user_id'] = $data['user_id'];
             $vacancyOffer = array_intersect_key($data, array_flip($this->helpEngine['vacancy_offer']->getEngine()->getFillable()));
+
+            if (!is_null($data['offer_id'])) {
+                $vacancyOffer['id'] = $data['offer_id'];
+                $vacancyOffer = setTimestamps($vacancyOffer, 'update');
+            }
+
             if($vacancyOfferId = $this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
                 return $vacancyOfferId;
             }
@@ -216,6 +237,16 @@ class EmployeeLogic extends UserLogic
         }
         return false;
 
+    }
+
+    public function getMyResponse(array $data) {
+        $select = [
+            '*',
+            DB::raw("Response.text as response_text"),
+        ];
+        $result = (new VacancyOfferLogic($data, $select))->setJoin(['Response'])->getOne();
+        if (empty($result)) return false;
+        return $result;
     }
 
     protected function getFilter(): array {
