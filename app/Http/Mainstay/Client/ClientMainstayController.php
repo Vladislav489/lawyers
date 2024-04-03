@@ -96,6 +96,7 @@ class ClientMainstayController extends MainstayController {
 
         $data = Validator::validate($this->params, $rules);
         $data['id'] = $data['vacancy_id'];
+        $data['status'] = VacancyLogic::STATUS_PAYED;
 
         return response()->json((new VacancyLogic())->store($data));
 

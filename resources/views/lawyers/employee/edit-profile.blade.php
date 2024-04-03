@@ -312,9 +312,9 @@
 
                         <div class='lawyer-card_block'>
                             <h2 class='lawyer-card_block-title'>Фото<span>
-                            @{{data.photos === null ? 0 : JSON.parse(data.photos).length}}
+                            @{{data.photos === null ? 0 : data.photos.length}}
                             </span></h2>
-                            <ul class='lawyer-photos' v-for=\"item in JSON.parse(data.photos)\">
+                            <ul class='lawyer-photos' v-for=\"item in data.photos\">
                                 <li>
                                     <img :src='item.path' alt='lawyer-img'>
                                     <div :name=\"'delete_photo_' + item.id\" v-bind:photo_id=\"item.id\">delete</div>
@@ -324,9 +324,9 @@
 
                         <div class='lawyer-card_block'>
                             <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
-                            @{{data.achievements === null ? 0 : JSON.parse(data.achievements).length}}
+                            @{{data.achievements === null ? 0 : data.achievements.length}}
                             </span></h2>
-                            <ul class='lawyer-certs_container' v-for=\"item in JSON.parse(data.achievements)\">
+                            <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
                                 <li class='lawyer-cert'>
                                     <img :src=\"item.path\" alt='cert-img'>
                                     <div :name=\"'delete_achievement_' + item.id\" v-bind:achievement_id=\"item.id\">delete</div>

@@ -334,6 +334,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .lawyer_rate-block {
     display: flex;
     gap: 12px;
+    flex-wrap: wrap;
 }
 .specialist-rate {
     display: flex;

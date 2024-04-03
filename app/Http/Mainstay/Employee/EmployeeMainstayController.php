@@ -90,7 +90,7 @@ class EmployeeMainstayController extends MainstayController
             CONCAT('/storage', Photos.path)))), ']')) as photos"), DB::raw("City.id as city_id, City.name as city_name, Country.id as country_id, Country.name as country_name")
             ];
 //        dd((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
-        return response()->json((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
+        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne()]);
     }
 
     public function actionGetEmployeeList(array $param = []) {

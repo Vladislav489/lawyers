@@ -219,8 +219,9 @@
             success: function (response) {
                 if (response) {
                     window.location.href = `{{ route__('actionViewVacancy_controllers_client_clientcontroller') }}/${vacancyId}`
+                } else {
+                    alert('error')
                 }
-                alert('error')
             }
         })
     }

@@ -73,9 +73,10 @@ class VacancyLogic extends CoreEngine
 
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
+                $this->addToStatusLog($data, VacancyLogic::STATUS_PAYED);
             }
+
             if ($data['id'] = $this->save($vacancy)) {
-                $this->addToStatusLog($data);
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
@@ -86,7 +87,7 @@ class VacancyLogic extends CoreEngine
         return false;
     }
 
-    public function addToStatusLog($data) {
+    public function addToStatusLog($data, $status) {
         if (empty($data)) return false;
         if (!isset($data['vacancy_id'])) {
             $data['vacancy_id'] = $data['id'];
@@ -97,6 +98,7 @@ class VacancyLogic extends CoreEngine
             $data,
             array_flip($this->helpEngine['status_log']->getEngine()->getFillable())
         );
+        $logRow['status'] = $status;
         return $this->helpEngine['status_log']->insert($logRow);
     }
 
@@ -196,7 +198,7 @@ class VacancyLogic extends CoreEngine
             'relatedModel' => [
                 'Executor' => [
                     'entity' => new UserEntity(),
-                    'relationship' => ['executor_id', 'id'],
+                    'relationship' => ['id', 'executor_id'],
                     'field' => []
                 ],
                 'VacancyGroup' => [
