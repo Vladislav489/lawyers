@@ -43,4 +43,8 @@ class EmployeeController extends BaseEmployeeController {
     public function actionViewVacancy() {
         return view('lawyers.employee.vacancy-');
     }
+
+    public function actionViewOrders() {
+        return view('lawyers.employee.all-orders');
+    }
 }

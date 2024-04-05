@@ -79,7 +79,9 @@ class ClientMainstayController extends MainstayController {
 //            DB::raw("IF(ChatMessage.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', ChatMessage.id, 'message', ChatMessage.message, 'sender_user_id', ChatMessage.sender_user_id)), ']'))) as chat_messages"),
 //            DB::raw("IF(GroupVacancy.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('user_id', GroupVacancy.user_id, 'is_appruv', GroupVacancy.is_appruv)), ']'))) as vacancy_group"),
             ];
-        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])->getList());
+        return response()->json((new VacancyLogic($this->params, $select))
+            ->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])
+            ->order('desc', 'id')->getList());
     }
 
     public function actionGetVacancy($param = []) {
@@ -96,6 +98,7 @@ class ClientMainstayController extends MainstayController {
 
         $data = Validator::validate($this->params, $rules);
         $data['id'] = $data['vacancy_id'];
+        $data['status'] = VacancyLogic::STATUS_PAYED;
 
         return response()->json((new VacancyLogic())->store($data));
 

@@ -11,6 +11,17 @@
 ]
 ])
 
+@include('component_build',[
+'component' => 'component.loadComponent.loadGlobalData',
+'params_component' => [
+'name' => "LawyerResponse",
+'autostart' => 'false',
+'ssr' => 'true',
+'url' => route__('actionGetResponse_mainstay_employee_employeemainstaycontroller'),
+'params' => ['vacancy_id' => request()->route('vacancy_id'), 'employee_id' => auth()->id()],
+]
+])
+
 @section('title', 'Отклик на вакансию')
 
 @section('content')
@@ -23,7 +34,7 @@
                         'component' => 'component.infoComponent.textInfo',
                         'params_component' => [
                         'autostart' => 'false',
-                        'name' => 'vacancy_info',
+                        'name' => 'my_response',
                         'globalData' => 'VacancyInfo',
 
 
@@ -73,7 +84,8 @@
                                     <li><span>Цена заказа</span><span>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</span></li>
                                 </ul>
 
-                                <button id='switch_button' type='button' class='responce-call main-btn main-btn_blue' @click.prevent = \"openResponseForm()\">Откликнуться</button>
+                                <button id='switch_button' type='button' class='responce-call main-btn main-btn_blue'
+                                 @click.prevent = \"openResponseSection()\" :hidden=\"checkAlreadyRespondCondition()\">Откликнуться</button>
                             </div>
                         </div>
                         "
@@ -88,30 +100,104 @@
                         'params_component' => [
                         'autostart' => 'true',
                         'name' => 'my_response',
-                        'url' => route__('actionGetResponse_mainstay_employee_employeemainstaycontroller'),
-						'params' => ['vacancy_id' => request()->route('vacancy_id'), 'employee_id' => auth()->id()],
+                        'url' => route__("actionGetEmployee_mainstay_employee_employeemainstaycontroller"),
+						'params' => ['id' => auth()->id()],
+						'callBeforloadComponent' => "function(component) {
+						        component.option['lawyerResponse'] = page__.getGolobalData('LawyerResponse')
+						        return component.option
+						    }",
 
 						'template' => "
-                            <section class='u-container response-section section--lawyer-response' id='response_form' :hidden=\"data ? false : true\">
-                                <div class='container'>
+                            <section class='u-container response-section all-responses-section section--lawyer-response'
+                             id='response_section' :hidden=\"!lawyerResponse\">
+                                <div class='container' id='response_card'>
+                                    <div class='responses-container'>
+
+                                        <div class='fs-block'>
+                                            <div class='fs-img'>
+                                                <img :src=\"data.avatar_full_path\" alt='lawyer-img'>
+                                            </div>
+
+                                            <div class='fs-info'>
+                                                <h3 class='fs-name'>@{{ data.full_name }}</h3>
+                                                <p class='fs-row'>
+                                                    <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon' class='icon'>
+                                                    <span class='fs-text'>@{{ data.location }}</span>
+                                                </p>
+                                                <p class='fs-row'>
+                                                    <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='icon'>
+                                                    <span class='fs-text'>@{{ data.practice_years }} лет практики</span>
+                                                </p>
+                                                <!-- <div class='lawyer_rate-block'>
+                                                    <div class='specialist-rate'>
+                                                        <div class='stars'>
+                                                            <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                            <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                            <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                            <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                                            <img src='/lawyers/images/icons/star-icon-empty.svg' alt='star-icon'>
+                                                        </div>
+
+                                                        <span>32 ответа</span>
+                                                    </div>
+
+                                                    <div class='specialist-perm'>
+                                                        <p>Право рейтинг:</p>
+                                                        <span>4.0</span>
+                                                        <img src='/lawyers/images/icons/info-icon-gray.svg' alt='info-icon' class='icon'>
+                                                    </div>
+
+                                                    <p class='fs-text'>16 заказов</p>
+                                                    <p class='fs-text'>94% сдано</p>
+                                                    <p class='fs-text'><span class='green'>100% </span> сдано вовремя</p>
+                                                </div> -->
+                                                <p class='fs-text'>@{{ lawyerResponse.response_text }}</p>
+                                                <!-- <button class='read-more' type='button'>Показать еще</button> -->
+                                            </div>
+
+                                            <div class='buttons-container'>
+                                                <div class='blue-container mobile-hidden'>
+                                                    <span>@{{ lawyerResponse.period }} дней</span><span>@{{ lawyerResponse.payment }} ₽</span>
+                                                </div>
+                                                <ul class='mobile blue-container_mobile'>
+                                                    <li><span>Стоимость</span><span class='b-price'>@{{ lawyerResponse.payment }} ₽</span></li>
+                                                    <li><span>Срок выполнения</span><span class='b-days'>@{{ lawyerResponse.period }} дней</span></li>
+                                                </ul>
+                                                <button class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">
+                                                    <span class='first'>Редактировать</span>
+                                                    <span class='second'>Редактировать</span>
+                                                </button>
+                                                <button class='main-btn main-btn_white'
+                                                @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">
+                                                    <span class='first'>Удалить</span>
+                                                    <span class='second'>Удалить</span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class='container' id='response_form' hidden>
                                     <div class='lawyer-responce_card'>
                                         <div class='lawyer-responce_inner'>
                                             <h2 class='heading--lawyer-response'>Текст отклика</h2>
                                             <form action='#' class='form--lawyer-response'>
-                                                <input type='hidden' id='offer_id' :value=\"data.id\">
-                                                <input type='hidden' id='employee_response_id' :value=\"data.employee_response_id\">
-                                                <textarea id='response_text' class='form--lr-textarea' placeholder='Введите сопроводительный текст...' >@{{ data.response_text }}</textarea>
+                                                <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
+                                                <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
+                                                <textarea id='response_text' class='form--lr-textarea' placeholder='Введите сопроводительный текст...' >@{{ lawyerResponse.response_text }}</textarea>
                                                 <div class='flex align-center form--group'>
                                                     <span class='form--group_heading'>Стоимость услуги</span>
-                                                    <input id='response_price' type='number' placeholder='Сумма' class='form--field' :value=\"data.payment\">
+                                                    <input id='response_price' type='number' placeholder='Сумма' class='form--field' :value=\"lawyerResponse.payment\">
                                                     <span>рублей</span>
                                                 </div>
                                                 <div class='flex align-center form--group'>
                                                     <span class='form--group_heading'>Срок</span>
-                                                    <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"data.period\">
+                                                    <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"lawyerResponse.period\">
                                                     <span>дней</span>
                                                 </div>
-                                                <button id='respond' @click.prevent=\"send()\" type='submit' class='main-btn main-btn_blue form--lr_submit'>@{{ data ? 'Обновить отклик' : 'Отправить' }}</button>
+                                                <button id='respond' @click.prevent=\"send()\" type='submit' class='main-btn main-btn_blue form--lr_submit'>@{{ lawyerResponse ? 'Обновить отклик' : 'Отправить' }}</button>
                                                 <div class='flex form--acceptance'>
                                                     <label class='form--checkbox-wrap'>
                                                         <input type='checkbox' class='acceptance-checkbox' hidden>
@@ -149,11 +235,35 @@
         function openResponseForm() {
             let elem = $('#response_form')
             elem.prop('hidden', !elem.prop('hidden'))
+            $('#response_card').prop('hidden', !$('#response_card').prop('hidden'))
+        }
+
+        function openResponseSection() {
+            let elem = $('#response_section')
+            elem.prop('hidden', !elem.prop('hidden'))
+            $('#response_card').prop('hidden', true)
+            $('#response_form').prop('hidden', false)
             if (elem.prop('hidden') == true) {
                 $('#switch_button').text('Откликнуться')
             } else {
                 $('#switch_button').text('Отмена')
             }
+        }
+
+        function deleteResponse(offerId, offerResponseId) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    id: offerId,
+                    employee_response_id: offerResponseId,
+                    vacancy_id: {{ request()->route('vacancy_id') }},
+                    employee_id: {{ auth()->id() }},
+                },
+                url: '{{ route__('actionDeleteVacancyResponse_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (response) {
+                    window.location.reload()
+                }
+            })
         }
 
         function getResponseData() {
@@ -177,10 +287,14 @@
                     if (!response) {
                         alert('Ошибка')
                     } else {
-                        window.location.href = '{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}'
+                        window.location.reload()
                     }
                 }
             })
+        }
+
+        function checkAlreadyRespondCondition() {
+            return page__.getGolobalData('LawyerResponse')
         }
     </script>
 

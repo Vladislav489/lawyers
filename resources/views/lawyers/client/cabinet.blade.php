@@ -225,8 +225,6 @@
 {{--                        <button class="more-services">Еще</button>--}}
                     </div>
 
-                    <div class="lawsuit lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Мои заказы </h2>
 
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
@@ -236,7 +234,10 @@
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
 
-                                'template' => "<ul class='my-orders_ul' :id=\"name + '_body'\">
+                                'template' => "
+                    <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
+                        <h2 class='lawyer-wrapper_title lawyer-wrapper_title-left'>Мои заказы </h2>
+                        <ul class='my-orders_ul'>
                             <li v-for=\"item in data\">
                                 <div class='my-orders_info'>
                                     <p class='my-orders_text'>
@@ -245,7 +246,7 @@
 
                                     <ul class='my-orders_sub-ul'>
                                         <li>@{{ item.count_messages ?? 0 }} сообщений</li>
-                                        <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
+                                        <li :hidden=\"item.executor_id\">@{{ item.count_offers ?? 0 }} предложения от юристов</li>
                                     </ul>
                                 </div>
 
@@ -254,15 +255,17 @@
                                     <span class='second'>Открыть</span>
                                 </a>
                             </li>
-
-                        </ul>",
+                        </ul>
+                        <button class='more-services' @click.prevent=\"goToOrdersPage()\">Еще</button>
+                    </div>
+                        ",
 
                         'pagination' => [
                                         'page' => 1,
                                         'pageSize' => 3,
                                         'countPage' => 1,
                                         'typePagination' => 2,
-                                        'showPagination' => 1,
+                                        'showPagination' => 0,
                                         'showInPage' => 3,
                                         'count_line' => 1,
                                         'all_load' => 0,
@@ -272,8 +275,6 @@
                         ])
 
 
-{{--                        <button class="more-services">Еще 2 услуги</button>--}}
-                    </div>
 
                     <div class="lawsuit lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Коллективные иски </h2>
@@ -369,6 +370,10 @@
                 })
             $('#clientInfoEdit').modal('hide')
         })
+    }
+
+    function goToOrdersPage() {
+        window.location.href = '{{ route__('actionMyOrders_controllers_client_clientcontroller') }}'
     }
 </script>
 @endsection

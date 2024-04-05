@@ -111,33 +111,7 @@
                 </a>
             </form>
 
-            <div class="find-block find-right">
-                <h3 class="find-question_title">Не нашли того, что искали? </h3>
-                <p class="find-question_text">Попробуйте подобрать подходящего специалиста или заказать услугу. Попробуйте
-                    подобрать подходящего </p>
-                <div class="buttons-container">
-                    <button class="main-btn main-btn_orange">
-            <span class="first">
-                Подберите мне специалиста
-                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-            </span>
-                        <span class="second">
-                Подберите мне специалиста
-                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-            </span>
-                    </button>
-                    <button class="main-btn">
-            <span class="first">
-                Заказать услугу
-                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-            </span>
-                        <span class="second">
-                Заказать услугу
-                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-            </span>
-                    </button>
-                </div>
-            </div>
+
         </div>
     </section>
 
@@ -206,7 +180,7 @@
                         <div class='exchange' v-for=\"item in data\">
                         <div class='exchange_left' @click=\"viewVacancy(item.id)\">
                             <h3 class='exchange_title'>
-                                <span>@{{ item.title }}</span> <span class='exchange_status'>Только для PRO</span>
+                                <span>@{{ item.title }}</span>
                             </h3>
                             <p class='exchange_text fs-text'>
                                 @{{ item.description }}

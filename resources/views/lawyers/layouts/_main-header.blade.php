@@ -43,7 +43,7 @@
             @if(session('type_id') == 1)
                 <a class="signup-btn" href="{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}" style="margin-left: auto; text-decoration: none;">Профиль</a>
             @elseif(session('type_id') == 2)
-                <a class="signup-btn" href="{{ route__('actionEmployeeProfile_controllers_employee_employeecontroller') }}" style="margin-left: auto; text-decoration: none;">Профиль</a>
+                <a class="signup-btn" href="{{ route__('actionEmployeeCabinet_controllers_employee_employeecontroller') }}" style="margin-left: auto; text-decoration: none;">Профиль</a>
             @endif
             <a class="signup-btn" href="{{ route__('actionUserLogout_logincontroller') }}" style="margin-left: auto; text-decoration: none;">Выход</a>
         @endauth

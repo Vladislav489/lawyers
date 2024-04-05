@@ -39,7 +39,6 @@
 
                         <h3 class='exchange_title'>
                             <span>@{{ data.title }}</span>
-                            <span class='exchange_status'>Только для PRO</span>
                         </h3>
 
                         <p class='exchange_text fs-text'>

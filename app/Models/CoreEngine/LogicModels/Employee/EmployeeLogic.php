@@ -12,6 +12,7 @@ use App\Models\CoreEngine\ProjectModels\Employee\EmployeePhoto;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\State;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
@@ -249,6 +250,16 @@ class EmployeeLogic extends UserLogic
         return $result;
     }
 
+    public function deleteResponse($data) {
+        if (empty($data)) return false;
+        $responseDel = $this->helpEngine['offer_response']->deleteForeva($data['employee_response_id']);
+        $offerDel = $this->helpEngine['vacancy_offer']->deleteForeva($data['id']);
+        if ($responseDel && $offerDel) {
+            return $this->getMyResponse($data);
+        }
+        return false;
+    }
+
     protected function getFilter(): array {
         $tab = $this->engine->getTable();
         $this->filter = [
@@ -376,6 +387,11 @@ class EmployeeLogic extends UserLogic
                 'Country' => [
                     'entity' => new Country(),
                     'relationship' => ['id', 'country_id'],
+                    'field' => ['*'],
+                ],
+                'State' => [
+                    'entity' => new State(),
+                    'relationship' => ['id', 'state_id'],
                     'field' => ['*'],
                 ],
                 'Offer' => [
