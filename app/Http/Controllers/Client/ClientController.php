@@ -20,6 +20,10 @@ class ClientController extends BaseClientController
         return view('lawyers.client.create-vacancy');
     }
 
+    public function actionMyOrders() {
+        return view('lawyers.client.my-orders');
+    }
+
     public function actionViewVacancy() {
         if ($this->checkUserVacancyAccess()) {
             if ($this->checkVacancyHasExecutor()) {

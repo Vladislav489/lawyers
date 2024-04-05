@@ -69,7 +69,7 @@ class VacancyMainstayController extends MainstayController
             DB::raw("CONCAT(Executor.last_name, ' ', Executor.first_name, ' ', Executor.middle_name ) as executor_name"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name, ' ', Owner.middle_name ) as owner_name")
         ];
-        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['Country', 'State', 'City', 'Executor', 'Owner'])->getList());
+        return response()->json((new VacancyLogic($this->params, $select))->setJoin(['Country', 'State', 'City', 'Executor', 'Owner'])->order('desc', 'id')->getList());
     }
 
     public function actionVacancyStore($param = []) {

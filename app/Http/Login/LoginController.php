@@ -40,7 +40,7 @@ class LoginController extends CentralController {
             $typeId = Auth::user()->type_id;
             session()->put('type_id', $typeId);
             if ($typeId != 1) {
-                return redirect(route__('actionEmployeeProfile_controllers_employee_employeecontroller'));
+                return redirect(route__('actionEmployeeCabinet_controllers_employee_employeecontroller'));
             } else {
                 return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'));
             }

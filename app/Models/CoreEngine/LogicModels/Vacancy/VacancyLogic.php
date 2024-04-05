@@ -73,10 +73,15 @@ class VacancyLogic extends CoreEngine
 
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
-                $this->addToStatusLog($data, VacancyLogic::STATUS_PAYED);
+
             }
 
             if ($data['id'] = $this->save($vacancy)) {
+                if (isset($vacancy['id'])) {
+                    $this->addToStatusLog($data, VacancyLogic::STATUS_PAYED);
+                } else {
+                    $this->addToStatusLog($data, VacancyLogic::STATUS_NEW);
+                }
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
