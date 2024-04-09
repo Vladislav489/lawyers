@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
@@ -254,7 +255,15 @@ class EmployeeLogic extends UserLogic
         if (empty($data)) return false;
         $responseDel = $this->helpEngine['offer_response']->deleteForeva($data['employee_response_id']);
         $offerDel = $this->helpEngine['vacancy_offer']->deleteForeva($data['id']);
-        if ($responseDel && $offerDel) {
+
+        $vacancyUpdateData = [
+            'executor_id' => null
+        ];
+        $vacancyUpdateData = setTimestamps($vacancyUpdateData, 'update');
+
+        $vacancyUpdate = (new VacancyLogic())->update($vacancyUpdateData, $data['vacancy_id']);
+
+        if ($responseDel && $offerDel && $vacancyUpdate) {
             return $this->getMyResponse($data);
         }
         return false;

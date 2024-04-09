@@ -131,7 +131,7 @@
                             <h2 class='lawyer-wrapper_title'>Мои заказы <span></span></h2>
                             <ul>
                                 <li mark='line_mark' class='has_new'>
-                                    <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ pagination.totalCount }}</span></button>
+                                    <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ count_new_items }}</span></button>
                                 </li>
                                 <li mark='line_mark'>
                                     <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>

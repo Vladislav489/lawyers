@@ -1,15 +1,15 @@
 @extends('lawyers.layouts.main')
 
-@include('component_build',[
-'component' => 'component.loadComponent.loadGlobalData',
-'params_component' => [
-'name' => "VacancyInfo",
-'autostart' => 'false',
-'ssr' => 'true',
-'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
-'params' => ['id' => request()->route('vacancy_id')],
-]
-])
+{{--@include('component_build',[--}}
+{{--'component' => 'component.loadComponent.loadGlobalData',--}}
+{{--'params_component' => [--}}
+{{--'name' => "VacancyInfo",--}}
+{{--'autostart' => 'false',--}}
+{{--'ssr' => 'true',--}}
+{{--'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),--}}
+{{--'params' => ['id' => request()->route('vacancy_id')],--}}
+{{--]--}}
+{{--])--}}
 
 @include('component_build',[
 'component' => 'component.loadComponent.loadGlobalData',
@@ -29,13 +29,14 @@
     <section class="u-container response-section">
         <div class="container">
 
-
             @include('component_build', [
                         'component' => 'component.infoComponent.textInfo',
                         'params_component' => [
-                        'autostart' => 'false',
+                        'autostart' => 'true',
                         'name' => 'my_response',
-                        'globalData' => 'VacancyInfo',
+//                        'globalData' => 'VacancyInfo',
+						'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
+                        'params' => ['id' => request()->route('vacancy_id')],
 
 
                         'template' => "
@@ -91,6 +92,22 @@
                         "
         ]
         ])
+
+            @include('component_build',[
+	        'component' => 'component.infoComponent.textInfo',
+            'params_component' => [
+            'name' => "vacancy_files",
+            'autostart' => 'true',
+            'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
+            'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
+            'template' =>
+            "<ul>
+                <li v-for=\"item in data\">
+                    <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                </li>
+            </ul>"
+    ]
+])
 
         </div>
     </section>
@@ -261,7 +278,11 @@
                 },
                 url: '{{ route__('actionDeleteVacancyResponse_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
-                    window.location.reload()
+                    if (!response) {
+                        alert('Ошибка')
+                    } else {
+                        window.location.reload()
+                    }
                 }
             })
         }
@@ -295,6 +316,11 @@
 
         function checkAlreadyRespondCondition() {
             return page__.getGolobalData('LawyerResponse')
+        }
+
+        function viewFile(path, name) {
+            const route = `{{ route('download') }}?path=${path}&name=${name}`
+            window.open(route)
         }
     </script>
 

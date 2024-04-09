@@ -6,7 +6,7 @@
         'autostart' => 'false',
         'ssr' => 'true',
         'url' => route__("actionGetEmployee_mainstay_employee_employeemainstaycontroller"),
-        'params' => ['user_id' => request()->route('user_id')],
+        'params' => ['user_id' => request()->route('employee_id')],
     ]
 ])
 @section('title', 'Профиль сотрудника')
