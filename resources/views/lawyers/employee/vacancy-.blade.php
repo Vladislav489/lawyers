@@ -278,11 +278,7 @@
                 },
                 url: '{{ route__('actionDeleteVacancyResponse_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
-                    if (!response) {
-                        alert('Ошибка')
-                    } else {
-                        window.location.reload()
-                    }
+                    location.reload();
                 }
             })
         }
@@ -308,7 +304,13 @@
                     if (!response) {
                         alert('Ошибка')
                     } else {
-                        window.location.reload()
+                        // page__.globlaData['LawyerResponse'] = response
+                        // let components = page__.getElementsGroup('my_response')
+                        // components.forEach((component) => {
+                            // component.obj.setUrlParams(component.obj.getUrlParams())
+                            // component.obj.updateVue()
+                        // })
+                        location.reload()
                     }
                 }
             })

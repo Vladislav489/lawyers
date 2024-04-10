@@ -232,8 +232,8 @@ class EmployeeLogic extends UserLogic
                 $vacancyOffer = setTimestamps($vacancyOffer, 'update');
             }
 
-            if($vacancyOfferId = $this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
-                return $vacancyOfferId;
+            if($this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
+                return $this->getMyResponse(['vacancy_id' => $data['vacancy_id'], 'employee_id' => $data['user_id']]);
             }
             return false;
         }
@@ -264,7 +264,7 @@ class EmployeeLogic extends UserLogic
         $vacancyUpdate = (new VacancyLogic())->update($vacancyUpdateData, $data['vacancy_id']);
 
         if ($responseDel && $offerDel && $vacancyUpdate) {
-            return $this->getMyResponse($data);
+            return true;
         }
         return false;
     }

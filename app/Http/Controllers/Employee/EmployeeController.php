@@ -42,7 +42,7 @@ class EmployeeController extends BaseEmployeeController {
     }
 
     public function actionViewVacancy() {
-        if ((new VacancyLogic(['vacancy_id' => $this->params['vacancy_id'], 'executor_id' => (string)auth()->id()]))->Exist()) {
+        if ((new VacancyLogic(['id' => $this->params['vacancy_id'], 'executor_id' => (string)auth()->id()]))->Exist()) {
             return view('lawyers.employee.vacancy-details');
         }
         return view('lawyers.employee.vacancy-');
