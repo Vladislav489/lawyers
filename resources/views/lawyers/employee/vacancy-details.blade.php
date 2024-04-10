@@ -75,6 +75,22 @@
                 ]
                 ])
 
+                @include('component_build',[
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'name' => "vacancy_files",
+                'autostart' => 'true',
+                'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
+                'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
+                'template' =>
+                "<ul>
+                    <li v-for=\"item in data\">
+                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                    </li>
+                </ul>"
+                ]
+                ])
+
 
 
                 <div class="order-answers mobile-hidden">
