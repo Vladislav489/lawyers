@@ -70,21 +70,14 @@ class ClientMainstayController extends MainstayController {
 
     public function actionGetVacancies($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $select = ['*',
-//            DB::raw("JSON_ARRAYAGG(JSON_OBJECT('id', VacancyOffer.id, 'payment', VacancyOffer.payment, 'employee_response_id',
-//            VacancyOffer.employee_response_id)) as lawyers_offers"),
-//            DB::raw("IF(VacancyOffer.id IS NULL, NULL,
-//            CONCAT('[', GROUP_CONCAT(DISTINCT
-//            (JSON_OBJECT('id', VacancyOffer.id, 'payment', VacancyOffer.payment, 'employee_response_id',
-//             VacancyOffer.employee_response_id)), ']'))) as lawyers_offers"),
-//            DB::raw("IF(ChatMessage.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', ChatMessage.id, 'message', ChatMessage.message, 'sender_user_id', ChatMessage.sender_user_id)), ']'))) as chat_messages"),
-//            DB::raw("IF(GroupVacancy.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('user_id', GroupVacancy.user_id, 'is_appruv', GroupVacancy.is_appruv)), ']'))) as vacancy_group"),
-            ];
+        $select = ['*'];
         $countNew = DB::table((new Vacancy())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
             ->where([['status', VacancyLogic::STATUS_NEW], ['is_deleted', 0], ['user_id', \auth()->id()]])->first();
+
         $res = (new VacancyLogic($this->params, $select))
             ->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])
             ->order('desc', 'id')->getList();
+
         $res['count_new'] = $countNew->count_new_vacancy;
         return response()->json($res);
     }
@@ -102,12 +95,8 @@ class ClientMainstayController extends MainstayController {
         ];
 
         $data = Validator::validate($this->params, $rules);
-        $data['id'] = $data['vacancy_id'];
-        $data['status'] = VacancyLogic::STATUS_PAYED;
 
-        return response()->json((new VacancyLogic())->store($data));
-
-
+        return response()->json((new VacancyLogic())->setExecutor($data));
     }
 }
 

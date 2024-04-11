@@ -29,6 +29,7 @@ class VacancyLogic extends CoreEngine
 
     CONST STATUS_NEW = 1;
     CONST STATUS_MODERATION = 2;
+    CONST STATUS_LAWYER_ACCEPTANCE = 8;
     CONST STATUS_PAYED = 3;
     CONST STATUS_IN_PROGRESS = 4;
     CONST STATUS_INSPECTION = 5;
@@ -78,7 +79,9 @@ class VacancyLogic extends CoreEngine
 
             if ($data['id'] = $this->save($vacancy)) {
                 if (isset($vacancy['id'])) {
-                    $this->addToStatusLog($data, VacancyLogic::STATUS_PAYED);
+                    if (isset($data['status'])) {
+                        $this->addToStatusLog($data, $data['status']);
+                    }
                 } else {
                     $this->addToStatusLog($data, VacancyLogic::STATUS_NEW);
                 }
@@ -90,6 +93,12 @@ class VacancyLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    public function setExecutor($data) {
+        $data['id'] = $data['vacancy_id'];
+        $data['status'] = VacancyLogic::STATUS_LAWYER_ACCEPTANCE;
+        return $this->store($data);
     }
 
     public function addToStatusLog($data, $status) {
@@ -172,8 +181,9 @@ class VacancyLogic extends CoreEngine
             DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name) as owner_name"),
             DB::raw("Owner.online as owner_online"),
+            DB::raw("Executor.id as executor_id"),
         ];
-        return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Country', 'State', 'City', 'Owner', 'Status'])->getOne()];
+        return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Country', 'State', 'City', 'Owner', 'Status', 'Executor'])->getOne()];
     }
 
     protected function getFilter(): array
@@ -195,11 +205,11 @@ class VacancyLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.executor_id IS NULL','params' => 'executor',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
+//            [   'field' => $tab.'.executor_id IS NULL','params' => 'no_executor',
+//                'validate' => ['string' => true,"empty" => true],
+//                'type' => 'string|array',
+//                "action" => '=', 'concat' => 'AND',
+//            ],
             [   'field' => $tab.'.is_group','params' => 'is_group',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
