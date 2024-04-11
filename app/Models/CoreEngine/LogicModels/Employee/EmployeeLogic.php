@@ -20,6 +20,7 @@ use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function Composer\Autoload\includeFile;
 
 class EmployeeLogic extends UserLogic
 {
@@ -265,6 +266,29 @@ class EmployeeLogic extends UserLogic
 
         if ($responseDel && $offerDel && $vacancyUpdate) {
             return true;
+        }
+        return false;
+    }
+
+    public function acceptWork($data) {
+
+        $vacancy['id'] = $data['vacancy_id'];
+        $vacancy['executor_id'] = $data['employee_user_id'];
+        $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+        if((new VacancyLogic())->store($vacancy)) {
+            return ['message' => "you've accept a job offer"];
+        }
+        return false;
+    }
+
+    public function declineWork($data) {
+        // вернуть оплаченные деньги клиенту
+        (new VacancyLogic())->getVacancyLastStatus($data['vacancy_id']);
+        $vacancy['id'] = $data['vacancy_id'];
+        $vacancy['executor_id'] = null;
+        $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+        if((new VacancyLogic())->store($vacancy)) {
+            return ['message' => "you've decline a job offer"];
         }
         return false;
     }

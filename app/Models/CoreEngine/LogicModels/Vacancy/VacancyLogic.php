@@ -96,9 +96,12 @@ class VacancyLogic extends CoreEngine
     }
 
     public function setExecutor($data) {
-        $data['id'] = $data['vacancy_id'];
-        $data['status'] = VacancyLogic::STATUS_LAWYER_ACCEPTANCE;
-        return $this->store($data);
+        if ($this->payToLawyer($data)) {
+            $data['id'] = $data['vacancy_id'];
+            $data['status'] = VacancyLogic::STATUS_LAWYER_ACCEPTANCE;
+            return $this->store($data);
+        }
+        return false;
     }
 
     public function addToStatusLog($data, $status) {
@@ -126,6 +129,14 @@ class VacancyLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    public function payToLawyer($data)
+    {
+        // сама оплата
+        $data['id'] = $data['vacancy_id'];
+        $data['status'] = VacancyLogic::STATUS_PAYED;
+        return $this->store($data);
     }
 
     public function getVacancyList($data) {
@@ -184,6 +195,16 @@ class VacancyLogic extends CoreEngine
             DB::raw("Executor.id as executor_id"),
         ];
         return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Country', 'State', 'City', 'Owner', 'Status', 'Executor'])->getOne()];
+    }
+
+    public function getVacancyLastStatus($vacancyId) {
+        $x = VacancyStatusLog::where('vacancy_id', $vacancyId)->get();
+        $x->each(function($item) {
+            if (in_array($item->status, [VacancyLogic::STATUS_LAWYER_ACCEPTANCE, VacancyLogic::STATUS_PAYED,])) {
+                $item->delete();
+            }
+        });
+        dd($x);
     }
 
     protected function getFilter(): array

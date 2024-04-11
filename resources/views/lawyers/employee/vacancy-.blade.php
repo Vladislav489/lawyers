@@ -1,15 +1,15 @@
 @extends('lawyers.layouts.main')
 
-{{--@include('component_build',[--}}
-{{--'component' => 'component.loadComponent.loadGlobalData',--}}
-{{--'params_component' => [--}}
-{{--'name' => "VacancyInfo",--}}
-{{--'autostart' => 'false',--}}
-{{--'ssr' => 'true',--}}
-{{--'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),--}}
-{{--'params' => ['id' => request()->route('vacancy_id')],--}}
-{{--]--}}
-{{--])--}}
+@include('component_build',[
+'component' => 'component.loadComponent.loadGlobalData',
+'params_component' => [
+'name' => "VacancyInfo",
+'autostart' => 'false',
+'ssr' => 'true',
+'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
+'params' => ['id' => request()->route('vacancy_id')],
+]
+])
 
 @include('component_build',[
 'component' => 'component.loadComponent.loadGlobalData',
@@ -34,9 +34,9 @@
                         'params_component' => [
                         'autostart' => 'true',
                         'name' => 'my_response',
-//                        'globalData' => 'VacancyInfo',
-						'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
-                        'params' => ['id' => request()->route('vacancy_id')],
+                        'globalData' => 'VacancyInfo',
+//						'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
+//                        'params' => ['id' => request()->route('vacancy_id')],
 
 
                         'template' => "
@@ -121,6 +121,7 @@
 						'params' => ['id' => auth()->id()],
 						'callBeforloadComponent' => "function(component) {
 						        component.option['lawyerResponse'] = page__.getGolobalData('LawyerResponse')
+						        component.option['vacancyInfo'] = page__.getGolobalData('VacancyInfo')
 						        return component.option
 						    }",
 
@@ -180,15 +181,28 @@
                                                     <li><span>Стоимость</span><span class='b-price'>@{{ lawyerResponse.payment }} ₽</span></li>
                                                     <li><span>Срок выполнения</span><span class='b-days'>@{{ lawyerResponse.period }} дней</span></li>
                                                 </ul>
-                                                <button class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">
-                                                    <span class='first'>Редактировать</span>
-                                                    <span class='second'>Редактировать</span>
-                                                </button>
-                                                <button class='main-btn main-btn_white'
-                                                @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">
-                                                    <span class='first'>Удалить</span>
-                                                    <span class='second'>Удалить</span>
-                                                </button>
+                                                <div v-if=\"vacancyInfo.status != 8\">
+                                                    <button class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">
+                                                        <span class='first'>Редактировать</span>
+                                                        <span class='second'>Редактировать</span>
+                                                    </button>
+                                                    <button class='main-btn main-btn_white'
+                                                    @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">
+                                                        <span class='first'>Удалить</span>
+                                                        <span class='second'>Удалить</span>
+                                                    </button>
+                                                </div>
+                                                <div v-else>
+                                                    <button class='main-btn main-btn_blue' @click.prevent=\"acceptToWork(vacancyInfo.id)\">
+                                                        <span class='first'>Принять</span>
+                                                        <span class='second'>Принять</span>
+                                                    </button>
+                                                    <button class='main-btn main-btn_white'
+                                                    @click.prevent=\"declineToWork(vacancyInfo.id)\">
+                                                        <span class='first'>Отказаться</span>
+                                                        <span class='second'>Отказаться</span>
+                                                    </button>
+                                                </div>
                                             </div>
 
                                         </div>
@@ -323,6 +337,33 @@
         function viewFile(path, name) {
             const route = `{{ route('download') }}?path=${path}&name=${name}`
             window.open(route)
+        }
+
+        function acceptToWork(vacancyId) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    vacancy_id: vacancyId,
+                    employee_user_id: {{ auth()->id() }}
+                },
+                url: '{{ route__('actionAcceptWork_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (response) {
+                    console.log(response);
+                }
+            })
+        }
+        function declineToWork(vacancyId) {
+            $.ajax({
+                method: 'POST',
+                data: {
+                    vacancy_id: vacancyId,
+                    employee_user_id: {{ auth()->id() }}
+                },
+                url: '{{ route__('actionDeclineWork_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (response) {
+                    console.log(response);
+                }
+            })
         }
     </script>
 

@@ -171,7 +171,7 @@
                 </div>
             </div>
 
-            <div class='fs-block' v-else>
+            <div class='fs-block' v-if=\"executor_id == null\">
                 <div class='fs-img'>
                     <img :src=\"item.avatar\" alt='lawyer-img'>
                 </div>
