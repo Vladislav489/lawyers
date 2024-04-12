@@ -27,7 +27,7 @@ class FileMainstayController extends MainstayController
     }
 
     public function actionDownloadFile($filePath, $fileName) {
-        if (!empty((new FileLogic(['path' => $filePath, 'user_id' => (string)\auth()->id()]))->getOne())) {
+        if (!empty((new FileLogic(['path' => $filePath]))->getOne())) {
             return response()->download(Storage::path($filePath), $fileName);
         }
         return response('<div style="color: red">no file or access</div>', 404);

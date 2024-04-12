@@ -150,4 +150,24 @@ class EmployeeMainstayController extends MainstayController
         return response()->json((new EmployeeLogic())->deleteResponse($validata));
     }
 
+    public function actionAcceptWork($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|exists:vacancy,id',
+            'employee_user_id' => 'required|exists:user_entity,id',
+        ];
+        $data = Validator::validate($this->params, $rules);
+        return response()->json((new EmployeeLogic())->acceptWork($data));
+    }
+
+    public function actionDeclineWork($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|exists:vacancy,id',
+            'employee_user_id' => 'required|exists:user_entity,id',
+        ];
+        $data = Validator::validate($this->params, $rules);
+        return response()->json((new EmployeeLogic())->acceptWork($data));
+    }
+
 }

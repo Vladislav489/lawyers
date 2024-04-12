@@ -57,6 +57,9 @@
                 'globalParams':{{(isset($globalParams) && $globalParams)?'true':'false'}},
                 'params':@php echo isset($params)?json_encode($params):'undefined'; @endphp,
                 'target':@php echo isset($target)?json_encode($target):'undefined'; @endphp,
+                'callBeforloadComponent':@php echo isset($callBeforloadComponent)?preg_replace('/\r|\r|/u', "", $callBeforloadComponent):"null";@endphp,
+                'callAfterloadComponent':@php echo isset($callAfterloadComponent)?preg_replace('/\r|\r|/u', "", $callAfterloadComponent):"null";@endphp,
+                'callAjaxSuccess':@php echo isset($callAjaxSuccess)?preg_replace('/\r|\r|/u', "", $callAjaxSuccess):"null";@endphp,
                 pagination: pagination_{{$name}},
             };
 

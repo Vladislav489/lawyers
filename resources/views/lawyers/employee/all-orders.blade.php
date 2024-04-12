@@ -35,7 +35,7 @@
 
                 <ul>
                     <li class='has_new' mark='line_mark'>
-                        <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ pagination.totalCount }}</span></button>
+                        <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ count_new_items }}</span></button>
                     </li>
                     <li mark='line_mark'>
                         <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>
@@ -106,17 +106,17 @@
     </div>
 </section>
                             ",
-                            'pagination' => [
-                                        'page' => 1,
-                                        'pageSize' => 2,
-                                        'countPage' => 1,
-                                        'typePagination' => 2,
-                                        'showPagination' => 1,
-                                        'showInPage' => 2,
-                                        'count_line' => 1,
-                                        'all_load' => 0,
-                                        'physical_presence' => 0
-                                    ],
+//                            'pagination' => [
+//                                        'page' => 1,
+//                                        'pageSize' => 2,
+//                                        'countPage' => 1,
+//                                        'typePagination' => 2,
+//                                        'showPagination' => 1,
+//                                        'showInPage' => 2,
+//                                        'count_line' => 1,
+//                                        'all_load' => 0,
+//                                        'physical_presence' => 0
+//                                    ],
                             ]
                         ])
 {{--<section class="gradient-bg u-container request-table-section">--}}

@@ -71,6 +71,6 @@ class ClientController extends BaseClientController
 
     protected function checkVacancyHasExecutor() {
         $vacancyId = request()->route('vacancy_id');
-        return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId]))->getOne()['executor_id'];
+        return (new VacancyLogic(['user_id' => (string)auth()->id(), 'id' => $vacancyId, 'status' => (string) VacancyLogic::STATUS_IN_PROGRESS]))->Exist();
     }
 }

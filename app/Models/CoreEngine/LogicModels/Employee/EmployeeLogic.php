@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\Employee;
 
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\Employee\Employee;
@@ -19,6 +20,7 @@ use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use function Composer\Autoload\includeFile;
 
 class EmployeeLogic extends UserLogic
 {
@@ -231,8 +233,8 @@ class EmployeeLogic extends UserLogic
                 $vacancyOffer = setTimestamps($vacancyOffer, 'update');
             }
 
-            if($vacancyOfferId = $this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
-                return $vacancyOfferId;
+            if($this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
+                return $this->getMyResponse(['vacancy_id' => $data['vacancy_id'], 'employee_id' => $data['user_id']]);
             }
             return false;
         }
@@ -254,8 +256,39 @@ class EmployeeLogic extends UserLogic
         if (empty($data)) return false;
         $responseDel = $this->helpEngine['offer_response']->deleteForeva($data['employee_response_id']);
         $offerDel = $this->helpEngine['vacancy_offer']->deleteForeva($data['id']);
-        if ($responseDel && $offerDel) {
-            return $this->getMyResponse($data);
+
+        $vacancyUpdateData = [
+            'executor_id' => null
+        ];
+        $vacancyUpdateData = setTimestamps($vacancyUpdateData, 'update');
+
+        $vacancyUpdate = (new VacancyLogic())->update($vacancyUpdateData, $data['vacancy_id']);
+
+        if ($responseDel && $offerDel && $vacancyUpdate) {
+            return true;
+        }
+        return false;
+    }
+
+    public function acceptWork($data) {
+
+        $vacancy['id'] = $data['vacancy_id'];
+        $vacancy['executor_id'] = $data['employee_user_id'];
+        $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+        if((new VacancyLogic())->store($vacancy)) {
+            return ['message' => "you've accept a job offer"];
+        }
+        return false;
+    }
+
+    public function declineWork($data) {
+        // вернуть оплаченные деньги клиенту
+        (new VacancyLogic())->getVacancyLastStatus($data['vacancy_id']);
+        $vacancy['id'] = $data['vacancy_id'];
+        $vacancy['executor_id'] = null;
+        $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+        if((new VacancyLogic())->store($vacancy)) {
+            return ['message' => "you've decline a job offer"];
         }
         return false;
     }

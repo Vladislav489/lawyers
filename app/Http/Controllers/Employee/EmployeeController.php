@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Employee;
 
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\System\ControllersModel\EmployeeController as BaseEmployeeController;
 
 class EmployeeController extends BaseEmployeeController {
@@ -41,6 +42,13 @@ class EmployeeController extends BaseEmployeeController {
     }
 
     public function actionViewVacancy() {
+        if ((new VacancyLogic([
+            'id' => $this->params['vacancy_id'],
+            'executor_id' => (string)auth()->id(),
+            'status' => (string) VacancyLogic::STATUS_IN_PROGRESS
+        ]))->Exist()) {
+            return view('lawyers.employee.vacancy-details');
+        }
         return view('lawyers.employee.vacancy-');
     }
 

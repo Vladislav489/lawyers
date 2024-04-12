@@ -93,14 +93,85 @@
                         'name' => 'vacancy_offers',
 						'url' => route__('actionGetEmployeeRespondsList_mainstay_vacancy_vacancymainstaycontroller'),
 						'params' => ['vacancy_id' => request()->route('vacancy_id')],
+						'callBeforloadComponent' => "function(component) {
+						        let vacancyInfo = page__.getGolobalData('VacancyInfo')
+						        if(vacancyInfo != undefined || vacancyInfo != null) {
+						            component.option['current_status'] = vacancyInfo.status
+						            component.option['executor_id'] = vacancyInfo.executor_id
+						        }
+						        return component.option
+						}",
 
                         'template' => "
     <div class='container'>
         <span class='resp-count'>@{{ pagination.totalCount }} откликов</span>
 
-        <div class='responses-container'>
+        <div class='responses-container' v-for=\"item in data\">
 
-            <div class='fs-block' v-for=\"item in data\">
+            <div class='fs-block' v-if=\"item.employee_user_id == executor_id\">
+                <div class='fs-img'>
+                    <img :src=\"item.avatar\" alt='lawyer-img'>
+                </div>
+
+                <div class='fs-info'>
+                    <h3 class='fs-name'>@{{ item.full_name }}</h3>
+                    <p class='fs-row'>
+                        <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon' class='icon'>
+                        <span class='fs-text'>@{{ item.location }}</span>
+                    </p>
+                    <p class='fs-row'>
+                        <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='icon'>
+                        <span class='fs-text'>@{{ agetostr(item.practice_years) }} практики</span>
+                    </p>
+                    <!--<div class='lawyer_rate-block'>
+                        <div class='specialist-rate'>
+                            <div class='stars'>
+                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
+                                <img src='/lawyers/images/icons/star-icon-empty.svg' alt='star-icon'>
+                            </div>
+
+                            <span>32 ответа</span>
+                        </div>
+
+                        <div class='specialist-perm'>
+                            <p>Право рейтинг:</p>
+                            <span>4.0</span>
+                            <img src='/lawyers/images/icons/info-icon-gray.svg' alt='info-icon' class='icon'>
+                        </div>
+
+                        <p class='fs-text'>16 заказов</p>
+                        <p class='fs-text'>94% сдано</p>
+                        <p class='fs-text'><span class='green'>100% </span> сдано вовремя</p>
+                    </div>-->
+                    <p class='fs-text'>@{{ item.response_text }}</p>
+                </div>
+
+                <div class='buttons-container'>
+                    <div class='blue-container mobile-hidden'>
+                        <span>@{{ item.period }} дней</span><span>@{{ item.payment }} ₽</span>
+                    </div>
+                    <ul class='mobile blue-container_mobile'>
+                        <li><span>Стоимость</span><span class='b-price'>@{{ item.payment }} ₽</span></li>
+                        <li><span>Срок выполнения</span><span class='b-days'>@{{ item.period }} дней</span></li>
+                    </ul>
+                    <!-- <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id)\">
+                        <span class='first' @click.prevent=\"setEmployeeForOrder(employee_user_id)\">Заказать</span>
+                        <span class='second'>Заказать</span>
+                    </button>
+                    <button class='main-btn main-btn_white'>
+                        <span class='first'>Сообщение</span>
+                        <span class='second'>Сообщение</span>
+                    </button> -->
+                    <div class='blue-container mobile-hidden'>
+                        <span>Ожидаем подтверждение юриста</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class='fs-block' v-if=\"executor_id == null\">
                 <div class='fs-img'>
                     <img :src=\"item.avatar\" alt='lawyer-img'>
                 </div>
@@ -182,7 +253,8 @@
 
 <script>
     $(document).ready(function () {
-
+        // console.log(page__.getGolobalData('VacancyInfo'))
+        // setParamsForChosenResponse()
     })
 
     function editVacancy(id) {
@@ -218,12 +290,21 @@
             url: '{{ route__('actionSetExecutorForVacancy_mainstay_client_clientmainstaycontroller') }}',
             success: function (response) {
                 if (response) {
-                    window.location.href = `{{ route__('actionViewVacancy_controllers_client_clientcontroller') }}/${vacancyId}`
+                    window.location.href = `{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}`
                 } else {
                     alert('error')
                 }
             }
         })
+    }
+
+    function setParamsForChosenResponse() {
+        let globalData = page__.getGolobalData('VacancyInfo')
+        if (globalData.status == 8) {
+            let component = page__.getElementsGroup('vacancy_offers')[0]['obj']
+            console.log(component);
+            component.setUrlParams({executor_id: globalData.executor_id})
+        }
     }
 </script>
 

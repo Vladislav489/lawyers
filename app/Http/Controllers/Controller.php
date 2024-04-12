@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Mainstay\File\FileMainstayController;
+use App\Models\System\ControllersModel\CentralController;
 use App\Models\System\ControllersModel\FrontController;
+use Illuminate\Routing\Route;
 
-class Controller extends FrontController {
+class Controller extends CentralController {
     public function getPageParams(): array {
         return [
             'actionIndex' => ['template' => 'lawyers.site.index'],
@@ -23,6 +26,12 @@ class Controller extends FrontController {
 
     public function actionSpecialistCard() {
         return view('lawyers.employee.profile');
+    }
+
+    public function viewFile() {
+        $filePath = request()->query('path');
+        $fileName = request()->query('name');
+        return (new FileMainstayController())->actionDownloadFile($filePath, $fileName);
     }
 
 }
