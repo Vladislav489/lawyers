@@ -2,6 +2,7 @@
 namespace App\Http\Mainstay\Chat;
 use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
+use App\Models\System\Admin\Rule;
 use App\Models\System\ControllersModel\MainstayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,25 +19,35 @@ class ChatMainstayController extends MainstayController
         return parent::callAction($method, $parameters);
     }
 
-    public function actionChatStore(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ]);
+    public function actionCreateChat($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $rules = [
+            'user_id' => 'required|integer|exists:user_entity,id',
+            'is_group' => 'nullable|integer',
+            'name' => 'nullable|string',
+        ];
+        $data = Validator::validate($this->params, $rules);
+        if (!isset($data['is_group']) || $data['is_group'] == 0) {
+            $data['name'] = '2 Users chat';
         }
-
-        $request->merge([
-            'user_id' => Auth::id(),
-        ]);
-
-        return response()->json(
-            (new ChatLogic())->store($request->all())
-        );
+        $chatId = (new ChatLogic())->store($data);
+//        $validator = Validator::make($request->all(), [
+//            'name' => 'required|string',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return response()->json([
+//                'errors' => $validator->errors()
+//            ]);
+//        }
+//
+//        $request->merge([
+//            'user_id' => Auth::id(),
+//        ]);
+//
+//        return response()->json(
+//            (new ChatLogic())->store($request->all())
+//        );
     }
 
     public function actionGetChat(Request $request)

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
+            $table->boolean('is_read')->default(false)->comment('прочитано');
             $table->text('message')->comment('текст сообщения');
             $table->json('recipients')->comment('получатели');
             $table->boolean('is_archive')->default(false)->comment('в архиве');
