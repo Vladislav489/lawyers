@@ -155,11 +155,7 @@ class parentComponent {
         $.ajax({url:this.urlAdi, type:'post', data:sendParams, dataType:"json",
             success:function (data) {
                 if(data.length != 0 && data != undefined ) {
-                    if (data['result'] == undefined) {
-                        $this.data = $this.option['data'] = data;
-                    } else {
-                        $this.data = $this.option['data'] = data['result'];
-                    }
+                    $this.data = $this.option['data'] = data['result'];
                     $this.option['count_new_items'] = data['count_new'] ?? 0
                     if($this.callAjaxSuccess != null && typeof($this.callAjaxSuccess) === typeof(Function)) {
                         var rez = $this.callAjaxSuccess(data,$this)
