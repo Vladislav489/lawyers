@@ -171,12 +171,12 @@
                 </div>
 
                 <div class="right">
-                    <ul class="round-top_nav">
-                        <li class="active"><button type="button">Мои заказы</button></li>
-                        <li><button type="button">Услуги</button></li>
-                        <li><button type="button">Отзывы</button></li>
-                        <li><button type="button">Ответы юриста</button></li>
-                    </ul>
+{{--                    <ul class="round-top_nav">--}}
+{{--                        <li class="active"><button type="button">Мои заказы</button></li>--}}
+{{--                        <li><button type="button">Услуги</button></li>--}}
+{{--                        <li><button type="button">Отзывы</button></li>--}}
+{{--                        <li><button type="button">Ответы юриста</button></li>--}}
+{{--                    </ul>--}}
 
                     <div class="my-orders lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title">Мои вопросы <span>1/2</span></h2>
