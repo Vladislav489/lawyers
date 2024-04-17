@@ -185,18 +185,8 @@
                     Командапрофессионалов поможет решить задачу в юридическом поле и дать консультацию.
                 </p>
                 <div class="buttons-container">
-                    <a href="#">
-                    <button class="main-btn main-btn_orange">
-                        Бесплатная консультация
-                        <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                    </button>
-                    </a>
-                    <a href="{{route__('actionCreateVacancy_controllers_client_clientcontroller')}}">
-                    <button class="main-btn">
-                        Создать задачу на бирже
-                        <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                    </button>
-                    </a>
+                    <a href="#" class="main-btn main-btn_orange"><span>Бесплатная консультация</span></a>
+                    <a href="{{route__('actionCreateVacancy_controllers_client_clientcontroller')}}" class="main-btn"><span>Создать задачу на бирже</span></a>
                 </div>
             </div>
         </div>

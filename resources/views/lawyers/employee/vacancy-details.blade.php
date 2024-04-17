@@ -111,8 +111,8 @@
                                 </p>
                             </div>
                         </div>
-                </div>
-
+                    </div>
+                </div>{{-- END order-answers --}}
 {{--                <div class="order-history mobile-hidden">--}}
 {{--                    @include('component_build', [--}}
 {{--                'component' => 'component.infoComponent.textInfo',--}}
@@ -170,7 +170,7 @@
                 </form>
             </div>
 
-            <div class="order-right">
+            <div class="order-right" style="display: none;">
 
 {{--                @include('component_build', [--}}
 {{--                'component' => 'component.infoComponent.textInfo',--}}

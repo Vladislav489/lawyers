@@ -49,6 +49,11 @@
     height: auto;
     display: none;
 }
+.request-form .select2-container--default .select2-selection--single{
+    border-color: rgba(0,0,0,.1);
+
+}
+.request-form .select2-container--default.select2-container--open .select2-selection--single{border-color: var(--blue-color);}
 .form-row_label .form-row_text {
     position: relative;
     font-weight: 600;

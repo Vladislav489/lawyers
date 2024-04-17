@@ -50,7 +50,7 @@
                                 "url" => route("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),
                                 "template" =>
                                 '
-                                <select class="form-row_header select-btn" mark="service_id" :id="name">
+                                <select class="form-row_header select-btn js_select" mark="service_id" :id="name">
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>
                                 '

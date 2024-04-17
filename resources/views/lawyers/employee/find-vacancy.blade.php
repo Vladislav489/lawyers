@@ -21,8 +21,14 @@
                                 "name" => 'country_id',
                                 "default_title" => 'Страна',
                                 "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "callAfterloadComponent" => "function(component) {
+                                    $('.js_select').select2({
+                                    	minimumResultsForSearch: -1,
+                                    });
+                                    return component.option;
+                                 }",
                                 "template" =>
-                                '<select class="unit-select_select" name="country_id" :id="name" style="width:100%">
+                                '<select class="unit-select_select js_select" name="country_id" :id="name" style="width:100%">
                                     <option value="" selected>Выбрать</option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
@@ -44,7 +50,7 @@
                                 "default_title" => 'Город',
                                 "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
                                 "template" =>
-                                '<select class="unit-select_select" name="city_id" :id="name" style="width:100%">
+                                '<select class="unit-select_select js_select" name="city_id" :id="name" style="width:100%">
                                     <option id="stub" value="" selected="true">Выбрать</option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
@@ -62,8 +68,14 @@
                                 "name" => 'service_id',
                                 "default_title" => 'Сервис',
                                 "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
+                                "callAfterloadComponent" => "function(component) {
+                                    $('.js_select').select2({
+                                    	minimumResultsForSearch: -1,
+                                    });
+                                    return component.option;
+                                 }",
                                 "template" =>
-                                '<select class="unit-select_select" name="service_type_id" :id="name" style="width:100%">
+                                '<select class="unit-select_select js_select" name="service_type_id" :id="name" style="width:100%">
                                     <option value="" selected="true">Выбрать</option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
@@ -85,7 +97,7 @@
                                 "default_title" => 'Сервис',
                                 "url" => route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
                                 "template" =>
-                                '<select class="unit-select_select" name="service_id" :id="name" style="width:100%">
+                                '<select class="unit-select_select js_select" name="service_id" :id="name" style="width:100%">
                                     <option value="" selected="true">Выбрать</option>
                                     <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
                                 </select>',
@@ -368,14 +380,8 @@
                         </div>
 
                         <div class="buttons-container">
-                            <button class="main-btn main-btn_white">
-                                <span class="first">Сообщение</span>
-                                <span class="second">Сообщение</span>
-                            </button>
-                            <button class="main-btn main-btn_blue">
-                                <span class="first">Предложить работу</span>
-                                <span class="second">Предложить работу</span>
-                            </button>
+                            <button class="main-btn main-btn_white">Сообщение</button>
+                            <button class="main-btn main-btn_blue">Предложить работу</button>
                         </div>
                     </div>
                 </div>

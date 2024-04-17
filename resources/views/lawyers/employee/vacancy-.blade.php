@@ -126,7 +126,7 @@
 						    }",
 
 						'template' => "
-                            <section class='u-container response-section all-responses-section section--lawyer-response'
+                            <section class='u-container response-section section--lawyer-response'
                              id='response_section' :hidden=\"!lawyerResponse\">
                                 <div class='container' id='response_card'>
                                     <div class='responses-container'>
@@ -215,8 +215,6 @@
                                         <div class='lawyer-responce_inner'>
                                             <h2 class='heading--lawyer-response'>Текст отклика</h2>
                                             <form action='#' class='form--lawyer-response'>
-                                                <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
-                                                <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
                                                 <textarea id='response_text' class='form--lr-textarea' placeholder='Введите сопроводительный текст...' >@{{ lawyerResponse.response_text }}</textarea>
                                                 <div class='flex align-center form--group'>
                                                     <span class='form--group_heading'>Стоимость услуги</span>
@@ -236,6 +234,8 @@
                                                     </label>
                                                     <p>Я принимаю <a>Правила</a> и <a>Политику Конфидициальности</a></p>
                                                 </div>
+                                                <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
+                                                <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
                                             </form>
                                         </div>
                                     </div>

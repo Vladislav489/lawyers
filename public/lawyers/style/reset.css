@@ -20,6 +20,7 @@
     --b-radius: 12px;
     --b-radius-second: 100px;
     --box-shadow: 0px 4px 11px 0px rgba(0, 0, 0, 0.11);
+    --accent-color: #282828;
 }
 ::-webkit-scrollbar {
     width: 8px;
@@ -114,30 +115,32 @@ label input {
     max-width: inherit;
 }
 
-.main-btn {
-    padding: 14px 20px;
-    border-radius: var(--b-radius-second);
+.main-btn{
+    align-items: center;
     background-color: var(--dark-color);
-    width: max-content;
+    border-radius: var(--b-radius-second);
     color: var(--white-color);
+    cursor: pointer;
+    display: flex;
     font-weight: 600;
-    line-height: 100%;
-    text-transform: none !important;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
     height: 50px;
-    display: flex;
     justify-content: center;
-    align-items: center;
+    line-height: 100%;
+    overflow: hidden;
+    padding: 0 20px 1px;
+    position: relative;
+    transition: all .3s linear;
+    width: max-content;
 }
-.main-btn .first,
-.main-btn .second {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-}
+    .main-btn:hover{background-color: #4A4A4A;}
+    .main-btn span{
+        background: url(../images/icons/arrow-icon-white.svg) right 2px no-repeat;
+        background-size: auto 14px;
+        color: inherit;
+        display: inline-block;
+        padding-right: 20px;
+    }
+.main-btn .second{display: none;}
 .main-btn .icon {
     margin-top: 2px;
     width: 7px !important;
@@ -148,63 +151,29 @@ label input {
 .main-btn path {
     transition-duration: var(--transition);
 }
-
-.main-btn:hover {
-    /*color: var(--dark-color);*/
-    /*background-color: var(--white-color);*/
-    /*scale: 103%;*/
-    /*outline: 1px solid var(--dark-color);*/
-    /*border: 1px solid var(--white-color);*/
-    /*scale: 105%;*/
-}
 .main-btn_blue {
     background-color: var(--blue-color);
     gap: 13px;
     color: var(--white-color);
-
 }
+    .main-btn_blue:hover{background-color: #383CA6;}
+
 .main-btn_white {
     background-color: var(--white-color);
     gap: 13px;
     color: var(--blue-color);
     border: 1px solid var(--blue-color);
 }
+    .main-btn_white:hover{
+        background-color: var(--blue-color);
+        color: var(--white-color);
+    }
 .main-btn_orange {
     background: linear-gradient(91deg, #F57A46 0.35%, #FE974D 96.93%);
     gap: 13px;
     color: var(--white-color);
 }
-.main-btn .first,
-.main-btn .second {
-    transition-duration: var(--transition);
-    box-sizing: border-box;
-}
-.main-btn .second {
-    transform: translate(-50%, -300%);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transition-duration: var(--transition);
-    width: max-content;
-}
-.main-btn:hover .first {
-    transform: translateY(200%);
-}
-.main-btn:hover .second {
-    transform: translate(-50%, -50%);
-}
-@media screen and (max-width: 1200px) {
-    .main-btn:hover .first {
-        transform: none;
-    }
-    .main-btn .second {
-        display: none;
-    }
-    .main-btn:hover .second {
-        transform: none;
-        display: none;
-    }
-}
+    .main-btn_orange:hover{background: linear-gradient(0deg, rgba(255, 223, 112, 0.46), rgba(255, 223, 112, 0.46)), linear-gradient(90.64deg, #F57A46 0.35%, #FE974D 96.93%);}
 @media screen and (max-width: 480px) {
     .main-btn {
         font-size: 16px;
