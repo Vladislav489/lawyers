@@ -29,10 +29,10 @@
 
                             <div class='lawyer-info'>
                                 <h2 class='lawyer-name'>@{{getFullName(data)}}</h2>
-                                <span class='lawyer-check'>
+                                <!-- <span class='lawyer-check'>
                                     Проверенный юрист
                                     <img class='icon' src='/lawyers/images/icons/check-icon-white.svg' alt='check-icon'>
-                                </span>
+                                </span> -->
                             </div>
                         </div>
 
@@ -49,11 +49,11 @@
                                     <span>32 ответа</span>
                                 </div>
 
-                                <div class='specialist-perm'>
+                                <!-- <div class='specialist-perm'>
                                     <p>Право рейтинг:</p>
                                     <span>4.0</span>
                                     <img class='icon' src='/lawyers/images/icons/info-icon-blue.svg' alt='info-icon'>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class='lawyer-info'>
@@ -73,11 +73,11 @@
                                     <img class='icon' src='/lawyers/images/icons/planet-icon-blue.svg' alt='planet-icon'>
                                     <span>www.site.ru</span>
                                 </div>
-                                <div class='lawyer-info_row'>
+                                <!-- <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/message-icon-blue.svg' alt='message-icon'>
                                     <span>Консультации онлайн:</span>
                                     <span class='bold'>Да</span>
-                                </div>
+                                </div> -->
                                 <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/clock-icon-blue.svg' alt='clock-icon'>
                                     <span>Время работы:</span>
@@ -101,20 +101,20 @@
                 </div>
 
                 <div class="right">
-                    <ul class="round-top_nav">
-                        <li class="active">
-                            <button type="button">Мои заказы</button>
-                        </li>
-                        <li>
-                            <button type="button">Услуги</button>
-                        </li>
-                        <li>
-                            <button type="button">Отзывы</button>
-                        </li>
-                        <li>
-                            <button type="button">Ответы юриста</button>
-                        </li>
-                    </ul>
+{{--                    <ul class="round-top_nav">--}}
+{{--                        <li class="active">--}}
+{{--                            <button type="button">Мои заказы</button>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <button type="button">Услуги</button>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <button type="button">Отзывы</button>--}}
+{{--                        </li>--}}
+{{--                        <li>--}}
+{{--                            <button type="button">Ответы юриста</button>--}}
+{{--                        </li>--}}
+{{--                    </ul>--}}
 
 
                         @include('component_build', [

@@ -12,17 +12,22 @@
 
     <script src="/js/jquery/jquery-3.6.0.min.js"></script>
     <script src="/js/vue/vue.min.js"></script>
-    {{-- <script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script> --}}
+
+    {{--<script type="text/javascript" src="/js/bootstrap/bootstrap.min.js"></script>--}}
+
     <script src="/js/main.js"></script>
     <script src="/js/component/parentComponent.js"></script>
     <script src="/js/dropzone/dropzone1/dropzone.min.js"></script>
 
-    @stack('bootstrap')
+    {{--@stack('bootstrap')--}}
     @include('lawyers.layouts.script')
     @stack('js-lib-component-head')
 
     <link rel="canonical" href="{{ request()->getScheme() . '://' . request()->httpHost() .request()->getPathInfo() }}">
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+
+    {{--<link type="text/css"  rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">--}}
+    <link type="text/css"  rel="stylesheet" href="/lawyers/style/select2.min.css">
+
 </head>
 
 <body style="background-color: #F1F2F2;">

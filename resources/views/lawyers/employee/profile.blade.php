@@ -387,10 +387,10 @@
                     <div class="lawyer-contacts lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Контакты и Адрес</h2>
                         <div class="lawyer-contacts_map">
-                            {{--                            <div style="position:relative;overflow:hidden;">--}}
-                            {{--                                <a href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a href="https://yandex.ru/maps/geo/moskva/53000094/?ll=37.608537%2C55.754059&utm_medium=mapframe&utm_source=maps&z=12.96" style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.608537%2C55.754059&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzAwMDA5NBIa0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAiCg2GeBZCFQEGX0I%2C&z=12.96" width="600" height="150" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>--}}
-                            {{--                            </div>--}}
-                            {{--                            <img src="/lawyers/images/main/map.png" alt="map-img">--}}
+{{--                                                        <div style="position:relative;overflow:hidden;">--}}
+{{--                                                            <a href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a href="https://yandex.ru/maps/geo/moskva/53000094/?ll=37.608537%2C55.754059&utm_medium=mapframe&utm_source=maps&z=12.96" style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.608537%2C55.754059&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzAwMDA5NBIa0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAiCg2GeBZCFQEGX0I%2C&z=12.96" width="600" height="150" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>--}}
+{{--                                                        </div>--}}
+{{--                                                        <img src="/lawyers/images/main/map.png" alt="map-img">--}}
                         </div>
 
                         @include('component_build', [
@@ -433,7 +433,7 @@
                         ])
                         <div class="buttons-container">
                             <button class="main-btn main-btn_white">Сообщение</button>
-                            <button class="main-btn main-btn_white">Заказать звонок</button>
+                            <button class="main-btn main-btn_white">Заказать услугу</button>
                         </div>
                     </div>
 

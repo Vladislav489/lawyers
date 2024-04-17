@@ -4,6 +4,7 @@ namespace App\Models\CoreEngine\LogicModels\Chat;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
+use App\Models\CoreEngine\ProjectModels\Chat\ChatUser;
 
 class ChatLogic extends CoreEngine
 {
@@ -11,23 +12,12 @@ class ChatLogic extends CoreEngine
     {
         $this->engine = new Chat();
         $this->query = $this->engine->newQuery();
+        $this->helpEngine['chatUser'] = self::createTempLogic(new ChatUser());
         $this->getFilter();
         $this->compileGroupParams();
 
         parent::__construct($params, $select);
     }
-
-    protected function compileGroupParams(): array
-    {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => []
-        ];
-
-        return $this->group_params;
-    }
-
     protected function defaultSelect(): array
     {
         $tab = $this->engine->tableName();
@@ -36,17 +26,7 @@ class ChatLogic extends CoreEngine
         return $this->default;
     }
 
-    protected function getFilter(): array
-    {
-        $tab = $this->engine->getTable();
-        $this->filter = [];
-        $this->filter = array_merge($this->filter, parent::getFilter());
-
-        return $this->filter;
-    }
-
-    public function store(array $data): array|bool
-    {
+    public function store($data) {
         try {
             $chat = array_intersect_key(
                 $data,
@@ -55,6 +35,7 @@ class ChatLogic extends CoreEngine
 
             if (isset($data['id'])) {
                 $chat['id'] = $data['id'];
+                $chat = setTimestamps($chat, 'update');
             }
 
             if ($data['id'] = $this->save($chat)) {
@@ -67,6 +48,12 @@ class ChatLogic extends CoreEngine
         return false;
     }
 
+    public function addUserToChat($data) {
+
+    }
+
+
+
     public function deleteChat(array $data): bool
     {
         try {
@@ -76,5 +63,25 @@ class ChatLogic extends CoreEngine
         }
 
         return false;
+    }
+
+    protected function getFilter(): array
+    {
+        $tab = $this->engine->getTable();
+        $this->filter = [];
+        $this->filter = array_merge($this->filter, parent::getFilter());
+
+        return $this->filter;
+    }
+
+    protected function compileGroupParams(): array
+    {
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' => []
+        ];
+
+        return $this->group_params;
     }
 }
