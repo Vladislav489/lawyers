@@ -44,8 +44,7 @@ class VacancyMainstayController extends MainstayController
         $data['status'] = VacancyLogic::STATUS_NEW;
         $data['priority_id'] = 1;
         $data['user_id'] = $user->id;
-        $data['country_id'] = $user->country_id;
-        $data['state_id'] = $user->state_id;
+        $data['region_id'] = $user->region_id;
         $data['city_id'] = $user->city_id;
 
         return response()->json((new VacancyLogic(['user_id' => $user->id]))->store($data));

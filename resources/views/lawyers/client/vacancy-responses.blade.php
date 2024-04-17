@@ -220,8 +220,8 @@
                         <li><span>Стоимость</span><span class='b-price'>@{{ item.payment }} ₽</span></li>
                         <li><span>Срок выполнения</span><span class='b-days'>@{{ item.period }} дней</span></li>
                     </ul>
-                    <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id)\">
-                        <span class='first' @click.prevent=\"setEmployeeForOrder(employee_user_id)\">Заказать</span>
+                    <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id, item.payment)\">
+                        <span class='first'>Заказать</span>
                         <span class='second'>Заказать</span>
                     </button>
                     <button class='main-btn main-btn_white'>
@@ -279,13 +279,14 @@
         return age+" "+txt;
     }
 
-    function setEmployeeForOrder(employeeId) {
+    function setEmployeeForOrder(employeeId, payment) {
         const vacancyId = {{ request()->route('vacancy_id') }}
         $.ajax({
             method: 'POST',
             data: {
                 vacancy_id: vacancyId,
-                executor_id: employeeId
+                executor_id: employeeId,
+                payment: payment
             },
             url: '{{ route__('actionSetExecutorForVacancy_mainstay_client_clientmainstaycontroller') }}',
             success: function (response) {

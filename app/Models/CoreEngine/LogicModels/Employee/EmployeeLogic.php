@@ -12,8 +12,7 @@ use App\Models\CoreEngine\ProjectModels\Employee\EmployeeOfferResponse;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeePhoto;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
@@ -326,7 +325,7 @@ class EmployeeLogic extends UserLogic
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab .'.country_id','params' => 'country_id',
+            [   'field' => $tab .'.region_id','params' => 'region_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
@@ -417,14 +416,9 @@ class EmployeeLogic extends UserLogic
                     'relationship' => ['id', 'city_id'],
                     'field' => ['*'],
                 ],
-                'Country' => [
-                    'entity' => new Country(),
-                    'relationship' => ['id', 'country_id'],
-                    'field' => ['*'],
-                ],
-                'State' => [
-                    'entity' => new State(),
-                    'relationship' => ['id', 'state_id'],
+                'Region' => [
+                    'entity' => new Region(),
+                    'relationship' => ['id', 'region_id'],
                     'field' => ['*'],
                 ],
                 'Offer' => [

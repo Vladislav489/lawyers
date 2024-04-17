@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('chat_message', function (Blueprint $table) {
-            $table->boolean('is_read')->default(false)->comment('прочитано');
+            if (!Schema::hasColumn('chat_message', 'is_read')) {
+                $table->boolean('is_read')->default(false)->comment('прочитано');
+            }
         });
     }
 

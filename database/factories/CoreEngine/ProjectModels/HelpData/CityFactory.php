@@ -2,8 +2,7 @@
 
 namespace Database\Factories\CoreEngine\ProjectModels\HelpData;
 
-use App\Models\CoreEngine\ProjectModels\HelpData\District;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,9 +19,7 @@ class CityFactory extends Factory
     {
         return [
             'name' => fake('ru')->city,
-            'district_id' => District::inRandomOrder()->first()->id,
-            'state_id' => State::inRandomOrder()->first()->id,
-            'Country_id' => District::inRandomOrder()->first()->id,
+            'region_id' => Region::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Models\CoreEngine\LogicModels\User;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Question\UserQuestion;
 use App\Models\CoreEngine\ProjectModels\User\UserBalance;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
@@ -118,9 +118,9 @@ class UserLogic extends CoreEngine
                     'relationship' => ['id', 'city_id'],
                     'field' => [],
                 ],
-                'Country' => [
-                    'entity' => new Country(),
-                    'relationship' => ['id', 'country_id'],
+                'Region' => [
+                    'entity' => new Region(),
+                    'relationship' => ['id', 'region_id'],
                     'field' => [],
                 ],
                 'Balance' => [

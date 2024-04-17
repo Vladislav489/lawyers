@@ -7,9 +7,7 @@ use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
-use App\Models\CoreEngine\ProjectModels\HelpData\District;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
@@ -30,10 +28,8 @@ class EmployeeMainstayController extends MainstayController
             'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
             'post_code' => 'required|string|max:7',
-            'country_id' => 'required|integer|exists:' . Country::class . ',id',
-            'state_id' => 'required|integer|exists:' . State::class . ',id',
-            'district_id' => 'required|integer|exists:' . District::class . ',id',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
+            'region_id' => 'required|integer|exists:' . Region::class . ',id',
             'password' => 'required|string|confirmed',
             'consultation_price' => 'required|integer',
             'dt_practice_start' => 'required|date',
@@ -90,11 +86,11 @@ class EmployeeMainstayController extends MainstayController
             CONCAT('/storage', Achievements.path)))), ']')) as achievements"),
             DB::raw("IF(Photos.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Photos.id, 'path',
             CONCAT('/storage', Photos.path)))), ']')) as photos"),
-            DB::raw("City.id as city_id, City.name as city_name, Country.id as country_id, Country.name as country_name"),
-            DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
+            DB::raw("City.id as city_id, City.name as city_name, Region.id as region_id, Region.name as region_name"),
+            DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             ];
 //        dd((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
-        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos', 'State'])->getOne()]);
+        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos'])->getOne()]);
     }
 
     public function actionGetEmployeeList(array $param = []) {

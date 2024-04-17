@@ -4,9 +4,7 @@ namespace App\Models\CoreEngine\LogicModels\HelpData;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
-use App\Models\CoreEngine\ProjectModels\HelpData\District;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 
 class CityLogic extends CoreEngine {
     public function __construct($params = [], $select = ['*'], $callback = null) {
@@ -34,7 +32,7 @@ class CityLogic extends CoreEngine {
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.country_id','params' => 'country_id',
+            [   'field' => $tab.'.region_id','params' => 'region_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
@@ -59,20 +57,10 @@ class CityLogic extends CoreEngine {
             'select' => [],
             'by' => [],
             'relatedModel' => [
-                'Country' => [
-                    'entity' => new Country(),
-                    'relationship' => ['id','country_id'],
+                'Region' => [
+                    'entity' => new Region(),
+                    'relationship' => ['id','region_id'],
                     'field' => ['*'],
-                ],
-                'State' => [
-                    'entity' => new State(),
-                    'relationship' => ['state_id','id'],
-                    'field' => ['State.*'],
-                ],
-                'District' => [
-                    'entity' => new District(),
-                    'relationship' => ['district_id','id'],
-                    'field' => ['District.*'],
                 ],
             ]
         ];

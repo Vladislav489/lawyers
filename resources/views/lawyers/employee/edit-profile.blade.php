@@ -47,29 +47,29 @@
                         </div>",
                                 ]
                             ])
-                            <label for="">Страна</label>
+                            <label for="">Регион</label>
                             @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                                 "autostart" => 'true',
-                                "name" => 'country_id',
-                                "default_title" => 'Страна',
-                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "name" => 'region_id',
+                                "default_title" => 'Регион',
+                                "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
 								"callBeforloadComponent" => "function(component) {
-                                        component.option['currentSelectId'] = page__.getGolobalData('EmployeeInfo').country_id
-                                        component.option['currentSelectName'] = page__.getGolobalData('EmployeeInfo').country_name
+                                        component.option['currentSelectId'] = page__.getGolobalData('EmployeeInfo').region_id
+                                        component.option['currentSelectName'] = page__.getGolobalData('EmployeeInfo').region_name
                                         return component.option
 								    }",
 								"callAfterloadComponent" => "function(component) {
-								        const param = {'country_id': component.vueObject._data.currentSelectId}
+								        const param = {'region_id': component.vueObject._data.currentSelectId}
                                         page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
 								    }",
                                 "template" =>
-                                '<select class="unit-select_select" name="country_id" :id="name" style="width:100%">
+                                '<select class="unit-select_select" name="region_id" :id="name" style="width:100%">
                                     <option v-for="(items_ , index) in data" :data-text="items_" :value="index" :selected="index == currentSelectId">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){
                                             if($(this).val() !== '') {
-                                                const param = {'country_id': $(this).find('option:selected').val()}
+                                                const param = {'region_id': $(this).find('option:selected').val()}
                                                 page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
                                                 }
                                             }"
@@ -660,7 +660,7 @@
                 'last_name': $('[name = last_name_edit]').val(),
                 'middle_name': $('[name = middle_name_edit]').val(),
                 'phone_number': $('[name = phone_number_edit]').val(),
-                'country_id': $('[name = country_id]').val(),
+                'region_id': $('[name = region_id]').val(),
                 'city_id': $('[name = city_id]').val(),
             }
         }

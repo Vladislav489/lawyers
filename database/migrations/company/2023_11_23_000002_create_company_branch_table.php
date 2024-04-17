@@ -19,8 +19,7 @@ return new class extends Migration
             $table->json('address_map')->comment('контактная информация');
             $table->boolean('is_deleted')->default(false);
             $table->bigInteger('company_id')->unsigned()->index()->comment('ID компании');
-            $table->bigInteger('country_id')->unsigned()->index()->comment('ID страны');
-            $table->bigInteger('state_id')->unsigned()->index()->comment('ID области');
+            $table->bigInteger('region_id')->unsigned()->index()->comment('ID региона');
             $table->bigInteger('city_id')->unsigned()->index()->comment('ID города');
         });
     }

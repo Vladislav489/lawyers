@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('vacancy_offer', function (Blueprint $table) {
-            $table->integer('period')->nullable()->comment('Срок исполнения');
+            if (!Schema::hasColumn('vacancy_offer', 'period')) {
+                $table->integer('period')->nullable()->comment('Срок исполнения');
+            }
         });
     }
 

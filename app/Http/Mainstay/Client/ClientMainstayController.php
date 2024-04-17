@@ -7,9 +7,7 @@ use App\Models\CoreEngine\LogicModels\Question\QuestionLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
-use App\Models\CoreEngine\ProjectModels\HelpData\District;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
@@ -20,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 class ClientMainstayController extends MainstayController {
     public function actionStoreClient(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
+//        dd($this->params, Region::class);
         $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
             'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
@@ -30,9 +29,7 @@ class ClientMainstayController extends MainstayController {
             'post_code' => 'required|string|max:7',
             'date_birthday' => 'required|date',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
-            'state_id' => 'required|integer|exists:' . State::class . ',id',
-            'country_id' => 'required|integer|exists:' . Country::class . ',id',
-            'district_id' => 'required|integer|exists:' . District::class . ',id',
+            'region_id' => 'required|integer|exists:' . Region::class . ',id',
             'type_id' => 'required|integer|exists:' . UserType::class . ',id',
         ];
 
@@ -41,7 +38,7 @@ class ClientMainstayController extends MainstayController {
             $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
             return (new LoginController())->actionUserLogin($credentials);
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors();
     }
 
     public function actionUpdateClient($param = []) {
@@ -53,14 +50,14 @@ class ClientMainstayController extends MainstayController {
     public function actionGetClient($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         $select = ['*', DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name"),
-            DB::raw("City.name as city_name, Country.name as country_name"),
+            DB::raw("City.name as city_name, Region.name as region_name"),
             DB::raw("IFNULL(Balance.balance, 0) as balance"),
             DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions"),
 //            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Vacancy.id, 'text', Question.text, 'status', Question.status)), ']') as questions")
         ];
 //        dd((new UserLogic($this->params, $select))->offPagination()->setLimit(false)->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
         return response()->json((new UserLogic($this->params, $select))->offPagination()->setLimit(false)
-            ->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
+            ->setJoin(['City', 'Region', 'Balance', 'Question'])->getOne());
     }
 
     public function actionGetClientQuestions($param = []) {
@@ -92,7 +89,8 @@ class ClientMainstayController extends MainstayController {
         $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
             'vacancy_id' => 'required|integer|exists:vacancy,id',
-            'executor_id' => 'required|integer|exists:user_entity,id'
+            'executor_id' => 'required|integer|exists:user_entity,id',
+            'payment' => 'required|integer'
         ];
 
         $data = Validator::validate($this->params, $rules);

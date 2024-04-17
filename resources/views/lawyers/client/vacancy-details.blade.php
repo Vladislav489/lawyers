@@ -171,10 +171,6 @@
 
                 </div>
 
-
-
-
-
                 <form action="#" class="send-message-input mobile-hidden">
                     <label>
                         <span class="attach-icon"></span>
@@ -182,6 +178,27 @@
                         <input type="image" src="/lawyers/images/icons/send-icon.svg" alt="send-message-icon">
                     </label>
                 </form>
+                @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'true',
+                'name' => 'action_block',
+                'globalData' => 'VacancyInfo',
+                'callBeforloadComponent' => "function() {
+                    let globalData = page__.getGolobalData('VacancyInfo')
+                    let statusData = globalData.status_history
+                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
+                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    this.option['statusData'] = statusData
+                    return this.option
+                }",
+
+                'template' => "
+                    <div v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</div>
+                "
+                ]
+                ])
             </div>
 
             <div class="order-right">

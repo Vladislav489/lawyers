@@ -2,22 +2,22 @@
 
 namespace Database\Factories\CoreEngine\ProjectModels\HelpData;
 
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CoreEngine\ProjectModels\HelpData\Country>
  */
-class CountryFactory extends Factory
+class RegionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    private static $order = 1;
+
+    protected $model = Region::class;
+
     public function definition()
     {
         return [
-            'name' => fake('ru')->country
+            'name' => 'регион ' . self::$order++
         ];
     }
 }
