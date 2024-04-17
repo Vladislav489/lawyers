@@ -24,57 +24,34 @@
 
             <div class="unit-select">
                 <div class="unit-select_row">
-                    <span class="unit-select_subtext">Страна</span>
+                    <span class="unit-select_subtext">Регион</span>
                     @include('component_build',["component" => "component.listComponent.selectComponent",
                     "params_component" => [
                     "autostart" => 'true',
-                    "name" => 'country_id',
-                    "default_title" => 'Страна',
-                    "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                    "name" => 'region_id',
+                    "default_title" => 'Регион',
+                    "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
+					"callAfterloadComponent" => "function(component) {
+                       $('.js_select').select2({
+                       	minimumResultsForSearch: -1,
+                       });
+                       return component.option;
+                    }",
                     "template" =>
                     '<div class="select-wrapper">
-                        <select class="unit-select_select" name="country_id" :id="name" style="width:100%">
+                        <select class="unit-select_select" name="region_id" :id="name" style="width:100%">
                             <option class="unit-selected" selected>Выбрать</option>
                             <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                         </select>
                     </div>',
                     "change" => "function(){
-                    if($(this).val() !== '') {
-                    const param = {'country_id': $(this).find('option:selected').val()}
-                    page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                        if($(this).val() !== '') {
+                        const param = {'region_id': $(this).find('option:selected').val()}
+                        page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
                     }
                     }"
                     ]])
                 </div>
-                
-                <div class="unit-select">
-                    <div class="unit-select_row">
-                        <span class="unit-select_subtext">Страна</span>
-                        @include('component_build',["component" => "component.listComponent.selectComponent",
-                            "params_component" => [
-                                "autostart" => 'true',
-                                "name" => 'country_id',
-                                "default_title" => 'Страна',
-                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
-                                "callAfterloadComponent" => "function(component) {
-                                    $('.js_select').select2({
-                                    	minimumResultsForSearch: -1,
-                                    });
-                                    return component.option;
-                                 }",
-                                "template" =>
-                                '<select class="unit-select_select js_select" name="country_id" :id="name" style="width:100%">
-                                    <option value="" selected>Выбрать</option>
-                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
-                                </select>',
-                                "change" => "function(){
-                                            if($(this).val() !== '') {
-                                                const param = {'country_id': $(this).find('option:selected').val()}
-                                                page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
-                                                }
-                                            }"
-                            ]])
-                    </div>
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Город</span>
@@ -848,7 +825,7 @@
     function getFilterParams() {
         return {
             'search_spec': $('#search-spec').val(),
-            'country_id': $('[name = country_id]').val(),
+            'region_id': $('[name = region_id]').val(),
             'city_id': $('[name = city_id]').val(),
             'service_id': $('[name = service_id]').val(),
             'user_id': ''

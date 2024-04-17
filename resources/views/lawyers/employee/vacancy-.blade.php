@@ -40,10 +40,10 @@
 
 
                         'template' => "
-                            <div class='response-block'>
+                        <div class='response-block'>
                             <div class='exchange'>
                                 <div class='exchange_left'>
-                                    <h3 class='exchange_title'>
+                                    <h3 class='exchange_title' hidden>
                                         <span>@{{ data.title }}</span>
                                     </h3>
                                     <p class='exchange_text fs-text'>
@@ -86,7 +86,7 @@
                                 </ul>
 
                                 <button id='switch_button' type='button' class='responce-call main-btn main-btn_blue'
-                                 @click.prevent = \"openResponseSection()\" :hidden=\"checkAlreadyRespondCondition()\">Откликнуться</button>
+                                 @click.prevent = \"openResponseSection()\" v-if=\"!checkAlreadyRespondCondition()\">Откликнуться</button>
                             </div>
                         </div>
                         "
@@ -331,7 +331,8 @@
         }
 
         function checkAlreadyRespondCondition() {
-            return page__.getGolobalData('LawyerResponse')
+            page__.getGolobalData('LawyerResponse');
+            return page__.getGolobalData('LawyerResponse');
         }
 
         function viewFile(path, name) {
@@ -344,7 +345,7 @@
                 method: 'POST',
                 data: {
                     vacancy_id: vacancyId,
-                    employee_user_id: {{ auth()->id() }}
+                    employee_user_id: {{ auth()->id() }},
                 },
                 url: '{{ route__('actionAcceptWork_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {

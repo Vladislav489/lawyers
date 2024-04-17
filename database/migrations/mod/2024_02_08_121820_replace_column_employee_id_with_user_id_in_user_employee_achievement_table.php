@@ -14,9 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_employee_achievement', function (Blueprint $table) {
-            $table->dropIndex('user_employee_achievement_employee_id_index');
-            $table->dropColumn('employee_id');
-            $table->unsignedBigInteger('user_id')->index()->nullable()->comment('ID юзера');
+            if (!Schema::hasColumn('user_employee_achievement', 'user_id')) {
+                $table->dropIndex('user_employee_achievement_employee_id_index');
+                $table->dropColumn('employee_id');
+                $table->unsignedBigInteger('user_id')->index()->nullable()->comment('ID юзера');
+            }
         });
     }
 

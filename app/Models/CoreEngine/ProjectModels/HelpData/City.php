@@ -13,9 +13,8 @@ class City extends BaseModel
     protected $fillable = [
         'name',
         'is_deleted',
-        'district_id',
         'state_id',
-        'country_id',
+        'region_id',
     ];
 
     public $timestamps = false;

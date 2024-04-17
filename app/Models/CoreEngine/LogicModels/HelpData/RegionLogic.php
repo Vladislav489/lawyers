@@ -3,11 +3,11 @@
 namespace App\Models\CoreEngine\LogicModels\HelpData;
 
 use App\Models\CoreEngine\Core\CoreEngine;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 
-class CountryLogic extends CoreEngine {
+class RegionLogic extends CoreEngine {
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->engine = new Country();
+        $this->engine = new Region();
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();

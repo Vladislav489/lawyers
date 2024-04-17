@@ -13,8 +13,7 @@ class CompanyBranch extends BaseModel
         'address_map',
         'is_deleted',
         'company_id',
-        'country_id',
-        'state_id',
+        'region_id',
         'city_id',
     ];
 }

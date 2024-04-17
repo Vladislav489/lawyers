@@ -2,18 +2,18 @@
 
 namespace App\Models\CoreEngine\ProjectModels\HelpData;
 
-use App\Models\CoreEngine\ProjectModels\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class State extends BaseModel
+class Region extends Model
 {
     use HasFactory;
-    protected $table = 'state';
+
+    protected $table = 'regions';
 
     protected $fillable = [
         'name',
-        'is_deleted',
-        'country_id',
+        'is_deleted'
     ];
 
     public $timestamps = false;

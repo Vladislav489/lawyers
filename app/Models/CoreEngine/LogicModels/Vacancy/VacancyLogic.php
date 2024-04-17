@@ -9,9 +9,7 @@ use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
 use App\Models\CoreEngine\ProjectModels\File\File;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
-use App\Models\CoreEngine\ProjectModels\HelpData\Country;
-use App\Models\CoreEngine\ProjectModels\HelpData\District;
-use App\Models\CoreEngine\ProjectModels\HelpData\State;
+use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
@@ -145,7 +143,7 @@ class VacancyLogic extends CoreEngine
             DB::raw("DATE_FORMAT(period_start, '%e %M') as at_work_from"),
             DB::raw("DATE_FORMAT(period_end, '%e %M') as at_work_to"),
             DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
-            DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
+            DB::raw("CONCAT(Region.name, ', ', City.name) as location"),
             DB::raw("(CASE
         WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')
         WHEN TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()), ' часов назад')
@@ -165,7 +163,7 @@ class VacancyLogic extends CoreEngine
         $countNew = DB::table((new Vacancy())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
             ->where([['status', self::STATUS_PAYED], ['is_deleted', 0], ['executor_id', \auth()->id()]])->first();
         $res = (new VacancyLogic($data, $select))
-            ->setJoin(['Country', 'State', 'City', 'Executor', 'Owner'])->order('desc', 'id')->getList();
+            ->setJoin(['Region', 'City', 'Executor', 'Owner'])->order('desc', 'id')->getList();
         $res['count_new'] = $countNew->count_new_vacancy;
         return $res;
 
@@ -183,7 +181,7 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 7 THEN 'закрыт'
                     END as current_status_text"),
             DB::raw("Service.name as service_name"),
-            DB::raw("CONCAT(Country.name, ', ', State.name, ', ', City.name) as location"),
+            DB::raw("CONCAT(Region.name,' ', City.name) as location"),
             DB::raw("(CASE
         WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')
         WHEN TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()), ' часов назад')
@@ -194,7 +192,7 @@ class VacancyLogic extends CoreEngine
             DB::raw("Owner.online as owner_online"),
             DB::raw("Executor.id as executor_id"),
         ];
-        return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Country', 'State', 'City', 'Owner', 'Status', 'Executor'])->getOne()];
+        return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Region', 'City', 'Owner', 'Status', 'Executor'])->getOne()];
     }
 
     public function getVacancyLastStatus($vacancyId) {
@@ -226,11 +224,11 @@ class VacancyLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-//            [   'field' => $tab.'.executor_id IS NULL','params' => 'no_executor',
-//                'validate' => ['string' => true,"empty" => true],
-//                'type' => 'string|array',
-//                "action" => '=', 'concat' => 'AND',
-//            ],
+            [   'field' => $tab.'.executor_id IS NOT NULL','params' => 'has_executor',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
             [   'field' => $tab.'.is_group','params' => 'is_group',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
@@ -251,7 +249,7 @@ class VacancyLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '<=', 'concat' => 'AND',
             ],
-            [   'field' => $tab.'.country_id','params' => 'country_id',
+            [   'field' => $tab.'.region_id','params' => 'region_id',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => 'IN', 'concat' => 'AND',
@@ -351,14 +349,9 @@ class VacancyLogic extends CoreEngine
                     GROUP BY chat_id) as ChatMessage ON ChatMessage.chat_id = vacancy.chat_id"),
                     'field' => ['messages']
                 ],
-                'Country' => [
-                    'entity' => new Country(),
-                    'relationship' => ['id', 'country_id'],
-                    'field' => []
-                ],
-                'State' => [
-                    'entity' => new State(),
-                    'relationship' => ['id', 'state_id'],
+                'Region' => [
+                    'entity' => new Region(),
+                    'relationship' => ['id', 'region_id'],
                     'field' => []
                 ],
                 'City' => [

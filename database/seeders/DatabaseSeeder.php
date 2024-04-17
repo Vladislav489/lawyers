@@ -15,9 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            CountrySeeder::class,
-            StateSeeder::class,
-            DistrictSeeder::class,
+            RegionSeeder::class,
             CitySeeder::class,
             CompanySeeder::class
         ]);

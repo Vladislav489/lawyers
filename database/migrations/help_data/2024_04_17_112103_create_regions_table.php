@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('state', function (Blueprint $table) {
+        Schema::dropIfExists('country');
+        Schema::dropIfExists('state');
+        Schema::dropIfExists('district');
+
+        Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 128);
+            $table->string('name');
             $table->boolean('is_deleted')->default(false);
-            $table->bigInteger('country_id')->unsigned()->index()->comment('ID страны');
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('state');
+        Schema::dropIfExists('regions');
     }
 };
