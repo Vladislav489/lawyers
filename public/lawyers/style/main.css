@@ -167,7 +167,44 @@ header {
     }
 }
 
-
+.simple_grid_footer{padding-top: 24px;}
+    .simple_grid_footer .pagination{
+        align-content: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        margin: 0;
+        width: 100%;
+    }
+        .simple_grid_footer .pagination > ul{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .simple_grid_footer .pagination > ul > li{
+            align-content: center;
+            color: rgba(40,40,40,.5);
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            height: 30px;
+            line-height: 16px;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            width: 30px;
+        }
+        .simple_grid_footer .pagination ul li i{font-style: normal;}
+        .simple_grid_footer .pagination .button-right{
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
 .main-banner {
     padding: 100px 0;
     display: flex;

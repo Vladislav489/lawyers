@@ -50,7 +50,7 @@
                                 "url" => route("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),
                                 "template" =>
                                 '
-                                <select class="form-row_header select-btn" mark="service_id" :id="name">
+                                <select class="form-row_header select-btn js_select" mark="service_id" :id="name">
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>
                                 '
@@ -111,8 +111,8 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-row form-row_all-services select">
-                    </div>
+                    {{--<div class="form-row form-row_all-services select">
+                    </div>--}}
 
                 <div class="reasons-block">
                     <h2>3 причины оставить заявку</h2>
@@ -149,23 +149,7 @@
                         </ul>
                     </div>
 
-                    <button class="main-btn main-btn_blue">
-                        <span class="first">
-                            Разместить заказ
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19" fill="none" class="arrow-icon">
-                                <path d="M1.27478 1.82703L7.98864 9.50001L1.27478 17.173" stroke="white" stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-
-                        <span class="second">
-                        Разместить заказ
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19" fill="none" class="arrow-icon">
-                                <path d="M1.27478 1.82703L7.98864 9.50001L1.27478 17.173" stroke="white" stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </button>
+                    <button class="main-btn main-btn_blue">Разместить заказ</button>
 
                     <label class="private-policy">
                         <input type="checkbox" name="private-policy">

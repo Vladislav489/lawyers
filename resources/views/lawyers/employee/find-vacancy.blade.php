@@ -46,79 +46,99 @@
                     }"
                     ]])
                 </div>
+                
+                <div class="unit-select">
+                    <div class="unit-select_row">
+                        <span class="unit-select_subtext">Страна</span>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'country_id',
+                                "default_title" => 'Страна',
+                                "url" => route("actionGetCountries_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "callAfterloadComponent" => "function(component) {
+                                    $('.js_select').select2({
+                                    	minimumResultsForSearch: -1,
+                                    });
+                                    return component.option;
+                                 }",
+                                "template" =>
+                                '<select class="unit-select_select js_select" name="country_id" :id="name" style="width:100%">
+                                    <option value="" selected>Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){
+                                            if($(this).val() !== '') {
+                                                const param = {'country_id': $(this).find('option:selected').val()}
+                                                page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                                                }
+                                            }"
+                            ]])
+                    </div>
 
-                <div class="unit-select_row">
-                    <span class="unit-select_subtext">Город</span>
-                    @include('component_build',["component" => "component.listComponent.selectComponent",
-                    "params_component" => [
-                    "autostart" => 'false',
-                    "name" => 'city_id',
-                    "default_title" => 'Город',
-                    "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
-                    "template" =>
-                    '<div class="select-wrapper">
-                        <select class="unit-select_select" name="city_id" :id="name" style="width:100%">
-                            <option id="stub" value="" selected="true">Выбрать</option>
-                            <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
-                        </select>
-                    </div>',
-                    "change" => "function(){
+                    <div class="unit-select_row">
+                        <span class="unit-select_subtext">Город</span>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'false',
+                                "name" => 'city_id',
+                                "default_title" => 'Город',
+                                "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select js_select" name="city_id" :id="name" style="width:100%">
+                                    <option id="stub" value="" selected="true">Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){
 
-                    }"
-                    ]])
-                </div>
+                                    }"
+                            ]])
+                    </div>
 
-                <div class="unit-select_row">
-                    <span class="unit-select_subtext">Категория услуг</span>
-                    @include('component_build',["component" => "component.listComponent.selectComponent",
-                    "params_component" => [
-                    "autostart" => 'true',
-                    "name" => 'service_id',
-                    "default_title" => 'Сервис',
-                    "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
-                    "template" =>
-                    '<div class="select-wrapper">
-                        <select class="unit-select_select" name="service_type_id" :id="name" style="width:100%">
-                            <option value="" selected="true">Выбрать</option>
-                            <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
-                        </select>
-                    </div>',
-                    "change" => "function(){
-                    if($(this).val() !== '') {
-                    const param = {'type_id': $(this).find('option:selected').val()}
-                    page__.getElementsGroup('type_id')[0]['obj'].setUrlParams(param)
-                    }
-                    }"
-                    ]])
-                </div>
+                    <div class="unit-select_row">
+                        <span class="unit-select_subtext">Категория услуг</span>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'service_id',
+                                "default_title" => 'Сервис',
+                                "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
+                                "callAfterloadComponent" => "function(component) {
+                                    $('.js_select').select2({
+                                    	minimumResultsForSearch: -1,
+                                    });
+                                    return component.option;
+                                 }",
+                                "template" =>
+                                '<select class="unit-select_select js_select" name="service_type_id" :id="name" style="width:100%">
+                                    <option value="" selected="true">Выбрать</option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>',
+                                "change" => "function(){
+                                            if($(this).val() !== '') {
+                                                const param = {'type_id': $(this).find('option:selected').val()}
+                                                page__.getElementsGroup('type_id')[0]['obj'].setUrlParams(param)
+                                                }
+                                            }"
+                            ]])
+                    </div>
 
-                <div class="unit-select_row">
-                    <span class="unit-select_subtext">Тема услуги</span>
-                    @include('component_build',["component" => "component.listComponent.selectComponent",
-                    "params_component" => [
-                    "autostart" => 'false',
-                    "name" => 'type_id',
-                    "default_title" => 'Сервис',
-                    "url" => route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
-                    "template" =>
-                    '<div class="select-wrapper">
-                        <select class="unit-select_select" name="service_id" :id="name" style="width:100%">
-                            <option value="" selected="true">Выбрать</option>
-                            <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
-                        </select>
-                    </div>',
-                    "change" => "function(){}"
-                    ]])
-                </div>
-            </div>
-
-            <div class="unit-select unit-exchange">
-                <div class="checkbox-block">
-                    <label>
-                        <input type="checkbox" name="myReq">
-                        <span class="checkbox"></span>
-                        <span class="text">Мои заявки</span>
-                    </label>
+                    <div class="unit-select_row">
+                        <span class="unit-select_subtext">Тема услуги</span>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'false',
+                                "name" => 'type_id',
+                                "default_title" => 'Сервис',
+                                "url" => route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
+                                "template" =>
+                                '<select class="unit-select_select js_select" name="service_id" :id="name" style="width:100%">
+                                    <option value="" selected="true">Выбрать</option>
+                                    <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
+                                </select>',
+                                "change" => "function(){}"
+                            ]])
+                    </div>
                 </div>
 
                 <button type="reset" class="find_reset-filter">сбросить фильтр</button>
@@ -312,14 +332,8 @@
                         </div>
 
                         <div class="buttons-container">
-                            <button class="main-btn main-btn_white">
-                                <span class="first">Сообщение</span>
-                                <span class="second">Сообщение</span>
-                            </button>
-                            <button class="main-btn main-btn_blue">
-                                <span class="first">Предложить работу</span>
-                                <span class="second">Предложить работу</span>
-                            </button>
+                            <button class="main-btn main-btn_white">Сообщение</button>
+                            <button class="main-btn main-btn_blue">Предложить работу</button>
                         </div>
                     </div>
                 </div>

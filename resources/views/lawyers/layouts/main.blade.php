@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="fragment" content="!">
     <title>Lawyers | @yield('title')</title>
-
     @include('lawyers.layouts.style')
     @stack('css-style')
 
@@ -26,7 +25,6 @@
     <link rel="canonical" href="{{ request()->getScheme() . '://' . request()->httpHost() .request()->getPathInfo() }}">
 
     {{--<link type="text/css"  rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">--}}
-    <link type="text/css"  rel="stylesheet" href="/lawyers/style/select2.min.css">
 
 </head>
 
