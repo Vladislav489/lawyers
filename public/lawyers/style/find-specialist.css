@@ -3268,7 +3268,7 @@
     display: flex;
     justify-content: space-between;
 
-    a {
+    a, span {
         text-decoration: none;
         font-weight: 600;
         font-size: 16px;
@@ -3285,7 +3285,14 @@
     }
 }
 
-.new-pagination__link_active {
+.new-pagination__links a {
+    margin-right: 16px;
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.new-pagination .new-pagination__link_active {
     color: #282828;
 }
 

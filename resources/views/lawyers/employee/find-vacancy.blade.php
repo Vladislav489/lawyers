@@ -264,7 +264,7 @@
                     <a class="new-pagination__link_active" href="#">3</a>
                     <a  href="#">4</a>
                     <span>...</span>
-                    <a  href="#">4</a>
+                    <a  href="#">28</a>
                 </div>
             </div>
 
