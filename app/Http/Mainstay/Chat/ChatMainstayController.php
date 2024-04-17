@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Mainstay\Chat;
 use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
+use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\System\Admin\Rule;
 use App\Models\System\ControllersModel\MainstayController;
@@ -22,13 +23,15 @@ class ChatMainstayController extends MainstayController
     public function actionCreateChat($param = []) {
         $this->params = empty($param) ? $this->params : $param;
         $rules = [
-            'user_id' => 'required|integer|exists:user_entity,id',
+            'id' => 'nullable|integer|exists:chat,id',
+            'owner_user_id' => 'required|integer|exists:user_entity,id',
             'is_group' => 'nullable|integer',
             'name' => 'nullable|string',
+            'recipient_id' => 'required|integer|exists:user_entity,id'
         ];
         $data = Validator::validate($this->params, $rules);
         if (!isset($data['is_group']) || $data['is_group'] == 0) {
-            $data['name'] = '2 Users chat';
+            $data['name'] = (new UserLogic(['id' => (string) $data['recipient_id']]))->getUserName();
         }
         $chatId = (new ChatLogic())->store($data);
 //        $validator = Validator::make($request->all(), [

@@ -38,8 +38,8 @@ class ChatLogic extends CoreEngine
                 $chat = setTimestamps($chat, 'update');
             }
 
-            if ($data['id'] = $this->save($chat)) {
-                return $data;
+            if ($this->save($chat)) {
+                
             }
 
         } catch (\Throwable $e) {
@@ -49,6 +49,7 @@ class ChatLogic extends CoreEngine
     }
 
     public function addUserToChat($data) {
+        $chatId = $data['id'];
 
     }
 

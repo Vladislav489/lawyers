@@ -58,6 +58,7 @@ class ClientMainstayController extends MainstayController {
             DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions"),
 //            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Vacancy.id, 'text', Question.text, 'status', Question.status)), ']') as questions")
         ];
+//        dd((new UserLogic($this->params, $select))->offPagination()->setLimit(false)->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
         return response()->json((new UserLogic($this->params, $select))->offPagination()->setLimit(false)
             ->setJoin(['City', 'Country', 'Balance', 'Question'])->getOne());
     }

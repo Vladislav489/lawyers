@@ -9,6 +9,7 @@ use App\Models\CoreEngine\ProjectModels\Question\UserQuestion;
 use App\Models\CoreEngine\ProjectModels\User\UserBalance;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Question\Question;
 
@@ -31,6 +32,13 @@ class UserLogic extends CoreEngine
         $this->default = [];
 
         return $this->default;
+    }
+
+    public function getUserName() {
+        $this->select = [
+            DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as user_name")
+        ];
+        return (new self($this->params, $this->select))->getOne()['user_name'];
     }
 
     public function save($data)
