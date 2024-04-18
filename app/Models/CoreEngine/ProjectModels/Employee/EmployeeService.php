@@ -10,6 +10,7 @@ class EmployeeService extends BaseModel
     protected $table = 'user_employee_service';
 
     protected $fillable = [
+        'title',
         'description',
         'price',
         'is_main',

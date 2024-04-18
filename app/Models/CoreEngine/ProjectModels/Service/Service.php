@@ -10,7 +10,6 @@ class Service extends BaseModel
 
     protected $fillable = [
         'name',
-        'description',
         'is_deleted',
         'is_archive',
         'type_id',
