@@ -195,7 +195,26 @@
                 }",
 
                 'template' => "
-                    <div v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</div>
+                <div>
+                    <div v-if=\"currentStatusCode == 8\">
+                        Ожидает принятия исполнителем...
+                        <div>На принятие проекта осталось 20 часов</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 4\">
+                        <button>Тех.поддержка</button>
+                        <div>До конца проекта осталось 33 дня</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 5\">
+                        <button>Отправить заказ на доработку</button>
+                        <button>Заказ выполнен</button>
+                        <button>Тех.поддержка</button>
+                        <div>До конца проекта осталось 33 дня</div>
+                        <div>На принятие проекта осталось 20 часов</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 7\">
+                        Заказ завершен
+                    </div>
+                </div>
                 "
                 ]
                 ])
@@ -249,8 +268,8 @@
                         <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
                         <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
                         <li :class=\"currentStatusCode >= 4 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
-                        <li :class=\"currentStatusCode >= 5 ? '_check' : '_inProgress'\">Сдан на проверку</li>
-                        <li :class=\"currentStatusCode >= 6 ? '_check' : '_inProgress'\">Заказ принят</li>
+                        <li :class=\"currentStatusCode == 5 ? '_check' : '_inProgress'\">Сдан на проверку</li>
+                        <li :class=\"currentStatusCode == 6 ? '_check' : '_inProgress'\">Заказ принят</li>
                     </ul>
                 </div>
                 "

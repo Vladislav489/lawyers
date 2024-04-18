@@ -42,17 +42,32 @@ class EmployeeController extends BaseEmployeeController {
     }
 
     public function actionViewVacancy() {
-        if ((new VacancyLogic([
-            'id' => $this->params['vacancy_id'],
-            'executor_id' => (string)auth()->id(),
-            'status' => (string) VacancyLogic::STATUS_IN_PROGRESS
-        ]))->Exist()) {
+        if ($this->checkChosenExecutor()) {
             return view('lawyers.employee.vacancy-details');
+        } elseif ($this->hasExecutor()) {
+            return redirect()->back();
         }
         return view('lawyers.employee.vacancy-');
     }
 
     public function actionViewOrders() {
         return view('lawyers.employee.all-orders');
+    }
+
+    public function checkChosenExecutor()
+    {
+        return (new VacancyLogic([
+            'id' => $this->params['vacancy_id'],
+            'executor_id' => (string)auth()->id(),
+//            'status' => (string) VacancyLogic::STATUS_LAWYER_ACCEPTANCE
+        ]))->Exist();
+    }
+
+    public function hasExecutor()
+    {
+        return (new VacancyLogic([
+            'id' => $this->params['vacancy_id'],
+            'has_executor' => '1',
+        ]))->Exist();
     }
 }

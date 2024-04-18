@@ -168,222 +168,263 @@
                         <input type="image" src="/lawyers/images/icons/send-icon.svg" alt="send-message-icon">
                     </label>
                 </form>
+                @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'true',
+                'name' => 'action_block',
+                'globalData' => 'VacancyInfo',
+                'callBeforloadComponent' => "function() {
+                    let globalData = page__.getGolobalData('VacancyInfo')
+                    let statusData = globalData.status_history
+                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
+                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    this.option['statusData'] = statusData
+                    return this.option
+                }",
+
+                'template' => "
+                <div>
+                    <div v-if=\"currentStatusCode == 8\">
+                        <button @click=\"acceptToWork(data.id)\">Принять заказ</button>
+                        <button @click=\"declineToWork(data.id)\">Отказаться</button>
+                        <div>На принятие проекта осталось 20 часов</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 4\">
+                        <button>Отправить на проверку</button>
+                        <button>Тех.поддержка</button>
+                        <div>До конца проекта осталось 33 дня</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 5\">
+                        <div>Заказ отправлен на проверку</div>
+                        <div>До конца проекта осталось 33 дня</div>
+                        <div>На принятие проекта осталось 20 часов</div>
+                    </div>
+                    <div v-if=\"currentStatusCode == 7\">
+                        Заказ завершен
+                    </div>
+                </div>
+                "
+                ]
+                ])
             </div>
 
-            <div class="order-right" style="display: none;">
+            <div class="order-right">
 
-{{--                @include('component_build', [--}}
-{{--                'component' => 'component.infoComponent.textInfo',--}}
-{{--                'params_component' => [--}}
-{{--                'autostart' => 'false',--}}
-{{--                'name' => 'vacancy_owner_info',--}}
-{{--                'globalData' => 'VacancyInfo',--}}
-{{--                'callBeforloadComponent' => "function() {--}}
-{{--                    let globalData = page__.getGolobalData('VacancyInfo')--}}
-{{--                    let statusData = globalData.status_history--}}
-{{--                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)--}}
-{{--                    this.option['currentStatus'] = statusData[statusData.length - 1].status--}}
-{{--                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code--}}
-{{--                    this.option['statusData'] = statusData--}}
-{{--                    return this.option--}}
-{{--                }",--}}
+                @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'false',
+                'name' => 'vacancy_owner_info',
+                'globalData' => 'VacancyInfo',
+                'callBeforloadComponent' => "function() {
+                    let globalData = page__.getGolobalData('VacancyInfo')
+                    let statusData = globalData.status_history
+                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
+                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    this.option['statusData'] = statusData
+                    console.log(this.option['currentStatusCode'])
+                    return this.option
+                }",
 
-{{--                'template' => "--}}
-{{--                <div class='order-process'>--}}
-{{--                    <div class='order-process-lawyer'>--}}
-{{--                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='lawyer-avatar-img'>--}}
-{{--                        <div class='right'>--}}
-{{--                            <h4>@{{ data.owner_name }}</h4>--}}
-{{--                            <time>@{{ data.owner_online ?? 'Был(а) давно' }}</time>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <p class='order-process_row'>--}}
-{{--                            <span>--}}
-{{--                                Статус заказа--}}
-{{--                            </span>--}}
-{{--                        <span class='order-process_status _success'>--}}
-{{--                                @{{ currentStatus }}--}}
-{{--                            </span>--}}
-{{--                    </p>--}}
-{{--                    <p class='order-process_row'>--}}
-{{--                            <span>--}}
-{{--                                Цена заказа--}}
-{{--                            </span>--}}
-{{--                        <span>--}}
-{{--                                @{{ data.payment }} &#8381;--}}
-{{--                            </span>--}}
-{{--                    </p>--}}
+                'template' => "
+                <div class='order-process'>
+                    <div class='order-process-lawyer'>
+                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='lawyer-avatar-img'>
+                        <div class='right'>
+                            <h4>@{{ data.owner_name }}</h4>
+                            <time>@{{ data.owner_online ?? 'Был(а) давно' }}</time>
+                        </div>
+                    </div>
+                    <p class='order-process_row'>
+                            <span>
+                                Статус заказа
+                            </span>
+                        <span class='order-process_status _success'>
+                                @{{ currentStatus }}
+                            </span>
+                    </p>
+                    <p class='order-process_row'>
+                            <span>
+                                Цена заказа
+                            </span>
+                        <span>
+                                @{{ data.payment }} &#8381;
+                            </span>
+                    </p>
 
-{{--                    <ul class='order-process_ul'>--}}
-{{--                        <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>--}}
-{{--                        <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>--}}
-{{--                        <li :class=\"currentStatusCode >= 4 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>--}}
-{{--                        <li :class=\"currentStatusCode >= 5 ? '_check' : '_inProgress'\">Сдан на проверку</li>--}}
-{{--                        <li :class=\"currentStatusCode >= 6 ? '_check' : '_inProgress'\">Заказ принят</li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--                "--}}
-{{--                ]--}}
-{{--                ])--}}
+                    <ul class='order-process_ul'>
+                        <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
+                        <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
+                        <li :class=\"currentStatusCode >= 4 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
+                        <li :class=\"currentStatusCode == 5 ? '_check' : '_inProgress'\"><span></span>Сдан на проверку</li>
+                        <li :class=\"currentStatusCode == 6 ? '_check' : '_inProgress'\"><span></span>Заказ принят</li>
+                    </ul>
+                </div>
+                "
+                ]
+                ])
 
-{{--                <div class="top-lawyers mobile-hidden">--}}
-{{--                    <h2 class="top-lawyers_header">--}}
-{{--                        ТОП-юристов по консультациям--}}
-{{--                    </h2>--}}
-{{--                    <div class="top-lawyers_container">--}}
-{{--                        <div class="fs-block">--}}
-{{--                            <div class="fs-img">--}}
-{{--                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">--}}
-{{--                            </div>--}}
+                <div class="top-lawyers mobile-hidden">
+                    <h2 class="top-lawyers_header">
+                        ТОП-юристов по консультациям
+                    </h2>
+                    <div class="top-lawyers_container">
+                        <div class="fs-block">
+                            <div class="fs-img">
+                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
+                            </div>
 
-{{--                            <div class="fs-info">--}}
-{{--                                <h3 class="fs-name">--}}
-{{--                                    Соколовский Владимир Александрович--}}
-{{--                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">--}}
-{{--                                </h3>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">--}}
-{{--                                    <span class="fs-text">Москва и МО</span>--}}
-{{--                                </p>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">--}}
-{{--                                    <span class="fs-text">15 лет практики</span>--}}
-{{--                                </p>--}}
-{{--                                <div class="lawyer_rate-block">--}}
-{{--                                    <div class="specialist-rate">--}}
-{{--                                        <div class="stars">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">--}}
-{{--                                        </div>--}}
+                            <div class="fs-info">
+                                <h3 class="fs-name">
+                                    Соколовский Владимир Александрович
+                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">
+                                </h3>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">
+                                    <span class="fs-text">Москва и МО</span>
+                                </p>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">
+                                    <span class="fs-text">15 лет практики</span>
+                                </p>
+                                <div class="lawyer_rate-block">
+                                    <div class="specialist-rate">
+                                        <div class="stars">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
+                                        </div>
 
-{{--                                        <span>32 ответа</span>--}}
-{{--                                    </div>--}}
+                                        <span>32 ответа</span>
+                                    </div>
 
-{{--                                    <div class="specialist-perm">--}}
-{{--                                        <p>Право рейтинг:</p>--}}
-{{--                                        <span>4.0</span>--}}
-{{--                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                    <div class="specialist-perm">
+                                        <p>Право рейтинг:</p>
+                                        <span>4.0</span>
+                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
+                                    </div>
+                                </div>
+                            </div>
 
-{{--                            <div class="buttons-container">--}}
-{{--                                <button class="main-btn main-btn_white">--}}
-{{--                                    <span class="first">Сообщение</span>--}}
-{{--                                    <span class="second">Сообщение</span>--}}
-{{--                                </button>--}}
-{{--                                <button class="main-btn main-btn_blue">--}}
-{{--                                    <span class="first">Предложить работу</span>--}}
-{{--                                    <span class="second">Предложить работу</span>--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="fs-block">--}}
-{{--                            <div class="fs-img">--}}
-{{--                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">--}}
-{{--                            </div>--}}
+                            <div class="buttons-container">
+                                <button class="main-btn main-btn_white">
+                                    <span class="first">Сообщение</span>
+                                    <span class="second">Сообщение</span>
+                                </button>
+                                <button class="main-btn main-btn_blue">
+                                    <span class="first">Предложить работу</span>
+                                    <span class="second">Предложить работу</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="fs-block">
+                            <div class="fs-img">
+                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
+                            </div>
 
-{{--                            <div class="fs-info">--}}
-{{--                                <h3 class="fs-name">--}}
-{{--                                    Соколовский Владимир Александрович--}}
-{{--                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">--}}
-{{--                                </h3>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">--}}
-{{--                                    <span class="fs-text">Москва и МО</span>--}}
-{{--                                </p>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">--}}
-{{--                                    <span class="fs-text">15 лет практики</span>--}}
-{{--                                </p>--}}
-{{--                                <div class="lawyer_rate-block">--}}
-{{--                                    <div class="specialist-rate">--}}
-{{--                                        <div class="stars">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">--}}
-{{--                                        </div>--}}
+                            <div class="fs-info">
+                                <h3 class="fs-name">
+                                    Соколовский Владимир Александрович
+                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">
+                                </h3>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">
+                                    <span class="fs-text">Москва и МО</span>
+                                </p>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">
+                                    <span class="fs-text">15 лет практики</span>
+                                </p>
+                                <div class="lawyer_rate-block">
+                                    <div class="specialist-rate">
+                                        <div class="stars">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
+                                        </div>
 
-{{--                                        <span>32 ответа</span>--}}
-{{--                                    </div>--}}
+                                        <span>32 ответа</span>
+                                    </div>
 
-{{--                                    <div class="specialist-perm">--}}
-{{--                                        <p>Право рейтинг:</p>--}}
-{{--                                        <span>4.0</span>--}}
-{{--                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                    <div class="specialist-perm">
+                                        <p>Право рейтинг:</p>
+                                        <span>4.0</span>
+                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
+                                    </div>
+                                </div>
+                            </div>
 
-{{--                            <div class="buttons-container">--}}
-{{--                                <button class="main-btn main-btn_white">--}}
-{{--                                    <span class="first">Сообщение</span>--}}
-{{--                                    <span class="second">Сообщение</span>--}}
-{{--                                </button>--}}
-{{--                                <button class="main-btn main-btn_blue">--}}
-{{--                                    <span class="first">Предложить работу</span>--}}
-{{--                                    <span class="second">Предложить работу</span>--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="fs-block">--}}
-{{--                            <div class="fs-img">--}}
-{{--                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">--}}
-{{--                            </div>--}}
+                            <div class="buttons-container">
+                                <button class="main-btn main-btn_white">
+                                    <span class="first">Сообщение</span>
+                                    <span class="second">Сообщение</span>
+                                </button>
+                                <button class="main-btn main-btn_blue">
+                                    <span class="first">Предложить работу</span>
+                                    <span class="second">Предложить работу</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="fs-block">
+                            <div class="fs-img">
+                                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-img">
+                            </div>
 
-{{--                            <div class="fs-info">--}}
-{{--                                <h3 class="fs-name">--}}
-{{--                                    Соколовский Владимир Александрович--}}
-{{--                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">--}}
-{{--                                </h3>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">--}}
-{{--                                    <span class="fs-text">Москва и МО</span>--}}
-{{--                                </p>--}}
-{{--                                <p class="fs-row">--}}
-{{--                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">--}}
-{{--                                    <span class="fs-text">15 лет практики</span>--}}
-{{--                                </p>--}}
-{{--                                <div class="lawyer_rate-block">--}}
-{{--                                    <div class="specialist-rate">--}}
-{{--                                        <div class="stars">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">--}}
-{{--                                        </div>--}}
+                            <div class="fs-info">
+                                <h3 class="fs-name">
+                                    Соколовский Владимир Александрович
+                                    <img src="/lawyers/images/icons/check-icon-green.svg" alt="check-icon">
+                                </h3>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/loc-icon-gray.svg" alt="loc-icon" class="icon">
+                                    <span class="fs-text">Москва и МО</span>
+                                </p>
+                                <p class="fs-row">
+                                    <img src="/lawyers/images/icons/bag-icon-gray.svg" alt="bag-icon" class="icon">
+                                    <span class="fs-text">15 лет практики</span>
+                                </p>
+                                <div class="lawyer_rate-block">
+                                    <div class="specialist-rate">
+                                        <div class="stars">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
+                                            <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
+                                        </div>
 
-{{--                                        <span>32 ответа</span>--}}
-{{--                                    </div>--}}
+                                        <span>32 ответа</span>
+                                    </div>
 
-{{--                                    <div class="specialist-perm">--}}
-{{--                                        <p>Право рейтинг:</p>--}}
-{{--                                        <span>4.0</span>--}}
-{{--                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                                    <div class="specialist-perm">
+                                        <p>Право рейтинг:</p>
+                                        <span>4.0</span>
+                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
+                                    </div>
+                                </div>
+                            </div>
 
-{{--                            <div class="buttons-container">--}}
-{{--                                <button class="main-btn main-btn_white">--}}
-{{--                                    <span class="first">Сообщение</span>--}}
-{{--                                    <span class="second">Сообщение</span>--}}
-{{--                                </button>--}}
-{{--                                <button class="main-btn main-btn_blue">--}}
-{{--                                    <span class="first">Предложить работу</span>--}}
-{{--                                    <span class="second">Предложить работу</span>--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+                            <div class="buttons-container">
+                                <button class="main-btn main-btn_white">
+                                    <span class="first">Сообщение</span>
+                                    <span class="second">Сообщение</span>
+                                </button>
+                                <button class="main-btn main-btn_blue">
+                                    <span class="first">Предложить работу</span>
+                                    <span class="second">Предложить работу</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <nav class="exchange_nav mobile tab_nav">
                 <ul>
@@ -939,6 +980,33 @@
     $(document).ready(function () {
 
     })
+
+    function acceptToWork(vacancyId) {
+        $.ajax({
+            method: 'POST',
+            data: {
+                vacancy_id: vacancyId,
+                employee_user_id: {{ auth()->id() }},
+            },
+            url: '{{ route__('actionAcceptWork_mainstay_employee_employeemainstaycontroller') }}',
+            success: function (response) {
+                location.reload();
+            }
+        })
+    }
+    function declineToWork(vacancyId) {
+        $.ajax({
+            method: 'POST',
+            data: {
+                vacancy_id: vacancyId,
+                employee_user_id: {{ auth()->id() }}
+            },
+            url: '{{ route__('actionDeclineWork_mainstay_employee_employeemainstaycontroller') }}',
+            success: function (response) {
+                location.href = `{{ route__('actionEmployeeCabinet_controllers_employee_employeecontroller') }}`;
+            }
+        })
+    }
 
 </script>
 @endsection

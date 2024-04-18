@@ -187,7 +187,7 @@
             // 'ssr' => 'true',
             'name' => 'vacancy_list',
             'url' => route__("actionGetVacancyList_mainstay_vacancy_vacancymainstaycontroller"),
-            'params' => ['user_id' => ''],
+            'params' => ['user_id' => '', 'has_no_executor' => '1'],
 
             'template' =>
             "<div class='exchanges' :id=\"name + '_body' \">
