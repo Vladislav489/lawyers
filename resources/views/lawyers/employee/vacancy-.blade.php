@@ -201,7 +201,6 @@
 
 
                                 <div class='container' id='response_form' hidden>
-                                    <div class='lawyer-responce_card'>
                                         <div class='lawyer-responce_inner'>
                                             <h2 class='heading--lawyer-response'>Текст отклика</h2>
                                             <form action='#' class='form--lawyer-response'>
@@ -229,7 +228,6 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div>
                             </section>
 						"
 

@@ -554,6 +554,7 @@
     .fs-block .buttons-container .main-btn {
         flex: 1 1 calc(50% - 12px);
     }
+    .top-lawyers_container .fs-block .buttons-container .main-btn {flex: auto;}
 }
 
 @media screen and (max-width: 768px) {
@@ -1021,7 +1022,7 @@
 
 .top-lawyers .fs-name img {
     width: 24px;
-    /* margin-bottom: -6px; */
+    margin-bottom: -6px;
 }
 
 .top-lawyers .fs-text_bold {
@@ -1703,6 +1704,7 @@
 }
 
 .order-row {
+    align-items: center;
     display: flex;
     gap: 12px;
 }
