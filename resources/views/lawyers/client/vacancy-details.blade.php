@@ -83,7 +83,7 @@
                 'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
                 'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
                 'template' =>
-                "<ul>
+                "<ul class='files_list'>
                     <li v-for=\"item in data\">
                         <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
                     </li>
@@ -321,14 +321,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                         <div class="fs-block">
@@ -371,14 +365,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                         <div class="fs-block">
@@ -421,14 +409,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                     </div>
@@ -592,14 +574,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                         <div class="fs-block">
@@ -642,14 +618,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                         <div class="fs-block">
@@ -692,14 +662,8 @@
                             </div>
 
                             <div class="buttons-container">
-                                <button class="main-btn main-btn_white">
-                                    <span class="first">Сообщение</span>
-                                    <span class="second">Сообщение</span>
-                                </button>
-                                <button class="main-btn main-btn_blue">
-                                    <span class="first">Предложить работу</span>
-                                    <span class="second">Предложить работу</span>
-                                </button>
+                                <button class="main-btn main-btn_white">Сообщение</button>
+                                <button class="main-btn main-btn_blue">Предложить работу</button>
                             </div>
                         </div>
                     </div>

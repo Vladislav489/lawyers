@@ -1307,7 +1307,6 @@
 }
 .lawsuit .main-btn {
     flex: 0 0 198px;
-    display: block;
 }
 
 @media screen and (max-width: 768px) {

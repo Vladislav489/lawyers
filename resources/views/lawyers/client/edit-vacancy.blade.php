@@ -116,10 +116,10 @@
                             'globalData' => "VacancyFiles",
 
                             'template' =>
-                            "<ul>
+                            "<ul class='files_list'>
                                 <li v-for=\"item in data\">
                                     <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
-                                    <button style='color:red' @click=\"deleteFile(item.path)\">delete</button>
+                                    <button style='color:red' @click=\"deleteFile(item.path)\">&nbsp;&nbsp;Удалить</button>
                                 </li>
                             </ul>
                             ",
@@ -198,27 +198,7 @@
                         </ul>
                     </div>
 
-                    <button class="main-btn main-btn_blue">
-                        <span class="first">
-                            Разместить заказ
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19"
-                                 fill="none" class="arrow-icon">
-                                <path d="M1.27478 1.82703L7.98864 9.50001L1.27478 17.173" stroke="white"
-                                      stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-
-                        <span class="second">
-                        Разместить заказ
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19"
-                                 fill="none" class="arrow-icon">
-                                <path d="M1.27478 1.82703L7.98864 9.50001L1.27478 17.173" stroke="white"
-                                      stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </button>
+                    <button class="main-btn main-btn_blue"><span>Разместить заказ</span></button>
 
                     <label class="private-policy">
                         <input type="checkbox" name="private-policy">
