@@ -31,6 +31,7 @@ class FileLogic extends FileSystemLogic
             $fileName = $file->getClientOriginalName();
             $savedFileInfo = $this->saveFile($type . '/' . $data['id'], $fileName, $file);
             $savedFileInfo['user_id'] = $data['user_id'];
+            $savedFileInfo['vacancy_id'] = $data['id'];
             $savedFileInfo['name'] = $savedFileInfo['fileName'];
             $fileRecord = array_intersect_key($savedFileInfo, array_flip($this->engine->getFillable()));
 
