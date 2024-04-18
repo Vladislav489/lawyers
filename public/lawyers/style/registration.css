@@ -1,7 +1,7 @@
 .registration-section .container {
-    width: 580px;
     padding-top: 30px;
     padding-bottom: 85px;
+    width: 600px;
 }
 .registration-section label {
     cursor: pointer;
@@ -197,7 +197,7 @@
     transform: rotate(-90deg);
 
 }
-.registration-form_label .error-text {
+.registration-form_label .error-text,.registration-form_block .error-text {
     position: absolute;
     bottom: 0;
     transform: translateY(100%);
@@ -205,11 +205,11 @@
     font-size: 12px;
     font-weight: 600;
     line-height: 140%;
-    display: none;
+    display: block;
 }
 
 @media screen and (max-width: 768px) {
-    .registration-form_label .error-text {
+    .registration-form_label .error-text,.registration-form_block .error-text {
         font-size: 10px;
         top: 13px;
         left: 21px;
@@ -217,7 +217,7 @@
     }
 }
 
-.registration-form_label.error input {
+.registration-form_label.error input,.registration-form_block input.is-invalid {
     border: 1px solid #F87D7D;
 }
 .registration-form_label.error .error-text {
@@ -350,10 +350,8 @@
     top: 10px;
 }
 .registration-form .main-btn {
-    max-width: 434px;
-    width: 100%;
     margin: 20px auto 0 auto;
-    text-align: center;
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {

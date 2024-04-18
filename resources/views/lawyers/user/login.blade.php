@@ -1,16 +1,37 @@
 @extends('lawyers.layouts.main')
 @section('title', 'Вход в систему')
 
-@push('bootstrap')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <style>
-        ul {
-            margin: 0 !important;
-        }
-    </style>
-@endpush
-
 @section('content')
+    <section class="registration-section u-container">
+        <div class="container">
+            <h1 class="section_header">Вход в систему</h1>
+            <form class="registration-form" id="login-form" action="{{ route__('actionUserLogin_logincontroller') }}" method="post" enctype="application/x-www-form-urlencoded">
+                <div class="registration-form_block">
+                    <h3 class="registration-form_block-header">Введите данные</h3>
+                        @csrf
+                            <div class="registration-form_label full">
+                                <label class="label-title" for="phone">Номер телефона</label>
+                                <input id="phone" class="form-control @error('phone_number') is-invalid @enderror" type="tel" name="phone_number" value="{{ old('phone_number') }}">
+                                @error('phone_number')
+                                <div class="error-text">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="registration-form_label full">
+                                <label class="label-title" for="password">Пароль</label>
+                                <input id="password" class="form-control @error('password') is-invalid @enderror" type="password" name="password" value="{{ old('password') }}">
+                                @error('password')
+                                <div class="error-text">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        <button type="submit" class="main-btn">Войти</button>
+                        @guest
+                        <a @class(['main-btn main-btn_border','active' => str_contains(Route::currentRouteName(), 'actionSignup')]) href="{{ route__('actionSignupClient_controllers_site_usercontroller') }}">Регистрация</a>
+                        @endguest
+                    </div>
+            </form>
+        </div>
+    </section>
+{{--
     <section class="mt-5">
         <div class="container">
             <div class="row">
@@ -58,5 +79,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>--}}
 @endsection
