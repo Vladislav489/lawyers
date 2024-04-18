@@ -191,8 +191,11 @@ class VacancyLogic extends CoreEngine
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name) as owner_name"),
             DB::raw("Owner.online as owner_online"),
             DB::raw("Executor.id as executor_id"),
+//            DB::raw("File.path as file_path WHERE File.path LIKE %vacancy/" . $data['id'])
         ];
-        return ['result' => (new VacancyLogic($data, $select))->setJoin(['Service', 'Region', 'City', 'Owner', 'Status', 'Executor'])->getOne()];
+        $result = (new VacancyLogic($data, $select))->setJoin(['Service', 'Region', 'City', 'Owner', 'Status', 'Executor', 'Files'])->getOne();
+        $result['files'] = json_decode($result['files'], true);
+        return ['result' => $result];
     }
 
     public function getVacancyLastStatus($vacancyId) {
@@ -283,6 +286,7 @@ class VacancyLogic extends CoreEngine
     protected function compileGroupParams(): array
     {
         $userId = $this->params['user_id'] ?? '';
+        $vacancyId = $this->params['id'] ?? '';
         $this->group_params = [
             'select' => [],
             'by' => [],
@@ -380,9 +384,11 @@ class VacancyLogic extends CoreEngine
                     'field' => []
                 ],
                 'Files' => [
-                    'entity' => new File(),
-                    'relationship' => ['id', 'user_id'],
-                    'field' => []
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'path', path, 'name',
+                                name)) as files,
+                                vacancy_id FROM file GROUP BY vacancy_id) as Files ON Files.vacancy_id = vacancy.id"),
+                    'field' => ['files']
                 ],
             ]
         ];

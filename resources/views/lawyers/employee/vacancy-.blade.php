@@ -70,6 +70,13 @@
                                     </div>
                                 </div>
 
+                                <ul v-if=\"data.files\">
+                                    <li v-for=\"item in data.files\">
+                                        
+                                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                                    </li>
+                                </ul>
+
                                 <div class='exchange_right'>
                                     <span>за проект</span>
                                     <p>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</p>
@@ -93,21 +100,21 @@
         ]
         ])
 
-            @include('component_build',[
-	        'component' => 'component.infoComponent.textInfo',
-            'params_component' => [
-            'name' => "vacancy_files",
-            'autostart' => 'true',
-            'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
-            'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
-            'template' =>
-            "<ul>
-                <li v-for=\"item in data\">
-                    <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
-                </li>
-            </ul>"
-    ]
-])
+{{--            @include('component_build',[--}}
+{{--	        'component' => 'component.infoComponent.textInfo',--}}
+{{--            'params_component' => [--}}
+{{--            'name' => "vacancy_files",--}}
+{{--            'autostart' => 'true',--}}
+{{--            'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),--}}
+{{--            'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],--}}
+{{--            'template' =>--}}
+{{--            "<ul>--}}
+{{--                <li v-for=\"item in data\">--}}
+{{--                    <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>--}}
+{{--                </li>--}}
+{{--            </ul>"--}}
+{{--                ]--}}
+{{--            ])--}}
 
         </div>
     </section>

@@ -15,5 +15,6 @@ class File extends BaseModel
         'is_archive',
         'is_private',
         'user_id',
+        'vacancy_id'
     ];
 }
