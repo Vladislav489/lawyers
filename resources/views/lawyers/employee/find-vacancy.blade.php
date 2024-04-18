@@ -41,12 +41,10 @@
                        return component.option;
                     }",
                     "template" =>
-                    '<div class="select-wrapper">
-                        <select class="unit-select_select" name="region_id" :id="name" style="width:100%">
+                    '<select class="unit-select_select js_select" name="region_id" :id="name" style="width:100%">
                             <option class="unit-selected" selected>Выбрать</option>
                             <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
-                        </select>
-                    </div>',
+                        </select>',
                     "change" => "function(){
                         if($(this).val() !== '') {
                         const param = {'region_id': $(this).find('option:selected').val()}

@@ -83,7 +83,7 @@
                 'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
                 'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
                 'template' =>
-                "<ul>
+                "<ul class='files_list'>
                     <li v-for=\"item in data\">
                         <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
                     </li>
