@@ -59,6 +59,13 @@
                                     </div>
                                 </div>
 
+                                <ul v-if=\"data.files\">
+                                    <li v-for=\"item in data.files\">
+
+                                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                                    </li>
+                                </ul>
+
                                 <div class='exchange_right'>
                                     <span>за проект</span>
                                     <p>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</p>
