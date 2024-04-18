@@ -260,6 +260,7 @@ function clearForm(selector){
                 if(element.attr('type') == "checkbox"){
                     $(dataEdit[index]).val('');
                     $(dataEdit[index]).removeAttr('checked')
+                    $('.js_select').val(null).trigger('change');
                 } else {
                     $(dataEdit[index]).val('');
                 }
