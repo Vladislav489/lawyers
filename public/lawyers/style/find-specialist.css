@@ -982,7 +982,7 @@
     background: var(--white-color);
     width: 336px;
 }
-
+.top-lawyers_container .fs-info{width: 100%;}
 .top-lawyers .fs-block .lawyer_rate-block {
     flex-direction: column;
     gap: 8px;
@@ -3514,6 +3514,7 @@
         gap: 12px;
         padding: 12px 12px 20px;
     }
+    .fs-info{width: 100%;}
     .all-responses-section .fs-block .fs-img{
         height: 70px;
         width: 70px;

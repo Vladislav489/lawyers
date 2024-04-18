@@ -4,18 +4,21 @@
 
 @section('content')
 
-<!-- bread crumbs -->
+<!-- bread crumbs
 <div class="bread-crumbs">
     <div class="container">
         <a class="bread-crumbs__first-link" href="#">Юрист</a>
         <img src="/lawyers/images/icons/arrow-icon-main.svg" alt="icon">
         <a href="#">Город</a>
     </div>
-</div>
+</div>-->
 
 <section class="find-section u-container">
     <div class="container">
-
+        <ul class="breadcrumbs">
+            <li class="cool-underline"><a href="#">Юрист</a></li>
+            <li class="cool-underline"><a href="#">Город</a></li>
+        </ul>
         <form action="#" class="find-block find-form mobile-hidden">
             <label class="search-label">
                 <input type="search" id="search-spec" name="search-spec" placeholder="Имя и фамилия специалиста...">
@@ -119,13 +122,8 @@
                 </div>
 
                 <button type="reset" class="find_reset-filter">сбросить фильтр</button>
-            </div>
-
-            <a class="rules-text">
-                Правила размещения заявок на получение юридической помощи
-            </a>
+                <a class="rules-text">Правила размещения заявок на получение юридической помощи</a>
         </form>
-
 
     </div>
 </section>
@@ -395,14 +393,8 @@
                     </div>
 
                     <div class="buttons-container">
-                        <button class="main-btn main-btn_white">
-                            <span class="first">Сообщение</span>
-                            <span class="second">Сообщение</span>
-                        </button>
-                        <button class="main-btn main-btn_blue">
-                            <span class="first">Предложить работу</span>
-                            <span class="second">Предложить работу</span>
-                        </button>
+                        <button class="main-btn main-btn_white">Сообщение</button>
+                        <button class="main-btn main-btn_blue">Предложить работу</button>
                     </div>
                 </div>
             </div>
