@@ -38,7 +38,9 @@
                                     <p class='exchange_text fs-text'>
                                         @{{ data.description }}
                                     </p>
-
+                                    <ul v-if=\"data.files\" class='files_list'>
+                                        <li v-for=\"item in data.files\"><a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a></li>
+                                    </ul>
                                     <div class='exchange_info'>
                                         <ul class='exchange_location'>
                                             <li class='fs-text'>
@@ -59,13 +61,6 @@
                                     </div>
                                 </div>
 
-                                <ul v-if=\"data.files\">
-                                    <li v-for=\"item in data.files\">
-
-                                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
-                                    </li>
-                                </ul>
-
                                 <div class='exchange_right'>
                                     <span>за проект</span>
                                     <p>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</p>
@@ -81,7 +76,7 @@
                                     <li><span>Цена заказа</span><span>@{{ data.payment !== 0 ? data.payment : 'Н/У' }} &#8381;</span></li>
                                 </ul>
 
-                                <button type='button' class='change-info' @click=\"editVacancy(data.id)\">Изменить</button>
+                                <button type='button' class='responce-call main-btn main-btn_blue' @click=\"editVacancy(data.id)\">Изменить</button>
                             </div>
                         </div>
                         "
@@ -116,8 +111,11 @@
         <div class='responses-container' v-for=\"item in data\">
 
             <div class='fs-block' v-if=\"item.employee_user_id == executor_id\">
-                <div class='fs-img'>
-                    <img :src=\"item.avatar\" alt='lawyer-img'>
+                <div class='fs-img-container'>
+                    <div class='fs-img'>
+                        <img :src=\"item.avatar\" alt='lawyer-img' alt='' height='100' width='100' />
+                    </div>
+                    <h3 class='fs-name'>@{{ item.full_name }}</h3>
                 </div>
 
                 <div class='fs-info'>
@@ -179,8 +177,11 @@
             </div>
 
             <div class='fs-block' v-if=\"executor_id == null\">
-                <div class='fs-img'>
-                    <img :src=\"item.avatar\" alt='lawyer-img'>
+                <div class='fs-img-container'>
+                    <div class='fs-img'>
+                        <img :src=\"item.avatar\" alt='lawyer-img' alt='' height='100' width='100' />
+                    </div>
+                    <h3 class='fs-name'>@{{ item.full_name }}</h3>
                 </div>
 
                 <div class='fs-info'>
@@ -227,14 +228,8 @@
                         <li><span>Стоимость</span><span class='b-price'>@{{ item.payment }} ₽</span></li>
                         <li><span>Срок выполнения</span><span class='b-days'>@{{ item.period }} дней</span></li>
                     </ul>
-                    <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id, item.payment)\">
-                        <span class='first'>Заказать</span>
-                        <span class='second'>Заказать</span>
-                    </button>
-                    <button class='main-btn main-btn_white'>
-                        <span class='first'>Сообщение</span>
-                        <span class='second'>Сообщение</span>
-                    </button>
+                    <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id, item.payment)\">Заказать</button>
+                    <button class='main-btn main-btn_white'>Сообщение</button>
                 </div>
             </div>
         </div>

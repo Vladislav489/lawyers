@@ -83,16 +83,8 @@
                                     <span>Время работы:</span>
                                     <span class='bold'>Пн-Сб 9:00 - 18:00</span>
                                 </div>
-                                <button @click.prevent=\"goToEditPage()\" type='button' class='main-btn main-btn_white'>
-                                    <span class='first'>Редактировать</span>
-                                    <span class='second'>Редактировать</span>
-                                </button>
-                                <button type='button' class='main-btn main-btn_blue mobile'>
-                                    <span class='first'>
-                                        Редактировать
-                                        <img src='images/icons/arrow-icon-white.svg' alt='arrow-icon' class='icon'>
-                                    </span>
-                                </button>
+                                <button @click.prevent=\"goToEditPage()\" type='button' class='main-btn main-btn_white'>Редактировать</button>
+                                <button type='button' class='main-btn main-btn_blue mobile'><span>Редактировать</span></button>
                             </div>
                         </div>
                     </div></div>",
@@ -203,10 +195,7 @@
                                     </ul>
                                 </div>
 
-                                <a href='#' type='button' class='main-btn main-btn_white'>
-                                    <span class='first'>Открыть</span>
-                                    <span class='second'>Открыть</span>
-                                </a>
+                                <a href='#' type='button' class='main-btn main-btn_white'>Открыть</a>
                             </li>
 
                             <li>
@@ -223,10 +212,7 @@
                                     </ul>
                                 </div>
 
-                                <a href='#' type='button' class='main-btn main-btn_white'>
-                                    <span class='first'>Открыть</span>
-                                    <span class='second'>Открыть</span>
-                                </a>
+                                <a href='#' type='button' class='main-btn main-btn_white'>Открыть</a>
                             </li>
                         </ul>
 
