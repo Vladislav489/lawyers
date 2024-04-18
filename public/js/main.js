@@ -89,11 +89,8 @@ class Page {
                 url: urlAction, type: 'post',
                 data: prm, dataType: "json",
                 success: function (data) {
-                    if (data.result !== undefined) {
-                        $this.globlaData[name] = (callback != null && callback && callback instanceof Function)? callback(data.result, $this): data.result;
-                    } else {
                         $this.globlaData[name] = (callback != null && callback && callback instanceof Function)? callback(data, $this): data;
-                    }
+
                 }
             });
         } else {

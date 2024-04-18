@@ -133,7 +133,7 @@
 
 						'template' => "
                             <section class='u-container response-section section--lawyer-response'
-                             id='response_section' :hidden=\"!lawyerResponse\">
+                             id='response_section' v-if=\"!lawyerResponse\">
                                 <div class='container' id='response_card'>
                                     <div class='responses-container'>
 
