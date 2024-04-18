@@ -33,7 +33,7 @@
                         'component' => 'component.infoComponent.textInfo',
                         'params_component' => [
                         'autostart' => 'true',
-                        'name' => 'my_response',
+                        'name' => 'vacancy_info',
                         'globalData' => 'VacancyInfo',
 //						'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
 //                        'params' => ['id' => request()->route('vacancy_id')],
@@ -117,7 +117,7 @@
         </div>
     </section>
 
-    @include('component_build', [
+                    @include('component_build', [
                         'component' => 'component.infoComponent.textInfo',
                         'params_component' => [
                         'autostart' => 'true',
@@ -132,7 +132,7 @@
 
 						'template' => "
                             <section class='u-container response-section section--lawyer-response all-responses-section'
-                             id='response_section' v-if=\"!lawyerResponse\">
+                             id='response_section' v-if=\"lawyerResponse\">
                                 <div class='container' id='response_card'>
                                     <div class='responses-container'>
 
@@ -200,7 +200,7 @@
                                 </div>
 
 
-                                <div class='container' id='response_form' hidden>
+                                <!--<div class='container' id='response_form' hidden>
                                         <div class='lawyer-responce_inner'>
                                             <h2 class='heading--lawyer-response'>Текст отклика</h2>
                                             <form action='#' class='form--lawyer-response'>
@@ -215,7 +215,64 @@
                                                     <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"lawyerResponse.period\">
                                                     <span>дней</span>
                                                 </div>
-                                                <button id='respond' @click.prevent=\"send()\" type='submit' class='main-btn main-btn_blue form--lr_submit'>@{{ lawyerResponse ? 'Обновить отклик' : 'Отправить' }}</button>
+                                                <button id='respond' @click.prevent=\"send()\"
+                                                 type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
+                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\"
+                                                 type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
+                                                <div class='flex form--acceptance'>
+                                                    <label class='form--checkbox-wrap'>
+                                                        <input type='checkbox' class='acceptance-checkbox' hidden>
+                                                        <div class='acceptance-icon'></div>
+                                                    </label>
+                                                    <p>Я принимаю <a>Правила</a> и <a>Политику Конфидициальности</a></p>
+                                                </div>
+                                                <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
+                                                <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </section>
+						"
+
+                        ]
+                    ])
+
+                    @include('component_build', [
+                        'component' => 'component.infoComponent.textInfo',
+                        'params_component' => [
+                        'autostart' => 'false',
+                        'name' => 'response_form',
+						'callBeforloadComponent' => "function(component) {
+						        component.option['lawyerResponse'] = page__.getGolobalData('LawyerResponse')
+						        component.option['vacancyInfo'] = page__.getGolobalData('VacancyInfo')
+						        return component.option
+						    }",
+
+						'template' => "
+                            <section class='u-container response-section section--lawyer-response all-responses-section'
+                             id='response_section_form' hidden>
+
+                                <div class='container' id='response_form'>
+                                    <div class='lawyer-responce_card'>
+                                        <div class='lawyer-responce_inner'>
+                                            <h2 class='heading--lawyer-response'>Текст отклика</h2>
+                                            <form action='#' class='form--lawyer-response'>
+                                                <textarea id='response_text' class='form--lr-textarea' placeholder='Введите сопроводительный текст...' >@{{ lawyerResponse.response_text }}</textarea>
+                                                <div class='flex align-center form--group'>
+                                                    <span class='form--group_heading'>Стоимость услуги</span>
+                                                    <input id='response_price' type='number' placeholder='Сумма' class='form--field' :value=\"lawyerResponse.payment\">
+                                                    <span>рублей</span>
+                                                </div>
+                                                <div class='flex align-center form--group'>
+                                                    <span class='form--group_heading'>Срок</span>
+                                                    <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"lawyerResponse.period\">
+                                                    <span>дней</span>
+                                                </div>
+                                                <button id='respond' @click.prevent=\"send()\"
+                                                 type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
+                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\"
+                                                 type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
                                                 <div class='flex form--acceptance'>
                                                     <label class='form--checkbox-wrap'>
                                                         <input type='checkbox' class='acceptance-checkbox' hidden>
@@ -232,7 +289,7 @@
 						"
 
                         ]
-                        ])
+                    ])
 
 
     <script>
@@ -252,21 +309,14 @@
         }
 
         function openResponseForm() {
-            let elem = $('#response_form')
+            let elem = $('#response_section_form')
             elem.prop('hidden', !elem.prop('hidden'))
-            $('#response_card').prop('hidden', !$('#response_card').prop('hidden'))
+            $('#response_section').prop('hidden', !$('#response_section').prop('hidden'))
         }
 
         function openResponseSection() {
-            let elem = $('#response_section')
+            let elem = $('#response_section_form')
             elem.prop('hidden', !elem.prop('hidden'))
-            $('#response_card').prop('hidden', true)
-            $('#response_form').prop('hidden', false)
-            if (elem.prop('hidden') == true) {
-                $('#switch_button').text('Откликнуться')
-            } else {
-                $('#switch_button').text('Отмена')
-            }
         }
 
         function deleteResponse(offerId, offerResponseId) {
