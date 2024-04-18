@@ -139,10 +139,7 @@
 
                                     </div>
 
-                                    <button id="edit_info" type="button" class="main-btn main-btn_white">
-                                        <span class="first">Редактировать</span>
-                                        <span class="second">Редактировать</span>
-                                    </button>
+                                    <button id="edit_info" type="button" class="main-btn main-btn_white">Редактировать</button>
 
                                     <div class="balance-block">
                                         <div class="balance-block_left">
@@ -153,16 +150,7 @@
                                             </p>
                                         </div>
 
-                                        <a href="{{route__("actionPaymentPage_controllers_client_clientcontroller")}}" class="main-btn">
-                                            <span class="first">
-                                                Пополнить
-                                                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-                                            </span>
-                                            <span class="second">
-                                                Пополнить
-                                                <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon" class="icon">
-                                            </span>
-                                        </a>
+                                        <a href="{{route__("actionPaymentPage_controllers_client_clientcontroller")}}" class="main-btn"><span>Пополнить</span></a>
                                     </div>
                                 </div>
                             </div>',
@@ -250,10 +238,7 @@
                                     </ul>
                                 </div>
 
-                                <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>
-                                    <span class='first'>Открыть</span>
-                                    <span class='second'>Открыть</span>
-                                </a>
+                                <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>Открыть</a>
                             </li>
                         </ul>
                         <button class='more-services' @click.prevent=\"goToOrdersPage()\">Еще</button>
@@ -302,10 +287,7 @@
                                     </ul>
                                 </div>
 
-                                <a href="#" type="button" class="main-btn main-btn_white">
-                                    <span class="first">Открыть</span>
-                                    <span class="second">Открыть</span>
-                                </a>
+                                <a href="#" type="button" class="main-btn main-btn_white">Открыть</a>
                             </li>
                         </ul>',
                         'pagination' => [

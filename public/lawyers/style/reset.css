@@ -10,6 +10,7 @@
     --dark-color: #282828;
     --blue-color: #5D74F1;
     --green-color: #00AA87;
+    --red-color: #D14B42;
     --background-color: #F5F5F5;
     --white-color: #ffffff;
     --transition: .3s;
@@ -156,10 +157,19 @@ label input {
     color: var(--dark-color);
     border: 1px solid var(--dark-color);
 }
-.main-btn_border:hover{
-    background-color: var(--dark-color);
-    color: var(--white-color);
+    .main-btn_border:hover{
+        background-color: var(--dark-color);
+        color: var(--white-color);
+    }
+.main-btn_red {
+    background-color: var(--white-color);
+    color: var(--red-color);
+    border: 1px solid var(--red-color);
 }
+    .main-btn_red:hover{
+        background-color: var(--red-color);
+        color: var(--white-color);
+    }
 .main-btn_blue {
     background-color: var(--blue-color);
     gap: 13px;

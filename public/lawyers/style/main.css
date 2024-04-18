@@ -1305,11 +1305,14 @@ header {
     position: relative;
 }
 .breadcrumbs a:after {
-    content: url("../images/icons/arrow-icon-main.svg");
-    position: absolute;
+    background: url(../images/icons/arrow-icon-main.svg) center no-repeat;
+    content: "";
     display: flex;
-    right: -14px;
-    top: -1px;
+    height: 100%;
+    position: absolute;
+    right: -17px;
+    top: 0;
+    width: 9px;
 }
 .breadcrumbs li:last-child a:after {
     content: none;

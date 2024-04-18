@@ -49,6 +49,11 @@
                                     <p class='exchange_text fs-text'>
                                         @{{ data.description }}
                                     </p>
+                                <ul v-if=\"data.files\" class='files_list'>
+                                    <li v-for=\"item in data.files\">
+                                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                                    </li>
+                                </ul>
 
                                     <div class='exchange_info'>
                                         <ul class='exchange_location'>
@@ -69,12 +74,6 @@
                                         </ul>
                                     </div>
                                 </div>
-
-                                <ul v-if=\"data.files\">
-                                    <li v-for=\"item in data.files\">
-                                        <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
-                                    </li>
-                                </ul>
 
                                 <div class='exchange_right'>
                                     <span>за проект</span>
@@ -132,14 +131,17 @@
 						    }",
 
 						'template' => "
-                            <section class='u-container response-section section--lawyer-response'
+                            <section class='u-container response-section section--lawyer-response all-responses-section'
                              id='response_section' v-if=\"!lawyerResponse\">
                                 <div class='container' id='response_card'>
                                     <div class='responses-container'>
 
                                         <div class='fs-block'>
-                                            <div class='fs-img'>
-                                                <img :src=\"data.avatar_full_path\" alt='lawyer-img'>
+                                            <div class='fs-img-container'>
+                                                <div class='fs-img'>
+                                                    <img :src=\"data.avatar_full_path\" alt='lawyer-img' alt='' height='100' width='100' />
+                                                </div>
+                                                <h3 class='fs-name'>@{{ data.full_name }}</h3>
                                             </div>
 
                                             <div class='fs-info'>
@@ -187,28 +189,10 @@
                                                     <li><span>Стоимость</span><span class='b-price'>@{{ lawyerResponse.payment }} ₽</span></li>
                                                     <li><span>Срок выполнения</span><span class='b-days'>@{{ lawyerResponse.period }} дней</span></li>
                                                 </ul>
-                                                <div v-if=\"vacancyInfo.status != 8\">
-                                                    <button class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">
-                                                        <span class='first'>Редактировать</span>
-                                                        <span class='second'>Редактировать</span>
-                                                    </button>
-                                                    <button class='main-btn main-btn_white'
-                                                    @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">
-                                                        <span class='first'>Удалить</span>
-                                                        <span class='second'>Удалить</span>
-                                                    </button>
-                                                </div>
-                                                <div v-else>
-                                                    <button class='main-btn main-btn_blue' @click.prevent=\"acceptToWork(vacancyInfo.id)\">
-                                                        <span class='first'>Принять</span>
-                                                        <span class='second'>Принять</span>
-                                                    </button>
-                                                    <button class='main-btn main-btn_white'
-                                                    @click.prevent=\"declineToWork(vacancyInfo.id)\">
-                                                        <span class='first'>Отказаться</span>
-                                                        <span class='second'>Отказаться</span>
-                                                    </button>
-                                                </div>
+                                                <button v-if=\"vacancyInfo.status != 8\" class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">Редактировать</button>
+                                                <button v-if=\"vacancyInfo.status != 8\" class='main-btn main-btn_red' @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">Удалить</button>
+                                                <button v-else class='main-btn main-btn_blue' @click.prevent=\"acceptToWork(vacancyInfo.id)\">Принять</button>
+                                                <button v-else class='main-btn main-btn_white' @click.prevent=\"declineToWork(vacancyInfo.id)\">Отказаться</button>
                                             </div>
 
                                         </div>

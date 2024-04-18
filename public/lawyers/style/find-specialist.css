@@ -380,7 +380,7 @@
     border: 2px solid rgba(0, 0, 0, 0.10);
     background: var(--white-color);
 }
-
+.fs-img-container .fs-name{display: none;}
 .fs-img {
     max-width: 160px;
     height: 160px;
@@ -397,12 +397,14 @@
 
 .fs-info {
     display: flex;
+    font-weight: 400;
     flex-direction: column;
-    /* gap: 12px; */
+    gap: 12px;
     width: calc(100% - 332px);
 }
 
 .fs-info .icon {
+    margin-right: 5px;
     width: 23px;
 }
 
@@ -416,7 +418,6 @@
 .fs-row {
     display: flex;
     align-items: center;
-    gap: 8px;
     margin-bottom: 8px;
 }
 
@@ -904,6 +905,17 @@
     width: 19px;
 }
 
+.files_list{}
+    .files_list li{margin-bottom: 8px;}
+    .files_list li a{
+        background: url(../images/icons/attach-files-icon.svg) left no-repeat;
+        color: var(--blue-color);
+        display: inline-block;
+        line-height: 24px;
+        padding-left: 32px;
+        text-decoration: underline;
+    }
+    .files_list li a:hover{text-decoration: none;}
 
 .exchange_right {
     display: flex;
@@ -970,7 +982,7 @@
     background: var(--white-color);
     width: 336px;
 }
-
+.top-lawyers_container .fs-info{width: 100%;}
 .top-lawyers .fs-block .lawyer_rate-block {
     flex-direction: column;
     gap: 8px;
@@ -3093,6 +3105,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-bottom: clamp(1.75rem, 1.384rem + 1.561vw, 2.75rem);
 }
 
 .response-block .response-info ul li {
@@ -3145,7 +3158,7 @@
 
 .responce-call {
     width: 100%;
-    margin-top: clamp(1.75rem, 1.384rem + 1.561vw, 2.75rem);
+    margin-top: auto;
 }
 
 .flex {
@@ -3482,12 +3495,31 @@
         padding: 0 16px 46px;
         gap: 13px;
     }
-
+    .fs-img-container{
+        align-content: flex-start;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+        .fs-img-container .fs-name{
+            color: var(--dark-color);
+            display: block;
+            font-size: 16px;
+            line-height: 140%;
+            margin-left: 12px;
+            width: calc(100% - 82px);
+        }
     .all-responses-section .fs-block {
         gap: 12px;
         padding: 12px 12px 20px;
     }
-
+    .fs-info{width: 100%;}
+    .all-responses-section .fs-block .fs-img{
+        height: 70px;
+        width: 70px;
+    }
+    .fs-info .fs-name{display: none;}
     .all-responses-section .fs-block .buttons-container {
         flex: 1 1 auto;
         margin: 0;
