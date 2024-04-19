@@ -1814,6 +1814,7 @@
     justify-content: space-between;
     padding: 12px 0 16px;
 }
+.order-status.mobile{display: none;}
     .order-status-buttons{
         align-content: center;
         display: flex;
@@ -2215,7 +2216,8 @@
     .order-container .send-message-input {
         margin-top: auto;
     }
-
+    .order-status:not(.mobile){display: none;}
+    .order-status.mobile{display: flex;}
     .order-status{
         flex-direction: column;
         padding-bottom: 0;
