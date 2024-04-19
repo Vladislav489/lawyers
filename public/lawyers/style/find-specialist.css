@@ -2216,8 +2216,6 @@
     .order-container .send-message-input {
         margin-top: auto;
     }
-    .order-status:not(.mobile){display: none;}
-    .order-status.mobile{display: flex;}
     .order-status{
         flex-direction: column;
         padding-bottom: 0;
@@ -2934,7 +2932,8 @@
         display: flex;
         margin-top: 24px;
     }
-
+    .order-status:not(.mobile){display: none;}
+    .order-status.mobile{display: flex;}
     .order-right {
         flex: 1 1 auto;
         max-width: initial;
@@ -2961,6 +2960,7 @@
         display: flex;
         flex-direction: column;
         gap: 4px;
+        margin: 0;
     }
 
     .order-process-lawyer h4 {
