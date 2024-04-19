@@ -254,7 +254,6 @@
                              id='response_section_form' hidden>
 
                                 <div class='container' id='response_form'>
-                                    <div class='lawyer-responce_card'>
                                         <div class='lawyer-responce_inner'>
                                             <h2 class='heading--lawyer-response'>Текст отклика</h2>
                                             <form action='#' class='form--lawyer-response'>
@@ -271,8 +270,7 @@
                                                 </div>
                                                 <button id='respond' @click.prevent=\"send()\"
                                                  type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
-                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\"
-                                                 type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
+                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\" type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
                                                 <div class='flex form--acceptance'>
                                                     <label class='form--checkbox-wrap'>
                                                         <input type='checkbox' class='acceptance-checkbox' hidden>
@@ -284,7 +282,6 @@
                                                 <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
                                             </form>
                                         </div>
-                                    </div>
                             </section>
 						"
 

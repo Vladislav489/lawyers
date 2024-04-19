@@ -547,7 +547,7 @@
                 }",
 
                 'template' => "
-                <div class='order-status'>
+                <div class='order-status mobile'>
                     <div class='order-status-buttons'>
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ на доработку</button>
