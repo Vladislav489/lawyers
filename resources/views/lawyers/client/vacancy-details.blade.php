@@ -195,24 +195,25 @@
                 }",
 
                 'template' => "
-                <div>
-                    <div v-if=\"currentStatusCode == 8\">
-                        Ожидает принятия исполнителем...
-                        <div>На принятие проекта осталось 20 часов</div>
+                <div class='order-status'>
+                    <div class='order-status-buttons'>
+                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ на доработку</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        {{-- Тест --}}
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button>
+
                     </div>
-                    <div v-if=\"currentStatusCode == 4\">
-                        <button>Тех.поддержка</button>
-                        <div>До конца проекта осталось 33 дня</div>
-                    </div>
-                    <div v-if=\"currentStatusCode == 5\">
-                        <button>Отправить заказ на доработку</button>
-                        <button>Заказ выполнен</button>
-                        <button>Тех.поддержка</button>
-                        <div>До конца проекта осталось 33 дня</div>
-                        <div>На принятие проекта осталось 20 часов</div>
-                    </div>
-                    <div v-if=\"currentStatusCode == 7\">
-                        Заказ завершен
+                    <div class='order-status_message'>
+                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
+                        <p v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
+                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 5\">До конца проекта осталось 33 дня</p>
                     </div>
                 </div>
                 "
@@ -529,6 +530,47 @@
                         <input type="image" src="/lawyers/images/icons/send-icon.svg" alt="send-message-icon">
                     </label>
                 </form>
+            @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'true',
+                'name' => 'action_block',
+                'globalData' => 'VacancyInfo',
+                'callBeforloadComponent' => "function() {
+                    let globalData = page__.getGolobalData('VacancyInfo')
+                    let statusData = globalData.status_history
+                    statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
+                    this.option['currentStatus'] = statusData[statusData.length - 1].status
+                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    this.option['statusData'] = statusData
+                    return this.option
+                }",
+
+                'template' => "
+                <div class='order-status'>
+                    <div class='order-status-buttons'>
+                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ на доработку</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        {{-- Тест --}}
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button>
+
+                    </div>
+                    <div class='order-status_message'>
+                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
+                        <p v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
+                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 5\">До конца проекта осталось 33 дня</p>
+                    </div>
+                </div>
+                "
+                ]
+                ])
             </div>
 
             <div class="top-lawyers_mobile mobile hidden">

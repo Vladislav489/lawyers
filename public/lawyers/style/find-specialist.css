@@ -1806,6 +1806,59 @@
 .send-message-input.mobile {
     display: none;
 }
+.order-status{
+    align-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 12px 0 16px;
+}
+    .order-status-buttons{
+        align-content: center;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: flex-start;
+    }
+        .order-status-btn{
+            color: var(--blue-color);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 18px;
+            padding-top: 56px;
+            position: relative;
+            text-align: center;
+        }
+        .order-status-btn.ico_support{color: var(--orange-color);}
+        .order-status-btn.ico_delete{color: var(--red-color);}
+        .order-status-btn.noactive{
+            cursor: default;
+            opacity: .3;
+        }
+            .order-status-btn:before{
+                border-radius: 50%;
+                content: "";
+                height: 48px;
+                left: calc(48px - 24px);
+                position: absolute;
+                top: 0;
+                width: 48px;
+            }
+            .order-status-btn.ico_done:before{background: var(--blue-color) url(../images/icons/order-status-done.svg) center no-repeat;}
+            .order-status-btn.ico_support:before{background: var(--orange-color) url(../images/icons/order-status-support.svg) center no-repeat;}
+            .order-status-btn.ico_delete:before{background: var(--red-color) url(../images/icons/order-status-delete.svg) center no-repeat;}
+    .order-status_message{
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        gap: 8px;
+        justify-content: center;
+        line-height: 140%;
+        max-width: calc(100% - 360px);
+    }
 
 .order-right {
     flex: 1 1 400px;
@@ -2163,7 +2216,15 @@
         margin-top: auto;
     }
 
-
+    .order-status{
+        flex-direction: column;
+        padding-bottom: 0;
+    }
+        .order-status_message{
+            align-items: center;
+            max-width: none;
+            padding-top: 24px;
+        }
     .order-right {
         flex: 0 0 400px;
         display: flex;
@@ -2707,7 +2768,7 @@
         margin: 0 -16px 0;
         border-radius: 0;
         flex-direction: column;
-        padding: 20px 16px 52px;
+        padding: 20px 16px 37px;
     }
 
     .order-container .exchange_nav {
