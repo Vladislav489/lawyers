@@ -2,7 +2,7 @@
 @section('title', 'Кабинет сотрудника')
 
 @section('content')
-    <section class="gradient-bg u-container lawyer-section">
+    <section class="u-container lawyer-section">
         <div class="container">
 {{--            <ul class="breadcrumbs mobile-hidden">--}}
 {{--                <li class="cool-underline"><a href="#">Юрист</a></li>--}}

@@ -198,18 +198,18 @@
                 <div class='order-status'>
                     <div class='order-status-buttons'>
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ на доработку</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done_green'>Заказ выполнен</button>
                         {{-- Тест --}}
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <a href='#modal_info' data-fancybox v-if=\"currentStatusCode == 8\" class='order-status-btn ico_return'>Отправить заказ <wbr />на доработку</a>
+                        <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</a>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button>
 
                     </div>
                     <div class='order-status_message'>
                         <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
-                        <p v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
                         <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
                         <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
@@ -220,6 +220,60 @@
                 ]
                 ])
             </div>
+
+<div class="modal order-modal" id="modal_info">
+    <h5 class="order-modal_title">Укажите информацию</h5>
+    <div class="order-modal-content">
+        <textarea placeholder="Текст"></textarea>
+        <div class="registration-form_label full">
+            <label class="label-title">Выберите файлы</label>
+            <div class="form-row_files">
+                <input type="file" name="files[]" id="files" multiple="">
+                <span>
+                    <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
+                    <div>Выберите файлы</div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class='flex align-center form--submit'>
+        <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Отправить</button>
+        <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
+    </div>
+</div>
+<div class="modal order-modal" id="modal_rate">
+    <h5 class="order-modal_title big">Оцените работу исполнителя</h5>
+    <div class="rate">
+        <input type="radio" id="star5" name="rate" value="5" />
+        <label for="star5" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
+        <input type="radio" id="star4" name="rate" value="4" />
+        <label for="star4" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
+        <input type="radio" id="star3" name="rate" value="3" />
+        <label for="star3" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
+        <input type="radio" id="star2" name="rate" value="2" />
+        <label for="star2" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
+        <input type="radio" id="star1" name="rate" value="1" />
+        <label for="star1" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
+    </div>
+    <div class="order-modal-content">
+        <textarea placeholder="Комментарий..."></textarea>
+        <div class="registration-form_label full">
+            <label class="label-title">Выберите файлы</label>
+            <div class="form-row_files">
+                <input type="file" name="files[]" id="files" multiple="">
+                <span>
+                    <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
+                    <div>Выберите файлы</div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class='flex align-center form--submit'>
+        <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Отправить</button>
+        <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
+    </div>
+</div>
+
 
             <div class="order-right">
 
@@ -550,7 +604,7 @@
                 <div class='order-status mobile'>
                     <div class='order-status-buttons'>
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ на доработку</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
                         {{-- Тест --}}
