@@ -13,9 +13,9 @@
 
 
 @section('content')
-    <section class="gradient-bg u-container lawyer-section">
+    <section class="u-container lawyer-section">
         <div class="container">
-            <div class='modal fade' id='employeeInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
+            <div class='modal registration-section' id='employeeInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
                 <div class='modal-dialog modal-dialog-centered' role='document'>
                     <div class='modal-content'>
                         <div class='modal-header'>

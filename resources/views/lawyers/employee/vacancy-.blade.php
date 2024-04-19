@@ -215,10 +215,8 @@
                                                     <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"lawyerResponse.period\">
                                                     <span>дней</span>
                                                 </div>
-                                                <button id='respond' @click.prevent=\"send()\"
-                                                 type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
-                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\"
-                                                 type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
+                                                <button id='respond' @click.prevent=\"send()\" type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
+                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\" type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
                                                 <div class='flex form--acceptance'>
                                                     <label class='form--checkbox-wrap'>
                                                         <input type='checkbox' class='acceptance-checkbox' hidden>
@@ -268,9 +266,10 @@
                                                     <input id='response_period' type='number' placeholder='Число' class='form--field' :value=\"lawyerResponse.period\">
                                                     <span>дней</span>
                                                 </div>
-                                                <button id='respond' @click.prevent=\"send()\"
-                                                 type='submit' class='main-btn main-btn_blue form--lr_submit'>Отправить</button>
-                                                <button id='cancel_respond' @click.prevent=\"openResponseForm()\" type='submit' class='main-btn main-btn_white form--lr_submit'>Отменить</button>
+                                                <div class='flex align-center form--submit'>
+                                                    <button id='respond' @click.prevent=\"send()\" type='submit' class='main-btn main-btn_blue'><span>Отправить</span></button>
+                                                    <button id='cancel_respond' @click.prevent=\"openResponseForm()\" type='submit' class='main-btn main-btn_white'>Отменить</button>
+                                                </div>
                                                 <div class='flex form--acceptance'>
                                                     <label class='form--checkbox-wrap'>
                                                         <input type='checkbox' class='acceptance-checkbox' hidden>

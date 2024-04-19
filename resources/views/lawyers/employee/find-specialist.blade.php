@@ -206,7 +206,7 @@
                         'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
 
                         'template' =>
-                        "<div :id=\"name + '_body'\">
+                        "<div :id=\"name + '_body'\" class='exchanges'>
                         <h2 class='find-section_header'>Найдено: <span>@{{ pagination.totalCount }} специалистов</span></h2>
                         <div class='found-specialists' >
                             <div v-for=\"item in data\" class='fs-block' >

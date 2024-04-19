@@ -87,7 +87,7 @@
     max-width: 100%;
     min-width: 100%;
 }
-.select2-container{z-index: 1;}
+.select2-container{z-index: 9;}
     .select2-container--default .select2-selection--single{
         align-items: center;
         background-color: var(--white-color);
@@ -791,11 +791,12 @@
 
 
 .container.exchange-container {
+    background: none;
     display: grid;
     grid-template-columns: 1fr 400px;
     flex-direction: row;
-    /* padding: 0; */
     gap: 0;
+    padding: 0;
 }
 
 .exchange-container .exchanges-container {
@@ -1823,18 +1824,24 @@
         gap: 20px;
         justify-content: flex-start;
     }
+    .order-status-buttons p{
+        font-size: 14px;
+        line-height: 140%;
+    }
         .order-status-btn{
             color: var(--blue-color);
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
             line-height: 18px;
+            max-width: 100px;
             padding-top: 56px;
             position: relative;
             text-align: center;
         }
         .order-status-btn.ico_support{color: var(--orange-color);}
         .order-status-btn.ico_delete{color: var(--red-color);}
+        .order-status-btn.ico_done_green{color: var(--green-color);}
         .order-status-btn.noactive{
             cursor: default;
             opacity: .3;
@@ -1843,12 +1850,14 @@
                 border-radius: 50%;
                 content: "";
                 height: 48px;
-                left: calc(48px - 24px);
+                left: calc(50% - 24px);
                 position: absolute;
                 top: 0;
                 width: 48px;
             }
             .order-status-btn.ico_done:before{background: var(--blue-color) url(../images/icons/order-status-done.svg) center no-repeat;}
+            .order-status-btn.ico_done_green:before{background: var(--green-color) url(../images/icons/order-status-done.svg) center no-repeat;}
+            .order-status-btn.ico_return:before{background: var(--blue-color) url(../images/icons/order-status-return.svg) center no-repeat;}
             .order-status-btn.ico_support:before{background: var(--orange-color) url(../images/icons/order-status-support.svg) center no-repeat;}
             .order-status-btn.ico_delete:before{background: var(--red-color) url(../images/icons/order-status-delete.svg) center no-repeat;}
     .order-status_message{
@@ -1860,7 +1869,7 @@
         line-height: 140%;
         max-width: calc(100% - 360px);
     }
-
+        .order-status p.noactive{opacity: .5;}
 .order-right {
     flex: 1 1 400px;
     display: flex;
@@ -3237,7 +3246,11 @@
 .lawyer-responce_inner {
     max-width: 1025px
 }
-
+.form--submit{gap: 20px;}
+    .form--submit .main-btn{
+        max-width: calc(50% - 10px);
+        width: 343px;
+    }
 .section--lawyer-response,
 .all-responses-section {
     margin-top: 12px;
@@ -3688,6 +3701,10 @@
     .all-responses-section .fs-block .fs-img {
         width: 70px;
         height: 70px;
+    }
+    .form--submit .main-btn{
+        max-width: none;
+        width: 100%;
     }
 }
 

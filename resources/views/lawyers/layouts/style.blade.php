@@ -3,6 +3,7 @@
 
     <link rel="stylesheet" href="/lawyers/style/reset.css">
     <link rel="stylesheet" href="/lawyers/style/select2.min.css">
+    <link rel="stylesheet" href="/lawyers/style/jquery.fancybox.min.css">
     <link rel="stylesheet" href="/lawyers/lib/OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="/lawyers/style/main.css">
     <link rel="stylesheet" href="/lawyers/style/chat.css">

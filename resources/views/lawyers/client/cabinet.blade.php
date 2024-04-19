@@ -14,20 +14,12 @@
 @section('title', 'Кабинет клиента')
 
 @section('content')
-    <section class="gradient-bg u-container lawyer-section">
+    <section class="u-container lawyer-section">
         <div class="container">
-            <section class="gradient-bg u-container lawyer-section">
                 <div class="container">
-                    <div class='modal fade' id='clientInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                        <div class='modal-dialog modal-dialog-centered' role='document'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>
-                                    <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>
-                                        <span aria-hidden='true'>&times;</span>
-                                    </button>
-                                </div>
-                                <div class='modal-body flex-between'>
+                    <div class='modal registration-section' id='clientInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
+                        <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+                                <div class='registration-form_block'>
                                     @include('component_build', [
                                         'component' => 'component.infoComponent.textInfo',
                                         'params_component' => [
@@ -38,19 +30,30 @@
                                             'ssr' => 'false',
 
                                             'template' =>
-                                "<div id=\"common_info_container\">
-                                    <label>Имя</label>
-                                    <input type=\"text\" name=\"first_name_edit\" :value=\"data.first_name\" class=\"border\">
-                                    <label>Фамилия</label>
-                                    <input type=\"text\" name=\"last_name_edit\" :value=\"data.last_name\" class=\"border\">
-                                    <label>Отчество</label>
-                                    <input type=\"text\" name=\"middle_name_edit\" :value=\"data.middle_name\" class=\"border\">
-                                    <label>Телефон</label>
-                                    <input type=\"text\" name=\"phone_number_edit\" :value=\"data.phone_number\" class=\"border\">
-                                </div>",
+                                    "
+                                    <div id=\"common_info_container\" class=\"registration-form_block\">
+                                        <div class=\"registration-form_label full\">
+                                            <label class=\"label-title\">Имя</label>
+                                            <input type=\"text\" name=\"first_name_edit\" :value=\"data.first_name\" >
+                                        </div>
+                                        <div class=\"registration-form_label full\">
+                                            <label class=\"label-title\">Фамилия</label>
+                                            <input type=\"text\" name=\"last_name_edit\" :value=\"data.last_name\">
+                                        </div>
+                                        <div class=\"registration-form_label full\">
+                                            <label class=\"label-title\">Отчество</label>
+                                            <input type=\"text\" name=\"middle_name_edit\" :value=\"data.middle_name\">
+                                        </div>
+                                        <div class=\"registration-form_label full\">
+                                            <label class=\"label-title\">Телефон</label>
+                                            <input type=\"text\" name=\"phone_number_edit\" :value=\"data.phone_number\">
+                                        </div>
+                                    </div>
+                                    ",
                                         ]
                                     ])
-                                    <label for="">Регион</label>
+                                    <div class='registration-form_label full'>
+                                        <label class='label-title'>Регион</label>
                                     @include('component_build',["component" => "component.listComponent.selectComponent",
                                     "params_component" => [
                                         "autostart" => 'true',
@@ -65,9 +68,12 @@
                                         "callAfterloadComponent" => "function(component) {
                                                 const param = {'region_id': component.vueObject._data.currentSelectId}
                                                 page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                                                $('.js_select').select2({
+                                                    minimumResultsForSearch: -1,
+                                                });
                                             }",
                                         "template" =>
-                                        '<select class="unit-select_select" name="region_id" :id="name" style="width:100%">
+                                        '<select class="js_select" name="region_id" :id="name">
                                             <option v-for="(items_ , index) in data" :data-text="items_" :value="index" :selected="index == currentSelectId">@{{items_}}</option>
                                         </select>',
                                         "change" => "function(){
@@ -77,8 +83,9 @@
                                                         }
                                                     }"
                                     ]])
-
-                                    <label for="">Город</label>
+                                    </div>
+                                    <div class='registration-form_label full'>
+                                        <label class='label-title'>Город</label>
                                     @include('component_build',["component" => "component.listComponent.selectComponent",
                                     "params_component" => [
                                         "autostart" => 'false',
@@ -92,18 +99,17 @@
                                             }",
 
                                         "template" =>
-                                        '<select class="unit-select_select" name="city_id" :id="name" style="width:100%">
+                                        '<select class="js_select" name="city_id" :id="name">
                                             <option v-for="(items_ , index) in data " :data-text="items_" :value="index" :selected="index == currentSelectId">@{{items_}}</option>
                                         </select>',
                                         "change" => "function(){}"
                                     ]])
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' id="save_edit_main" class='btn btn-success'>Сохранить</button>
-                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>
+                                    </div>
+                                <div class='flex align-center form--submit'>
+                                    <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Сохранить</button>
+                                    <button type='button' class='main-btn main-btn_white' data-fancybox-close >Закрыть</button>
                                 </div>
                             </div>
-                        </div>
                     </div>
             <div class="lawyer-container">
                 <div class="left">
@@ -139,7 +145,7 @@
 
                                     </div>
 
-                                    <button id="edit_info" type="button" class="main-btn main-btn_white">Редактировать</button>
+                                    <a href="#clientInfoEdit" data-fancybox id="edit_info" class="main-btn main-btn_white">Редактировать</a>
 
                                     <div class="balance-block">
                                         <div class="balance-block_left">
@@ -322,15 +328,8 @@
 
 <script>
     $(document).ready(function () {
-        setEdit()
         updateData()
     })
-
-    function setEdit() {
-        $(document).on('click', '#edit_info', function () {
-            $('#clientInfoEdit').modal('toggle')
-        })
-    }
 
     function getMainDataForUpdate() {
         return {
@@ -350,7 +349,7 @@
                 data, function (data) {
                     Object.assign(page__.getGolobalData('ClientInfo'), data)
                 })
-            $('#clientInfoEdit').modal('hide')
+            $.fancybox.close();
         })
     }
 

@@ -1734,8 +1734,82 @@
     }
 }
 
-
-
+/* Modal profile edit */
+.modal{display: none;}
+.fancybox-active .select2-container{z-index: 999999;}
+.modal.fancybox-content{
+    border-radius: var(--b-radius);
+    padding: 32px 40px 44px;
+    width: 600px;
+}
+    .modal .component{width: 100%;}
+    .modal .section_header{margin-bottom: 32px;}
+    .modal input,.modal textarea{
+        border: 1.5px rgba(0,0,0,.1) solid;
+        border-radius: 12px;
+        padding: 0 20px;
+        width: 100%;
+    }
+    .modal .select2-container--default:not(.select2-container--open) .select2-selection--single{border-color: rgba(0,0,0,.1);}
+    .modal .form--submit{
+        flex-wrap: wrap;
+        padding-top: 20px;
+        width: 100%;
+    }
+/* Modal order status */
+.order-modal_title{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 140%;
+    margin-bottom: 32px;
+}
+.order-modal_title.big{
+    font-size: 24px;
+    text-align: center;
+}
+.order-modal-content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+}
+    .order-modal-content .label-title{color: var(--dark-color);}
+    .order-modal textarea{
+        height: 147px;
+        padding: 12px 20px;
+    }
+.rate{
+    align-content: center;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+.rate:not(:checked) > input{display: none;}
+.rate label path{transition: all .3s linear;}
+.rate:not(:checked) > label{
+    cursor:pointer;
+    height: 50px;
+    margin: 0 3px;
+    position: relative;
+    width: 50px;
+}
+.rate > input:checked ~ label path{fill: #FF9E0C;}
+.rate:not(:checked) > label:hover path,
+.rate:not(:checked) > label:hover ~ label path{fill: #FF9E0C;}
+.rate > input:checked + label:hover path,
+.rate > input:checked + label:hover ~ label path,
+.rate > input:checked ~ label:hover path,
+.rate > input:checked ~ label:hover ~ label path,
+.rate > label:hover ~ input:checked ~ label path{color: #c59b08;}
+@media (max-width: 600px){
+.order-modal_title.big{
+    font-size: 18px;
+    text-align: left;
+}
+}
 
 
 
