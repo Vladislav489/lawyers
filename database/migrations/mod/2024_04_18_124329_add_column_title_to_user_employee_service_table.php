@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_employee_service', function (Blueprint $table) {
-            Schema::table('service', function (Blueprint $table) {
+            Schema::table('user_employee_service', function (Blueprint $table) {
                 if (!Schema::hasColumn('user_employee_service', 'title')) {
                     $table->string('title')->comment('название');
                 }
@@ -30,7 +30,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('user_employee_service', function (Blueprint $table) {
-            $table->dropColumn('title');
+            if (Schema::hasColumn('user_employee_service', 'title')) {
+                $table->dropColumn('title');
+            }
+
         });
     }
 };
