@@ -374,32 +374,6 @@
             window.open(route)
         }
 
-        function acceptToWork(vacancyId) {
-            $.ajax({
-                method: 'POST',
-                data: {
-                    vacancy_id: vacancyId,
-                    employee_user_id: {{ auth()->id() }},
-                },
-                url: '{{ route__('actionAcceptWork_mainstay_employee_employeemainstaycontroller') }}',
-                success: function (response) {
-                    console.log(response);
-                }
-            })
-        }
-        function declineToWork(vacancyId) {
-            $.ajax({
-                method: 'POST',
-                data: {
-                    vacancy_id: vacancyId,
-                    employee_user_id: {{ auth()->id() }}
-                },
-                url: '{{ route__('actionDeclineWork_mainstay_employee_employeemainstaycontroller') }}',
-                success: function (response) {
-                    console.log(response);
-                }
-            })
-        }
     </script>
 
 @endsection

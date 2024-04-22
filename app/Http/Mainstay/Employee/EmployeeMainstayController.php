@@ -5,6 +5,8 @@ namespace App\Http\Mainstay\Employee;
 use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
+use App\Models\CoreEngine\LogicModels\File\FileLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
@@ -50,7 +52,15 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionEmployeeServiceStore(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        (new EmployeeServiceLogic())->store($this->params);
+        $rules = [
+            'service_id' => 'required|integer|exists:service,id',
+            'user_id' => 'required|integer|exists:user_entity,id',
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|integer',
+        ];
+        $data = Validator::validate($this->params, $rules);
+        (new EmployeeServiceLogic())->store($data);
         return $this->actionGetServices(['user_id' => auth()->id()]);
     }
 
@@ -164,6 +174,20 @@ class EmployeeMainstayController extends MainstayController
         ];
         $data = Validator::validate($this->params, $rules);
         return response()->json((new EmployeeLogic())->acceptWork($data));
+    }
+
+    public function actionSendWorkToInspection($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $rules = [
+            'text' => 'required|string',
+            'files' => 'required|array',
+            'vacancy_id' => 'required|integer|exists:vacancy,id',
+        ];
+
+        $data = Validator::validate($this->params, $rules);
+        $data['employee_user_id'] = auth()->id();
+
+        return response()->json((new VacancyLogic())->sendClosingDocs($data));
     }
 
 }

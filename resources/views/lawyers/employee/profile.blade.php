@@ -202,7 +202,7 @@
                                 'params_component' => [
                                     'autostart' => 'true',
                                     'name' => 'service_list',
-                                    'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
+                                    'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"), // получаем список EmployeeServices!!!!
 
                                     'template' => "<ul class=\"lawyer-services_block\" :id=\"name + '_body'\">
                                         <li v-for=\"item in data\" class=\"lawyer-service_line\" style=\"justify-content: space-between;\">

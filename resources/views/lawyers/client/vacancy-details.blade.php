@@ -198,18 +198,18 @@
                 <div class='order-status'>
                     <div class='order-status-buttons'>
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support' @click=\"sendToRedo(data.id)\">Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done_green'>Заказ выполнен</button>
+                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done' @click=\"acceptWork(data.id)\">Заказ выполнен</button>
+                        <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         {{-- Тест --}}
-                        <a href='#modal_info' data-fancybox v-if=\"currentStatusCode == 8\" class='order-status-btn ico_return'>Отправить заказ <wbr />на доработку</a>
-                        <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</a>
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button>
+                        <!-- <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button> -->
 
                     </div>
                     <div class='order-status_message'>
-                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
-                        <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
                         <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
                         <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
@@ -221,26 +221,6 @@
                 ])
             </div>
 
-<div class="modal order-modal" id="modal_info">
-    <h5 class="order-modal_title">Укажите информацию</h5>
-    <div class="order-modal-content">
-        <textarea placeholder="Текст"></textarea>
-        <div class="registration-form_label full">
-            <label class="label-title">Выберите файлы</label>
-            <div class="form-row_files">
-                <input type="file" name="files[]" id="files" multiple="">
-                <span>
-                    <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
-                    <div>Выберите файлы</div>
-                </span>
-            </div>
-        </div>
-    </div>
-    <div class='flex align-center form--submit'>
-        <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Отправить</button>
-        <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
-    </div>
-</div>
 <div class="modal order-modal" id="modal_rate">
     <h5 class="order-modal_title big">Оцените работу исполнителя</h5>
     <div class="rate">
@@ -1060,6 +1040,8 @@
                 break
             case 'оплачен' : info = `Ваш заказ оплачен`
                 break
+            case null : info = `Ожидает подтверждения юристом`
+                break
             case 'в работе' : info = `Заказ в работе`
                 break
             case 'на проверке' : info = `Заказ сдан на проверку`
@@ -1088,6 +1070,36 @@
         }
         return formatted
 
+    }
+
+    function acceptWork(vacancyId) {
+        $.ajax({
+            method: 'POST',
+            data: {
+                vacancy_id: vacancyId,
+                user_id: {{ auth()->id() }}
+            },
+            url: '{{ route__('actionAcceptDone_mainstay_client_clientmainstaycontroller') }}',
+            success: function (response) {
+                console.log(response)
+            }
+
+        })
+    }
+
+    function sendToRedo(vacancyId) {
+        $.ajax({
+            method: 'POST',
+            data: {
+                vacancy_id: vacancyId,
+                user_id: {{ auth()->id() }}
+            },
+            url: '{{ route__('actionSendToRework_mainstay_client_clientmainstaycontroller') }}',
+            success: function (response) {
+                console.log(response)
+            }
+
+        })
     }
 
 </script>

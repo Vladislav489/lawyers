@@ -81,7 +81,7 @@
                 'name' => "vacancy_files",
                 'autostart' => 'true',
                 'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
-                'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
+                'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id'), 'type' => '1'],
                 'template' =>
                 "<ul class='files_list'>
                     <li v-for=\"item in data\">
@@ -111,6 +111,37 @@
                                 </p>
                             </div>
                         </div>
+
+                        @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'true',
+                'name' => 'vacancy_closing_info',
+                'url' => route__('actionGetClosingMessage_mainstay_vacancy_vacancymainstaycontroller'),
+                'params' => ['id' => request()->route('vacancy_id')],
+
+                'template' => "
+                <div class='order-row comment'>
+                    <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img'>
+                    <div class='order-history_right commentator'>
+                        <h4> @{{ data.executor_name }}
+                            <img src='/lawyers/images/icons/chat-verify.svg' alt='verify-icon'>
+                            <time>@{{ data.time }}</time>
+                        </h4>
+                        <p>
+                            <span>@{{ data.text }}</span>
+                        </p>
+                        <ul class='files_list'>
+                            <li v-for=\"item in data.files\">
+                                <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                            </li>
+                </ul>
+                    </div>
+                </div>
+                "
+                ]
+                ])
+
                     </div>
                 </div>{{-- END order-answers --}}
 {{--                <div class="order-history mobile-hidden">--}}
@@ -174,41 +205,60 @@
                 'autostart' => 'true',
                 'name' => 'action_block',
                 'globalData' => 'VacancyInfo',
-                'callBeforloadComponent' => "function() {
+                'callBeforloadComponent' => "function(component) {
                     let globalData = page__.getGolobalData('VacancyInfo')
                     let statusData = globalData.status_history
                     statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
-                    this.option['currentStatus'] = statusData[statusData.length - 1].status
-                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
-                    this.option['statusData'] = statusData
-                    return this.option
+                    component.option['currentStatus'] = statusData[statusData.length - 1].status
+                    component.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    component.option['statusData'] = statusData
+                    component.option['daysToEnd'] = globalData['days_to_end']
+                    return component.option
                 }",
 
                 'template' => "
                 <div class='order-status'>
                     <div class='order-status-buttons'>
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <a v-if=\"currentStatusCode == 4\" href='#modal_info' data-fancybox class='order-status-btn ico_done'>Заказ выполнен</a>
+                        <p v-if=\"currentStatusCode == 5\" class='noactive'>Заказ отправлен на проверку</p>
                         {{-- Тест --}}
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete noactive'>Отменить заказ</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done' @click=\"acceptToWork(data.id)\">Принять заказ</button>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete' @click=\"declineToWork(data.id)\">Отменить заказ</button>
 
                     </div>
                     <div class='order-status_message'>
                         <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
-                        <p v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 4\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дней</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
-                        <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
+                        <p v-if=\"currentStatusCode == 5\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дня</p>
                         <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
-                        <p v-if=\"currentStatusCode == 5\">До конца проекта осталось 33 дня</p>
                     </div>
                 </div>
                 "
                 ]
                 ])
+            </div>
+
+            <div class="modal order-modal" id="modal_info">
+                <h5 class="order-modal_title">Укажите информацию</h5>
+                <div class="order-modal-content">
+                    <textarea placeholder="Текст" name="order_closing_text"></textarea>
+                    <div class="registration-form_label full">
+                        <label class="label-title">Выберите файлы</label>
+                        <div class="form-row_files" id="file_input">
+                            <input type="file" class="form-row_files" name="files[]" id="files" multiple>
+                            <span>
+                    <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
+                    <div>Выберите файлы</div>
+                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='flex align-center form--submit'>
+                    <button type='button' id="send" class='main-btn main-btn_blue'>Отправить</button>
+                    <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
+                </div>
             </div>
 
             <div class="order-right">
@@ -984,7 +1034,11 @@
 
 <script>
     $(document).ready(function () {
-
+        $('#file_input').click(function () {
+            $('#files')[0].click()
+        })
+        var vacancyInfo = page__.getGolobalData('VacancyInfo')
+        sendToInspection()
     })
 
     function acceptToWork(vacancyId) {
@@ -1009,9 +1063,37 @@
             },
             url: '{{ route__('actionDeclineWork_mainstay_employee_employeemainstaycontroller') }}',
             success: function (response) {
-                location.href = `{{ route__('actionEmployeeCabinet_controllers_employee_employeecontroller') }}`;
+                location.href = `{{ route__('actionViewOrders_controllers_employee_employeecontroller') }}`;
             }
         })
+    }
+
+    function getDataForSend() {
+        let formData = new FormData()
+        formData.append('text', $('[name=order_closing_text]').val())
+        $.each($('#files')[0].files, function (key, input) {
+            formData.append('files[]', input)
+        })
+        formData.append('vacancy_id', {{ request()->route('vacancy_id') }})
+        return formData
+    }
+
+    function sendToInspection() {
+        $('#send').click(function () {
+            $.ajax({
+                method: 'POST',
+                data: getDataForSend(),
+                contentType: false,
+                processData: false,
+                url: '{{ route__('actionSendWorkToInspection_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (response) {
+                    if (response) {
+                        location.reload()
+                    }
+                }
+            })
+        })
+
     }
 
 </script>
