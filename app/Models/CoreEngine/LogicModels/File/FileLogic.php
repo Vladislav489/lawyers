@@ -10,6 +10,9 @@ class FileLogic extends FileSystemLogic
 {
     const FILE_VACANCY = 'vacancy';
 
+    const TYPE_VACANCY = 1;
+    const TYPE_VACANCY_CLOSING = 2;
+
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
         $this->params = $params;
@@ -29,9 +32,19 @@ class FileLogic extends FileSystemLogic
         unset($data['files']);
         foreach ($files as $file) {
             $fileName = $file->getClientOriginalName();
+
+            if (!isset($data['id'])) {
+                $data['id'] = $data['vacancy_id'];
+            }
+
+            if (!isset($data['user_id'])) {
+                $data['user_id'] = $data['employee_user_id'];
+            }
+
             $savedFileInfo = $this->saveFile($type . '/' . $data['id'], $fileName, $file);
             $savedFileInfo['user_id'] = $data['user_id'];
             $savedFileInfo['vacancy_id'] = $data['id'];
+            $savedFileInfo['type'] = $data['file_type'];
             $savedFileInfo['name'] = $savedFileInfo['fileName'];
             $fileRecord = array_intersect_key($savedFileInfo, array_flip($this->engine->getFillable()));
 
@@ -66,6 +79,11 @@ class FileLogic extends FileSystemLogic
                 "action" => '=', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.user_id','params' => 'user_id',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.type','params' => 'type',
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',

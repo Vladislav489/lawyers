@@ -86,4 +86,9 @@ class VacancyMainstayController extends MainstayController
         $this->params['is_group'] = '1';
         dd((new VacancyLogic($this->params))->setJoin(['VacancyGroup'])->getList());
     }
+
+    public function actionGetClosingMessage($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json(['result' => (new VacancyLogic())->getClosingMessage($this->params)]);
+    }
 }

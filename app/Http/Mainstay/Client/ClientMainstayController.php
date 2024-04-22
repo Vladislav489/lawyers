@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ClientMainstayController extends MainstayController {
+
     public function actionStoreClient(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
 //        dd($this->params, Region::class);
@@ -96,6 +97,30 @@ class ClientMainstayController extends MainstayController {
         $data = Validator::validate($this->params, $rules);
 
         return response()->json((new VacancyLogic())->setExecutor($data));
+    }
+
+    public function actionAcceptDone($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|integer|exists:vacancy,id',
+            'user_id' => 'required|integer|exists:user_entity,id'
+        ];
+
+        $data = Validator::validate($this->params, $rules);
+
+        return response()->json((new VacancyLogic())->acceptWorkDone($data));
+    }
+
+    public function actionSendToRework($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|integer|exists:vacancy,id',
+            'user_id' => 'required|integer|exists:user_entity,id'
+        ];
+
+        $data = Validator::validate($this->params, $rules);
+
+        return response()->json((new VacancyLogic())->sendToRework($data));
     }
 }
 

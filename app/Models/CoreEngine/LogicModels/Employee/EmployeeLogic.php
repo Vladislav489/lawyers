@@ -17,6 +17,7 @@ use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use function Composer\Autoload\includeFile;
@@ -270,10 +271,18 @@ class EmployeeLogic extends UserLogic
     }
 
     public function acceptWork($data) {
+        $employeeOffer = (new self($data, [DB::raw("Offer.period as offer_period")]))->setJoin(['Offer'])->getOne();
+        $currentDateTime = Carbon::now();
 
         $vacancy['id'] = $data['vacancy_id'];
         $vacancy['executor_id'] = $data['employee_user_id'];
         $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+
+        $vacancy['period_start'] = $currentDateTime->toDateTimeString();
+        $vacancy['period_end'] = $currentDateTime->addDays($employeeOffer['offer_period'])->toDateTimeString();
+
+        $vacancy = setTimestamps($vacancy, 'update');
+
         if((new VacancyLogic())->store($vacancy)) {
             return ['message' => "you've accept a job offer"];
         }
@@ -286,6 +295,7 @@ class EmployeeLogic extends UserLogic
         $vacancy['id'] = $data['vacancy_id'];
         $vacancy['executor_id'] = null;
         $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
+        $vacancy = setTimestamps($vacancy, 'update');
         if((new VacancyLogic())->store($vacancy)) {
             return ['message' => "you've decline a job offer"];
         }

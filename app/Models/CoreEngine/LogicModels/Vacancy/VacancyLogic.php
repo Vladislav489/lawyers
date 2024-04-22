@@ -18,6 +18,7 @@ use App\Models\CoreEngine\Model\InformationCategoryName;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyGroup;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyStatusLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -31,6 +32,7 @@ class VacancyLogic extends CoreEngine
     CONST STATUS_PAYED = 3;
     CONST STATUS_IN_PROGRESS = 4;
     CONST STATUS_INSPECTION = 5;
+    CONST STATUS_REWORK = 9;
     CONST STATUS_ACCEPTED = 6;
     CONST STATUS_CLOSED = 7;
 
@@ -39,6 +41,7 @@ class VacancyLogic extends CoreEngine
         $this->params = $params;
         $this->engine = new Vacancy();
         $this->helpEngine['status_log'] = self::createTempLogic(new VacancyStatusLog());
+        $this->helpEngine['closing_message'] = self::createTempLogic(new VacancyClosing());
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -69,10 +72,10 @@ class VacancyLogic extends CoreEngine
                 $data,
                 array_flip($this->engine->getFillable())
             );
+            $vacancy = setTimestamps($vacancy, 'update');
 
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
-
             }
 
             if ($data['id'] = $this->save($vacancy)) {
@@ -81,8 +84,9 @@ class VacancyLogic extends CoreEngine
                         $this->addToStatusLog($data, $data['status']);
                     }
                 } else {
-                    $this->addToStatusLog($data, VacancyLogic::STATUS_NEW);
+                    $this->addToStatusLog($data, self::STATUS_NEW);
                 }
+                $data['file_type'] = FileLogic::TYPE_VACANCY;
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
             }
@@ -96,13 +100,27 @@ class VacancyLogic extends CoreEngine
     public function setExecutor($data) {
         if ($this->payToLawyer($data)) {
             $data['id'] = $data['vacancy_id'];
-            $data['status'] = VacancyLogic::STATUS_LAWYER_ACCEPTANCE;
+            $data['status'] = self::STATUS_LAWYER_ACCEPTANCE;
             return $this->store($data);
         }
         return false;
     }
 
-    public function addToStatusLog($data, $status) {
+    public function acceptWorkDone($data) {
+        $data['id'] = $data['vacancy_id'];
+        $data['status'] = self::STATUS_ACCEPTED;
+        return $this->store($data);
+    }
+
+    public function sendToRework($data) {
+        $data['id'] = $data['vacancy_id'];
+        $data['status'] = self::STATUS_REWORK;
+        $data = $this->store($data);
+        $data['status'] = self::STATUS_IN_PROGRESS;
+        return $this->store($data);
+    }
+
+    protected function addToStatusLog($data, $status) {
         if (empty($data)) return false;
         if (!isset($data['vacancy_id'])) {
             $data['vacancy_id'] = $data['id'];
@@ -129,12 +147,34 @@ class VacancyLogic extends CoreEngine
         return false;
     }
 
+    public function sendClosingDocs($data) {
+        $data = setTimestamps($data, 'update');
+        $closingMessage = array_intersect_key(
+            $data,
+            array_flip($this->helpEngine['closing_message']->getEngine()->getFillable())
+        );
+
+        if ($data['closing_message_id'] = $this->helpEngine['closing_message']->save($closingMessage)) {
+            $data['file_type'] = FileLogic::TYPE_VACANCY_CLOSING;
+            $this->addToStatusLog($data, self::STATUS_INSPECTION);
+            $this->setVacancyStatus($data['vacancy_id'], self::STATUS_INSPECTION);
+            return (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
+        }
+        return false;
+    }
+
     public function payToLawyer($data)
     {
         // сама оплата
         $data['id'] = $data['vacancy_id'];
-        $data['status'] = VacancyLogic::STATUS_PAYED;
+        $data['status'] = self::STATUS_PAYED;
         return $this->store($data);
+    }
+
+    protected function setVacancyStatus($vacancyId, $status) {
+        $data['id'] = $vacancyId;
+        $data['status'] = $status;
+        return $this->save($data);
     }
 
     public function getVacancyList($data) {
@@ -171,7 +211,7 @@ class VacancyLogic extends CoreEngine
 
     public function getVacancyForResponse($data) {
         $select = [
-            'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
+            'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end', 'created_at',
             DB::raw("CASE WHEN status = 1 THEN 'создан'
                     WHEN status = 2 THEN 'на модерации'
                     WHEN status = 3 THEN 'оплачен'
@@ -182,30 +222,38 @@ class VacancyLogic extends CoreEngine
                     END as current_status_text"),
             DB::raw("Service.name as service_name"),
             DB::raw("CONCAT(Region.name,' ', City.name) as location"),
-            DB::raw("(CASE
-        WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')
-        WHEN TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()) < 24 THEN CONCAT(TIMESTAMPDIFF(HOUR, vacancy.created_at, NOW()), ' часов назад')
-        ELSE CONCAT(TIMESTAMPDIFF(DAY, vacancy.created_at, NOW()), ' дней назад')
-        END) AS time_ago"),
-            DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
+            DB::raw("(DATEDIFF(period_end, NOW())) as days_to_end"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name) as owner_name"),
             DB::raw("Owner.online as owner_online"),
             DB::raw("Executor.id as executor_id"),
-//            DB::raw("File.path as file_path WHERE File.path LIKE %vacancy/" . $data['id'])
         ];
         $result = (new VacancyLogic($data, $select))->setJoin(['Service', 'Region', 'City', 'Owner', 'Status', 'Executor', 'Files'])->getOne();
         $result['files'] = json_decode($result['files'], true);
+        Carbon::setLocale('ru');
+        $result['time_ago'] = Carbon::make($result['created_at'])->diffForHumans();
         return ['result' => $result];
     }
 
     public function getVacancyLastStatus($vacancyId) {
         $x = VacancyStatusLog::where('vacancy_id', $vacancyId)->get();
         $x->each(function($item) {
-            if (in_array($item->status, [VacancyLogic::STATUS_LAWYER_ACCEPTANCE, VacancyLogic::STATUS_PAYED,])) {
+            if (in_array($item->status, [self::STATUS_LAWYER_ACCEPTANCE, self::STATUS_PAYED,])) {
                 $item->delete();
             }
         });
         dd($x);
+    }
+
+    public function getClosingMessage($data) {
+        $select = [
+            DB::raw("ClosingMessage.*"),
+            DB::raw("CONCAT(Executor.last_name, ' ', Executor.first_name) as executor_name"),
+        ];
+
+        $res = (new VacancyLogic(['id' => (string) $data['id']], $select))->setJoin(['ClosingMessage', 'ClosingMessageFiles', 'Executor'])->getOne();
+        $res['files'] = json_decode($res['files'], true);
+        $res['time'] = Carbon::make($res['updated_at'])->toTimeString('minutes');
+        return $res;
     }
 
     protected function getFilter(): array
@@ -393,6 +441,18 @@ class VacancyLogic extends CoreEngine
                                 JSON_OBJECT('id', id, 'path', path, 'name',
                                 name)) as files,
                                 vacancy_id FROM file GROUP BY vacancy_id) as Files ON Files.vacancy_id = vacancy.id"),
+                    'field' => ['files']
+                ],
+                'ClosingMessage' => [
+                    'entity' => new VacancyClosing(),
+                    'relationship' => ['vacancy_id', 'id'],
+                    'field' => []
+                ],
+                'ClosingMessageFiles' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'path', path, 'name',
+                                name)) as files,
+                                vacancy_id FROM file WHERE type = 2 GROUP BY vacancy_id) as ClosingMessageFiles ON ClosingMessageFiles.vacancy_id = vacancy.id"),
                     'field' => ['files']
                 ],
             ]
