@@ -173,7 +173,7 @@ class EmployeeMainstayController extends MainstayController
             'employee_user_id' => 'required|exists:user_entity,id',
         ];
         $data = Validator::validate($this->params, $rules);
-        return response()->json((new EmployeeLogic())->acceptWork($data));
+        return response()->json((new EmployeeLogic())->declineWork($data));
     }
 
     public function actionSendWorkToInspection($param = []) {

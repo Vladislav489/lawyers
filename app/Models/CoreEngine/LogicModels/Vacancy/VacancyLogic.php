@@ -113,12 +113,18 @@ class VacancyLogic extends CoreEngine
         $data['id'] = $vacancyId;
         $data['status'] = self::STATUS_ACCEPTED;
         $data['period_end'] = Carbon::now()->toDateTimeString();
-        return $this->store($data);
+        $res = $this->store($data);
+        if ($res) {
+            // кинуть оповещение юристу о принятии
+            return $res;
+        }
+        return false;
     }
 
     public function sendToRework($data) {
         $data['id'] = $data['vacancy_id'];
         $data['status'] = self::STATUS_REWORK;
+        // Отправить юристу уведомление, что заказ отдан на доработку
         $data = $this->store($data);
         $data['status'] = self::STATUS_IN_PROGRESS;
         return $this->store($data);
@@ -178,7 +184,7 @@ class VacancyLogic extends CoreEngine
     protected function setVacancyStatus($vacancyId, $status) {
         $data['id'] = $vacancyId;
         $data['status'] = $status;
-        return $this->save($data);
+        return $this->store($data);
     }
 
     public function getVacancyList($data) {
@@ -215,7 +221,7 @@ class VacancyLogic extends CoreEngine
 
     public function getVacancyForResponse($data) {
         $select = [
-            'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end', 'created_at',
+            'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end', 'created_at', 'updated_at',
             DB::raw("CASE WHEN status = 1 THEN 'создан'
                     WHEN status = 2 THEN 'на модерации'
                     WHEN status = 3 THEN 'оплачен'
@@ -235,6 +241,7 @@ class VacancyLogic extends CoreEngine
         $result['files'] = json_decode($result['files'], true);
         Carbon::setLocale('ru');
         $result['time_ago'] = Carbon::make($result['created_at'])->diffForHumans();
+        $result['time_left_to_accept'] = Carbon::make($result['updated_at'])->addHours(48)->diffInHours(Carbon::now());
         return ['result' => $result];
     }
 
@@ -486,5 +493,29 @@ class VacancyLogic extends CoreEngine
         ];
 
         return $this->group_params;
+    }
+
+    public function triggerVacancyCancellationWhenLawyerNotAccept() {
+        $this->params = [
+            'status' => '8',
+        ];
+        $vacancyList = $this->offPagination()->setLimit(false)->getList();
+        foreach ($vacancyList as $vacancy) {
+            if (Carbon::make($vacancy['updated_at'])->addHours(48)->diffInMinutes(Carbon::now()) <= 0) {
+                (new EmployeeLogic())->declineWork([$vacancy['id'], $vacancy['executor_id']]);
+            }
+        }
+    }
+
+    public function triggerVacancyApprovingWhenClientNotAccept() {
+        $this->params = [
+            'status' => '5',
+        ];
+        $vacancyList = $this->offPagination()->setLimit(false)->getList();
+        foreach ($vacancyList as $vacancy) {
+            if (Carbon::make($vacancy['updated_at'])->addHours(48)->diffInMinutes(Carbon::now()) <= 0) {
+                $this->acceptWorkDone($vacancy['id']);
+            }
+        }
     }
 }

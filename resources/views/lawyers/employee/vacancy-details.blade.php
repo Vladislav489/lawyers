@@ -213,6 +213,7 @@
                     component.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
                     component.option['statusData'] = statusData
                     component.option['daysToEnd'] = globalData['days_to_end']
+                    component.option['hoursToAccept'] = globalData['time_left_to_accept']
                     return component.option
                 }",
 
@@ -230,9 +231,9 @@
                     </div>
                     <div class='order-status_message'>
                         <p v-if=\"currentStatusCode == 4\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дней</p>
-                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
                         <p v-if=\"currentStatusCode == 5\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дня</p>
-                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
+                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
                     </div>
                 </div>
                 "
