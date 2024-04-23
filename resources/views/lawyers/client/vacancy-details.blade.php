@@ -170,12 +170,12 @@
                     <div v-for=\"(historyForDate, date) in groupHistoryByDate\" :key=\"date\" class='order-history-block'>
                         <time>@{{ date }}</time>
                         <div v-for=\"item in historyForDate\" :key=\"item.id\" class='order-history_row order-row'>
-                            <img src='/lawyers/images/icons/order-created-icon.svg' alt='order-created-icon'>
+                            <img :src=\"setAdditionalInfoForHistory(item.status)[1]\" alt='order-created-icon'>
                             <div class='order-history_right'>
                                 <h4>Заказ @{{ item.status }}
                                     <time>@{{ item.time }}</time>
                                 </h4>
-                                <p name='additional-info-place' v-html=\"setAdditionalInfoForHistory(item.status)\">
+                                <p name='additional-info-place' v-html=\"setAdditionalInfoForHistory(item.status)[0]\">
 
                                 </p>
                             </div>
@@ -201,14 +201,16 @@
                 'autostart' => 'true',
                 'name' => 'action_block',
                 'globalData' => 'VacancyInfo',
-                'callBeforloadComponent' => "function() {
+                'callBeforloadComponent' => "function(component) {
                     let globalData = page__.getGolobalData('VacancyInfo')
                     let statusData = globalData.status_history
                     statusData = statusData.sort((a, b) => a.id > b.id ? 1 : -1)
-                    this.option['currentStatus'] = statusData[statusData.length - 1].status
-                    this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
-                    this.option['statusData'] = statusData
-                    return this.option
+                    component.option['currentStatus'] = statusData[statusData.length - 1].status
+                    component.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
+                    component.option['statusData'] = statusData
+                    component.option['daysToEnd'] = globalData['days_to_end']
+                    component.option['hoursToAccept'] = globalData['time_left_to_accept']
+                    return component.option
                 }",
 
                 'template' => "
@@ -227,10 +229,10 @@
 
                     </div>
                     <div class='order-status_message'>
-                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
-                        <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
-                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось 20 часов</p>
-                        <p v-if=\"currentStatusCode == 5\">До конца проекта осталось 33 дня</p>
+                        <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
+                        <p v-if=\"currentStatusCode == 4\">До конца проекта осталось @{{ daysToEnd }} дней</p>
+                        <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
+                        <p v-if=\"currentStatusCode == 5\">До конца проекта осталось @{{ daysToEnd }} дней</p>
                     </div>
                 </div>
                 "
@@ -1056,31 +1058,47 @@
 
     function setAdditionalInfoForHistory(status) {
         let info = ''
+        let icon = ''
         switch (status) {
             case 'создан':
+                icon = '/lawyers/images/icons/order-created-icon.svg'
                 info = 'Вы создали заказ. Ознакомьтесь с <a href="#" class="a_link">программой защиты покупателей</a>'
                 break
-            case 'на модерации' : info = `Ваш заказ обрабатывается`
+            case 'на модерации' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Ваш заказ обрабатывается`
                 break
-            case 'оплачен' : info = `Ваш заказ оплачен`
+            case 'оплачен' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Ваш заказ оплачен`
                 break
-            case null : info = `Ожидает подтверждения юристом`
+            case null :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Ожидает подтверждения юристом`
                 break
-            case 'в работе' : info = `Заказ в работе`
+            case 'в работе' :
+                icon = '/lawyers/images/icons/order-in-check-icon.svg'
+                info = `Заказ в работе`
                 break
-            case 'на проверке' : info = `Заказ сдан на проверку`
+            case 'на проверке' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Заказ сдан на проверку`
                 break
-            case 'принят' : info = `<span>
+            case 'принят' :
+                icon = '/lawyers/images/icons/order-done-icon.svg'
+                info = `<span>
                                             Вы проверили и приняли работу.
                                         </span>
                                         <span>
                                             Оставьте, пожалуйста, свой отзыв о работе. От отзывов зависит рейтинг исполнителя на сервисе.
                                         </span>`
                 break
-            case 'закрыт' : info = `Заказ закрыт`
+            case 'закрыт' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Заказ закрыт`
                 break
         }
-        return info
+        return [info, icon]
     }
 
     function setFormat(data, type) {
@@ -1105,7 +1123,9 @@
             },
             url: '{{ route__('actionSendToRework_mainstay_client_clientmainstaycontroller') }}',
             success: function (response) {
-                console.log(response)
+                if (response) {
+                    location.reload()
+                }
             }
 
         })

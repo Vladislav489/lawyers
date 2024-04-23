@@ -20,23 +20,8 @@ class Kernel extends ConsoleKernel{
             'start shadule'.date("Y-m-d H:i:s"),
             SystemLog::CODE_TASK
         );
-        $schedule->command('cron:price_physical_to_day')
-                 ->timezone("UTC")
-                 ->dailyAt("23:00");
 
-        $schedule->command('cron:price_digital_to_day')
-                 ->timezone("Europe/London")
-                 ->dailyAt("23:00");
-
-        $schedule->command('cron:price_nasdaq_to_day')
-                 ->timezone("America/New_York")
-                 ->dailyAt("23:00");
-
-        $schedule->command('import:price')
-            ->timezone("America/New_York")
-            ->everyFourHours();
-
-      //  $schedule->command('site:math_cache')->dailyAt("00:01");
+        $schedule->command('cron:watch-vacancy-accept')->everyMinute();
     }
 
     /**

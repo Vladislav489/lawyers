@@ -294,9 +294,10 @@ class EmployeeLogic extends UserLogic
         (new VacancyLogic())->getVacancyLastStatus($data['vacancy_id']);
         $vacancy['id'] = $data['vacancy_id'];
         $vacancy['executor_id'] = null;
-        $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
-        $vacancy = setTimestamps($vacancy, 'update');
+//        $vacancy['status'] = VacancyLogic::STATUS_NEW;
+//        $vacancy = setTimestamps($vacancy, 'update');
         if((new VacancyLogic())->store($vacancy)) {
+            // кинуть клиенту оповещение об отказе
             return ['message' => "you've decline a job offer"];
         }
         return false;
