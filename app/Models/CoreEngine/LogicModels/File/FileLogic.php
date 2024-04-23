@@ -9,9 +9,11 @@ use App\Models\CoreEngine\ProjectModels\File\File;
 class FileLogic extends FileSystemLogic
 {
     const FILE_VACANCY = 'vacancy';
+    const FILE_RATING = 'rating';
 
     const TYPE_VACANCY = 1;
     const TYPE_VACANCY_CLOSING = 2;
+    const TYPE_RATING = 3;
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {

@@ -4,9 +4,11 @@ namespace App\Models\CoreEngine\LogicModels\Vacancy;
 
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\LogicModels\Another\FileSystemLogic;
+use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\File\FileLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeRating;
 use App\Models\CoreEngine\ProjectModels\File\File;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
@@ -42,6 +44,7 @@ class VacancyLogic extends CoreEngine
         $this->engine = new Vacancy();
         $this->helpEngine['status_log'] = self::createTempLogic(new VacancyStatusLog());
         $this->helpEngine['closing_message'] = self::createTempLogic(new VacancyClosing());
+        $this->helpEngine['employee_rating'] = self::createTempLogic(new EmployeeRating());
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
@@ -106,9 +109,10 @@ class VacancyLogic extends CoreEngine
         return false;
     }
 
-    public function acceptWorkDone($data) {
-        $data['id'] = $data['vacancy_id'];
+    public function acceptWorkDone($vacancyId) {
+        $data['id'] = $vacancyId;
         $data['status'] = self::STATUS_ACCEPTED;
+        $data['period_end'] = Carbon::now()->toDateTimeString();
         return $this->store($data);
     }
 
@@ -256,6 +260,24 @@ class VacancyLogic extends CoreEngine
         return $res;
     }
 
+    public function rateWork($data) {
+        if ($this->acceptWorkDone($data['vacancy_id'])) {
+            $data = setTimestamps($data, 'update');
+            $ratingRow = array_intersect_key(
+                $data,
+                array_flip($this->helpEngine['employee_rating']->getEngine()->getFillable()));
+            if ($data['employee_rating_id'] = $this->helpEngine['employee_rating']->save($ratingRow)) {
+                if (isset($data['files'])) {
+                    $data['file_type'] = FileLogic::TYPE_RATING;
+                    $data = (new FileLogic())->store($data, FileLogic::FILE_RATING);
+                }
+                $this->setVacancyStatus($data['vacancy_id'], self::STATUS_CLOSED);
+                return $data;
+            }
+        }
+        return false;
+    }
+
     protected function getFilter(): array
     {
         $tab = $this->engine->getTable();
@@ -269,6 +291,11 @@ class VacancyLogic extends CoreEngine
                 'validate' => ['string' => true,"empty" => true],
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
+            ],
+            [   'field' => $tab.'.status','params' => 'except_status',
+                'validate' => ['string' => true,"empty" => true],
+                'type' => 'string|array',
+                "action" => 'NOT IN', 'concat' => 'AND',
             ],
             [   'field' => $tab.'.executor_id','params' => 'executor_id',
                 'validate' => ['string' => true,"empty" => true],

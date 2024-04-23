@@ -81,7 +81,7 @@
                 'name' => "vacancy_files",
                 'autostart' => 'true',
                 'url' => route__("actionGetFilesList_mainstay_file_filemainstaycontroller"),
-                'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id')],
+                'params' => ['path_start' => 'vacancy/' . request()->route('vacancy_id'), 'type' => '1'],
                 'template' =>
                 "<ul class='files_list'>
                     <li v-for=\"item in data\">
@@ -93,39 +93,56 @@
 
 
 
-{{--                <div class="order-answers mobile-hidden">--}}
-{{--                    <span>11 ответов</span>--}}
-{{--                    <div class="comments">--}}
-{{--                        <div class="order-row comment">--}}
-{{--                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">--}}
-{{--                            <div class="order-history_right commentator">--}}
-{{--                                <h4> Соколовский Владимир--}}
-{{--                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">--}}
-{{--                                    <time>18:12</time>--}}
-{{--                                </h4>--}}
-{{--                                <p>--}}
-{{--                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в--}}
-{{--                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем--}}
-{{--                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>--}}
-{{--                                    <span>Могли бы помочь?</span>--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                <div class="order-answers mobile-hidden">
+                    <span>11 ответов</span>
+                    <div class="comments">
+                        <div class="order-row comment">
+                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">
+                            <div class="order-history_right commentator">
+                                <h4> Соколовский Владимир
+                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">
+                                    <time>18:12</time>
+                                </h4>
+                                <p>
+                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в
+                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем
+                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>
+                                    <span>Могли бы помочь?</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-{{--                        <div class="order-row comment">--}}
-{{--                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">--}}
-{{--                            <div class="order-history_right commentator">--}}
-{{--                                <h4> Victor--}}
-{{--                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">--}}
-{{--                                    <time>18:12</time>--}}
-{{--                                </h4>--}}
-{{--                                <p>--}}
-{{--                                    Добрый день, да. Что конкретно планируете??--}}
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                @include('component_build', [
+                'component' => 'component.infoComponent.textInfo',
+                'params_component' => [
+                'autostart' => 'true',
+                'name' => 'vacancy_closing_info',
+                'url' => route__('actionGetClosingMessage_mainstay_vacancy_vacancymainstaycontroller'),
+                'params' => ['id' => request()->route('vacancy_id')],
+
+                'template' => "
+                <div class='order-row comment'>
+                    <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img'>
+                    <div class='order-history_right commentator'>
+                        <h4> @{{ data.executor_name }}
+                            <img src='/lawyers/images/icons/chat-verify.svg' alt='verify-icon'>
+                            <time>@{{ data.time }}</time>
+                        </h4>
+                        <p>
+                            <span>@{{ data.text }}</span>
+                        </p>
+                        <ul class='files_list'>
+                            <li v-for=\"item in data.files\">
+                                <a @click=\"viewFile(item.path, item.name)\">@{{item.name}}</a>
+                            </li>
+                </ul>
+                    </div>
+                </div>
+                "
+                ]
+                ])
 
                 <div class="order-history mobile-hidden">
                     @include('component_build', [
@@ -200,7 +217,7 @@
                         <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support' @click=\"sendToRedo(data.id)\">Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
-                        <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done' @click=\"acceptWork(data.id)\">Заказ выполнен</button>
+                        <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</a>
                         <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
                         <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         {{-- Тест --}}
@@ -236,8 +253,8 @@
         <label for="star1" title="text"><svg width="42" height="40" viewBox="0 0 42 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.1459 1.58471C19.82 -0.0821812 22.18 -0.0821841 22.8541 1.58471L27.0268 11.9026C27.3133 12.6111 27.9785 13.0943 28.7408 13.1479L39.8431 13.928C41.6368 14.054 42.366 16.2985 40.989 17.4547L32.4656 24.6116C31.8803 25.103 31.6263 25.8849 31.8109 26.6265L34.4998 37.4265C34.9342 39.1713 33.0249 40.5585 31.4998 39.6061L22.0593 33.7114C21.4111 33.3067 20.5889 33.3067 19.9407 33.7114L10.5002 39.6061C8.97506 40.5585 7.06577 39.1713 7.50018 37.4265L10.1891 26.6265C10.3737 25.8849 10.1197 25.103 9.53445 24.6116L1.01095 17.4547C-0.366048 16.2985 0.363236 14.054 2.15686 13.928L13.2592 13.1479C14.0215 13.0943 14.6867 12.6111 14.9732 11.9026L19.1459 1.58471Z" fill="#ECECEC"/></svg></label>
     </div>
     <div class="order-modal-content">
-        <textarea placeholder="Комментарий..."></textarea>
-        <div class="registration-form_label full">
+        <textarea placeholder="Комментарий..." name="comment_text"></textarea>
+        <div class="registration-form_label full" id="file_input">
             <label class="label-title">Выберите файлы</label>
             <div class="form-row_files">
                 <input type="file" name="files[]" id="files" multiple="">
@@ -249,7 +266,7 @@
         </div>
     </div>
     <div class='flex align-center form--submit'>
-        <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Отправить</button>
+        <button type='button' id="send" class='main-btn main-btn_blue'>Отправить</button>
         <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
     </div>
 </div>
@@ -302,9 +319,9 @@
                     <ul class='order-process_ul'>
                         <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
                         <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
-                        <li :class=\"currentStatusCode >= 4 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
-                        <li :class=\"currentStatusCode == 5 ? '_check' : '_inProgress'\">Сдан на проверку</li>
-                        <li :class=\"currentStatusCode == 6 ? '_check' : '_inProgress'\">Заказ принят</li>
+                        <li :class=\"currentStatusCode >= 4 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
+                        <li :class=\"currentStatusCode >= 5 && currentStatusCode != 8 ? '_check' : '_inProgress'\">Сдан на проверку</li>
+                        <li :class=\"currentStatusCode >= 6 && currentStatusCode != 8 ? '_check' : '_inProgress'\">Заказ принят</li>
                     </ul>
                 </div>
                 "
@@ -1028,6 +1045,13 @@
 <script>
     $(document).ready(function () {
         setAdditionalInfoForHistory()
+        $(document).ready(function () {
+            $('#file_input').click(function () {
+                $('#files')[0].click()
+            })
+        })
+        acceptAndRate()
+        chooseRating()
     })
 
     function setAdditionalInfoForHistory(status) {
@@ -1072,21 +1096,6 @@
 
     }
 
-    function acceptWork(vacancyId) {
-        $.ajax({
-            method: 'POST',
-            data: {
-                vacancy_id: vacancyId,
-                user_id: {{ auth()->id() }}
-            },
-            url: '{{ route__('actionAcceptDone_mainstay_client_clientmainstaycontroller') }}',
-            success: function (response) {
-                console.log(response)
-            }
-
-        })
-    }
-
     function sendToRedo(vacancyId) {
         $.ajax({
             method: 'POST',
@@ -1099,6 +1108,42 @@
                 console.log(response)
             }
 
+        })
+    }
+
+    function getDataForSend() {
+        let formData = new FormData()
+        formData.append('rating', $('[name=rate]:checked').val())
+        formData.append('text', $('[name=comment_text]').val())
+        formData.append('employee_user_id', page__.getGolobalData('VacancyInfo')['executor_id'])
+        $.each($('#files')[0].files, function (key, input) {
+            formData.append('files[]', input)
+        })
+        formData.append('vacancy_id', {{ request()->route('vacancy_id') }})
+        return formData
+    }
+
+    function acceptAndRate() {
+        $('#send').click(function () {
+            $.ajax({
+                method: 'POST',
+                data: getDataForSend(),
+                contentType: false,
+                processData: false,
+                url: '{{ route__('actionAcceptAndRateWork_mainstay_client_clientmainstaycontroller') }}',
+                success: function (response) {
+                    if (response) {
+                        location.reload()
+                    }
+                }
+            })
+        })
+
+    }
+
+    function chooseRating() {
+        $('div > label').click(function () {
+            $(this).siblings('#' + $(this).prop('for')).attr('checked', true);
         })
     }
 

@@ -219,16 +219,16 @@
                 'template' => "
                 <div class='order-status'>
                     <div class='order-status-buttons'>
-                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <a v-if=\"currentStatusCode == 4\" href='#modal_info' data-fancybox class='order-status-btn ico_done'>Заказ выполнен</a>
                         <p v-if=\"currentStatusCode == 5\" class='noactive'>Заказ отправлен на проверку</p>
+                        <p v-if=\"currentStatusCode == 7\" class='noactive'>Заказ завершен</p>
                         {{-- Тест --}}
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done' @click=\"acceptToWork(data.id)\">Принять заказ</button>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete' @click=\"declineToWork(data.id)\">Отменить заказ</button>
 
                     </div>
                     <div class='order-status_message'>
-                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         <p v-if=\"currentStatusCode == 4\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дней</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
                         <p v-if=\"currentStatusCode == 5\" class='noactive'>До конца проекта осталось @{{ daysToEnd }} дня</p>
@@ -307,11 +307,11 @@
                     </p>
 
                     <ul class='order-process_ul'>
-                        <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
-                        <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
-                        <li :class=\"currentStatusCode >= 4 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
-                        <li :class=\"currentStatusCode == 5 ? '_check' : '_inProgress'\"><span></span>Сдан на проверку</li>
-                        <li :class=\"currentStatusCode == 6 ? '_check' : '_inProgress'\"><span></span>Заказ принят</li>
+                        <li :class=\"currentStatusCode >= 1 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
+                        <li :class=\"currentStatusCode >= 3 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
+                        <li :class=\"currentStatusCode >= 4 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
+                        <li :class=\"currentStatusCode >= 5 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Сдан на проверку</li>
+                        <li :class=\"currentStatusCode >= 6 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Заказ принят</li>
                     </ul>
                 </div>
                 "
@@ -594,6 +594,7 @@
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <p v-if=\"currentStatusCode == 7\" class='noactive'>Заказ завершен</p>
                         {{-- Тест --}}
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
@@ -601,7 +602,6 @@
 
                     </div>
                     <div class='order-status_message'>
-                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         <p v-if=\"currentStatusCode == 8\">Ожидает принятия исполнителем...</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось 20 часов</p>
                         <p v-if=\"currentStatusCode == 4\">До конца проекта осталось 33 дня</p>
@@ -1037,7 +1037,6 @@
         $('#file_input').click(function () {
             $('#files')[0].click()
         })
-        var vacancyInfo = page__.getGolobalData('VacancyInfo')
         sendToInspection()
     })
 
