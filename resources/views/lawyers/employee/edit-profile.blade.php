@@ -15,16 +15,8 @@
 @section('content')
     <section class="u-container lawyer-section">
         <div class="container">
-            <div class='modal registration-section' id='employeeInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                <div class='modal-dialog modal-dialog-centered' role='document'>
-                    <div class='modal-content'>
-                        <div class='modal-header'>
-                            <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>
-                            <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>
-                                <span aria-hidden='true'>&times;</span>
-                            </button>
-                        </div>
-                        <div class='modal-body flex-between'>
+            <div class='modal profile_modal' id='employeeInfoEdit'>
+                <h5 class='order-modal_title' id='exampleModalLongTitle'>Окно редактирования</h5>
                             @include('component_build', [
                                 'component' => 'component.infoComponent.textInfo',
                                 'params_component' => [
@@ -34,20 +26,31 @@
 									'globalData' => 'EmployeeInfo',
 									'ssr' => 'false',
 
-                                    'template' =>
-                        "<div id=\"common_info_container\">
-                            <label>Имя</label>
-                            <input type=\"text\" name=\"first_name_edit\" :value=\"data.first_name\" class=\"border\">
-                            <label>Фамилия</label>
-                            <input type=\"text\" name=\"last_name_edit\" :value=\"data.last_name\" class=\"border\">
-                            <label>Отчество</label>
-                            <input type=\"text\" name=\"middle_name_edit\" :value=\"data.middle_name\" class=\"border\">
-                            <label>Телефон</label>
-                            <input type=\"text\" name=\"phone_number_edit\" :value=\"data.phone_number\" class=\"border\">
-                        </div>",
+                                    'template' =>"
+                            <div id=\"common_info_container\" class=\"flexbox\">
+                            <div class=\"registration-form_label\">
+                                <label class=\"label-title\">Имя</label>
+                                <input type=\"text\" name=\"first_name_edit\" :value=\"data.first_name\">
+                            </div>
+                            <div class=\"registration-form_label\">
+                                <label class=\"label-title\">Фамилия</label>
+                                <input type=\"text\" name=\"last_name_edit\" :value=\"data.last_name\">
+                            </div>
+                            <div class=\"registration-form_label\">
+                                <label class=\"label-title\">Отчество</label>
+                                <input type=\"text\" name=\"middle_name_edit\" :value=\"data.middle_name\">
+                            </div>
+                            <div class=\"registration-form_label\">
+                                <label class=\"label-title\">Телефон</label>
+                                <input type=\"text\" name=\"phone_number_edit\" :value=\"data.phone_number\">
+                            </div>
+                            </div>
+                            ",
                                 ]
                             ])
-                            <label for="">Регион</label>
+                            <div class="flexbox">
+                            <div class="registration-form_label">
+                            <label class="label-title">Регион</label>
                             @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                                 "autostart" => 'true',
@@ -62,9 +65,12 @@
 								"callAfterloadComponent" => "function(component) {
 								        const param = {'region_id': component.vueObject._data.currentSelectId}
                                         page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                                        $('.js_select').select2({
+                                            minimumResultsForSearch: -1,
+                                        });
 								    }",
                                 "template" =>
-                                '<select class="unit-select_select" name="region_id" :id="name" style="width:100%">
+                                '<select class="js_select" name="region_id" :id="name" style="width:100%">
                                     <option v-for="(items_ , index) in data" :data-text="items_" :value="index" :selected="index == currentSelectId">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){
@@ -74,8 +80,9 @@
                                                 }
                                             }"
                             ]])
-
-                            <label for="">Город</label>
+                            </div>
+                            <div class="registration-form_label">
+                            <label class="label-title">Город</label>
                             @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                                 "autostart" => 'false',
@@ -87,20 +94,24 @@
                                         component.option['currentSelectName'] = page__.getGolobalData('EmployeeInfo').city_name
                                         return component.option
 								    }",
+								"callAfterloadComponent" => "function(component) {
+								    $('.js_select').select2({
+								        minimumResultsForSearch: -1,
+								    });
+                                }",
 
                                 "template" =>
-                                '<select class="unit-select_select" name="city_id" :id="name" style="width:100%">
+                                '<select class="js_select" name="city_id" :id="name" style="width:100%">
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index" :selected="index == currentSelectId">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){}"
                             ]])
+                            </div>
                         </div>
-                        <div class='modal-footer'>
-                            <button type='button' id="save_edit_main" class='btn btn-success'>Сохранить</button>
-                            <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>
+                        <div class='flex align-center form--submit'>
+                            <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Сохранить</button>
+                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
                         </div>
-                    </div>
-                </div>
             </div>
             <div class="lawyer-container">
                 <div class="left">
@@ -115,14 +126,14 @@
                     "
                     <div:id=\"name\">
                     <div class=\"lawyer-block\">
-                        <div id=\"edit_main_modal\">edit</div>
+                        <a href=\"#employeeInfoEdit\" id=\"edit_more_modal\" data-fancybox class=\"edit\"></a>
                         <div class=\"lawyer-top\">
                             <div class=\"lawyer-img\">
                                 <img :src=\"data.avatar_full_path\" alt=\"lawyer-img\">
                             </div>
 
                             <div class=\"lawyer-info\">
-                                <h2 class=\"lawyer-name\">@{{getFullName(data)}}</h2>
+                                <h2 class=\"lawyer-name with_ico\">@{{getFullName(data)}}</h2>
                                 <span class=\"lawyer-check\">
                                     Проверенный юрист
                                     <img class=\"icon\" src=\"/lawyers/images/icons/check-icon-white.svg\" alt=\"check-icon\">
@@ -212,29 +223,14 @@
                             <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
                         </div>
 
-                        <button class="main-btn">
-                            <span class="first">
-                                Создать задачу
-                                <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                            </span>
-                            <span class="second">
-                                Создать задачу
-                                <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                            </span>
-                        </button>
+                        <button class="main-btn"><span>Создать задачу</span></button>
                     </div>
                 </div>
 
-                <div class='modal fade' id='employeeInfoMoreEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                    <div class='modal-dialog modal-dialog-centered' role='document'>
-                        <div class='modal-content'>
-                            <div class='modal-header'>
-                                <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>
-                                    <span aria-hidden='true'>&times;</span>
-                                </button>
-                            </div>
-                            <div class='modal-body flex-between'>
+                <div class='modal registration-section' id='employeeInfoMoreEdit'>
+                    <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+                    <div class='registration-form_block'>
+                        <div id='common_info_container' class='registration-form_block'>
                                 @include('component_build', [
                                     'component' => 'component.infoComponent.textInfo',
                                     'params_component' => [
@@ -245,14 +241,14 @@
                                         'ssr' => 'false',
 
                                         'template' =>
-                            "<div id=\"common_info_container\">
-                                <label>О себе</label>
-                                <textarea id=\"about_edit\" type=\"text\" name=\"about_edit\" :value=\"data.about\" class=\"border\">
-                            </div>",
+                                "<div class=\"registration-form_label full\">
+                                    <label class=\"label-title\">О себе</label>
+                                    <textarea id=\"about_edit\" type=\"text\" name=\"about_edit\" :value=\"data.about\">
+                                </div>",
                                     ]
                                 ])
-
-                                <label>Добавить фотографию</label>
+                                <div class='registration-form_label full'>
+                                <label class='label-title'>Добавить фотографию</label>
                                 @include('component_build', [
                                     'component' => 'component.imageComponet.imageDropZoneEditor',
                                     'params_component' => [
@@ -261,7 +257,8 @@
                                         'url' => route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller'),
                                     ]
                                 ])
-
+                                </div>
+                            <div class='registration-form_label full'>
                                 <label>Добавить сертификат</label>
                                 @include('component_build', [
                                     'component' => 'component.imageComponet.imageDropZoneEditor',
@@ -271,12 +268,12 @@
                                     ]
                                 ])
                             </div>
-                            <div class='modal-footer'>
-                                <button type='button' id="save_info_more_edit" class='btn btn-success'>Сохранить</button>
-                                <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>
-                            </div>
                         </div>
                     </div>
+                            <div class='flex align-center form--submit'>
+                                <button type='button' id="save_info_more_edit" class='main-btn main-btn_blue'>Сохранить</button>
+                                <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                            </div>
                 </div>
                 <div class="right">
                     <ul class="round-top_nav">
@@ -295,9 +292,9 @@
 
                         'template' =>
                         "<div class='lawyer-card'>
-                        <div id='edit_more_modal'>edit</div>
+                        <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         <div class='lawyer-info'>
-                            <h2 class='lawyer-name'>
+                            <h2 class='lawyer-name with_ico'>
                                 @{{getFullName(data)}}
                             </h2>
                             <span class='lawyer-check'>
@@ -704,12 +701,10 @@
             $('#save_edit_main').on('click', function () {
                 const data = getMainDataForUpdate()
                 sendData(data)
-                $('#employeeInfoEdit').modal('hide')
             })
             $('#save_info_more_edit').on('click', function () {
                 const data = getMoreDataForUpdate()
                 sendData(data)
-                $('#employeeInfoMoreEdit').modal('hide')
             })
             $('#save_service_edit').on('click', function () {
                 const data = getServiceForUpdate()
@@ -718,7 +713,6 @@
                     page__.getElementsGroup('employee_services')[0]['obj'].setData(data['result'])
                     page__.getElementsGroup('employee_services')[0]['obj'].startWidget()
                 })
-                $('#employeeServiceEdit').modal('hide')
             })
             $('#save_service_create').on('click', function () {
                 const data = getNewService()
@@ -727,7 +721,6 @@
                         page__.getElementsGroup('employee_services')[0]['obj'].setData(data['result'])
                         page__.getElementsGroup('employee_services')[0]['obj'].startWidget()
                     })
-                $('#employeeServiceCreate').modal('hide')
             })
         }
 
@@ -781,12 +774,9 @@
         }
 
         function setEdit() {
-            $(document).on('click', '#edit_main_modal', function () {
+            /*$(document).on('click', '#edit_main_modal', function () {
                 $('#employeeInfoEdit').modal('toggle')
-            })
-            $(document).on('click', '#edit_more_modal', function () {
-                $('#employeeInfoMoreEdit').modal('toggle')
-            })
+            })*/
             $(document).on('click', '#edit_services_modal', function () {
                 $('#employeeServiceCreate').modal('toggle')
             })

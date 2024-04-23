@@ -29,12 +29,24 @@
     background-color: var(--white-color);
     padding: 20px;
     border-radius: 16px;
+    position: relative;
 }
 
 .lawyer-container .left .lawyer-top {
     display: flex;
     gap: 16px;
+    position: relative;
 }
+    .edit{
+        background: url(../images/icons/edit-icon.svg) no-repeat;
+        cursor: pointer;
+        height: 24px;
+        position: absolute;
+        right: 21px;
+        top: 18px;
+        width: 24px;
+        z-index: 9;
+    }
 .lawyer-container .left .lawyer-img {
     flex: 0 0 130px;
     height: 130px;
@@ -56,6 +68,7 @@
     font-weight: 600;
     line-height: 140%;
 }
+    .lawyer-container .left .lawyer-name.with_ico{padding-right: 30px;}
 .lawyer-container .left .lawyer-check {
     margin-top: auto;
     display: flex;
@@ -1804,7 +1817,15 @@
 .rate > input:checked ~ label:hover path,
 .rate > input:checked ~ label:hover ~ label path,
 .rate > label:hover ~ input:checked ~ label path{color: #c59b08;}
+.profile_modal .registration-form_label{margin-bottom: 12px;}
+.flexbox{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 @media (max-width: 600px){
+.modal.fancybox-content{padding: 24px 16px 32px;}
 .order-modal_title.big{
     font-size: 18px;
     text-align: left;
