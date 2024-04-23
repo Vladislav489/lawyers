@@ -99,18 +99,6 @@ class ClientMainstayController extends MainstayController {
         return response()->json((new VacancyLogic())->setExecutor($data));
     }
 
-    public function actionAcceptDone($param = []) {
-        $this->params = (empty($param)) ? $this->params : $param;
-        $rules = [
-            'vacancy_id' => 'required|integer|exists:vacancy,id',
-            'user_id' => 'required|integer|exists:user_entity,id'
-        ];
-
-        $data = Validator::validate($this->params, $rules);
-
-        return response()->json((new VacancyLogic())->acceptWorkDone($data));
-    }
-
     public function actionSendToRework($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
@@ -121,6 +109,21 @@ class ClientMainstayController extends MainstayController {
         $data = Validator::validate($this->params, $rules);
 
         return response()->json((new VacancyLogic())->sendToRework($data));
+    }
+
+    public function actionAcceptAndRateWork($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        $rules = [
+            'vacancy_id' => 'required|integer|exists:vacancy,id',
+            'employee_user_id' => 'required|integer|exists:user_entity,id',
+            'text' => 'nullable|string',
+            'rating' => 'required|integer',
+            'files' => 'nullable|array'
+        ];
+
+        $data = Validator::validate($this->params, $rules);
+        $data['user_id'] = auth()->id();
+        return response()->json((new VacancyLogic())->rateWork($data));
     }
 }
 
