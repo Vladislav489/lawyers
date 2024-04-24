@@ -16,7 +16,7 @@
     <section class="u-container lawyer-section">
         <div class="container">
             <div class='modal profile_modal' id='employeeInfoEdit'>
-                <h5 class='order-modal_title' id='exampleModalLongTitle'>Окно редактирования</h5>
+                <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать</h5>
                             @include('component_build', [
                                 'component' => 'component.infoComponent.textInfo',
                                 'params_component' => [
@@ -115,43 +115,54 @@
                                     'autostart' => 'false',
                                     'name' => 'employee_info_worktime_edit',
 									'globalData' => 'EmployeeInfo',
-
+                                    "callAfterloadComponent" => "function(component) {
+                                        $('.js_checkbox_worktime input').click(function(){
+                                            $(this).parent().toggleClass('active');
+                                            $('#set_schedule').fadeToggle();
+                                        });
+                                        $('.js_checkbox input').click(function(){
+                                            $(this).parent().toggleClass('active');
+                                        });
+                                        $('.js_select_time').select2({
+                                            minimumResultsForSearch: -1,
+                                        });
+                                    }",
                                     'template' =>"
-                            <div>
                                 <div>
-                                    <p>Время работы</p>
-                                    <label class='' id='label_select_worktime' @click.prevent=\"showScheduleBlock()\">
-                                        <input type='checkbox' id='select_worktime'>Круглосуточно
-                                    </label>
+                                <div class='modal_time_container'>
+                                    <h6 class='modal_smalltitle'>Время работы</h6>
+                                    <label class='checkbox_24 js_checkbox_worktime' id='label_select_worktime'><input type='checkbox' id='select_worktime'>Круглосуточно</label>
                                 </div>
-                                <div id='set_schedule' hidden>
-                                    <p>Пн-Сб 9:00 - 18:00</p>
-                                    <p>Дни недели</p>
-                                    <div>
-                                        <label class=''>
+                                <div id='set_schedule' class='schedule-container'>
+                                    <p class='schedule_result'>Пн-Сб 9:00 - 18:00</p>
+                                    <div class='days-container'>
+                                        <p class='days-container-title'>Дни недели</p>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day1' value='1'>Пн
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day2' value='2'>Вт
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day3' value='3'>Ср
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day4' value='4'>Чт
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day5' value='5'>Пт
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day6' value='6'>Сб
                                         </label>
-                                        <label class=''>
+                                        <label class='days-checkbox js_checkbox'>
                                             <input type='checkbox' name='day_of_week' id='day7' value='7'>Вс
                                         </label>
                                     </div>
-                                    <div> От
-                                        <select id='from_time'>
+                                    <div class='flexbox'>
+                                        <div class='registration-form_label'>
+                                        <label class='label-title'>От</label>
+                                        <select id='from_time' class='js_select_time'>
                                             <option value='1'>1:00</option>
                                             <option value='2'>2:00</option>
                                             <option value='3'>3:00</option>
@@ -178,8 +189,9 @@
                                             <option value='24'>24:00</option>
                                         </select>
                                     </div>
-                                    <div> До
-                                        <select id='to_time'>
+                                    <div class='registration-form_label'>
+                                    <label class='label-title'>До</label>
+                                        <select id='to_time' class='js_select_time'>
                                             <option value='1'>1:00</option>
                                             <option value='2'>2:00</option>
                                             <option value='3'>3:00</option>
@@ -205,9 +217,10 @@
                                             <option value='23'>23:00</option>
                                             <option value='24'>24:00</option>
                                         </select>
+                                    </div>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
                             ",
                                 ]
                             ])
@@ -939,10 +952,10 @@
             Object.assign(page__.getGolobalData('EmployeeInfo'), data)
         }
 
-        function showScheduleBlock() {
+        /*function showScheduleBlock() {
             $('#select_worktime').prop('checked', !$('#select_worktime').prop('checked'))
             $('#set_schedule').prop('hidden', !$('#set_schedule').prop('hidden'))
-        }
+        }*/
 
         function getWorkingDaysArray() {
             if ($('#select_worktime').prop('checked')) {
