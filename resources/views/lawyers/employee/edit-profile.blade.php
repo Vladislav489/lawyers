@@ -108,6 +108,112 @@
                             ]])
                             </div>
                         </div>
+
+                @include('component_build', [
+                                'component' => 'component.infoComponent.textInfo',
+                                'params_component' => [
+                                    'autostart' => 'false',
+                                    'name' => 'employee_info_worktime_edit',
+									'globalData' => 'EmployeeInfo',
+
+                                    'template' =>"
+                            <div>
+                                <div>
+                                    <p>Время работы</p>
+                                    <label class='' id='label_select_worktime' @click.prevent=\"showScheduleBlock()\">
+                                        <input type='checkbox' id='select_worktime'>Круглосуточно
+                                    </label>
+                                </div>
+                                <div id='set_schedule' hidden>
+                                    <p>Пн-Сб 9:00 - 18:00</p>
+                                    <p>Дни недели</p>
+                                    <div>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day1' value='1'>Пн
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day2' value='2'>Вт
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day3' value='3'>Ср
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day4' value='4'>Чт
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day5' value='5'>Пт
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day6' value='6'>Сб
+                                        </label>
+                                        <label class=''>
+                                            <input type='checkbox' name='day_of_week' id='day7' value='7'>Вс
+                                        </label>
+                                    </div>
+                                    <div> От
+                                        <select id='from_time'>
+                                            <option value='1'>1:00</option>
+                                            <option value='2'>2:00</option>
+                                            <option value='3'>3:00</option>
+                                            <option value='4'>4:00</option>
+                                            <option value='5'>5:00</option>
+                                            <option value='6'>6:00</option>
+                                            <option value='7'>7:00</option>
+                                            <option value='8'>8:00</option>
+                                            <option value='9'>9:00</option>
+                                            <option value='10'>10:00</option>
+                                            <option value='11'>11:00</option>
+                                            <option value='12'>12:00</option>
+                                            <option value='13'>13:00</option>
+                                            <option value='14'>14:00</option>
+                                            <option value='15'>15:00</option>
+                                            <option value='16'>16:00</option>
+                                            <option value='17'>17:00</option>
+                                            <option value='18'>18:00</option>
+                                            <option value='19'>19:00</option>
+                                            <option value='20'>20:00</option>
+                                            <option value='21'>21:00</option>
+                                            <option value='22'>22:00</option>
+                                            <option value='23'>23:00</option>
+                                            <option value='24'>24:00</option>
+                                        </select>
+                                    </div>
+                                    <div> До
+                                        <select id='to_time'>
+                                            <option value='1'>1:00</option>
+                                            <option value='2'>2:00</option>
+                                            <option value='3'>3:00</option>
+                                            <option value='4'>4:00</option>
+                                            <option value='5'>5:00</option>
+                                            <option value='6'>6:00</option>
+                                            <option value='7'>7:00</option>
+                                            <option value='8'>8:00</option>
+                                            <option value='9'>9:00</option>
+                                            <option value='10'>10:00</option>
+                                            <option value='11'>11:00</option>
+                                            <option value='12'>12:00</option>
+                                            <option value='13'>13:00</option>
+                                            <option value='14'>14:00</option>
+                                            <option value='15'>15:00</option>
+                                            <option value='16'>16:00</option>
+                                            <option value='17'>17:00</option>
+                                            <option value='18'>18:00</option>
+                                            <option value='19'>19:00</option>
+                                            <option value='20'>20:00</option>
+                                            <option value='21'>21:00</option>
+                                            <option value='22'>22:00</option>
+                                            <option value='23'>23:00</option>
+                                            <option value='24'>24:00</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            ",
+                                ]
+                            ])
+
+
+
                         <div class='flex align-center form--submit'>
                             <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Сохранить</button>
                             <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
@@ -649,6 +755,7 @@
             setEdit()
             updateData()
             deleteData()
+
         })
 
         function getMainDataForUpdate() {
@@ -659,6 +766,9 @@
                 'phone_number': $('[name = phone_number_edit]').val(),
                 'region_id': $('[name = region_id]').val(),
                 'city_id': $('[name = city_id]').val(),
+                'working_days': getWorkingDaysArray(),
+                'from_time': getWorkingDaysArray() ? $('#from_time').val() : null,
+                'to_time': getWorkingDaysArray() ? $('#to_time').val() : null
             }
         }
 
@@ -730,6 +840,7 @@
                 data: data,
                 url: '{{ route__('actionUpdateEmployeeInfo_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
+                    $.fancybox.close()
                     updateGlobalData(response)
                     clearDropZones(true, response)
                 }
@@ -826,6 +937,20 @@
 
         function updateGlobalData(data) {
             Object.assign(page__.getGolobalData('EmployeeInfo'), data)
+        }
+
+        function showScheduleBlock() {
+            $('#select_worktime').prop('checked', !$('#select_worktime').prop('checked'))
+            $('#set_schedule').prop('hidden', !$('#set_schedule').prop('hidden'))
+        }
+
+        function getWorkingDaysArray() {
+            if ($('#select_worktime').prop('checked')) {
+                return $('input[name=day_of_week]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+            }
+            return null
         }
     </script>
 @endsection
