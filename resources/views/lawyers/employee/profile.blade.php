@@ -54,12 +54,6 @@
                                     </div>
                                     <span>32 ответа</span>
                                 </div>
-
-                                <div class=\"specialist-perm\">
-                                    <p>Право рейтинг:</p>
-                                    <span>4.0</span>
-                                    <img class=\"icon\" src=\"/lawyers/images/icons/info-icon-blue.svg\" alt=\"info-icon\">
-                                </div>
                             </div>
 
                             <div class=\"lawyer-info\">

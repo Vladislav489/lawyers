@@ -142,6 +142,25 @@ label input {
         display: inline-block;
         padding-right: 20px;
     }
+    .main-btn.edit_ico span{
+        background: none;
+        background-size: auto;
+        line-height: 24px;
+        padding: 0 0 0 36px;
+        position: relative;
+    }
+    .main-btn.edit_ico span:before,.main-btn.edit_ico span:after{
+        background: url(../images/icons/edit-icon.svg) no-repeat;
+        content: "";
+        height: 24px;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transition: all .3s linear;
+        width: 24px;
+    }
+    .main-btn.edit_ico span:after{background-image: url(../images/icons/edit-icon-white.svg);}
+    .main-btn.edit_ico span:hover:before,.main-btn.edit_ico:not(:hover) span:after{opacity: 0;}
 .main-btn .second{display: none;}
 .main-btn .icon {
     margin-top: 2px;
@@ -330,41 +349,23 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: center;
     gap: 12px;
 }
-.specialist-rate .stars img {
-    width: 27px;
-}
-.specialist-rate span {
+.specialist-rate p {
     color: rgba(40, 40, 40, 0.50);
     font-size: 14px;
     line-height: 140%;
-}
-.specialist-perm {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.specialist-perm span {
-    font-weight: 600;
-    line-height: 140%;
+    margin-top: 2px;
 }
 @media screen and (max-width: 480px) {
-    .specialist-rate span {
+    .specialist-rate p {
         font-size: 12px;
-        line-height: 140%;
+        line-height: 14px;
     }
-    .specialist-rate .stars img {
-        width: 18px;
+    .specialist-rate .stars{
+        background-position: 0 -15px;
+        height: 15px;
+        width: 88px;
     }
-    .specialist-perm {
-        gap: 4px;
-    }
-    .specialist-perm p {
-        font-size: 14px;
-    }
-    .specialist-perm span {
-        font-size: 14px;
-        line-height: 100%;
-    }
+    .specialist-rate .stars span{background-size: auto 30px;}
     .lawyer_rate-block {
         flex-direction: column;
     }

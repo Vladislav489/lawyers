@@ -354,12 +354,6 @@
 
                                         <span>32 ответа</span>
                                     </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
-                                    </div>
                                 </div>
                             </div>
 
@@ -398,12 +392,6 @@
 
                                         <span>32 ответа</span>
                                     </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
-                                    </div>
                                 </div>
                             </div>
 
@@ -441,12 +429,6 @@
                                         </div>
 
                                         <span>32 ответа</span>
-                                    </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
                                     </div>
                                 </div>
                             </div>
@@ -648,12 +630,6 @@
 
                                         <span>32 ответа</span>
                                     </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
-                                    </div>
                                 </div>
                             </div>
 
@@ -692,12 +668,6 @@
 
                                         <span>32 ответа</span>
                                     </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
-                                    </div>
                                 </div>
                             </div>
 
@@ -735,12 +705,6 @@
                                         </div>
 
                                         <span>32 ответа</span>
-                                    </div>
-
-                                    <div class="specialist-perm">
-                                        <p>Право рейтинг:</p>
-                                        <span>4.0</span>
-                                        <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
                                     </div>
                                 </div>
                             </div>

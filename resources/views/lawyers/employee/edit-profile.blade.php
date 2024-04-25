@@ -141,6 +141,7 @@
                                         });
                                     }",
                                     'template' =>"
+                            <div>
                                 <div>
                                 <div class='modal_time_container'>
                                     <h6 class='modal_smalltitle'>Время работы</h6>
@@ -260,7 +261,6 @@
                     "
                     <div:id=\"name\">
                     <div class=\"lawyer-block\">
-                        <a href=\"#employeeInfoEdit\" id=\"edit_more_modal\" data-fancybox class=\"edit\"></a>
                         <div class=\"lawyer-top\">
                             <div class=\"lawyer-img\">
                                 <img :src=\"data.avatar_full_path\" alt=\"lawyer-img\">
@@ -268,30 +268,15 @@
 
                             <div class=\"lawyer-info\">
                                 <h2 class=\"lawyer-name with_ico\">@{{getFullName(data)}}</h2>
-                                <span class=\"lawyer-check\">
-                                    Проверенный юрист
-                                    <img class=\"icon\" src=\"/lawyers/images/icons/check-icon-white.svg\" alt=\"check-icon\">
-                                </span>
+                                <span class=\"lawyer-check\">Проверенный юрист</span>
                             </div>
                         </div>
 
                         <div class=\"lawyer-bottom\">
                             <div class=\"lawyer_rate-block\">
                                 <div class=\"specialist-rate\">
-                                    <div class=\"stars\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-empty.svg\" alt=\"star-icon\">
-                                    </div>
-                                    <span>32 ответа</span>
-                                </div>
-
-                                <div class=\"specialist-perm\">
-                                    <p>Право рейтинг:</p>
-                                    <span>4.0</span>
-                                    <img class=\"icon\" src=\"/lawyers/images/icons/info-icon-blue.svg\" alt=\"info-icon\">
+                                    <div class=\"stars\"><span style=\"width: 80%;\"></span></div>
+                                    <p>32 ответа</p>
                                 </div>
                             </div>
 
@@ -322,42 +307,30 @@
                                     <span>Время работы:</span>
                                     <span class=\"bold\">@{{ data.working_days_interval + ' ' + data.work_time }}</span>
                                 </div>
+                                <div class='flexbox lawyer-info_buttons'>
+                                    <a href=\"#employeeInfoEdit\" id=\"edit_more_modal\" data-fancybox class='main-btn main-btn_white edit_ico'><span>Редактировать</span></a>
+                                    <a class='logout' href=\"\">Выход</a>
+                                </div>
+                                <div class='lawyer-info_balance'>
+                                    <div class='lawyer-balance-block'>
+                                        <p>Ваш баланс</p>
+                                        <span class='balance-summ'><span class='balance-summ_ico'>₽</span> 0 руб</span>
+                                    </div>
+                                    <a href='#' class='main-btn'><span>Вывести</span></a>
+                                </div>
                             </div>
                         </div>
                     </div></div>",
                             ]
                         ])
 
-
-                    <div class="exchange-block">
-                        <h2 class="exchange-title _line-blue">Биржа юридических задач</h2>
-
-                        <div class="exchange-info">
-                            <div class="exchange-img">
-                                <img src="/lawyers/images/main/hammer-img.jpg" alt="hammer-img">
-                            </div>
-                            <ol class="block">
-                                <li class="exchange-info_line">
-                                    <p class="exchange-info_number"><span>01</span></p>
-                                    <p class="exchange-info_text">Опишите ситуацию</p>
-                                </li>
-                                <li class="exchange-info_line">
-                                    <p class="exchange-info_number"><span>02</span></p>
-                                    <p class="exchange-info_text">Получите предложения по срокам и стоимости от юристов</p>
-                                </li>
-                                <li class="exchange-info_line">
-                                    <p class="exchange-info_number"><span>03</span></p>
-                                    <p class="exchange-info_text">Выбирайте лучших по отзывам и цене</p>
-                                </li>
-                            </ol>
+                    <div class='lawyer-block'>
+                        <div class='lawyer-block_subscribe'>
+                            <h2 class='lawyer-block_subscribe_title'>SOS Поддержка</h2>
+                            <p class='lawyer-block_subscribe_days'>30 дней</p>
+                            <span class='lawyer-block_subscribe_date'>22 окт 2023</span>
+                            <a href='#' class='lawyer-block_subscribe_extension'>продлить</a>
                         </div>
-
-                        <div class="exchange-dogovor">
-                            <h2 class="exchange-dogovor_title">Нужно составить договор дарения</h2>
-                            <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
-                        </div>
-
-                        <button class="main-btn"><span>Создать задачу</span></button>
                     </div>
                 </div>
 
@@ -602,21 +575,10 @@
                         <div class="lawyer-comment_block">
                             <div class="block specialist-comment">
                                 <div class="comment-rate">
-                                    <div class="stars">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    </div>
-
+                                    <div class="stars"><span style="width: 80%;"></span></div>
                                     <p class="name">Алексеева Юлия</p>
                                     <span class="date">16.05.2023</span>
-                                    <img
-                                        class="check-icon icon"
-                                        src="/lawyers/images/icons/check-icon-green-transparent.svg"
-                                        alt="check-icon"
-                                    >
+                                    <img class="check-icon icon" src="/lawyers/images/icons/check-icon-green-transparent.svg" alt="check-icon" >
                                 </div>
 
                                 <blockquote>
@@ -638,14 +600,8 @@
 
                         <div class="lawyer-comment_rate-block">
                             <div class="lawyer-comment_rate">
-                                <div class="stars">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
-                                    <span>32 ответа</span>
-                                </div>
+                                <div class="stars"><span style="width: 80%;"></span></div>
+                                <p>32 ответа</p>
                                 <div class="lawyer-comment_points">4.6 / 5</div>
                             </div>
 
