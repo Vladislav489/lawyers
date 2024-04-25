@@ -105,9 +105,11 @@ class EmployeeMainstayController extends MainstayController
         $select = [
             '*', DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
             DB::raw("IF(EmployeeService.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('description',
-            EmployeeService.description, 'service_name', Service.name)), ']')) as service")
+            EmployeeService.description, 'service_name', Service.name)), ']')) as service"),
+            DB::raw('Employee.user_id as user_id, Employee.avatar_path as avatar_path, Employee.consultation_price as consultation_price, Employee.about as about'),
+            DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             ];
-        $employees = (new EmployeeLogic($this->params, $select))->offPagination()->setJoin(['Employee', 'EmployeeService', 'Service']);
+        $employees = (new EmployeeLogic($this->params, $select))->offPagination()->setJoin(['Employee', 'EmployeeService', 'Service', 'Region', 'City']);
         $employees->getQueryLink()->groupBy('user_entity.id');
         $result = $employees->getList();
 
