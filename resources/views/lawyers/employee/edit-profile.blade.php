@@ -145,11 +145,11 @@
                                 <div>
                                 <div class='modal_time_container'>
                                     <h6 class='modal_smalltitle'>Время работы</h6>
-                                    <label :class=\"['checkbox_24 js_checkbox_worktime', {'active': !data.schedule}]\" id='label_select_worktime'>
+                                    <label :class=\"['checkbox_24 js_checkbox_worktime', {active: !data.schedule}]\" id='label_select_worktime'>
                                         <input type='checkbox' id='select_worktime' :checked=\"data.schedule\">Круглосуточно
                                     </label>
                                 </div>
-                                <div id='set_schedule' class='schedule-container'>
+                                <div id='set_schedule' class='schedule-container' :hidden=\"!data.schedule\">
                                     <p class='schedule_result'>@{{ data.working_days_interval + ' ' + data.work_time }}</p>
                                     <div class='days-container'>
                                         <p class='days-container-title'>Дни недели</p>
@@ -179,6 +179,7 @@
                                         <div class='registration-form_label'>
                                         <label class='label-title'>От</label>
                                         <select id='from_time' class='js_select_time'>
+                                            <option value='0' :selected=\"workingTimeFromInt == 0\">00:00</option>
                                             <option value='1' :selected=\"workingTimeFromInt == 1\">1:00</option>
                                             <option value='2' :selected=\"workingTimeFromInt == 2\">2:00</option>
                                             <option value='3' :selected=\"workingTimeFromInt == 3\">3:00</option>
@@ -202,12 +203,12 @@
                                             <option value='21' :selected=\"workingTimeFromInt == 21\">21:00</option>
                                             <option value='22' :selected=\"workingTimeFromInt == 22\">22:00</option>
                                             <option value='23' :selected=\"workingTimeFromInt == 23\">23:00</option>
-                                            <option value='0' :selected=\"workingTimeFromInt == 0\">00:00</option>
                                         </select>
                                     </div>
                                     <div class='registration-form_label'>
                                     <label class='label-title'>До</label>
                                         <select id='to_time' class='js_select_time'>
+                                            <option value='0' :selected=\"workingTimeToInt == 0\">00:00</option>
                                             <option value='1' :selected=\"workingTimeToInt == 1\">1:00</option>
                                             <option value='2' :selected=\"workingTimeToInt == 2\">2:00</option>
                                             <option value='3' :selected=\"workingTimeToInt == 3\">3:00</option>
@@ -231,7 +232,6 @@
                                             <option value='21' :selected=\"workingTimeToInt == 21\">21:00</option>
                                             <option value='22' :selected=\"workingTimeToInt == 22\">22:00</option>
                                             <option value='23' :selected=\"workingTimeToInt == 23\">23:00</option>
-                                            <option value='0' :selected=\"workingTimeToInt == 0\">00:00</option>
                                         </select>
                                     </div>
                                     </div>
@@ -240,8 +240,6 @@
                             ",
                                 ]
                             ])
-
-
 
                         <div class='flex align-center form--submit'>
                             <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Сохранить</button>
@@ -261,6 +259,7 @@
                     "
                     <div:id=\"name\">
                     <div class=\"lawyer-block\">
+                        <a href=\"#employeeInfoEdit\" id=\"edit_main_modal\" data-fancybox class=\"edit\"></a>
                         <div class=\"lawyer-top\">
                             <div class=\"lawyer-img\">
                                 <img :src=\"data.avatar_full_path\" alt=\"lawyer-img\">
@@ -334,10 +333,8 @@
                     </div>
                 </div>
 
-                <div class='modal registration-section' id='employeeInfoMoreEdit'>
+                <div class='modal profile_modal' id='employeeInfoMoreEdit'>
                     <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
-                    <div class='registration-form_block'>
-                        <div id='common_info_container' class='registration-form_block'>
                                 @include('component_build', [
                                     'component' => 'component.infoComponent.textInfo',
                                     'params_component' => [
@@ -354,41 +351,58 @@
                                 </div>",
                                     ]
                                 ])
-                                <div class='registration-form_label full'>
-                                <label class='label-title'>Добавить фотографию</label>
-                                @include('component_build', [
-                                    'component' => 'component.imageComponet.imageDropZoneEditor',
-                                    'params_component' => [
-                                        'name' => 'employee_info_more_add_photos',
 
-                                        'url' => route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller'),
-                                    ]
-                                ])
-                                </div>
-                            <div class='registration-form_label full'>
-                                <label>Добавить сертификат</label>
-                                @include('component_build', [
-                                    'component' => 'component.imageComponet.imageDropZoneEditor',
-                                    'params_component' => [
-                                        'name' => 'employee_info_more_add_achievements',
-                                        'url' => route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller'),
-                                    ]
-                                ])
-                            </div>
-                        </div>
+                    <div class='flex align-center form--submit'>
+                        <button type='button' id="save_info_more_edit" class='main-btn main-btn_blue'>Сохранить</button>
+                        <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
                     </div>
+                </div>
+{{--                                <div class='registration-form_label full'>--}}
+{{--                                <label class='label-title'>Добавить фотографию</label>--}}
+{{--                                @include('component_build', [--}}
+{{--                                    'component' => 'component.imageComponet.imageDropZoneEditor',--}}
+{{--                                    'params_component' => [--}}
+{{--                                        'name' => 'employee_info_more_add_photos',--}}
+
+{{--                                        'url' => route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller'),--}}
+{{--                                    ]--}}
+{{--                                ])--}}
+{{--                                </div>--}}
+                <div class='modal profile_modal' id='employeeAddCert'>
+
+                    @include('component_build', [
+                    'component' => 'component.infoComponent.textInfo',
+                    'params_component' => [
+                        'autostart' => 'false',
+                        'name' => 'employee_add_cert',
+
+                        'template' =>
+                        "<div>
+                            <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+                            <label for='cert_name'>Название
+                                <input type='text' placeholder='Название' name='cert_name' id='cert_name'>
+                            </label>
+                            <label class='label-title'>Выберите файлы</label>
+                            <div class='form-row_files' id='file_input' @click=\"clickInput($('#cert'))\">
+                                <input type='file' class='form-row_files' name='cert' id='cert'>
+                                <span>
+                                    <img src='/lawyers/images/icons/folder-icon.svg' alt='folder-icon'>
+                                    <div>Выберите файл</div>
+                                </span>
+                            </div>
                             <div class='flex align-center form--submit'>
-                                <button type='button' id="save_info_more_edit" class='main-btn main-btn_blue'>Сохранить</button>
+                                <button type='button' id='add_cert' class='main-btn main-btn_blue' @click.prevent=\"addCertData()\">Сохранить</button>
                                 <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
                             </div>
+                        </div>
+                        "
+                    ]
+                ])
+
+
                 </div>
+
                 <div class="right">
-                    <ul class="round-top_nav">
-                        <li class="active"><button type="button">О себе</button></li>
-                        <li><button type="button">Услуги</button></li>
-                        <li><button type="button">Отзывы</button></li>
-                        <li><button type="button">Ответы юриста</button></li>
-                    </ul>
 
                     @include('component_build', [
                     'component' => 'component.infoComponent.textInfo',
@@ -399,22 +413,18 @@
 
                         'template' =>
                         "<div class='lawyer-card'>
-                        <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         <div class='lawyer-info'>
                             <h2 class='lawyer-name with_ico'>
                                 @{{getFullName(data)}}
                             </h2>
-                            <span class='lawyer-check'>
-                                Проверенный юрист
-                                <img src='/lawyers/images/icons/check-icon-white.svg' alt='check-icon'>
-                            </span>
+                            <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         </div>
 
                         <p class='lawyer-text_p'>
                             @{{data.about}}
                         </p>
 
-                        <div class='lawyer-card_block' v-if=\"data.photos !== null\">
+                        <!-- <div class='lawyer-card_block' v-if=\"data.photos !== null\">
                             <h2 class='lawyer-card_block-title'>Фото<span>
                             @{{data.photos === null ? 0 : data.photos.length}}
                             </span></h2>
@@ -424,12 +434,13 @@
                                     <div :name=\"'delete_photo_' + item.id\" v-bind:photo_id=\"item.id\">delete</div>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
 
                         <div class='lawyer-card_block'>
                             <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
                             @{{data.achievements === null ? 0 : data.achievements.length}}
                             </span></h2>
+                            <button data-src='#employeeAddCert' id='add_cert' data-fancybox>ADD</button>
                             <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
                                 <li class='lawyer-cert'>
                                     <img :src=\"item.path\" alt='cert-img'>
@@ -750,17 +761,36 @@
                 'region_id': $('[name = region_id]').val(),
                 'city_id': $('[name = city_id]').val(),
                 'working_days': getWorkingDaysArray(),
-                'time_from': getWorkingDaysArray() ? $('#from_time').val() : null,
-                'time_to': getWorkingDaysArray() ? $('#to_time').val() : null
+                'time_from': getWorkingDaysArray() !== 0 ? $('#from_time').val() : null,
+                'time_to': getWorkingDaysArray() !== 0 ? $('#to_time').val() : null
             }
         }
 
         function getMoreDataForUpdate() {
             return {
-                'about': $('[name = about_edit]').val(),
-                'photos': prepareImageData('employee_info_more_add_photos'),
-                'achievements': prepareImageData('employee_info_more_add_achievements')
+                'about': $('#about_edit').val(),
             }
+        }
+
+        function addCertData() {
+            let formData = new FormData()
+            formData.append('cert_description', $('#cert_name').val())
+            $.each($('#cert')[0].files, function (key, input) {
+                formData.append('cert_file', input)
+            })
+            $.ajax({
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                url: '{{ route__('actionUpdateEmployeeInfo_mainstay_employee_employeemainstaycontroller') }}',
+                success: function (response) {
+                    if (response) {
+                        location.reload()
+                    }
+                }
+            })
+
         }
 
         function getServiceForUpdate() {
@@ -826,7 +856,7 @@
                     $.fancybox.close()
                     // updateModals()
                     updateGlobalData(response)
-                    clearDropZones(true, response)
+                    // clearDropZones(true, response)
                 }
 
             })
@@ -859,7 +889,7 @@
                     'user_id': '{{ auth()->id() }}'
                 }, function (data) {
                     updateGlobalData(data)
-                    clearDropZones(true, data)
+                    // clearDropZones(true, data)
                 })
             })
         }
@@ -906,18 +936,18 @@
             return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
         }
 
-        function clearDropZones(restartElements = false, data = []) {
-                page__.getElementsGroup('employee_info_more').forEach(function(element) {
-                    if(element['obj']['files'] !== undefined) {
-                        element['obj'].removeAllFiles()
-                    } else {
-                        if (restartElements) {
-                            element['obj'].setData(data)
-                            element['obj'].startWidget()
-                        }
-                    }
-                })
-        }
+        // function clearDropZones(restartElements = false, data = []) {
+        //         page__.getElementsGroup('employee_info_more').forEach(function(element) {
+        //             if(element['obj']['files'] !== undefined) {
+        //                 element['obj'].removeAllFiles()
+        //             } else {
+        //                 if (restartElements) {
+        //                     element['obj'].setData(data)
+        //                     element['obj'].startWidget()
+        //                 }
+        //             }
+        //         })
+        // }
 
         function updateGlobalData(data) {
             Object.assign(page__.getGolobalData('EmployeeInfo'), data['result'])
@@ -934,11 +964,16 @@
                     return $(this).val();
                 }).get();
             }
-            return null
+            // Если выставлено 'круглосуточно', возвращаем 0
+            return 0
         }
 
         function updateModals() {
             page__.getElementsGroup('employee_info_worktime_edit')[0]['obj'].startWidget()
+        }
+
+        function clickInput(element) {
+            element.click()
         }
     </script>
 @endsection

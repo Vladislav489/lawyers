@@ -524,6 +524,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+    position: relative;
 }
 .lawyer-card .lawyer-name {
     font-size: 22px;
@@ -566,6 +567,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative;
 }
 .lawyer-card_block img {
     width: 100%;
@@ -651,6 +653,7 @@
         padding: 0;
         border-radius: 0;
         border: none;
+        position: relative;
     }
     .lawyer-card_block:last-of-type {
         margin-top: 12px;

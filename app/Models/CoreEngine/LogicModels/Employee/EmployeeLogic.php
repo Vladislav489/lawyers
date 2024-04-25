@@ -132,7 +132,13 @@ class EmployeeLogic extends UserLogic
         if (!$this->save($data)) {
             return false;
         }
-        return $this->saveWorkingSchedule($data);
+        if (isset($data['working_days'])) {
+            $this->saveWorkingSchedule($data);
+        }
+        if (isset($data['cert_description']) && isset($data['cert_file'])) {
+            $this->saveAchievements($data);
+        }
+        return false;
     }
 
     public function saveWorkingSchedule($data) {
@@ -204,14 +210,17 @@ class EmployeeLogic extends UserLogic
 
     public function saveAchievements(array $data) {
         if (empty($data)) return false;
-        if (!empty($data['achievements']) && $data['user_id']) {
-            foreach ($data['achievements'] as $achievement) {
-                $achievementData['path'] = $this->storeImage($achievement, 'achievement', $data['user_id']);
-                $achievementData['user_id'] = $data['user_id'];
-                $achievementIds[] = $this->helpEngine['achievement']->insert($achievementData);
+        if (isset($data['cert_description']) && isset($data['cert_file'])) {
+            $data['user_id'] = $data['user_id'] ?? auth()->id();
+            if (isset($data['cert_id'])) {
+                $achievementData['id'] = $data['cert_id'];
             }
+            $achievementData['path'] = $this->storeImage($data['cert_file'], 'achievement', $data['user_id']);
+            $achievementData['user_id'] = $data['user_id'];
+            $achievementData['description'] = $data['cert_description'];
+            return $this->helpEngine['achievement']->save($achievementData);
         }
-        return !empty($achievementIds);
+        return false;
     }
 
     public function savePhotos(array $data) {
