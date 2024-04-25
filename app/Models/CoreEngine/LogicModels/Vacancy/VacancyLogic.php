@@ -190,8 +190,6 @@ class VacancyLogic extends CoreEngine
     public function getVacancyList($data) {
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
-            DB::raw("DATE_FORMAT(period_start, '%e %M') as at_work_from"),
-            DB::raw("DATE_FORMAT(period_end, '%e %M') as at_work_to"),
             DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
             DB::raw("CONCAT(Region.name, ', ', City.name) as location"),
             DB::raw("(CASE
@@ -241,7 +239,7 @@ class VacancyLogic extends CoreEngine
         $result['files'] = json_decode($result['files'], true);
         Carbon::setLocale('ru');
         $result['time_ago'] = Carbon::make($result['created_at'])->diffForHumans();
-        $result['time_left_to_accept'] = Carbon::make($result['updated_at'])->addHours(48)->diffInHours(Carbon::now());
+        $result['time_left_to_accept'] = Carbon::now()->diffInHours(Carbon::make($result['updated_at'])->addHours(48), false);
         return ['result' => $result];
     }
 
@@ -501,7 +499,7 @@ class VacancyLogic extends CoreEngine
         ];
         $vacancyList = $this->offPagination()->setLimit(false)->getList();
         foreach ($vacancyList as $vacancy) {
-            if (Carbon::make($vacancy['updated_at'])->addHours(48)->diffInMinutes(Carbon::now()) <= 0) {
+            if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(48), false) <= 0) {
                 (new EmployeeLogic())->declineWork([$vacancy['id'], $vacancy['executor_id']]);
             }
         }
@@ -513,7 +511,7 @@ class VacancyLogic extends CoreEngine
         ];
         $vacancyList = $this->offPagination()->setLimit(false)->getList();
         foreach ($vacancyList as $vacancy) {
-            if (Carbon::make($vacancy['updated_at'])->addHours(48)->diffInMinutes(Carbon::now()) <= 0) {
+            if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(48), false) <= 0) {
                 $this->acceptWorkDone($vacancy['id']);
             }
         }
