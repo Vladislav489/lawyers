@@ -22,9 +22,7 @@
                                 'params_component' => [
                                     'autostart' => 'false',
                                     'name' => 'employee_info_edit',
-                                    'params' => [],
 									'globalData' => 'EmployeeInfo',
-									'ssr' => 'false',
 
                                     'template' =>"
                             <div id=\"common_info_container\" class=\"flexbox\">
@@ -115,6 +113,21 @@
                                     'autostart' => 'false',
                                     'name' => 'employee_info_worktime_edit',
 									'globalData' => 'EmployeeInfo',
+									'callBeforloadComponent' => "function(component) {
+									    let workingDaysArray = []
+									    let workingTimeFromInt = ''
+									    let workingTimeToInt = ''
+									    let schedule = page__.getGolobalData('EmployeeInfo')['schedule']
+									    if (schedule != null || schedule != undefined) {
+									        workingDaysArray = schedule.map(item => item.day_number)
+									        workingTimeFromInt = parseInt(schedule[0].time_from.split(':')[0])
+									        workingTimeToInt = parseInt(schedule[0].time_to.split(':')[0])
+									    }
+									    component.option['workingDaysArray'] = workingDaysArray
+									    component.option['workingTimeFromInt'] = workingTimeFromInt
+									    component.option['workingTimeToInt'] = workingTimeToInt
+									    return component.option
+									}",
                                     "callAfterloadComponent" => "function(component) {
                                         $('.js_checkbox_worktime input').click(function(){
                                             $(this).parent().toggleClass('active');
@@ -131,91 +144,93 @@
                                 <div>
                                 <div class='modal_time_container'>
                                     <h6 class='modal_smalltitle'>Время работы</h6>
-                                    <label class='checkbox_24 js_checkbox_worktime' id='label_select_worktime'><input type='checkbox' id='select_worktime'>Круглосуточно</label>
+                                    <label :class=\"['checkbox_24 js_checkbox_worktime', {'active': !data.schedule}]\" id='label_select_worktime'>
+                                        <input type='checkbox' id='select_worktime' :checked=\"data.schedule\">Круглосуточно
+                                    </label>
                                 </div>
                                 <div id='set_schedule' class='schedule-container'>
-                                    <p class='schedule_result'>Пн-Сб 9:00 - 18:00</p>
+                                    <p class='schedule_result'>@{{ data.working_days_interval + ' ' + data.work_time }}</p>
                                     <div class='days-container'>
                                         <p class='days-container-title'>Дни недели</p>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day1' value='1'>Пн
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(1)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day1' value='1' :checked=\"workingDaysArray.includes(1)\">Пн
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day2' value='2'>Вт
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(2)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day2' value='2' :checked=\"workingDaysArray.includes(2)\">Вт
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day3' value='3'>Ср
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(3)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day3' value='3' :checked=\"workingDaysArray.includes(3)\">Ср
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day4' value='4'>Чт
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(4)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day4' value='4' :checked=\"workingDaysArray.includes(4)\">Чт
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day5' value='5'>Пт
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(5)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day5' value='5' :checked=\"workingDaysArray.includes(5)\">Пт
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day6' value='6'>Сб
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(6)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day6' value='6' :checked=\"workingDaysArray.includes(6)\">Сб
                                         </label>
-                                        <label class='days-checkbox js_checkbox'>
-                                            <input type='checkbox' name='day_of_week' id='day7' value='7'>Вс
+                                        <label :class=\"['days-checkbox js_checkbox', {'active': workingDaysArray.includes(7)}]\">
+                                            <input type='checkbox' name='day_of_week' id='day7' value='7' :checked=\"workingDaysArray.includes(7)\">Вс
                                         </label>
                                     </div>
                                     <div class='flexbox'>
                                         <div class='registration-form_label'>
                                         <label class='label-title'>От</label>
                                         <select id='from_time' class='js_select_time'>
-                                            <option value='1'>1:00</option>
-                                            <option value='2'>2:00</option>
-                                            <option value='3'>3:00</option>
-                                            <option value='4'>4:00</option>
-                                            <option value='5'>5:00</option>
-                                            <option value='6'>6:00</option>
-                                            <option value='7'>7:00</option>
-                                            <option value='8'>8:00</option>
-                                            <option value='9'>9:00</option>
-                                            <option value='10'>10:00</option>
-                                            <option value='11'>11:00</option>
-                                            <option value='12'>12:00</option>
-                                            <option value='13'>13:00</option>
-                                            <option value='14'>14:00</option>
-                                            <option value='15'>15:00</option>
-                                            <option value='16'>16:00</option>
-                                            <option value='17'>17:00</option>
-                                            <option value='18'>18:00</option>
-                                            <option value='19'>19:00</option>
-                                            <option value='20'>20:00</option>
-                                            <option value='21'>21:00</option>
-                                            <option value='22'>22:00</option>
-                                            <option value='23'>23:00</option>
-                                            <option value='24'>24:00</option>
+                                            <option value='1' :selected=\"workingTimeFromInt == 1\">1:00</option>
+                                            <option value='2' :selected=\"workingTimeFromInt == 2\">2:00</option>
+                                            <option value='3' :selected=\"workingTimeFromInt == 3\">3:00</option>
+                                            <option value='4' :selected=\"workingTimeFromInt == 4\">4:00</option>
+                                            <option value='5' :selected=\"workingTimeFromInt == 5\">5:00</option>
+                                            <option value='6' :selected=\"workingTimeFromInt == 6\">6:00</option>
+                                            <option value='7' :selected=\"workingTimeFromInt == 7\">7:00</option>
+                                            <option value='8' :selected=\"workingTimeFromInt == 8\">8:00</option>
+                                            <option value='9' :selected=\"workingTimeFromInt == 9\">9:00</option>
+                                            <option value='10' :selected=\"workingTimeFromInt == 10\">10:00</option>
+                                            <option value='11' :selected=\"workingTimeFromInt == 11\">11:00</option>
+                                            <option value='12' :selected=\"workingTimeFromInt == 12\">12:00</option>
+                                            <option value='13' :selected=\"workingTimeFromInt == 13\">13:00</option>
+                                            <option value='14' :selected=\"workingTimeFromInt == 14\">14:00</option>
+                                            <option value='15' :selected=\"workingTimeFromInt == 15\">15:00</option>
+                                            <option value='16' :selected=\"workingTimeFromInt == 16\">16:00</option>
+                                            <option value='17' :selected=\"workingTimeFromInt == 17\">17:00</option>
+                                            <option value='18' :selected=\"workingTimeFromInt == 18\">18:00</option>
+                                            <option value='19' :selected=\"workingTimeFromInt == 19\">19:00</option>
+                                            <option value='20' :selected=\"workingTimeFromInt == 20\">20:00</option>
+                                            <option value='21' :selected=\"workingTimeFromInt == 21\">21:00</option>
+                                            <option value='22' :selected=\"workingTimeFromInt == 22\">22:00</option>
+                                            <option value='23' :selected=\"workingTimeFromInt == 23\">23:00</option>
+                                            <option value='0' :selected=\"workingTimeFromInt == 0\">00:00</option>
                                         </select>
                                     </div>
                                     <div class='registration-form_label'>
                                     <label class='label-title'>До</label>
                                         <select id='to_time' class='js_select_time'>
-                                            <option value='1'>1:00</option>
-                                            <option value='2'>2:00</option>
-                                            <option value='3'>3:00</option>
-                                            <option value='4'>4:00</option>
-                                            <option value='5'>5:00</option>
-                                            <option value='6'>6:00</option>
-                                            <option value='7'>7:00</option>
-                                            <option value='8'>8:00</option>
-                                            <option value='9'>9:00</option>
-                                            <option value='10'>10:00</option>
-                                            <option value='11'>11:00</option>
-                                            <option value='12'>12:00</option>
-                                            <option value='13'>13:00</option>
-                                            <option value='14'>14:00</option>
-                                            <option value='15'>15:00</option>
-                                            <option value='16'>16:00</option>
-                                            <option value='17'>17:00</option>
-                                            <option value='18'>18:00</option>
-                                            <option value='19'>19:00</option>
-                                            <option value='20'>20:00</option>
-                                            <option value='21'>21:00</option>
-                                            <option value='22'>22:00</option>
-                                            <option value='23'>23:00</option>
-                                            <option value='24'>24:00</option>
+                                            <option value='1' :selected=\"workingTimeToInt == 1\">1:00</option>
+                                            <option value='2' :selected=\"workingTimeToInt == 2\">2:00</option>
+                                            <option value='3' :selected=\"workingTimeToInt == 3\">3:00</option>
+                                            <option value='4' :selected=\"workingTimeToInt == 4\">4:00</option>
+                                            <option value='5' :selected=\"workingTimeToInt == 5\">5:00</option>
+                                            <option value='6' :selected=\"workingTimeToInt == 6\">6:00</option>
+                                            <option value='7' :selected=\"workingTimeToInt == 7\">7:00</option>
+                                            <option value='8' :selected=\"workingTimeToInt == 8\">8:00</option>
+                                            <option value='9' :selected=\"workingTimeToInt == 9\">9:00</option>
+                                            <option value='10' :selected=\"workingTimeToInt == 10\">10:00</option>
+                                            <option value='11' :selected=\"workingTimeToInt == 11\">11:00</option>
+                                            <option value='12' :selected=\"workingTimeToInt == 12\">12:00</option>
+                                            <option value='13' :selected=\"workingTimeToInt == 13\">13:00</option>
+                                            <option value='14' :selected=\"workingTimeToInt == 14\">14:00</option>
+                                            <option value='15' :selected=\"workingTimeToInt == 15\">15:00</option>
+                                            <option value='16' :selected=\"workingTimeToInt == 16\">16:00</option>
+                                            <option value='17' :selected=\"workingTimeToInt == 17\">17:00</option>
+                                            <option value='18' :selected=\"workingTimeToInt == 18\">18:00</option>
+                                            <option value='19' :selected=\"workingTimeToInt == 19\">19:00</option>
+                                            <option value='20' :selected=\"workingTimeToInt == 20\">20:00</option>
+                                            <option value='21' :selected=\"workingTimeToInt == 21\">21:00</option>
+                                            <option value='22' :selected=\"workingTimeToInt == 22\">22:00</option>
+                                            <option value='23' :selected=\"workingTimeToInt == 23\">23:00</option>
+                                            <option value='0' :selected=\"workingTimeToInt == 0\">00:00</option>
                                         </select>
                                     </div>
                                     </div>
@@ -305,7 +320,7 @@
                                 <div class=\"lawyer-info_row\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/clock-icon-blue.svg\" alt=\"clock-icon\">
                                     <span>Время работы:</span>
-                                    <span class=\"bold\">Пн-Сб 9:00 - 18:00</span>
+                                    <span class=\"bold\">@{{ data.working_days_interval + ' ' + data.work_time }}</span>
                                 </div>
                             </div>
                         </div>
@@ -426,7 +441,7 @@
                             @{{data.about}}
                         </p>
 
-                        <div class='lawyer-card_block'>
+                        <div class='lawyer-card_block' v-if=\"data.photos !== null\">
                             <h2 class='lawyer-card_block-title'>Фото<span>
                             @{{data.photos === null ? 0 : data.photos.length}}
                             </span></h2>
@@ -723,7 +738,7 @@
                             <div class=\"lawyer-info_row\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/clock-icon-blue.svg\" alt=\"clock-icon\">
                                 <span>Время работы:</span>
-                                <span class=\"lawyer-info_span-black\">Пн-Сб 9:00 - 18:00</span>
+                                <span class=\"lawyer-info_span-black\">@{{ data.working_days_interval + ' ' + data.work_time }}</span>
                             </div>
                         </div>",
                             ]
@@ -768,7 +783,6 @@
             setEdit()
             updateData()
             deleteData()
-
         })
 
         function getMainDataForUpdate() {
@@ -780,8 +794,8 @@
                 'region_id': $('[name = region_id]').val(),
                 'city_id': $('[name = city_id]').val(),
                 'working_days': getWorkingDaysArray(),
-                'from_time': getWorkingDaysArray() ? $('#from_time').val() : null,
-                'to_time': getWorkingDaysArray() ? $('#to_time').val() : null
+                'time_from': getWorkingDaysArray() ? $('#from_time').val() : null,
+                'time_to': getWorkingDaysArray() ? $('#to_time').val() : null
             }
         }
 
@@ -854,6 +868,7 @@
                 url: '{{ route__('actionUpdateEmployeeInfo_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
                     $.fancybox.close()
+                    // updateModals()
                     updateGlobalData(response)
                     clearDropZones(true, response)
                 }
@@ -949,7 +964,7 @@
         }
 
         function updateGlobalData(data) {
-            Object.assign(page__.getGolobalData('EmployeeInfo'), data)
+            Object.assign(page__.getGolobalData('EmployeeInfo'), data['result'])
         }
 
         /*function showScheduleBlock() {
@@ -964,6 +979,10 @@
                 }).get();
             }
             return null
+        }
+
+        function updateModals() {
+            page__.getElementsGroup('employee_info_worktime_edit')[0]['obj'].startWidget()
         }
     </script>
 @endsection

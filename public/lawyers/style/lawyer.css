@@ -1871,7 +1871,7 @@
             opacity: 0;
         }
         .checkbox_24.active:after{opacity: 1;}
-.schedule-container{display: none;}
+.schedule-container{}
     .schedule_result{
         font-size: 14px;
         line-height: 140%;

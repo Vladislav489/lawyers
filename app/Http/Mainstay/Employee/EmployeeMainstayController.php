@@ -92,15 +92,12 @@ class EmployeeMainstayController extends MainstayController
             DB::raw("CONCAT('/storage', Employee.avatar_path) as avatar_full_path") ,
             DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name") ,
             DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
-            DB::raw("IF(Achievements.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Achievements.id,'path',
-            CONCAT('/storage', Achievements.path)))), ']')) as achievements"),
             DB::raw("IF(Photos.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Photos.id, 'path',
             CONCAT('/storage', Photos.path)))), ']')) as photos"),
             DB::raw("City.id as city_id, City.name as city_name, Region.id as region_id, Region.name as region_name"),
             DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             ];
-//        dd((new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Country', 'Photos'])->getOne());
-        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos'])->getOne()]);
+        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule'])->getOne()]);
     }
 
     public function actionGetEmployeeList(array $param = []) {
@@ -124,7 +121,22 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionUpdateEmployeeInfo(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        (new EmployeeLogic())->save($this->params);
+//        dd($this->params);
+        $rules = [
+            'first_name' => 'required|string|max:64',
+            'last_name' => 'required|string|max:64',
+            'middle_name' => 'required|string|max:64',
+            'phone_number' => 'required|string',
+            'city_id' => 'required|integer|exists:' . City::class . ',id',
+            'region_id' => 'required|integer|exists:' . Region::class . ',id',
+            'working_days' => 'nullable|array',
+            'working_days.*' => 'nullable|integer|exists:days_of_week,id',
+            'time_from' => 'nullable|integer',
+            'time_to' => 'nullable|integer',
+        ];
+        $data = Validator::validate($this->params, $rules);
+
+        (new EmployeeLogic())->updateEmployeeInfo($data);
         return $this->actionGetEmployee(['id' => (string)auth()->id()]);
     }
 

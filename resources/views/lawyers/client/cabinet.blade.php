@@ -226,7 +226,7 @@
                                 'autostart' => 'true',
                                 'name' => 'client_orders',
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
-								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
+								'params' => ['user_id' => auth()->id(), 'is_group' => 0, 'except_status' => [7, 6]],
 
                                 'template' => "
                     <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
@@ -240,7 +240,7 @@
 
                                     <ul class='my-orders_sub-ul'>
                                         <li>@{{ item.count_messages ?? 0 }} сообщений</li>
-                                        <li :hidden=\"item.executor_id\">@{{ item.count_offers ?? 0 }} предложения от юристов</li>
+                                        <li v-if=\"!item.status >= 4\">@{{ item.count_offers ?? 0 }} предложения от юристов</li>
                                     </ul>
                                 </div>
 

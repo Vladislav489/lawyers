@@ -11,7 +11,9 @@ use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeOfferResponse;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeePhoto;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeWorkingSchedule;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
+use App\Models\CoreEngine\ProjectModels\HelpData\DayOfWeek;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
@@ -36,6 +38,7 @@ class EmployeeLogic extends UserLogic
         $this->helpEngine['service'] = self::createTempLogic(new EmployeeService());
         $this->helpEngine['offer_response'] = self::createTempLogic(new EmployeeOfferResponse());
         $this->helpEngine['vacancy_offer'] = self::createTempLogic(new VacancyOffer());
+        $this->helpEngine['working_schedule'] = self::createTempLogic(new EmployeeWorkingSchedule());
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -56,6 +59,14 @@ class EmployeeLogic extends UserLogic
         }
         if (isset($result['achievements'])) {
             $result['achievements'] = json_decode($result['achievements'], true);
+        }
+        if (isset($result['schedule'])) {
+            $result['schedule'] = json_decode($result['schedule'], true);
+            $result['work_time'] = $result['schedule'][0]['time_from'] . '-' . $result['schedule'][0]['time_to'];
+            $result['working_days_interval'] = $result['schedule'][0]['day_of_week'] . '-' . $result['schedule'][count($result['schedule']) - 1]['day_of_week'];
+        } else {
+            $result['work_time'] = '';
+            $result['working_days_interval'] = 'Круглосуточно';
         }
         return $result;
     }
@@ -114,6 +125,42 @@ class EmployeeLogic extends UserLogic
 
         }
         DB::rollBack();
+        return false;
+    }
+
+    public function updateEmployeeInfo($data) {
+        if (!$this->save($data)) {
+            return false;
+        }
+        return $this->saveWorkingSchedule($data);
+    }
+
+    public function saveWorkingSchedule($data) {
+        $data['user_id'] = auth()->id();
+
+        // удаляем предыдущее расписание
+        EmployeeWorkingSchedule::where('user_id', $data['user_id'])->delete();
+
+        if (!empty($data['working_days'])) {
+            $data['time_from'] = Carbon::createFromFormat('H', $data['time_from'])->format('H:i:s');
+            $data['time_to'] = Carbon::createFromFormat('H', $data['time_to'])->format('H:i:s');
+
+            $scheduleRecordId = [];
+            $workingDays = $data['working_days'];
+            foreach ($workingDays as $workingDay) {
+                $data['day_of_week'] = $workingDay;
+                $workingDayRow = array_intersect_key(
+                    $data,
+                    array_flip($this->helpEngine['working_schedule']->getEngine()->getFillable())
+                );
+                $scheduleRecordId[] = $this->helpEngine['working_schedule']->save($workingDayRow);
+            }
+
+            if (!empty($scheduleRecordId)) {
+                return $data;
+            }
+            return false;
+        }
         return false;
     }
 
@@ -390,7 +437,7 @@ class EmployeeLogic extends UserLogic
                 'Employee' => [
                     'entity' => new Employee(),
                     'relationship' => ['user_id', 'id'],
-                    'field' => ['*'],
+                    'field' => [],
                 ],
                 'Photos' => [
                     'entity' => new EmployeePhoto(),
@@ -418,9 +465,11 @@ class EmployeeLogic extends UserLogic
                     'type' => 'inner'
                 ],
                 'Achievements' => [
-                    'entity' => new EmployeeAchievement(),
-                    'relationship' => ['user_id', 'id'],
-                    'field' => [],
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'path', CONCAT('/storage', path), 'description',
+                                description)) as achievements,
+                                user_id FROM user_employee_achievement GROUP BY user_id) as Achievements ON Achievements.user_id = user_entity.id"),
+                    'field' => ['achievements'],
                 ],
                 'City' => [
                     'entity' => new City(),
@@ -442,8 +491,18 @@ class EmployeeLogic extends UserLogic
                     'relationship' => ['executor_id', 'id'],
                     'field' => [],
                 ],
+                'WorkingSchedule' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('time_from', TIME_FORMAT(time_from, '%H:%i'),
+                                'time_to', TIME_FORMAT(time_to, '%H:%i'),
+                                'day_of_week', (SELECT DW.abbreviation FROM days_of_week AS DW WHERE DW.id = day_of_week), 'day_number', day_of_week)) as schedule, user_id
+                                FROM employee_working_schedules GROUP BY user_id) as WorkingSchedule ON WorkingSchedule.user_id = user_entity.id"),
+                    'field' => ['schedule'],
+                ],
             ]
         ];
         return $this->group_params;
     }
+
+//(SELECT DW.name FROM days_of_week AS DW WHERE DW.id = id)
 }
