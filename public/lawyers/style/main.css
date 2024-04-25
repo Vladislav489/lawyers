@@ -584,8 +584,20 @@ header {
 
 
 .stars {
-    display: flex;
+    background: url(../images/icons/stars-sprite.svg) 0 -24px no-repeat;
+    background-size: 100% auto;
+    height: 24px;
+    position: relative;
+    width: 140px;
 }
+    .stars span{
+        background: url(../images/icons/stars-sprite.svg) no-repeat;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
 .specialists {
     padding-top: 80px;
     padding-bottom: 100px;
@@ -722,20 +734,6 @@ header {
 }
 .specialist .specialist-top .specialist-rate span {
     font-size: 15px;
-    line-height: 140%;
-}
-.specialist .specialist-top .specialist-perm {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.specialist .specialist-top .specialist-perm .info-icon {
-    width: 23px;
-    cursor: pointer;
-}
-.specialist .specialist-top .specialist-perm span {
-    font-size: 17px;
-    font-weight: 600;
     line-height: 140%;
 }
 .specialist .specialist-top .specialist-loc {

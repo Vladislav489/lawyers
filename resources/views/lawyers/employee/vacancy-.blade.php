@@ -167,12 +167,6 @@
                                                         <span>32 ответа</span>
                                                     </div>
 
-                                                    <div class='specialist-perm'>
-                                                        <p>Право рейтинг:</p>
-                                                        <span>4.0</span>
-                                                        <img src='/lawyers/images/icons/info-icon-gray.svg' alt='info-icon' class='icon'>
-                                                    </div>
-
                                                     <p class='fs-text'>16 заказов</p>
                                                     <p class='fs-text'>94% сдано</p>
                                                     <p class='fs-text'><span class='green'>100% </span> сдано вовремя</p>

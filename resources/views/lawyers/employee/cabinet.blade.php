@@ -10,7 +10,7 @@
 {{--            </ul>--}}
 
             <div class="lawyer-container">
-                <div class="left">
+                <div class="left flex-wrap">
                     @include('component_build', [
                             'component' => 'component.infoComponent.textInfo',
                             'params_component' => [
@@ -29,31 +29,17 @@
 
                             <div class='lawyer-info'>
                                 <h2 class='lawyer-name'>@{{getFullName(data)}}</h2>
-                                <!-- <span class='lawyer-check'>
-                                    Проверенный юрист
-                                    <img class='icon' src='/lawyers/images/icons/check-icon-white.svg' alt='check-icon'>
-                                </span> -->
+                                <span class='lawyer-check'>Проверенный юрист</span>
+                                {{-- <span class='lawyer-check moderation'>Проходит модерацию...</span> --}}
                             </div>
                         </div>
 
                         <div class='lawyer-bottom'>
                             <div class='lawyer_rate-block'>
                                 <div class='specialist-rate'>
-                                    <div class='stars'>
-                                        <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
-                                        <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
-                                        <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
-                                        <img src='/lawyers/images/icons/star-icon-full.svg' alt='star-icon'>
-                                        <img src='/lawyers/images/icons/star-icon-empty.svg' alt='star-icon'>
-                                    </div>
-                                    <span>32 ответа</span>
+                                    <div class='stars'><span style='width: 80%;'></span></div>
+                                    <p>32 ответа</p>
                                 </div>
-
-                                <!-- <div class='specialist-perm'>
-                                    <p>Право рейтинг:</p>
-                                    <span>4.0</span>
-                                    <img class='icon' src='/lawyers/images/icons/info-icon-blue.svg' alt='info-icon'>
-                                </div> -->
                             </div>
 
                             <div class='lawyer-info'>
@@ -83,13 +69,32 @@
                                     <span>Время работы:</span>
                                     <span class='bold'>Пн-Сб 9:00 - 18:00</span>
                                 </div>
-                                <button @click.prevent=\"goToEditPage()\" type='button' class='main-btn main-btn_white'>Редактировать</button>
-                                <button type='button' class='main-btn main-btn_blue mobile'><span>Редактировать</span></button>
+                                <div class='flexbox lawyer-info_buttons'>
+                                    <button @click.prevent=\"goToEditPage()\" type='button' class='main-btn main-btn_white'>Подробнее</button>
+                                    <a class='logout' href=\"{{ route__('actionUserLogout_logincontroller') }}\">Выход</a>
+                                </div>
+                                <div class='lawyer-info_balance'>
+                                    <div class='lawyer-balance-block'>
+                                        <p>Ваш баланс</p>
+                                        <span class='balance-summ'><span class='balance-summ_ico'>₽</span> 0 руб</span>
+                                    </div>
+                                    <a href='#' class='main-btn'><span>Вывести</span></a>
+                                </div>
                             </div>
                         </div>
-                    </div></div>",
+                    </div>
+                    </div>",
                             ]
                         ])
+
+                    <div class='lawyer-block'>
+                        <div class='lawyer-block_subscribe'>
+                            <h2 class='lawyer-block_subscribe_title'>SOS Поддержка</h2>
+                            <p class='lawyer-block_subscribe_days'>30 дней</p>
+                            <span class='lawyer-block_subscribe_date'>22 окт 2023</span>
+                            <a href='#' class='lawyer-block_subscribe_extension'>продлить</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="right">
@@ -235,7 +240,7 @@
 
 
 
-                    <div class="subscribe-block lawyer-wrapper">
+                    {{--<div class="subscribe-block lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Подписка</h2>
 
                         <div class="subscribe">
@@ -246,7 +251,7 @@
                                 22 окт 2023
                             </time>
                         </div>
-                    </div>
+                    </div>--}}
                 </div>
             </div>
         </div>

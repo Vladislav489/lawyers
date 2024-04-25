@@ -285,21 +285,8 @@
                             </p>
                             <div class="lawyer_rate-block">
                                 <div class="specialist-rate">
-                                    <div class="stars">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
-                                    </div>
-
-                                    <span>32 ответа</span>
-                                </div>
-
-                                <div class="specialist-perm">
-                                    <p>Право рейтинг:</p>
-                                    <span>4.0</span>
-                                    <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
+                                    <div class="stars"><span style="width:80%;"></span></div>
+                                    <p>32 ответа</p>
                                 </div>
                             </div>
                         </div>
@@ -371,21 +358,9 @@
                         </p>
                         <div class="lawyer_rate-block">
                             <div class="specialist-rate">
-                                <div class="stars">
-                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
-                                </div>
+                                <div class="stars"><span style="width:80%;"></span></div>
 
-                                <span>32 ответа</span>
-                            </div>
-
-                            <div class="specialist-perm">
-                                <p>Право рейтинг:</p>
-                                <span>4.0</span>
-                                <img src="/lawyers/images/icons/info-icon-blue.svg" alt="info-icon" class="icon">
+                                <p>32 ответа</p>
                             </div>
                         </div>
                     </div>
