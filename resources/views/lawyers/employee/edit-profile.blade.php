@@ -333,8 +333,7 @@
                     </div>
                 </div>
 
-                <div class='modal profile_modal' id='employeeInfoMoreEdit'>
-                    <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+
                                 @include('component_build', [
                                     'component' => 'component.infoComponent.textInfo',
                                     'params_component' => [
@@ -342,33 +341,22 @@
                                         'name' => 'employee_info_more_edit',
                                         'globalData' => 'EmployeeInfo',
                                         'params' => [],
-                                        'ssr' => 'false',
 
                                         'template' =>
-                                "<div class=\"registration-form_label full\">
-                                    <label class=\"label-title\">О себе</label>
-                                    <textarea id=\"about_edit\" type=\"text\" name=\"about_edit\" :value=\"data.about\">
-                                </div>",
+                                "<div class='modal profile_modal' id='employeeInfoMoreEdit'>
+                                    <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+                                    <label class='label-title'>О себе</label>
+                                    <textarea id='about_edit' type='text' name='about_edit' :value=\"data.about\"/>
+                                    <div class='flex align-center form--submit'>
+                                        <button @click.prevent=\"saveAboutInfo()\" type='button' id='save_info_more_edit' class='main-btn main-btn_blue'>Сохранить</button>
+                                        <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                                    </div>
+                                </div>
+                                    ",
                                     ]
                                 ])
 
-                    <div class='flex align-center form--submit'>
-                        <button type='button' id="save_info_more_edit" class='main-btn main-btn_blue'>Сохранить</button>
-                        <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
-                    </div>
-                </div>
-{{--                                <div class='registration-form_label full'>--}}
-{{--                                <label class='label-title'>Добавить фотографию</label>--}}
-{{--                                @include('component_build', [--}}
-{{--                                    'component' => 'component.imageComponet.imageDropZoneEditor',--}}
-{{--                                    'params_component' => [--}}
-{{--                                        'name' => 'employee_info_more_add_photos',--}}
 
-{{--                                        'url' => route__('actionGetEmployee_mainstay_employee_employeemainstaycontroller'),--}}
-{{--                                    ]--}}
-{{--                                ])--}}
-{{--                                </div>--}}
-                <div class='modal profile_modal' id='employeeAddCert'>
 
                     @include('component_build', [
                     'component' => 'component.infoComponent.textInfo',
@@ -377,7 +365,7 @@
                         'name' => 'employee_add_cert',
 
                         'template' =>
-                        "<div>
+                        "<div class='modal profile_modal' id='employeeAddCert'>
                             <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
                             <label for='cert_name'>Название
                                 <input type='text' placeholder='Название' name='cert_name' id='cert_name'>
@@ -399,10 +387,23 @@
                     ]
                 ])
 
-
-                </div>
-
                 <div class="right">
+
+                    <div class='modal profile_modal' id='employeeCertEdit'>
+                        <h5 class='section_header' id='exampleModalLongTitle'>Редактировать документ или сертификат</h5>
+                        <input type='hidden' id='employee_cert_edit_id'>
+                        <label class='label-title'>Название
+                            <input id='employee_cert_edit_description' type='text' name='employee_cert_edit_description'>
+                        </label>
+                        <div  id='edit_cert_input'>
+                            <img id="img_cert_src" src="" alt="cert" class='form-row_files'>
+                        </div>
+                        <div class='flex align-center form--submit'>
+                            <button type='button' id='update_employee_cert' class='main-btn main-btn_blue'>Сохранить</button>
+                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Отменить</button>
+                            <button type='button' id='delete_employee_cert' class='main-btn main-btn_white'>Удалить</button>
+                        </div>
+                    </div>
 
                     @include('component_build', [
                     'component' => 'component.infoComponent.textInfo',
@@ -424,18 +425,6 @@
                             @{{data.about}}
                         </p>
 
-                        <!-- <div class='lawyer-card_block' v-if=\"data.photos !== null\">
-                            <h2 class='lawyer-card_block-title'>Фото<span>
-                            @{{data.photos === null ? 0 : data.photos.length}}
-                            </span></h2>
-                            <ul class='lawyer-photos' v-for=\"item in data.photos\">
-                                <li>
-                                    <img :src='item.path' alt='lawyer-img'>
-                                    <div :name=\"'delete_photo_' + item.id\" v-bind:photo_id=\"item.id\">delete</div>
-                                </li>
-                            </ul>
-                        </div> -->
-
                         <div class='lawyer-card_block'>
                             <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
                             @{{data.achievements === null ? 0 : data.achievements.length}}
@@ -444,7 +433,8 @@
                             <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
                                 <li class='lawyer-cert'>
                                     <img :src=\"item.path\" alt='cert-img'>
-                                    <div :name=\"'delete_achievement_' + item.id\" v-bind:achievement_id=\"item.id\">delete</div>
+                                    <p>@{{ item.description }}</p>
+                                    <a id='edit_cert_modal' class='edit' @click.prevent=\"setDataForEditModal(item, '#employeeCertEdit')\"></a>
                                 </li>
                             </ul>
                         </div>
@@ -555,6 +545,7 @@
                             <div class='flex align-center form--submit'>
                                 <button type='button' id='update_employee_service' class='main-btn main-btn_blue'>Сохранить</button>
                                 <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                                <button type='button' id="delete_employee_service" class='main-btn main-btn_white'>Удалить</button>
                             </div>
                         </div>
 
@@ -582,7 +573,7 @@
                                                     </p>
                                                 </div>
 
-                                                <a id='edit_employee_service' @click.prevent=\"setServiceDataForEdit(item)\" class='edit'></a>
+                                                <a id='edit_employee_service' @click.prevent=\"setDataForEditModal(item, '#employeeServiceEdit')\" class='edit'></a>
                                                 <div class='lawyer-service_price'>
                                                     <span>@{{ item.price }} &#8381;</span>
                                                 </div>
@@ -659,42 +650,6 @@
                             </div>
                         </div>
                     </div>
-// TODO ебануть это как готов норм модал
-{{--                    <div class='modal fade' id='employeeServiceEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>--}}
-{{--                        <div class='modal-dialog modal-dialog-centered' role='document'>--}}
-{{--                            <div class='modal-content'>--}}
-{{--                                <div class='modal-header'>--}}
-{{--                                    <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>--}}
-{{--                                    <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>--}}
-{{--                                        <span aria-hidden='true'>&times;</span>--}}
-{{--                                    </button>--}}
-{{--                                </div>--}}
-{{--                                <div class='modal-body flex-between'>--}}
-{{--                                    @include('component_build', [--}}
-{{--                                    'component' => 'component.infoComponent.textInfo',--}}
-{{--                                    'params_component' => [--}}
-{{--                                        'autostart' => 'true',--}}
-{{--                                        'name' => 'employee_edit_service_info',--}}
-{{--										'url' => route__('actionGetService_mainstay_employee_employeemainstaycontroller'),--}}
-
-{{--                                        'template' =>--}}
-{{--                                        "<div>--}}
-{{--                                        <input type='hidden' id='service_edit_id' :value=\"data.id\">--}}
-{{--                                        <label for=''>Описание услуги</label>--}}
-{{--                                             <input id='service_description_edit' type='text' name='service_description' :value=\"data.description\" class='border'>--}}
-{{--                                        <label for=''>Цена услуги</label>--}}
-{{--                                              <input id='service_price_edit' type='text' name='service_price' :value=\"data.price\" class='border'>--}}
-{{--                                        </div>"--}}
-{{--                                    ]--}}
-{{--                                ])--}}
-{{--                                </div>--}}
-{{--                                <div class='modal-footer'>--}}
-{{--                                    <button type='button' id="save_service_edit" class='btn btn-success'>Сохранить</button>--}}
-{{--                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
 
                     <div class="lawyer-all-services lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Специализация</h2>
@@ -906,10 +861,9 @@
             setEdit()
             updateData()
             updateService()
+            updateCert()
             deleteData()
-            $('#edit_employee_service').click(function () {
-                console.log(11111)
-            })
+
         })
 
         function getMainDataForUpdate() {
@@ -946,24 +900,34 @@
                 url: '{{ route__('actionUpdateEmployeeInfo_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
                     if (response) {
-                        location.reload()
+                        $.fancybox.close()
+                        updateGlobalData(response)
                     }
                 }
             })
 
         }
 
-        function setServiceDataForEdit(data) {
+        function setDataForEditModal(data, modalId) {
             $.fancybox.open({
-                src: '#employeeServiceEdit',
+                src: modalId,
                 type: 'inline',
             })
-            $('#employee_service_edit_description').val(data.description)
-            $('#employee_service_edit_id').val(data.id)
-            $('#employee_service_edit_price').val(data.price)
-            $('#employee_service_edit_service_id').val(data.service_id)
-            $('#employee_service_edit_type_id').val(data.type_id)
-            $('#employee_service_edit_title').val(data.title)
+            if (modalId == '#employeeServiceEdit') {
+                $('#employee_service_edit_description').val(data.description)
+                $('#employee_service_edit_id').val(data.id)
+                $('#employee_service_edit_price').val(data.price)
+                $('#employee_service_edit_service_id').val(data.service_id)
+                $('#employee_service_edit_type_id').val(data.type_id)
+                $('#employee_service_edit_title').val(data.title)
+                $('#delete_employee_service').attr('delete-id', data.id)
+            }
+            if (modalId == '#employeeCertEdit') {
+                $('#employee_cert_edit_id').val(data.id)
+                $('#employee_cert_edit_description').val(data.description)
+                $('#img_cert_src').attr('src', data.path)
+                $('#delete_employee_cert').attr('delete-id', data.id)
+            }
 
         }
 
@@ -1004,20 +968,20 @@
                 const data = getMainDataForUpdate()
                 sendData(data)
             })
-            $('#save_info_more_edit').on('click', function () {
-                const data = getMoreDataForUpdate()
-                sendData(data)
-            })
 
             $('#store_employee_service').on('click', function () {
                 const data = getNewService()
                 page__.sendData('{{ route__('actionEmployeeServiceStore_mainstay_employee_employeemainstaycontroller') }}',
                     data, function (data) {
                         $.fancybox.close()
-                        page__.getElementsGroup('service_list')[0]['obj'].setData(data['result'])
-                        page__.getElementsGroup('service_list')[0]['obj'].updateVue()
+                        page__.getElementsGroup('service_list')[0]['obj'].setUrlParams({'user_id': {{auth()->id()}} })
                     })
             })
+        }
+
+        function saveAboutInfo() {
+            const data = getMoreDataForUpdate()
+            sendData(data)
         }
 
         function updateService() {
@@ -1027,6 +991,21 @@
                     data, function (data) {
                         $.fancybox.close()
                         page__.getElementsGroup('service_list')[0]['obj'].setUrlParams({'user_id': {{auth()->id()}} })
+                    })
+            })
+
+        }
+        function updateCert() {
+            $('#update_employee_cert').click(function () {
+                const data = {
+                    cert_id: $('#employee_cert_edit_id').val(),
+                    cert_description: $('#employee_cert_edit_description').val(),
+                    cert_path: $('#img_cert_src').attr('src')
+                }
+                page__.sendData('{{ route__('actionUpdateEmployeeCertificates_mainstay_employee_employeemainstaycontroller') }}',
+                    data, function (data) {
+                        $.fancybox.close()
+                        updateGlobalData(data)
                     })
             })
 
@@ -1048,33 +1027,22 @@
         }
 
         function deleteData() {
-            $(document).on('click', '[name ^= delete_service_]', function () {
+            $(document).on('click', '#delete_employee_service', function () {
                 page__.sendData('{{ route__('actionDeleteService_mainstay_employee_employeemainstaycontroller') }}', {
-                    'id': $(this).attr('employee_service_id'),
+                    'id': $(this).attr('delete-id'),
                     'user_id': '{{ auth()->id() }}'
                 }, function (data) {
-                    page__.getElementsGroup('employee_services')[0]['obj'].setData(data['result'])
-                    page__.getElementsGroup('employee_services')[0]['obj'].startWidget()
+                    $.fancybox.close()
+                    page__.getElementsGroup('service_list')[0]['obj'].setUrlParams({'user_id': {{auth()->id()}} })
                 })
             })
-            $(document).on('click', '[name ^= delete_photo_]', function () {
+            $(document).on('click', '#delete_employee_cert', function () {
                 page__.sendData('{{ route__('actionDeleteImage_mainstay_employee_employeemainstaycontroller') }}', {
-                    'photo_id': $(this).attr('photo_id'),
+                    'achievement_id': $(this).attr('delete-id'),
                     'user_id': '{{ auth()->id() }}'
                 }, function (data) {
-                    page__.getElementsGroup('employee_info_more').forEach(function(element) {
-                        updateGlobalData(data)
-                        clearDropZones(true, data)
-                    })
-                })
-            })
-            $(document).on('click', '[name ^= delete_achievement_]', function () {
-                page__.sendData('{{ route__('actionDeleteImage_mainstay_employee_employeemainstaycontroller') }}', {
-                    'achievement_id': $(this).attr('achievement_id'),
-                    'user_id': '{{ auth()->id() }}'
-                }, function (data) {
+                    $.fancybox.close()
                     updateGlobalData(data)
-                    // clearDropZones(true, data)
                 })
             })
         }

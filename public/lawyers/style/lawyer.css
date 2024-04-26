@@ -589,6 +589,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    position: relative;
 }
 .lawyer-cert p {
     font-size: 12px;

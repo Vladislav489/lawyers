@@ -28,7 +28,8 @@ class EmployeeLogic extends UserLogic
 {
     protected $helpEngine;
 
-    public function __construct($params = [], $select = ['*'], $callback = null) {
+    public function __construct($params = [], $select = ['*'], $callback = null)
+    {
         $this->engine = new UserEntity();
         $this->params = array_merge($params, ['type_id' => '2']);
         $this->query = $this->engine->newQuery();
@@ -45,14 +46,16 @@ class EmployeeLogic extends UserLogic
         parent::__construct($this->params, $select);
     }
 
-    protected function defaultSelect(): array {
+    protected function defaultSelect(): array
+    {
         $tab = $this->engine->getTable();
         $this->default = [];
 
         return $this->default;
     }
 
-    public function getOne() {
+    public function getOne()
+    {
         $result = parent::getOne();
         if (isset($result['photos'])) {
             $result['photos'] = json_decode($result['photos'], true);
@@ -71,7 +74,8 @@ class EmployeeLogic extends UserLogic
         return $result;
     }
 
-    public function save($data) {
+    public function save($data)
+    {
         if (empty($data)) return false;
         DB::beginTransaction();
         $data['modifier_id'] = 1;
@@ -85,7 +89,9 @@ class EmployeeLogic extends UserLogic
         $employeeRecord = $this->helpEngine['employee']->getEngine()->select('id')->where('user_id', $data['user_id'])->first();
         if ($data['user_id'] && !$employeeRecord) {
             $data['employee_id'] = $this->helpEngine['employee']->insert($employee);
-            if (!isset($data['employee_id'])) {$this->deleteImage($data['avatar_path']);}
+            if (!isset($data['employee_id'])) {
+                $this->deleteImage($data['avatar_path']);
+            }
             if (empty($data['achievements'])) {
                 DB::commit();
                 return $data;
@@ -128,7 +134,8 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function updateEmployeeInfo($data) {
+    public function updateEmployeeInfo($data)
+    {
         if (!$this->save($data)) {
             return false;
         }
@@ -141,7 +148,8 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function saveWorkingSchedule($data) {
+    public function saveWorkingSchedule($data)
+    {
         $data['user_id'] = auth()->id();
 
         // удаляем предыдущее расписание
@@ -155,10 +163,7 @@ class EmployeeLogic extends UserLogic
             $workingDays = $data['working_days'];
             foreach ($workingDays as $workingDay) {
                 $data['day_of_week'] = $workingDay;
-                $workingDayRow = array_intersect_key(
-                    $data,
-                    array_flip($this->helpEngine['working_schedule']->getEngine()->getFillable())
-                );
+                $workingDayRow = array_intersect_key($data, array_flip($this->helpEngine['working_schedule']->getEngine()->getFillable()));
                 $scheduleRecordId[] = $this->helpEngine['working_schedule']->save($workingDayRow);
             }
 
@@ -170,7 +175,8 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function storeImage($image, $type, $userId) {
+    public function storeImage($image, $type, $userId)
+    {
         if (is_string($image)) {
             return $this->storeImageBase64($image, $type, $userId);
         } else {
@@ -184,10 +190,11 @@ class EmployeeLogic extends UserLogic
         }
     }
 
-    public function storeImageBase64($imageBase64, $type, $userId) {
+    public function storeImageBase64($imageBase64, $type, $userId)
+    {
         $imageInfo = $this->prepareImageBase64($imageBase64);
         $image = base64_decode($imageInfo['image']);
-        $image_path = '/' . $userId . '/'. $type . '/' . uniqid() . '.' . $imageInfo['extension'];
+        $image_path = '/' . $userId . '/' . $type . '/' . uniqid() . '.' . $imageInfo['extension'];
         try {
             Storage::disk('public')->put('/employee' . $image_path, $image);
             return '/employee' . $image_path;
@@ -196,34 +203,33 @@ class EmployeeLogic extends UserLogic
         }
     }
 
-    public function prepareImageBase64($base64) {
+    public function prepareImageBase64($base64)
+    {
         $imageParts = explode(";base64,", $base64);
         $imageTypeArr = explode("image/", $imageParts[0]);
         $imageType = $imageTypeArr[1];
         $imageBase64 = $imageParts[1];
-        return [
-            'extension' => $imageType,
-            'image' => $imageBase64
-        ];
+        return ['extension' => $imageType, 'image' => $imageBase64];
 
     }
 
-    public function saveAchievements(array $data) {
+    public function saveAchievements(array $data)
+    {
         if (empty($data)) return false;
-        if (isset($data['cert_description']) && isset($data['cert_file'])) {
-            $data['user_id'] = $data['user_id'] ?? auth()->id();
-            if (isset($data['cert_id'])) {
-                $achievementData['id'] = $data['cert_id'];
-            }
-            $achievementData['path'] = $this->storeImage($data['cert_file'], 'achievement', $data['user_id']);
-            $achievementData['user_id'] = $data['user_id'];
-            $achievementData['description'] = $data['cert_description'];
-            return $this->helpEngine['achievement']->save($achievementData);
+        $data['user_id'] = $data['user_id'] ?? auth()->id();
+        if (isset($data['cert_id'])) {
+            $achievementData['id'] = $data['cert_id'];
         }
-        return false;
+        if (isset($data['cert_file'])) {
+            $achievementData['path'] = $this->storeImage($data['cert_file'], 'achievement', $data['user_id']);
+        }
+        $achievementData['user_id'] = $data['user_id'];
+        $achievementData['description'] = $data['cert_description'];
+        return $this->helpEngine['achievement']->save($achievementData);
     }
 
-    public function savePhotos(array $data) {
+    public function savePhotos(array $data)
+    {
         if (empty($data)) return false;
         if (!empty($data['photos']) && $data['employee_id']) {
             foreach ($data['photos'] as $photo) {
@@ -235,20 +241,23 @@ class EmployeeLogic extends UserLogic
         return !empty($photoIds);
     }
 
-    public function getImage($type, $id) {
+    public function getImage($type, $id)
+    {
         $query = $this->helpEngine[$type]->offPagination();
         $query->getQueryLink()->select('path')->where('id', $id);
         $result = $query->getOne();
         return !empty($result) ? $result : false;
     }
 
-    public function imageDeleteFromDB($type, $id) {
+    public function imageDeleteFromDB($type, $id)
+    {
         $query = $this->helpEngine[$type];
         return $query->deleteForeva($id);
     }
 
 
-    public function deleteImage(array $data) {
+    public function deleteImage(array $data)
+    {
         $hasImage = !empty($data['photo_id']) || !empty($data['achievement_id']);
         if (empty($data) || !$hasImage) {
             return false;
@@ -267,7 +276,8 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function respondToVacancy(array $data) {
+    public function respondToVacancy(array $data)
+    {
         if (empty($data)) return false;
 
         $offerResponse = array_intersect_key($data, array_flip($this->helpEngine['offer_response']->getEngine()->getFillable()));
@@ -289,7 +299,7 @@ class EmployeeLogic extends UserLogic
                 $vacancyOffer = setTimestamps($vacancyOffer, 'update');
             }
 
-            if($this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
+            if ($this->helpEngine['vacancy_offer']->save($vacancyOffer)) {
                 return $this->getMyResponse(['vacancy_id' => $data['vacancy_id'], 'employee_id' => $data['user_id']]);
             }
             return false;
@@ -298,24 +308,21 @@ class EmployeeLogic extends UserLogic
 
     }
 
-    public function getMyResponse(array $data) {
-        $select = [
-            '*',
-            DB::raw("Response.text as response_text"),
-        ];
+    public function getMyResponse(array $data)
+    {
+        $select = ['*', DB::raw("Response.text as response_text"),];
         $result = (new VacancyOfferLogic($data, $select))->setJoin(['Response'])->getOne();
         if (empty($result)) return false;
         return $result;
     }
 
-    public function deleteResponse($data) {
+    public function deleteResponse($data)
+    {
         if (empty($data)) return false;
         $responseDel = $this->helpEngine['offer_response']->deleteForeva($data['employee_response_id']);
         $offerDel = $this->helpEngine['vacancy_offer']->deleteForeva($data['id']);
 
-        $vacancyUpdateData = [
-            'executor_id' => null
-        ];
+        $vacancyUpdateData = ['executor_id' => null];
         $vacancyUpdateData = setTimestamps($vacancyUpdateData, 'update');
 
         $vacancyUpdate = (new VacancyLogic())->update($vacancyUpdateData, $data['vacancy_id']);
@@ -326,7 +333,8 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function acceptWork($data) {
+    public function acceptWork($data)
+    {
         $employeeOffer = (new self($data, [DB::raw("Offer.period as offer_period")]))->setJoin(['Offer'])->getOne();
         $currentDateTime = Carbon::now();
 
@@ -339,91 +347,31 @@ class EmployeeLogic extends UserLogic
 
         $vacancy = setTimestamps($vacancy, 'update');
 
-        if((new VacancyLogic())->store($vacancy)) {
+        if ((new VacancyLogic())->store($vacancy)) {
             return ['message' => "you've accept a job offer"];
         }
         return false;
     }
 
-    public function declineWork($data) {
+    public function declineWork($data)
+    {
         // вернуть оплаченные деньги клиенту
         (new VacancyLogic())->getVacancyLastStatus($data['vacancy_id']);
         $vacancy['id'] = $data['vacancy_id'];
         $vacancy['executor_id'] = null;
 //        $vacancy['status'] = VacancyLogic::STATUS_NEW;
 //        $vacancy = setTimestamps($vacancy, 'update');
-        if((new VacancyLogic())->store($vacancy)) {
+        if ((new VacancyLogic())->store($vacancy)) {
             // кинуть клиенту оповещение об отказе
             return ['message' => "you've decline a job offer"];
         }
         return false;
     }
 
-    protected function getFilter(): array {
+    protected function getFilter(): array
+    {
         $tab = $this->engine->getTable();
-        $this->filter = [
-            [   'field' => $tab.'.id','params' => 'user_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => $tab.'.type_id','params' => 'type_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => 'Employee.is_confirmed','params' => 'is_confirmed',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => 'Employee.dt_practice_start','params' => 'start_practice_date',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => 'Employee.consultation_price','params' => 'consultation_price',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => 'Company.name','params' => 'company',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => 'IN', 'concat' => 'AND',
-            ],
-            [   'field' => $tab .'.region_id','params' => 'region_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => 'Offer.vacancy_id','params' => 'vacancy_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => $tab .'.city_id','params' => 'city_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => 'InnerJoinService.service_id','params' => 'service_id',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-                'relatedModel' => 'InnerJoinService'
-            ],
-            [   'field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)",'params' => 'search_spec',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '=', 'concat' => 'AND',
-            ],
-            [   'field' => "TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW()))",'params' => 'experience',
-                'validate' => ['string' => true,"empty" => true],
-                'type' => 'string|array',
-                "action" => '>=', 'concat' => 'AND',
-            ],
-//            [   'field' => "",'params' => 'rating',
+        $this->filter = [['field' => $tab . '.id', 'params' => 'user_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => $tab . '.type_id', 'params' => 'type_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'Employee.is_confirmed', 'params' => 'is_confirmed', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Employee.dt_practice_start', 'params' => 'start_practice_date', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Employee.consultation_price', 'params' => 'consultation_price', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Company.name', 'params' => 'company', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => $tab . '.region_id', 'params' => 'region_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'Offer.vacancy_id', 'params' => 'vacancy_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => $tab . '.city_id', 'params' => 'city_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'InnerJoinService.service_id', 'params' => 'service_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND', 'relatedModel' => 'InnerJoinService'], ['field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)", 'params' => 'search_spec', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => "TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW()))", 'params' => 'experience', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '>=', 'concat' => 'AND',], //            [   'field' => "",'params' => 'rating',
 //                'validate' => ['string' => true,"empty" => true],
 //                'type' => 'string|array',
 //                "action" => '>=', 'concat' => 'AND',
@@ -438,78 +386,16 @@ class EmployeeLogic extends UserLogic
         return $this->filter = array_merge($this->filter, parent::getFilter());
     }
 
-    protected function compileGroupParams(): array {
-        $this->group_params = [
-            'select' => [],
-            'by' => [],
-            'relatedModel' => [
-                'Employee' => [
-                    'entity' => new Employee(),
-                    'relationship' => ['user_id', 'id'],
-                    'field' => [],
-                ],
-                'Photos' => [
-                    'entity' => new EmployeePhoto(),
-                    'relationship' => ['employee_id', 'Employee.id'],
-                    'field' => ['*'],
-                ],
-                'Company' => [
-                    'entity' => new Company(),
-                    'relationship' => ['Employee.company_id', 'company_id'],
-                    'field' => ['*'],
-                ],
-                'EmployeeService' => [
-                    'entity' => new EmployeeService(),
-                    'relationship' => ['user_id', 'id'],
-                    'field' => [],
-                ],
-                'Service' => [
-                    'entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'),
-                    'field' => [],
-                ],
-                'InnerJoinService' => [
-                    'entity' => new EmployeeService(),
-                    'relationship' => ['user_id', 'id'],
-                    'field' => [],
-                    'type' => 'inner'
-                ],
-                'Achievements' => [
-                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+    protected function compileGroupParams(): array
+    {
+        $this->group_params = ['select' => [], 'by' => [], 'relatedModel' => ['Employee' => ['entity' => new Employee(), 'relationship' => ['user_id', 'id'], 'field' => [],], 'Photos' => ['entity' => new EmployeePhoto(), 'relationship' => ['employee_id', 'Employee.id'], 'field' => ['*'],], 'Company' => ['entity' => new Company(), 'relationship' => ['Employee.company_id', 'company_id'], 'field' => ['*'],], 'EmployeeService' => ['entity' => new EmployeeService(), 'relationship' => ['user_id', 'id'], 'field' => [],], 'Service' => ['entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'), 'field' => [],], 'InnerJoinService' => ['entity' => new EmployeeService(), 'relationship' => ['user_id', 'id'], 'field' => [], 'type' => 'inner'], 'Achievements' => ['entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('id', id, 'path', CONCAT('/storage', path), 'description',
                                 description)) as achievements,
-                                user_id FROM user_employee_achievement GROUP BY user_id) as Achievements ON Achievements.user_id = user_entity.id"),
-                    'field' => ['achievements'],
-                ],
-                'City' => [
-                    'entity' => new City(),
-                    'relationship' => ['id', 'city_id'],
-                    'field' => ['*'],
-                ],
-                'Region' => [
-                    'entity' => new Region(),
-                    'relationship' => ['id', 'region_id'],
-                    'field' => ['*'],
-                ],
-                'Offer' => [
-                    'entity' => new VacancyOffer(),
-                    'relationship' => ['employee_user_id', 'id'],
-                    'field' => [],
-                ],
-                'Vacancy' => [
-                    'entity' => new Vacancy(),
-                    'relationship' => ['executor_id', 'id'],
-                    'field' => [],
-                ],
-                'WorkingSchedule' => [
-                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                user_id FROM user_employee_achievement GROUP BY user_id) as Achievements ON Achievements.user_id = user_entity.id"), 'field' => ['achievements'],], 'City' => ['entity' => new City(), 'relationship' => ['id', 'city_id'], 'field' => ['*'],], 'Region' => ['entity' => new Region(), 'relationship' => ['id', 'region_id'], 'field' => ['*'],], 'Offer' => ['entity' => new VacancyOffer(), 'relationship' => ['employee_user_id', 'id'], 'field' => [],], 'Vacancy' => ['entity' => new Vacancy(), 'relationship' => ['executor_id', 'id'], 'field' => [],], 'WorkingSchedule' => ['entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('time_from', TIME_FORMAT(time_from, '%H:%i'),
                                 'time_to', TIME_FORMAT(time_to, '%H:%i'),
                                 'day_of_week', (SELECT DW.abbreviation FROM days_of_week AS DW WHERE DW.id = day_of_week), 'day_number', day_of_week)) as schedule, user_id
-                                FROM employee_working_schedules GROUP BY user_id) as WorkingSchedule ON WorkingSchedule.user_id = user_entity.id"),
-                    'field' => ['schedule'],
-                ],
-            ]
-        ];
+                                FROM employee_working_schedules GROUP BY user_id) as WorkingSchedule ON WorkingSchedule.user_id = user_entity.id"), 'field' => ['schedule'],],]];
         return $this->group_params;
     }
 
