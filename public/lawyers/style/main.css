@@ -723,9 +723,6 @@ header {
     border-radius: var(--b-radius);
     padding: 11px;
 }
-.specialist .specialist-top .gray-block .stars img {
-    width: 27px;
-}
 .specialist .specialist-top .specialist-rate {
     display: flex;
     gap: 4px;
@@ -762,9 +759,6 @@ header {
 }
 .specialist .specialist-comment .comment-rate .check-icon {
     width: 23px;
-}
-.specialist .specialist-comment .stars img {
-    width: 19px;
 }
 .specialist .specialist-comment .name {
     font-size: 15px;
@@ -1349,49 +1343,6 @@ header {
         color: var(--white-color)
     }
 }
-
-
-.balance-block {
-    border-radius: var(--b-radius);
-    background: var(--background-color);
-    padding: 12px 22px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 100%;
-}
-.balance-block_left {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-.balance-block .balance-text {
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 140%;
-}
-.balance-block .balance_balance {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 18px;
-    line-height: 140%;
-}
-.balance-block .balance_balance span {
-    width: 33px;
-    height: 33px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FF9E0C;
-    border-radius: 50%;
-}
-.balance-block .main-btn {
-    width: 100%;
-    max-width: 210px;
-}
-
-
 
 .payment-message {
     background-color: var(--white-color);
