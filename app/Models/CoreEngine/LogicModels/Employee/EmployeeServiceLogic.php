@@ -5,6 +5,7 @@ namespace App\Models\CoreEngine\LogicModels\Employee;
 use App\Models\CoreEngine\Core\CoreEngine;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
+use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeServiceLogic extends CoreEngine
@@ -101,6 +102,11 @@ class EmployeeServiceLogic extends CoreEngine
                     'field' => [
                         'name',
                     ],
+                ],
+                'ServiceType' => [
+                    'entity' => new ServiceType(),
+                    'relationship' => ['id', 'Service.type_id'],
+                    'field' => [],
                 ],
             ]
         ];
