@@ -145,6 +145,12 @@ class EmployeeMainstayController extends MainstayController
         return $this->actionGetEmployee(['id' => (string)auth()->id()]);
     }
 
+    public function actionUpdateEmployeeCertificates(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new EmployeeLogic())->saveAchievements($this->params);
+        return $this->actionGetEmployee(['id' => (string)auth()->id()]);
+    }
+
     public function actionDeleteImage(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         (new EmployeeLogic())->deleteImage($this->params);
