@@ -53,6 +53,8 @@ class EmployeeMainstayController extends MainstayController
     public function actionEmployeeServiceStore(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         $rules = [
+            'id' => 'nullable|exists:user_employee_service,id',
+            'type_id' => 'required|integer|exists:service_type,id',
             'service_id' => 'required|integer|exists:service,id',
             'user_id' => 'required|integer|exists:user_entity,id',
             'title' => 'required|string',
@@ -66,7 +68,7 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionGetServices(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        return response()->json((new EmployeeServiceLogic($this->params))->setJoin(['Service'])->getList());
+        return response()->json((new EmployeeServiceLogic($this->params, ['*', DB::raw("ServiceType.id as type_id")]))->setJoin(['Service', 'ServiceType'])->getList());
     }
 
     public function actionGetService(array $param = []) {

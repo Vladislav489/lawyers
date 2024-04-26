@@ -163,7 +163,7 @@ class parentComponent {
                             $this.option = rez;
                         }
                     }
-                    if(this.vueObject != null) {
+                    if($this.vueObject != null) {
                         for (var key in $this.option) {
                             if ($this.vueObject[key] != undefined) {
                                 $this.vueObject[key] = $this.option[key];

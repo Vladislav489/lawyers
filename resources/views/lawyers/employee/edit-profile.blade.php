@@ -452,6 +452,162 @@
                     ]
                 ])
 
+
+                    <div class='modal profile_modal' id='employeeAddService'>
+                        <h5 class='section_header' id='exampleModalLongTitle'>Добавить услугу</h5>
+
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                            "autostart" => 'true',
+                            "name" => 'service_type_id',
+                            "default_title" => 'Категория услуги',
+                            "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
+					        "callAfterloadComponent" => "function(component) {
+                               $('.js_select').select2({
+                               	minimumResultsForSearch: -1,
+                               });
+                               return component.option;
+                            }",
+                            "template" =>
+                            '
+                            <label>Категория услуги
+                                <select class="unit-select_select js_select" name="type_id" :id="name" style="width:100%">
+                                    <option></option>
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>
+                            </label>
+                            ',
+                            "change" => "function(){
+                                if($(this).val() !== '') {
+                                    const param = {'type_id': $(this).find('option:selected').val()}
+                                    page__.getElementsGroup('service_id')[0]['obj'].setUrlParams(param)
+                                }
+                            }"
+                        ]])
+
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                            "autostart" => 'false',
+                            "name" => 'service_id',
+                            "default_title" => 'Тема услуги',
+                            "url" => route("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),
+					        "callAfterloadComponent" => "function(component) {
+                               $('.js_select').select2({
+                               	minimumResultsForSearch: -1,
+                               });
+                               return component.option;
+                            }",
+                            "template" =>
+                            '
+                            <label>Тема услуги
+                                <select class="unit-select_select js_select" name="add_service_id" :id="name" style="width:100%">
+                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                </select>
+                            </label>
+                            '
+                        ]])
+
+                        @include('component_build', [
+                            'component' => 'component.infoComponent.textInfo',
+                            'params_component' => [
+                                'autostart' => 'false',
+                                'name' => 'employee_info_more_edit',
+
+                                'template' =>
+                        "<div class='registration-form_label full'>
+                            <label class='label-title'>Название
+                                <input id='employee_service_title' type='text' name='employee_service_title'>
+                            </label>
+                            <label class='label-title'>Краткое описание
+                                <input id='employee_service_description' type='text' name='employee_service_description'>
+                            </label>
+                            <label class='label-title'>Цена
+                                <input id='employee_service_price' type='number' name='employee_service_price'>
+                            </label>
+                        </div>",
+                            ]
+                        ])
+
+                        <div class='flex align-center form--submit'>
+                            <button type='button' id="store_employee_service" class='main-btn main-btn_blue'>Сохранить</button>
+                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                        </div>
+                    </div>
+
+                    <div class="lawyer-services lawyer-wrapper">
+                        <h2 class="lawyer-wrapper_title">Услуги юриста</h2>
+                        <button data-src="#employeeAddService" data-fancybox>+Добавить</button>
+
+                        <div class='modal profile_modal' id='employeeServiceEdit'>
+                            <h5 class='section_header' id='exampleModalLongTitle'>Редактировать</h5>
+                            <input type='hidden' id='employee_service_edit_type_id'>
+                            <input type='hidden' id='employee_service_edit_service_id'>
+                            <input type='hidden' id='employee_service_edit_id'>
+                            <label class='label-title'>Название
+                                <input id='employee_service_edit_title' type='text' name='employee_service_edit_title'>
+                            </label>
+                            <label class='label-title'>Краткое описание
+                                <input id='employee_service_edit_description' type='text' name='employee_service_edit_description'>
+                            </label>
+                            <label class='label-title'>Цена
+                                <input id='employee_service_edit_price' type='number' name='employee_service_edit_price'>
+                            </label>
+                            <div class='flex align-center form--submit'>
+                                <button type='button' id='update_employee_service' class='main-btn main-btn_blue'>Сохранить</button>
+                                <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                            </div>
+                        </div>
+
+                        @include('component_build', [
+                            'component' => 'component.gridComponent.simpleGrid',
+                            'params_component' => [
+                                'autostart' => 'true',
+                                'name' => 'service_list',
+                                'url' => route__('actionGetServices_mainstay_employee_employeemainstaycontroller'),
+								'params' => ['user_id' => auth()->id()],
+
+                                'template' => "
+                                <div :id=\"name + '_body'\">
+
+                                    <div v-for=\"item in data\">
+                                        <ul class='lawyer-services_block'>
+                                            <li class='lawyer-service_line' style='justify-content: space-between;'>
+                                                <div class='lawyer-service_left'>
+                                                    <div class='lawyer-service_title'>@{{ item.title }}</div>
+                                                    <p class='lawyer-service_text'>
+                                                        @{{ item.description }}
+                                                        <!-- <button class='lawyer-service_red-more'>
+                                                            ЧИТАТЬ ЕЩЕ
+                                                        </button> -->
+                                                    </p>
+                                                </div>
+
+                                                <a id='edit_employee_service' @click.prevent=\"setServiceDataForEdit(item)\" class='edit'></a>
+                                                <div class='lawyer-service_price'>
+                                                    <span>@{{ item.price }} &#8381;</span>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                ",
+
+                                'pagination' => [
+                                    'page' => 1,
+                                    'pageSize' => 3,
+                                    'countPage' => 1,
+                                    'typePagination' => 2,
+                                    'showPagination' => 1,
+                                    'showInPage' => 3,
+                                    'count_line' => 1,
+                                    'all_load' => 0,
+                                    'physical_presence' => 0
+                                ],
+                            ]
+                        ])
+
+                    </div>
+
                     <div class='modal fade' id='employeeServiceCreate' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
                         <div class='modal-dialog modal-dialog-centered' role='document'>
                             <div class='modal-content'>
@@ -503,45 +659,45 @@
                             </div>
                         </div>
                     </div>
+// TODO ебануть это как готов норм модал
+{{--                    <div class='modal fade' id='employeeServiceEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>--}}
+{{--                        <div class='modal-dialog modal-dialog-centered' role='document'>--}}
+{{--                            <div class='modal-content'>--}}
+{{--                                <div class='modal-header'>--}}
+{{--                                    <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>--}}
+{{--                                    <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>--}}
+{{--                                        <span aria-hidden='true'>&times;</span>--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                                <div class='modal-body flex-between'>--}}
+{{--                                    @include('component_build', [--}}
+{{--                                    'component' => 'component.infoComponent.textInfo',--}}
+{{--                                    'params_component' => [--}}
+{{--                                        'autostart' => 'true',--}}
+{{--                                        'name' => 'employee_edit_service_info',--}}
+{{--										'url' => route__('actionGetService_mainstay_employee_employeemainstaycontroller'),--}}
 
-                    <div class='modal fade' id='employeeServiceEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                        <div class='modal-dialog modal-dialog-centered' role='document'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>
-                                    <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>
-                                        <span aria-hidden='true'>&times;</span>
-                                    </button>
-                                </div>
-                                <div class='modal-body flex-between'>
-                                    @include('component_build', [
-                                    'component' => 'component.infoComponent.textInfo',
-                                    'params_component' => [
-                                        'autostart' => 'true',
-                                        'name' => 'employee_edit_service_info',
-										'url' => route__('actionGetService_mainstay_employee_employeemainstaycontroller'),
-
-                                        'template' =>
-                                        "<div>
-                                        <input type='hidden' id='service_edit_id' :value=\"data.id\">
-                                        <label for=''>Описание услуги</label>
-                                             <input id='service_description_edit' type='text' name='service_description' :value=\"data.description\" class='border'>
-                                        <label for=''>Цена услуги</label>
-                                              <input id='service_price_edit' type='text' name='service_price' :value=\"data.price\" class='border'>
-                                        </div>"
-                                    ]
-                                ])
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' id="save_service_edit" class='btn btn-success'>Сохранить</button>
-                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                                        'template' =>--}}
+{{--                                        "<div>--}}
+{{--                                        <input type='hidden' id='service_edit_id' :value=\"data.id\">--}}
+{{--                                        <label for=''>Описание услуги</label>--}}
+{{--                                             <input id='service_description_edit' type='text' name='service_description' :value=\"data.description\" class='border'>--}}
+{{--                                        <label for=''>Цена услуги</label>--}}
+{{--                                              <input id='service_price_edit' type='text' name='service_price' :value=\"data.price\" class='border'>--}}
+{{--                                        </div>"--}}
+{{--                                    ]--}}
+{{--                                ])--}}
+{{--                                </div>--}}
+{{--                                <div class='modal-footer'>--}}
+{{--                                    <button type='button' id="save_service_edit" class='btn btn-success'>Сохранить</button>--}}
+{{--                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <div class="lawyer-all-services lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title _line-blue">Оказываемые услуги</h2>
+                        <h2 class="lawyer-wrapper_title _line-blue">Специализация</h2>
                         <div id="edit_services_modal">Добавить</div>
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
@@ -749,7 +905,11 @@
         $(document).ready(function () {
             setEdit()
             updateData()
+            updateService()
             deleteData()
+            $('#edit_employee_service').click(function () {
+                console.log(11111)
+            })
         })
 
         function getMainDataForUpdate() {
@@ -793,21 +953,40 @@
 
         }
 
+        function setServiceDataForEdit(data) {
+            $.fancybox.open({
+                src: '#employeeServiceEdit',
+                type: 'inline',
+            })
+            $('#employee_service_edit_description').val(data.description)
+            $('#employee_service_edit_id').val(data.id)
+            $('#employee_service_edit_price').val(data.price)
+            $('#employee_service_edit_service_id').val(data.service_id)
+            $('#employee_service_edit_type_id').val(data.type_id)
+            $('#employee_service_edit_title').val(data.title)
+
+        }
+
         function getServiceForUpdate() {
             return {
-                'description': $('#service_description_edit').val(),
-                'price': $('#service_price_edit').val(),
-                'id': $('#service_edit_id').val(),
+                'description': $('#employee_service_edit_description').val(),
+                'id': $('#employee_service_edit_id').val(),
+                'price': $('#employee_service_edit_price').val(),
+                'service_id': $('#employee_service_edit_service_id').val(),
+                'type_id': $('#employee_service_edit_type_id').val(),
                 'user_id': {{ auth()->id() }},
+                'title': $('#employee_service_edit_title').val(),
             }
         }
 
         function getNewService() {
             return {
-                'description': $('[name = service_description]').val(),
-                'price': $('[name = service_price]').val(),
-                'service_id': $('[name = service_id]').val(),
-                'user_id': {{ auth()->id() }}
+                'description': $('#employee_service_description').val(),
+                'price': $('#employee_service_price').val(),
+                'service_id': $('[name = add_service_id]').val(),
+                'type_id': $('[name = type_id]').val(),
+                'user_id': {{ auth()->id() }},
+                'title': $('#employee_service_title').val(),
             }
         }
 
@@ -829,22 +1008,28 @@
                 const data = getMoreDataForUpdate()
                 sendData(data)
             })
-            $('#save_service_edit').on('click', function () {
-                const data = getServiceForUpdate()
-                page__.sendData('{{ route__('actionEmployeeServiceStore_mainstay_employee_employeemainstaycontroller') }}',
-                    data, function (data) {
-                    page__.getElementsGroup('employee_services')[0]['obj'].setData(data['result'])
-                    page__.getElementsGroup('employee_services')[0]['obj'].startWidget()
-                })
-            })
-            $('#save_service_create').on('click', function () {
+
+            $('#store_employee_service').on('click', function () {
                 const data = getNewService()
                 page__.sendData('{{ route__('actionEmployeeServiceStore_mainstay_employee_employeemainstaycontroller') }}',
                     data, function (data) {
-                        page__.getElementsGroup('employee_services')[0]['obj'].setData(data['result'])
-                        page__.getElementsGroup('employee_services')[0]['obj'].startWidget()
+                        $.fancybox.close()
+                        page__.getElementsGroup('service_list')[0]['obj'].setData(data['result'])
+                        page__.getElementsGroup('service_list')[0]['obj'].updateVue()
                     })
             })
+        }
+
+        function updateService() {
+            $('#update_employee_service').click(function () {
+                const data = getServiceForUpdate()
+                page__.sendData('{{ route__('actionEmployeeServiceStore_mainstay_employee_employeemainstaycontroller') }}',
+                    data, function (data) {
+                        $.fancybox.close()
+                        page__.getElementsGroup('service_list')[0]['obj'].setUrlParams({'user_id': {{auth()->id()}} })
+                    })
+            })
+
         }
 
         function sendData(data) {
