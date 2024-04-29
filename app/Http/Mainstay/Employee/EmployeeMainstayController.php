@@ -5,6 +5,7 @@ namespace App\Http\Mainstay\Employee;
 use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\Employee\EmployeeServiceLogic;
+use App\Models\CoreEngine\LogicModels\Employee\EmployeeSpecializationLogic;
 use App\Models\CoreEngine\LogicModels\File\FileLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\ProjectModels\Company\Company;
@@ -71,6 +72,18 @@ class EmployeeMainstayController extends MainstayController
         return response()->json((new EmployeeServiceLogic($this->params, ['*', DB::raw("ServiceType.id as type_id")]))->setJoin(['Service', 'ServiceType'])->getList());
     }
 
+    public function actionGetSpecialization(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json((new EmployeeSpecializationLogic($this->params))->setJoin(['Service'])->getList());
+    }
+
+    public function actionUpdateSpecialization(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        (new EmployeeSpecializationLogic())->updateSpecialization($this->params);
+        return $this->actionGetEmployee(['id' => (string)auth()->id()]);
+    }
+
+
     public function actionGetService(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         return response()->json(['result' => (new EmployeeServiceLogic($this->params))->setJoin(['Service'])->getOne()]);
@@ -100,7 +113,8 @@ class EmployeeMainstayController extends MainstayController
             DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             DB::raw("Employee.about as about"),
             ];
-        return response()->json(['result' => (new EmployeeLogic($this->params, $select))->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule'])->getOne()]);
+        return response()->json(['result' => (new EmployeeLogic($this->params, $select))
+            ->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule', 'Specialization'])->getOne()]);
     }
 
     public function actionGetEmployeeList(array $param = []) {

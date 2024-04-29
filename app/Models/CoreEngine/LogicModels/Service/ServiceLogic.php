@@ -9,20 +9,12 @@ use App\Models\CoreEngine\ProjectModels\Service\ServiceType;
 class ServiceLogic extends CoreEngine
 {
     public function __construct($params = [], $select = ['*'], $callback = null) {
-        $this->params = array_merge($params, ['is_deleted' => 0]);
         $this->engine = new Service();
+        $this->params = $params;
         $this->query = $this->engine->newQuery();
         $this->getFilter();
         $this->compileGroupParams();
         parent::__construct($this->params, $select);
-//        dd($this->pagination);
-    }
-
-    protected function defaultSelect(): array {
-        $tab = $this->engine->tableName();
-        $this->default = [];
-
-        return $this->default;
     }
 
     public function store(array $data): array|bool {

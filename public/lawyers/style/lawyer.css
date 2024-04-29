@@ -674,6 +674,7 @@
     border-radius: 16px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .lawyer-bottom-btns {
     display: none;

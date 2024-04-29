@@ -606,77 +606,100 @@
 
                     </div>
 
-                    <div class='modal fade' id='employeeServiceCreate' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                        <div class='modal-dialog modal-dialog-centered' role='document'>
-                            <div class='modal-content'>
-                                <div class='modal-header'>
-                                    <h5 class='modal-title' id='exampleModalLongTitle'>Окно редактирования</h5>
-                                    <button type='button' class='close' data-dismiss='modal' aria-label='Закрыть'>
-                                        <span aria-hidden='true'>&times;</span>
-                                    </button>
-                                </div>
-                                <div class='modal-body flex-between'>
-                                    <label for="">Тип услуги</label>
+                    <div class='modal profile_modal' id='employeeSpecializationEdit'>
+                        <h2 class="lawyer-wrapper_title _line-blue">Редактировать</h2>
+{{--                        @include('component_build', [--}}
+{{--                                'component' => 'component.gridComponent.simpleGrid',--}}
+{{--                                'params_component' => [--}}
+{{--                                    'autostart' => 'true',--}}
+{{--                                    'name' => 'employee_specialization_edit',--}}
+{{--                                    'url' => route__("actionGetSpecialization_mainstay_employee_employeemainstaycontroller"),--}}
+{{--                                    'params' => ['user_id' => auth()->id()],--}}
 
-                                    @include('component_build',["component" => "component.listComponent.selectComponent",
-                            "params_component" => [
-                                "autostart" => 'true',
-                                "name" => 'type_id',
-                                "default_title" => 'Сервис',
-                                "url" => route("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
-                                "template" =>
-                                '<select class="unit-select_select" name="service_id" :id="name" style="width:100%">
-                                    <option value="" selected="true">Выбрать</option>
-                                    <option v-for="(item,index) in data" :value="item.id">@{{ item.name }}</option>
-                                </select>',
-                                "change" => "function(){
-                                    }"
-                            ]])
+{{--                                    'template' => "--}}
+{{--                                    <ul name=\"lawyer_services\" :id=\"name + '_body'\">--}}
+{{--                                        <div v-if=\"data\" v-for=\"item in data\">--}}
+{{--                                            <li>@{{item.name}}</li>--}}
+{{--                                            <button @click.prevent=\"deleteSpecialization(item.id)\">delete</button>--}}
+{{--                                        </div>--}}
+{{--                                    </ul>",--}}
+{{--                                ]--}}
+{{--                        ])--}}
 
-                                    @include('component_build', [
-                            'component' => 'component.infoComponent.textInfo',
-                            'params_component' => [
-                                'autostart' => 'false',
-                                'name' => 'employee_create_service_info',
-								'data' => "{'description': '', 'price': ''}",
+                        @include('component_build', [
+                                'component' => 'component.gridComponent.simpleGrid',
+                                'params_component' => [
+                                    'autostart' => 'true',
+                                    'name' => 'employee_service_list',
+                                    'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
+									'callBeforloadComponent' => "function(component) {
+                                        let employeeSpecialization = page__.getGolobalData('EmployeeInfo').specialization ?? null
+                                        component.option['employeeSpecialization'] = employeeSpecialization
+                                        if(employeeSpecialization) {
+                                            component.data.sort((item1, item2) => {
+                                                if (employeeSpecialization.includes(item1.id) && employeeSpecialization.includes(item2.id)) {
+                                                    return 0
+                                                }
+                                                if (employeeSpecialization.includes(item1.id)) {
+                                                    return -1
+                                                }
+                                                if (employeeSpecialization.includes(item2.id)) {
+                                                    return 1
+                                                }
+                                            })
+                                        }
+                                        console.log(component.data)
+									    return component.option
+									}",
 
-                                'template' =>
-                                "<div>
-                                <label for=''>Описание услуги</label>
-                                     <input id='service_description' type='text' name='service_description' :value=\"data.description\" class='border'>
-                                <label for=''>Цена услуги</label>
-                                      <input id='service_price' type='text' name='service_price' :value=\"data.price\" class='border'>
-                                </div>"
-                            ]
+                                    'template' => "
+                                    <ul name=\"lawyer_services\" :id=\"name + '_body'\">
+                                        <div v-if=\"data\" v-for=\"item in data\">
+                                            <li>@{{item.name}}</li>
+                                            <button name='add' v-if=\"!employeeSpecialization.includes(item.id)\" @click.prevent=\"addSpecialization(item.id)\">+</button>
+                                            <button name='delete' v-if=\"employeeSpecialization.includes(item.id)\" @click.prevent=\"deleteSpecialization(item.id)\">delete</button>
+                                        </div>
+                                    </ul>",
+                                ]
                         ])
-                                </div>
-                                <div class='modal-footer'>
-                                    <button type='button' id="save_service_create" class='btn btn-success'>Сохранить</button>
-                                    <button type='button' class='btn btn-secondary' data-dismiss='modal'>Закрыть</button>
-                                </div>
-                            </div>
+
+
+
+                        <div class='flex align-center form--submit'>
+                            <button type='button' id='save_specialization' class='main-btn main-btn_blue'>Сохранить</button>
+                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
                         </div>
                     </div>
 
                     <div class="lawyer-all-services lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Специализация</h2>
-                        <div id="edit_services_modal">Добавить</div>
+                        <a href="#employeeSpecializationEdit" id="edit_specialization_modal" data-fancybox class='edit'></a>
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
                             'params_component' => [
                                 'autostart' => 'true',
-                                'name' => 'employee_services',
-                                'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"),
+                                'name' => 'employee_specialization',
+                                'url' => route__("actionGetSpecialization_mainstay_employee_employeemainstaycontroller"),
 								'params' => ['user_id' => auth()->id()],
 
                                 'template' => "
                                 <ul name=\"lawyer_services\" :id=\"name + '_body'\">
-                                    <div v-for=\"item in data\">
-                                        <div :name=\"'edit_service_' + item.id\" v-bind:employee_service_id=\"item.id\">edit</div>
-                                        <div :name=\"'delete_service_' + item.id\" v-bind:employee_service_id=\"item.id\">delete</div>
+                                    <div v-if=\"data\" v-for=\"item in data\">
                                         <li>@{{item.name}}</li>
                                     </div>
                                 </ul>",
+
+                                'pagination' => [
+                                    'page' => 1,
+                                    'pageSize' => 6,
+                                    'countPage' => 1,
+                                    'typePagination' => 2,
+                                    'showPagination' => 1,
+                                    'showInPage' => 3,
+                                    'count_line' => 1,
+                                    'all_load' => 0,
+                                    'physical_presence' => 0
+                                ],
                             ]
                         ])
 
@@ -871,6 +894,7 @@
             updateCert()
             deleteData()
             filterText()
+            storeSpecialization()
         })
         function filterText(){
             $('.js_number_filter').on('keypress', function() {
@@ -1140,6 +1164,50 @@
 
         function clickInput(element) {
             element.click()
+        }
+
+        function addSpecialization(id) {
+            let specialicationArray = page__.getGolobalData('EmployeeInfo').specialization
+            specialicationArray.push(id)
+            console.log(specialicationArray)
+            page__.getGolobalData('EmployeeInfo').specialization = specialicationArray
+            page__.getElementsGroup('employee_service_list')[0]['obj'].startWidget()
+
+        }
+
+        function deleteSpecialization(id) {
+            let specialicationArray = page__.getGolobalData('EmployeeInfo').specialization
+            page__.getGolobalData('EmployeeInfo').specialization = specialicationArray.filter(item => item !== id)
+            console.log(page__.getGolobalData('EmployeeInfo').specialization)
+            page__.getElementsGroup('employee_service_list')[0]['obj'].startWidget()
+        }
+
+        function storeSpecialization() {
+            $('#save_specialization').click(function () {
+                $.ajax({
+                    method: 'POST',
+                    data: {
+                        user_id: {{ auth()->id() }},
+                        service_ids: page__.getGolobalData('EmployeeInfo').specialization
+                    },
+                    url: '{{ route__('actionUpdateSpecialization_mainstay_employee_employeemainstaycontroller') }}',
+                    success: function (response) {
+                        $.fancybox.close()
+                        page__.getElementsGroup('employee_specialization')[0]['obj'].setUrlParams({user_id: {{ auth()->id() }} })
+                        updateGlobalData(response)
+                    }
+
+                })
+            })
+
+        }
+
+        function getExcludedServices() {
+            let data = []
+            page__.getElementsGroup('employee_specialization_edit')[0]['obj'].data.forEach(function (item) {
+                data.push(item.service_id)
+            })
+            return data
         }
     </script>
 @endsection

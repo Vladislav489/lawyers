@@ -11,6 +11,7 @@ use App\Models\CoreEngine\ProjectModels\Employee\EmployeeAchievement;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeOfferResponse;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeePhoto;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeService;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeSpecialization;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeWorkingSchedule;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\DayOfWeek;
@@ -20,6 +21,7 @@ use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use function Composer\Autoload\includeFile;
@@ -70,6 +72,10 @@ class EmployeeLogic extends UserLogic
         } else {
             $result['work_time'] = '';
             $result['working_days_interval'] = 'Круглосуточно';
+        }
+        if (isset($result['specialization'])) {
+            $result['specialization'] = json_decode($result['specialization'], true);
+            $result['specialization'] = Arr::pluck($result['specialization'], 'service_id');
         }
         return $result;
     }
@@ -388,14 +394,85 @@ class EmployeeLogic extends UserLogic
 
     protected function compileGroupParams(): array
     {
-        $this->group_params = ['select' => [], 'by' => [], 'relatedModel' => ['Employee' => ['entity' => new Employee(), 'relationship' => ['user_id', 'id'], 'field' => [],], 'Photos' => ['entity' => new EmployeePhoto(), 'relationship' => ['employee_id', 'Employee.id'], 'field' => ['*'],], 'Company' => ['entity' => new Company(), 'relationship' => ['Employee.company_id', 'company_id'], 'field' => ['*'],], 'EmployeeService' => ['entity' => new EmployeeService(), 'relationship' => ['user_id', 'id'], 'field' => [],], 'Service' => ['entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'), 'field' => [],], 'InnerJoinService' => ['entity' => new EmployeeService(), 'relationship' => ['user_id', 'id'], 'field' => [], 'type' => 'inner'], 'Achievements' => ['entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+        $this->group_params = [
+            'select' => [],
+            'by' => [],
+            'relatedModel' =>
+                [
+                    'Employee' => [
+                        'entity' => new Employee(),
+                        'relationship' => ['user_id', 'id'],
+                        'field' => [],
+                        ],
+                    'Photos' => [
+                        'entity' => new EmployeePhoto(),
+                        'relationship' => ['employee_id', 'Employee.id'],
+                        'field' => ['*'],
+                        ],
+                    'Company' => [
+                        'entity' => new Company(),
+                        'relationship' => ['Employee.company_id', 'company_id'],
+                        'field' => ['*'],
+                        ],
+                    'EmployeeService' => [
+                        'entity' => new EmployeeService(),
+                        'relationship' => ['user_id', 'id'],
+                        'field' => [],
+                        ],
+                    'Service' => [
+                        'entity' => DB::raw((new Service())->getTable() . ' as Service ON EmployeeService.service_id = Service.id'),
+                        'field' => [],
+                        ],
+                    'InnerJoinService' => [
+                        'entity' => new EmployeeService(),
+                        'relationship' => ['user_id', 'id'],
+                        'field' => [],
+                        'type' => 'inner'
+                    ],
+                    'Achievements' => [
+                        'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('id', id, 'path', CONCAT('/storage', path), 'description',
                                 description)) as achievements,
-                                user_id FROM user_employee_achievement GROUP BY user_id) as Achievements ON Achievements.user_id = user_entity.id"), 'field' => ['achievements'],], 'City' => ['entity' => new City(), 'relationship' => ['id', 'city_id'], 'field' => ['*'],], 'Region' => ['entity' => new Region(), 'relationship' => ['id', 'region_id'], 'field' => ['*'],], 'Offer' => ['entity' => new VacancyOffer(), 'relationship' => ['employee_user_id', 'id'], 'field' => [],], 'Vacancy' => ['entity' => new Vacancy(), 'relationship' => ['executor_id', 'id'], 'field' => [],], 'WorkingSchedule' => ['entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                user_id FROM user_employee_achievement GROUP BY user_id) as Achievements ON Achievements.user_id = user_entity.id"),
+                        'field' => ['achievements'],
+                        ],
+                    'City' => [
+                        'entity' => new City(),
+                        'relationship' => ['id', 'city_id'],
+                        'field' => ['*'],
+                        ],
+                    'Region' => [
+                        'entity' => new Region(),
+                        'relationship' => ['id', 'region_id'],
+                        'field' => ['*'],
+                        ],
+                    'Offer' => [
+                        'entity' => new VacancyOffer(),
+                        'relationship' => ['employee_user_id', 'id'],
+                        'field' => [],
+                        ],
+                    'Vacancy' => [
+                        'entity' => new Vacancy(),
+                        'relationship' => ['executor_id', 'id'],
+                        'field' => [],
+                        ],
+                    'Specialization' => [
+                        'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id,
+                                'service_id', service_id)) as specialization, user_id
+                                FROM employee_specializations GROUP BY user_id) as Specialization ON Specialization.user_id = user_entity.id"),
+                        'field' => ['specialization'],
+                        ],
+                    'WorkingSchedule' => [
+                        'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('time_from', TIME_FORMAT(time_from, '%H:%i'),
                                 'time_to', TIME_FORMAT(time_to, '%H:%i'),
                                 'day_of_week', (SELECT DW.abbreviation FROM days_of_week AS DW WHERE DW.id = day_of_week), 'day_number', day_of_week)) as schedule, user_id
-                                FROM employee_working_schedules GROUP BY user_id) as WorkingSchedule ON WorkingSchedule.user_id = user_entity.id"), 'field' => ['schedule'],],]];
+                                FROM employee_working_schedules GROUP BY user_id) as WorkingSchedule ON WorkingSchedule.user_id = user_entity.id"),
+                        'field' => ['schedule'],
+                        ],
+                    ]
+        ];
         return $this->group_params;
     }
 
