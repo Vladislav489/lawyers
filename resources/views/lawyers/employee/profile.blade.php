@@ -45,14 +45,8 @@
                         <div class=\"lawyer-bottom\">
                             <div class=\"lawyer_rate-block\">
                                 <div class=\"specialist-rate\">
-                                    <div class=\"stars\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-full.svg\" alt=\"star-icon\">
-                                        <img src=\"/lawyers/images/icons/star-icon-empty.svg\" alt=\"star-icon\">
-                                    </div>
-                                    <span>32 ответа</span>
+                                    <div class=\"stars\"><span style=\"width: 80%;\"></span></div>
+                                    <p>32 ответа</p>
                                 </div>
                             </div>
 
@@ -284,13 +278,7 @@
                         <div class="lawyer-comment_block">
                             <div class="block specialist-comment">
                                 <div class="comment-rate">
-                                    <div class="stars">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                        <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    </div>
+                                    <div class="stars"><span style="width: 80%;"></span></div>
 
                                     <p class="name">Алексеева Юлия</p>
                                     <span class="date">16.05.2023</span>
@@ -320,14 +308,8 @@
 
                         <div class="lawyer-comment_rate-block">
                             <div class="lawyer-comment_rate">
-                                <div class="stars">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">
-                                    <img class="star" src="/lawyers/images/icons/star-icon-empty.svg" alt="star-icon">
-                                    <span>32 ответа</span>
-                                </div>
+                                <div class="stars"><span style="width: 80%;"></span></div>
+                                <p>32 ответа</p>
                                 <div class="lawyer-comment_points">4.6 / 5</div>
                             </div>
 

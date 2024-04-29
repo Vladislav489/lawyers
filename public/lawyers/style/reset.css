@@ -240,8 +240,8 @@ input {
     padding: 10px 20px;
     height: 50px;
 }
-input::placeholder {
-    color: rgba(40, 40, 40, 0.50);
+input::placeholder,textarea::placeholder {
+    color: rgba(40, 40, 40, 0.30);
 }
 input::-webkit-search-cancel-button {
     display: none;

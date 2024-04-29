@@ -259,7 +259,6 @@
                     "
                     <div:id=\"name\">
                     <div class=\"lawyer-block\">
-                        <a href=\"#employeeInfoEdit\" id=\"edit_main_modal\" data-fancybox class=\"edit\"></a>
                         <div class=\"lawyer-top\">
                             <div class=\"lawyer-img\">
                                 <img :src=\"data.avatar_full_path\" alt=\"lawyer-img\">
@@ -420,7 +419,7 @@
                             </h2>
                             <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         </div>
-
+                        <p class='lawyer-text_p lawyer-text_blue bold'>Главный тезис от юриста с лимитом символа</p>
                         <p class='lawyer-text_p'>
                             @{{data.about}}
                         </p>
@@ -444,8 +443,7 @@
 
 
                     <div class='modal profile_modal' id='employeeAddService'>
-                        <h5 class='section_header' id='exampleModalLongTitle'>Добавить услугу</h5>
-
+                        <h5 class='order-modal_title' id='exampleModalLongTitle'>Добавить услугу</h5>
                         @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                             "autostart" => 'true',
@@ -460,12 +458,13 @@
                             }",
                             "template" =>
                             '
-                            <label>Категория услуги
-                                <select class="unit-select_select js_select" name="type_id" :id="name" style="width:100%">
+                            <div class="registration-form_label full">
+                                <label class="label-title">Категория услуги</label>
+                                <select class="js_select" name="type_id" :id="name">
                                     <option></option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>
-                            </label>
+                            </div>
                             ',
                             "change" => "function(){
                                 if($(this).val() !== '') {
@@ -489,11 +488,12 @@
                             }",
                             "template" =>
                             '
-                            <label>Тема услуги
-                                <select class="unit-select_select js_select" name="add_service_id" :id="name" style="width:100%">
+                            <div class="registration-form_label full">
+                                <label class="label-title">Тема услуги</label>
+                                <select class="js_select" name="add_service_id" :id="name">
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>
-                            </label>
+                            </div>
                             '
                         ]])
 
@@ -502,19 +502,26 @@
                             'params_component' => [
                                 'autostart' => 'false',
                                 'name' => 'employee_info_more_edit',
-
+                            "callAfterloadComponent" => "function(component) {
+                               filterText();
+                               return component.option;
+                            }",
                                 'template' =>
-                        "<div class='registration-form_label full'>
-                            <label class='label-title'>Название
-                                <input id='employee_service_title' type='text' name='employee_service_title'>
-                            </label>
-                            <label class='label-title'>Краткое описание
-                                <input id='employee_service_description' type='text' name='employee_service_description'>
-                            </label>
-                            <label class='label-title'>Цена
-                                <input id='employee_service_price' type='number' name='employee_service_price'>
-                            </label>
-                        </div>",
+                        "<div>
+                        <div class='registration-form_label full'>
+                            <label class='label-title'>Название</label>
+                            <input id='employee_service_title' type='text' placeholder='Название' name='employee_service_title'>
+                        </div>
+                        <div class='registration-form_label full'>
+                            <label class='label-title'>Краткое описание</label>
+                            <textarea id='employee_service_description' placeholder='Краткое описание' name='employee_service_description'></textarea>
+                        </div>
+                        <div class='registration-form_label full'>
+                            <label class='label-title'>Цена</label>
+                            <input id='employee_service_price' class='js_number_filter' type='text' name='employee_service_price'>
+                        </div>
+                        </div>
+                        ",
                             ]
                         ])
 
@@ -525,8 +532,8 @@
                     </div>
 
                     <div class="lawyer-services lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title">Услуги юриста</h2>
-                        <button data-src="#employeeAddService" data-fancybox>+Добавить</button>
+                        <h2 class="lawyer-wrapper_title _line-blue">Услуги юриста</h2>
+                        <a href="#employeeAddService" data-fancybox class="add-services-btn"><span>Добавить</span></a>
 
                         <div class='modal profile_modal' id='employeeServiceEdit'>
                             <h5 class='section_header' id='exampleModalLongTitle'>Редактировать</h5>
@@ -863,9 +870,15 @@
             updateService()
             updateCert()
             deleteData()
-
+            filterText()
         })
-
+        function filterText(){
+            $('.js_number_filter').on('keypress', function() {
+                if ( event.which != 0 && event.which != 8 ) {
+                    if( event.which < 48 || event.which > 57 ) {event.preventDefault();}
+                }
+            });
+        }
         function getMainDataForUpdate() {
             return {
                 'first_name': $('[name = first_name_edit]').val(),

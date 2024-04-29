@@ -145,23 +145,29 @@
 
                                     </div>
 
-                                    <a href="#clientInfoEdit" data-fancybox id="edit_info" class="main-btn main-btn_white">Редактировать</a>
-
-                                    <div class="balance-block">
-                                        <div class="balance-block_left">
-                                            <p class="balance-text">Ваш баланс</p>
-                                            <p class="balance_balance">
-                                                <span>&#8381</span>
-                                                @{{ data.balance == null ? 0 : data.balance }} руб
-                                            </p>
+                                    <div class="flexbox lawyer-info_buttons">
+                                        <a href="#clientInfoEdit" data-fancybox id="edit_info" class="main-btn main-btn_white">Редактировать</a>
+                                        <a class="logout" href="{{route__("actionUserLogout_logincontroller")}}">Выход</a>
+                                    </div>
+                                    <div class="lawyer-info_balance">
+                                        <div class="lawyer-balance-block">
+                                            <p>Ваш баланс</p>
+                                            <span class="balance-summ"><span class="balance-summ_ico">₽</span>@{{ data.balance == null ? 0 : data.balance }} руб</span>
                                         </div>
-
                                         <a href="{{route__("actionPaymentPage_controllers_client_clientcontroller")}}" class="main-btn"><span>Пополнить</span></a>
                                     </div>
                                 </div>
                             </div>',
                             ]
                         ])
+                    <div class='lawyer-block'>
+                        <div class='lawyer-block_subscribe'>
+                            <h2 class='lawyer-block_subscribe_title'>SOS Поддержка</h2>
+                            <p class='lawyer-block_subscribe_days'>30 дней</p>
+                            <span class='lawyer-block_subscribe_date'>22 окт 2023</span>
+                            <a href='#' class='lawyer-block_subscribe_extension'>продлить</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="right">
