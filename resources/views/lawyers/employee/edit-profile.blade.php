@@ -343,9 +343,11 @@
 
                                         'template' =>
                                 "<div class='modal profile_modal' id='employeeInfoMoreEdit'>
-                                    <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
-                                    <label class='label-title'>О себе</label>
-                                    <textarea id='about_edit' type='text' name='about_edit' :value=\"data.about\"/>
+                                    <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать текст</h5>
+                                    <div class='registration-form_label full'>
+                                        <label class='label-title'>О себе</label>
+                                        <textarea id='about_edit' type='text' name='about_edit' :value=\"data.about\"/>
+                                    </div>
                                     <div class='flex align-center form--submit'>
                                         <button @click.prevent=\"saveAboutInfo()\" type='button' id='save_info_more_edit' class='main-btn main-btn_blue'>Сохранить</button>
                                         <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
@@ -365,21 +367,23 @@
 
                         'template' =>
                         "<div class='modal profile_modal' id='employeeAddCert'>
-                            <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
-                            <label for='cert_name'>Название
+                            <h5 class='order-modal_title' id='exampleModalLongTitle'>Добавить документ или сертификат</h5>
+                            <div class='registration-form_label full'>
+                                <label for='cert_name'>Название</label>
                                 <input type='text' placeholder='Название' name='cert_name' id='cert_name'>
-                            </label>
-                            <label class='label-title'>Выберите файлы</label>
-                            <div class='form-row_files' id='file_input' @click=\"clickInput($('#cert'))\">
-                                <input type='file' class='form-row_files' name='cert' id='cert'>
-                                <span>
-                                    <img src='/lawyers/images/icons/folder-icon.svg' alt='folder-icon'>
-                                    <div>Выберите файл</div>
-                                </span>
+                            </div>
+                            <div class='registration-form_label full'>
+                                <label class='label-title'>Выберите файлы</label>
+                                <div class='form-row_files add-cert_btn' id='file_input' @click=\"clickInput($('#cert'))\">
+                                    <input type='file' class='form-row_files' name='cert' id='cert'>
+                                    <span>
+                                        <div>Загрузить файл</div>
+                                    </span>
+                                </div>
                             </div>
                             <div class='flex align-center form--submit'>
-                                <button type='button' id='add_cert' class='main-btn main-btn_blue' @click.prevent=\"addCertData()\">Сохранить</button>
-                                <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                                <button type='button' id='add_cert' class='main-btn main-btn_blue' @click.prevent=\"addCertData()\">Добавить</button>
+                                <button type='button' class='main-btn main-btn_white' data-fancybox-close>Отменить</button>
                             </div>
                         </div>
                         "
@@ -389,18 +393,19 @@
                 <div class="right">
 
                     <div class='modal profile_modal' id='employeeCertEdit'>
-                        <h5 class='section_header' id='exampleModalLongTitle'>Редактировать документ или сертификат</h5>
+                        <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать документ или сертификат</h5>
                         <input type='hidden' id='employee_cert_edit_id'>
-                        <label class='label-title'>Название
+                        <div class="registration-form_label full">
+                            <label class='label-title'>Название</label>
                             <input id='employee_cert_edit_description' type='text' name='employee_cert_edit_description'>
-                        </label>
-                        <div  id='edit_cert_input'>
-                            <img id="img_cert_src" src="" alt="cert" class='form-row_files'>
+                        </div>
+                        <div class='img-edit' id='edit_cert_input'>
+                            <img id="img_cert_src" src="" alt="cert">
                         </div>
                         <div class='flex align-center form--submit'>
                             <button type='button' id='update_employee_cert' class='main-btn main-btn_blue'>Сохранить</button>
                             <button type='button' class='main-btn main-btn_white' data-fancybox-close>Отменить</button>
-                            <button type='button' id='delete_employee_cert' class='main-btn main-btn_white'>Удалить</button>
+                            <button type='button' id='delete_employee_cert' class='main-btn main-btn_red'>Удалить</button>
                         </div>
                     </div>
 
@@ -410,7 +415,11 @@
                         'autostart' => 'false',
                         'name' => 'employee_info_more',
                         'globalData' => "EmployeeInfo",
-
+                        "callAfterloadComponent" => "function(component) {
+                            //console.log('111');
+                            docSlider()
+                            //docSlider1()
+                        }",
                         'template' =>
                         "<div class='lawyer-card'>
                         <div class='lawyer-info'>
@@ -424,18 +433,23 @@
                             @{{data.about}}
                         </p>
 
-                        <div class='lawyer-card_block'>
-                            <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
-                            @{{data.achievements === null ? 0 : data.achievements.length}}
-                            </span></h2>
-                            <button data-src='#employeeAddCert' id='add_cert' data-fancybox>ADD</button>
-                            <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
-                                <li class='lawyer-cert'>
-                                    <img :src=\"item.path\" alt='cert-img'>
-                                    <p>@{{ item.description }}</p>
-                                    <a id='edit_cert_modal' class='edit' @click.prevent=\"setDataForEditModal(item, '#employeeCertEdit')\"></a>
+                        <h2 class='lawyer-card_block-title'>Документы и сертификаты</h2> {{-- @{{data.achievements === null ? 0 : data.achievements.length}}  --}}
+                        <div class='docs-slider_container js_slider_nav'>
+                            <div class='docs-slider_item'>
+                                <span data-src='#employeeAddCert' id='add_cert' data-fancybox class='docs-slider_item_add'><span>Добавить</span></span>
+                                <p class='docs-slider_title'>Добавьте документ или сертификат</p>
+                            </div>
+                            <div class='docs-slider-content'>
+                            <ul class='docs-slider js_docs-slider'>
+                                <li class='docs-slider_item' v-for=\"item in data.achievements\">
+                                    <a :href=\"item.path\" data-fancybox>
+                                        <img :src=\"item.path\" alt='cert-img' width='130' height='130' />
+                                        <span @click.prevent=\"setDataForEditModal(item, '#employeeCertEdit')\" class='docs-slider_item-edit' id='edit_cert_modal'></span>
+                                    </a>
+                                    <p class='docs-slider_title'>@{{ item.description }}</p>
                                 </li>
                             </ul>
+                            </div>
                         </div>
                     </div>"
                     ]
@@ -536,23 +550,26 @@
                         <a href="#employeeAddService" data-fancybox class="add-services-btn"><span>Добавить</span></a>
 
                         <div class='modal profile_modal' id='employeeServiceEdit'>
-                            <h5 class='section_header' id='exampleModalLongTitle'>Редактировать</h5>
+                            <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать</h5>
                             <input type='hidden' id='employee_service_edit_type_id'>
                             <input type='hidden' id='employee_service_edit_service_id'>
                             <input type='hidden' id='employee_service_edit_id'>
-                            <label class='label-title'>Название
+                            <div class="registration-form_label full">
+                                <label class='label-title'>Название</label>
                                 <input id='employee_service_edit_title' type='text' name='employee_service_edit_title'>
-                            </label>
-                            <label class='label-title'>Краткое описание
+                            </div>
+                            <div class="registration-form_label full">
+                                <label class='label-title'>Краткое описание</label>
                                 <input id='employee_service_edit_description' type='text' name='employee_service_edit_description'>
-                            </label>
-                            <label class='label-title'>Цена
-                                <input id='employee_service_edit_price' type='number' name='employee_service_edit_price'>
-                            </label>
+                            </div>
+                            <div class="registration-form_label full">
+                                <label class='label-title'>Цена</label>
+                                <input id='employee_service_edit_price' type='text' class='js_number_filter' name='employee_service_edit_price'>
+                            </div>
                             <div class='flex align-center form--submit'>
                                 <button type='button' id='update_employee_service' class='main-btn main-btn_blue'>Сохранить</button>
                                 <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
-                                <button type='button' id="delete_employee_service" class='main-btn main-btn_white'>Удалить</button>
+                                <button type='button' id="delete_employee_service" class='main-btn main-btn_red'>Удалить</button>
                             </div>
                         </div>
 
@@ -896,6 +913,60 @@
             filterText()
             storeSpecialization()
         })
+        function docSlider() {
+            $('.js_docs-slider').not('.slick-initialized').slick({
+                slidesToShow: 5,
+                infinite: true,
+                dots: false,
+                arrows: this.slideCount > 5 ? true : false,
+                //arrows: true,
+                appendArrows: '.js_slider_nav',
+                responsive: [{
+                    breakpoint: 1241,
+                    settings: {
+                        slidesToShow: 4,
+                    }
+                }, {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                    }
+                }, {
+                    breakpoint: 601,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                }]
+            });
+            //$('.js_docs-slider').slick('refresh');
+        }
+        function docSlider1() {
+                    /*$('.js_docs-slider').slick({
+                        slidesToShow: 5,
+                        infinite: false,
+                        dots: false,
+                        arrows: this.slideCount > 5 ? true : false,
+                        arrows: true,
+                        appendArrows: '.js_slider_nav',
+                        responsive: [{
+                            breakpoint: 1241,
+                            settings: {
+                                slidesToShow: 4,
+                            }
+                        }, {
+                            breakpoint: 1024,
+                            settings: {
+                                slidesToShow: 3,
+                            }
+                        }, {
+                            breakpoint: 601,
+                            settings: {
+                                slidesToShow: 2,
+                            }
+                        }]
+                    });*/
+                    $('.js_docs-slider').slick('refresh');
+                }
         function filterText(){
             $('.js_number_filter').on('keypress', function() {
                 if ( event.which != 0 && event.which != 8 ) {
@@ -940,6 +1011,9 @@
                         $.fancybox.close()
                         updateGlobalData(response)
                     }
+                    docSlider1()
+                    docSlider()
+                    page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
                 }
             })
 
@@ -1043,6 +1117,9 @@
                     data, function (data) {
                         $.fancybox.close()
                         updateGlobalData(data)
+                        docSlider1()
+                        docSlider()
+                        page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
                     })
             })
 
@@ -1080,6 +1157,10 @@
                 }, function (data) {
                     $.fancybox.close()
                     updateGlobalData(data)
+                    docSlider1()
+                    docSlider()
+                    page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
+
                 })
             })
         }

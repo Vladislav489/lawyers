@@ -111,6 +111,10 @@
     gap: 4px;
     position: relative;
 }
+    .registration-form_label label{
+        font-size: 14px;
+        line-height: 140%;
+    }
 @media screen and (max-width: 768px) {
     .registration-form_label {
         width: 100%;

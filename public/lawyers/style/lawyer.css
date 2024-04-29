@@ -13,11 +13,12 @@
 
 .lawyer-container {
     display: flex;
-    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 .lawyer-container .left {
-    min-width: 471px;
-    width: 475px;
+    min-width: 483px;
+    width: 483px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -332,6 +333,10 @@
         max-width: 100%;
         flex-direction: row;
     }
+    .lawyer-container .right{
+        margin-top: 12px;
+        width: 100%;
+    }
     .exchange-info .exchange-info_text {
         padding-top: 3px;
         font-size: 17px;
@@ -506,9 +511,9 @@
 
 .right {
     display: flex;
-    flex: 1 1 auto;
     flex-direction: column;
     gap: 14px;
+    width: calc(100% - 495px);
 }
 
 .lawyer-card {
@@ -517,7 +522,7 @@
     background-color: var(--white-color);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 .lawyer-card .lawyer-info {
     display: flex;
@@ -552,8 +557,7 @@
     font-size: 18px;
     font-weight: 600;
     line-height: 140%;
-    display: flex;
-    gap: 4px;
+    margin: 8px 0;
 }
 .lawyer-card_block-title span {
     color: rgba(40, 40, 40, 0.50);
@@ -611,13 +615,14 @@
     }
 }
 @media screen and (max-width: 768px) {
-    .right {
-        margin: 0 -16px;
+    .lawyer-container .right{
         gap: 12px;
+        margin: 0 -16px;
+        width: calc(100% + 32px);
     }
     .lawyer-card {
         border-radius: 0;
-        padding-top: 0;
+        padding-top: 40px;
     }
     .lawyer-card .lawyer-info {
         flex-direction: column;
@@ -685,9 +690,6 @@
 }
 .lawyer-bottom-btns .main-btn .first {
     gap: 12px;
-}
-.lawyer-bottom-btns .main-btn .icon {
-    width: 9px !important;
 }
 .lawyer-wrapper_title {
     text-align: center;
@@ -1000,7 +1002,7 @@
 
 @media screen and (max-width: 768px) {
     .lawyer-wrapper {
-        padding: 0 16px 50px;
+        padding: 40px 16px 50px;
         border-radius: 0;
     }
     .lawyer-service_line {
@@ -1939,6 +1941,10 @@
         padding-top: 20px;
         width: 100%;
     }
+    .modal .form--submit .main-btn:nth-child(3){
+        max-width: 100%;
+        width: 100%;
+    }
 /* Modal order status */
 .order-modal_title{
     font-size: 18px;
@@ -2082,6 +2088,105 @@
             border-color: var(--blue-color);
         }
             .days-checkbox input{display: none;}
+.img-edit{
+    border-radius: 12px;
+    height: 100px;
+    margin: 24px 0 12px;
+    width: 100px;
+}
+    .img-edit img{
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        width: 100%;
+    }
+.docs-slider_container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+    .docs-slider_item{
+        position: relative;
+        width: 130px;
+    }
+        .docs-slider_item img{
+            border-radius: 12px;
+            height: 130px;
+            object-fit: cover;
+            object-position: center;
+            width: 100%;
+        }
+        .docs-slider_title{
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 140%;
+            padding-top: 2px;
+        }
+        .docs-slider_item-edit{
+            background: #fff url(../images/icons/edit-icon_small.svg) center no-repeat;
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(0,0,0,.2);
+            height: 24px;
+            position: absolute;
+            right: 4px;
+            top: 4px;
+            width: 24px;
+            z-index: 9;
+        }
+        .docs-slider_item_add{
+            align-items: center;
+            border: 1px rgba(0,0,0,.1) solid;
+            border-radius: 12px;
+            color: var(--blue-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            height: 130px;
+            justify-content: center;
+            width: 100%;
+        }
+            .docs-slider_item_add span{
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 140%;
+                padding-top: 32px;
+                position: relative;
+            }
+            .docs-slider_item_add span:before,.docs-slider_item_add span:after{
+                background-color: var(--blue-color);
+                border-radius: 2px;
+                content: "";
+                height: 2px;
+                left: calc(50% - 10px);
+                position: absolute;
+                top: 11px;
+                width: 20px;
+            }
+            .docs-slider_item_add span:after{transform: rotate(90deg);}
+    .docs-slider-content{
+        width: calc(100% - 142px);
+    }
+.docs-slider{width: 100%;}
+.docs-slider:not(.slick-initialized){
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+        .docs-slider .docs-slider_item{margin-right: 12px;}
+.profile_modal .registration-form_label .label-title{color: var(--dark-color);}
+.form-row_files.add-cert_btn{height: 70px;}
+    .form-row_files.add-cert_btn span{
+        background: url(../images/icons/file-icon.svg) top no-repeat;
+        color: rgba(40,40,40,.5);
+        font-size: 14px;
+        line-height: 140%;
+        padding-top: 28px;
+    }
 @media (max-width: 600px){
 .modal.fancybox-content{padding: 24px 16px 32px;}
 .order-modal_title.big{

@@ -33,6 +33,7 @@ html, body {
     scroll-behavior: smooth;
 }
 body {
+    background-color: #F1F2F2;
     font-family: Gilroy, sans-serif;
     font-weight: normal;
     font-style: normal;
@@ -98,7 +99,7 @@ img {
     padding: 0 20px;
 }
 .container {
-    max-width: 1450px;
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
 
@@ -162,16 +163,7 @@ label input {
     .main-btn.edit_ico span:after{background-image: url(../images/icons/edit-icon-white.svg);}
     .main-btn.edit_ico span:hover:before,.main-btn.edit_ico:not(:hover) span:after{opacity: 0;}
 .main-btn .second{display: none;}
-.main-btn .icon {
-    margin-top: 2px;
-    width: 7px !important;
-}
-.main-btn svg {
-    margin-top: 2px;
-}
-.main-btn path {
-    transition-duration: var(--transition);
-}
+
 .main-btn_border {
     background-color: var(--white-color);
     color: var(--dark-color);
@@ -181,15 +173,24 @@ label input {
         background-color: var(--dark-color);
         color: var(--white-color);
     }
-.main-btn_red {
+.main-btn_red_border {
     background-color: var(--white-color);
     color: var(--red-color);
     border: 1px solid var(--red-color);
 }
-    .main-btn_red:hover{
+    .main-btn_red_border:hover{
         background-color: var(--red-color);
         color: var(--white-color);
     }
+.main-btn_red {
+    background-color: var(--red-color);
+    color: var(--white-color);
+    border: 1px solid var(--red-color);
+}
+.main-btn_red:hover{
+    background-color: var(--white-color);
+    color: var(--red-color);
+}
 .main-btn_blue {
     background-color: var(--blue-color);
     gap: 13px;

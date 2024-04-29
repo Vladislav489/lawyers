@@ -177,7 +177,7 @@
                                                     <li><span>Срок выполнения</span><span class='b-days'>@{{ lawyerResponse.period }} дней</span></li>
                                                 </ul>
                                                 <button v-if=\"vacancyInfo.status != 8\" class='main-btn main-btn_blue' @click.prevent=\"openResponseForm()\">Редактировать</button>
-                                                <button v-if=\"vacancyInfo.status != 8\" class='main-btn main-btn_red' @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">Удалить</button>
+                                                <button v-if=\"vacancyInfo.status != 8\" class='main-btn main-btn_red_border' @click.prevent=\"deleteResponse(lawyerResponse.id, lawyerResponse.employee_response_id)\">Удалить</button>
                                                 <button v-else class='main-btn main-btn_blue' @click.prevent=\"acceptToWork(vacancyInfo.id)\">Принять</button>
                                                 <button v-else class='main-btn main-btn_white' @click.prevent=\"declineToWork(vacancyInfo.id)\">Отказаться</button>
                                             </div>
