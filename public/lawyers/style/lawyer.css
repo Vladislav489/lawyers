@@ -701,6 +701,18 @@
     justify-content: center;
 }
 .lawyer-wrapper_title._line-blue{margin-bottom: 26px;}
+.client-add-order_btn{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+    .client-add-order_btn .lawyer-wrapper_title-left{
+        margin-bottom: 0;
+        width: auto;
+    }
 .lawyer-wrapper_title-left {
     text-align: left;
     margin-bottom: 8px;
@@ -974,7 +986,7 @@
 .lawyer-comment_line {
     flex: 1 1 auto;
     height: 5px;
-    background-color: var(--background-color);
+    background: var(--background-color);
     border-radius: 18px;
     position: relative;
 }
@@ -1072,7 +1084,7 @@
     .more-services {
         text-align: center;
         font-size: 16px;
-        margin-top: 0;
+        margin-top: 24px;
     }
     .lawyer-all-services ul {
         margin-top: 14px;
@@ -1450,7 +1462,9 @@
     font-size: 18px;
     font-weight: 600;
     line-height: 140%;
+    transition: all .3s linear;
 }
+    a.my-orders_text:hover{color: var(--blue-color);}
 .my-orders_price {
     color: var(--blue-color);
     font-weight: 600;
@@ -1485,9 +1499,6 @@
     line-height: 140%;
     border-radius: var(--b-radius-second);
     background: rgba(198, 208, 253, 0.30);
-}
-.lawsuit .main-btn {
-    flex: 0 0 198px;
 }
 
 @media screen and (max-width: 768px) {
@@ -1535,16 +1546,7 @@
         text-align: center;
         margin: 0;
     }
-    .lawsuit .main-btn {
-        flex: 1 1 auto;
-        order: 2;
-        padding: 0;
-        border: none;
-        height: auto;
-        text-transform: uppercase !important;
-        margin-top: 8px;
-        font-size: 14px;
-    }
+
     .lawsuit .my-orders_info {
         order: 1;
     }
@@ -2106,9 +2108,27 @@
     flex-wrap: wrap;
     justify-content: space-between;
     position: relative;
-    overflow: hidden;
     width: 100%;
 }
+    .docs-slider_container .slick-arrow{
+        align-items: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: 30px;
+        justify-content: flex-end;
+        position: absolute;
+        right: 0;
+        top: -44px;
+        width: 40px;
+    }
+    .docs-slider_container .slick-prev{
+        right: 40px;
+        transform: rotate(180deg);
+    }
+        .docs-slider_container .slick-arrow path{transition: all .3s linear;}
+        .docs-slider_container .slick-arrow:hover path{fill: var(--blue-color);}
     .docs-slider_item{
         position: relative;
         width: 130px;
@@ -2169,15 +2189,19 @@
             }
             .docs-slider_item_add span:after{transform: rotate(90deg);}
     .docs-slider-content{
-        width: calc(100% - 142px);
+        margin-right: -12px;
+        overflow: hidden;
+        width: calc(100% - 130px);
     }
-.docs-slider{width: 100%;}
+.docs-slider{
+    width: 100%;
+}
 .docs-slider:not(.slick-initialized){
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
-        .docs-slider .docs-slider_item{margin-right: 12px;}
+    .docs-slider .docs-slider_item{margin-right: 12px;}
 .profile_modal .registration-form_label .label-title{color: var(--dark-color);}
 .form-row_files.add-cert_btn{height: 70px;}
     .form-row_files.add-cert_btn span{
@@ -2228,6 +2252,12 @@
         .specializations-add:hover{background-color: rgba(226,226,226,1);}
         .specializations-delete{background: rgba(198,208,253,.3) url(../images/icons/delete-icon.svg) center right 12px no-repeat;}
         .specializations-delete:hover{background-color: rgba(198,208,253,1);}
+@media (max-width: 768px){
+.docs-slider-content{
+    margin-right: -90px;
+    width: calc(100% - 52px);
+}
+}/* END 7680px */
 @media (max-width: 600px){
 .modal.fancybox-content{padding: 24px 16px 32px;}
 .order-modal_title.big{
@@ -2235,7 +2265,7 @@
     text-align: left;
 }
 .specializations-clear{top: 28px;}
-}
+}/* END 600px */
 
 
 

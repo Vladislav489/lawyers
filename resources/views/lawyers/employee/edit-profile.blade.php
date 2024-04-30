@@ -306,7 +306,7 @@
                                     <span class=\"bold\">@{{ data.working_days_interval + ' ' + data.work_time }}</span>
                                 </div>
                                 <div class='flexbox lawyer-info_buttons'>
-                                    <a href=\"#employeeInfoEdit\" id=\"edit_more_modal\" data-fancybox class='main-btn main-btn_white edit_ico'><span>Редактировать</span></a>
+                                    <a href=\"#employeeInfoEdit\" id=\"edit_more_modal\" data-fancybox class='main-btn main-btn_white with_ico edit_ico'><span>Редактировать</span></a>
                                     <a class='logout' href=\"\">Выход</a>
                                 </div>
                                 <div class='lawyer-info_balance'>
@@ -897,34 +897,51 @@
         })
 
         function getSliderSettings() {
+            let slidesLength = $('.js_docs-slider').find('li').length;
             return {
                 slidesToShow: 5,
                 infinite: false,
                 dots: false,
-                arrows: this.slideCount > 5 ? true : false,
-                //arrows: true,
+                arrows: slidesLength > 5 ? true : false,
                 appendArrows: '.js_slider_nav',
+                prevArrow: '<button type="button" class="slick-prev"><svg width="24" height="15" viewBox="0 0 24 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 7.49703C24.0019 7.88346 23.8554 8.27251 23.5606 8.56734L17.544 14.5847C16.9583 15.1706 16.0085 15.1706 15.4227 14.5847C14.8369 13.9989 14.8369 13.049 15.4227 12.4631L18.8882 8.99722L1.50005 8.99722C0.671655 8.99722 9.50035e-05 8.32555 9.50397e-05 7.49703C9.50759e-05 6.66851 0.671655 5.99685 1.50005 5.99685L18.8672 5.99685L15.4318 2.56096C14.846 1.97511 14.846 1.02526 15.4318 0.439404C16.0175 -0.146468 16.9673 -0.146468 17.5531 0.439404L23.4445 6.33153C23.7834 6.60658 24 7.02652 24 7.49703ZM24 24.5029C24 25.3316 23.3284 26.0031 22.5 26.0031L5.13283 26.0031L8.56822 29.4391C9.15401 30.025 9.15401 30.9747 8.56822 31.5606C7.98242 32.1465 7.03282 32.1465 6.44703 31.5606L0.555655 25.6685C0.216657 25.3934 1.98892e-05 24.9736 1.99098e-05 24.5029C-0.00194006 24.1167 0.144657 23.7276 0.439456 23.4328L6.45603 17.4153C7.04182 16.8296 7.99142 16.8296 8.57722 17.4153C9.16302 18.0011 9.16302 18.951 8.57722 19.5369L5.11183 23.0027L22.5 23.0027C23.3284 23.0027 24 23.6744 24 24.5029Z" fill="#282828"/></svg></button>',
+                nextArrow: '<button type="button" class="slick-next"><svg width="24" height="15" viewBox="0 0 24 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 7.49703C24.0019 7.88346 23.8554 8.27251 23.5606 8.56734L17.544 14.5847C16.9583 15.1706 16.0085 15.1706 15.4227 14.5847C14.8369 13.9989 14.8369 13.049 15.4227 12.4631L18.8882 8.99722L1.50005 8.99722C0.671655 8.99722 9.50035e-05 8.32555 9.50397e-05 7.49703C9.50759e-05 6.66851 0.671655 5.99685 1.50005 5.99685L18.8672 5.99685L15.4318 2.56096C14.846 1.97511 14.846 1.02526 15.4318 0.439404C16.0175 -0.146468 16.9673 -0.146468 17.5531 0.439404L23.4445 6.33153C23.7834 6.60658 24 7.02652 24 7.49703ZM24 24.5029C24 25.3316 23.3284 26.0031 22.5 26.0031L5.13283 26.0031L8.56822 29.4391C9.15401 30.025 9.15401 30.9747 8.56822 31.5606C7.98242 32.1465 7.03282 32.1465 6.44703 31.5606L0.555655 25.6685C0.216657 25.3934 1.98892e-05 24.9736 1.99098e-05 24.5029C-0.00194006 24.1167 0.144657 23.7276 0.439456 23.4328L6.45603 17.4153C7.04182 16.8296 7.99142 16.8296 8.57722 17.4153C9.16302 18.0011 9.16302 18.951 8.57722 19.5369L5.11183 23.0027L22.5 23.0027C23.3284 23.0027 24 23.6744 24 24.5029Z" fill="#282828"/></svg></button>',
                 responsive: [{
-                    breakpoint: 1241,
+                    breakpoint: 1281,
                     settings: {
-                        slidesToShow: 4,
+                        slidesToShow: 6,
+                        arrows: slidesLength > 6 ? true : false,
                     }
-                }, {
+                },{
                     breakpoint: 1024,
                     settings: {
-                        slidesToShow: 3,
+                        slidesToShow: 4,
+                        arrows: slidesLength > 4 ? true : false,
                     }
-                }, {
-                    breakpoint: 601,
+                },{
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 4,
+                        arrows: false,
+                    }
+                },{
+                    breakpoint: 665,
+                    settings: {
+                        slidesToShow: 3,
+                        arrows: false,
+                    }
+                    },{
+                    breakpoint: 480,
                     settings: {
                         slidesToShow: 2,
+                        arrows: false,
                     }
                 }],
             }
         }
 
         function docSlider() {
-           $('.js_docs-slider').not('.slick-initialized').slick(getSliderSettings());
+            $('.js_docs-slider').not('.slick-initialized').slick(getSliderSettings());
         }
 
         function refreshSlider() {
