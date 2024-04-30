@@ -236,7 +236,7 @@
                                     <p class='fs-text'>
                                         @{{ item.about }}
                                     </p>
-                                    <ul class='fs-text_bold' v-for=\"service in JSON.parse(item.service)\">
+                                    <ul class='fs-text_bold' v-for=\"service in JSON.parse(item.service)\" >
                                         <li>@{{ service.service_name }} </li>
                                     </ul>
                                 </div>

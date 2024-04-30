@@ -18,7 +18,7 @@
         <div class="container">
                 <div class="container">
                     <div class='modal registration-section' id='clientInfoEdit' tabindex='-1' role='dialog' aria-labelledby='exampleModalCenterTitle' aria-hidden='true'>
-                        <h5 class='section_header' id='exampleModalLongTitle'>Окно редактирования</h5>
+                        <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать</h5>
                                 <div class='registration-form_block'>
                                     @include('component_build', [
                                         'component' => 'component.infoComponent.textInfo',
@@ -32,19 +32,19 @@
                                             'template' =>
                                     "
                                     <div id=\"common_info_container\" class=\"registration-form_block\">
-                                        <div class=\"registration-form_label full\">
+                                        <div class=\"registration-form_label\">
                                             <label class=\"label-title\">Имя</label>
                                             <input type=\"text\" name=\"first_name_edit\" :value=\"data.first_name\" >
                                         </div>
-                                        <div class=\"registration-form_label full\">
+                                        <div class=\"registration-form_label\">
                                             <label class=\"label-title\">Фамилия</label>
                                             <input type=\"text\" name=\"last_name_edit\" :value=\"data.last_name\">
                                         </div>
-                                        <div class=\"registration-form_label full\">
+                                        <div class=\"registration-form_label\">
                                             <label class=\"label-title\">Отчество</label>
                                             <input type=\"text\" name=\"middle_name_edit\" :value=\"data.middle_name\">
                                         </div>
-                                        <div class=\"registration-form_label full\">
+                                        <div class=\"registration-form_label\">
                                             <label class=\"label-title\">Телефон</label>
                                             <input type=\"text\" name=\"phone_number_edit\" :value=\"data.phone_number\">
                                         </div>
@@ -52,7 +52,7 @@
                                     ",
                                         ]
                                     ])
-                                    <div class='registration-form_label full'>
+                                    <div class='registration-form_label'>
                                         <label class='label-title'>Регион</label>
                                     @include('component_build',["component" => "component.listComponent.selectComponent",
                                     "params_component" => [
@@ -84,7 +84,7 @@
                                                     }"
                                     ]])
                                     </div>
-                                    <div class='registration-form_label full'>
+                                    <div class='registration-form_label'>
                                         <label class='label-title'>Город</label>
                                     @include('component_build',["component" => "component.listComponent.selectComponent",
                                     "params_component" => [
@@ -107,7 +107,7 @@
                                     </div>
                                 <div class='flex align-center form--submit'>
                                     <button type='button' id="save_edit_main" class='main-btn main-btn_blue'>Сохранить</button>
-                                    <button type='button' class='main-btn main-btn_white' data-fancybox-close >Закрыть</button>
+                                    <button type='button' class='main-btn main-btn_white' data-fancybox-close >Отменить</button>
                                 </div>
                             </div>
                     </div>
@@ -236,7 +236,9 @@
 
                                 'template' => "
                     <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
+                        <div class='client-add-order_btn'>
                         <h2 class='lawyer-wrapper_title lawyer-wrapper_title-left'>Мои заказы </h2>
+                        </div>
                         <ul class='my-orders_ul'>
                             <li v-for=\"item in data\">
                                 <div class='my-orders_info'>
