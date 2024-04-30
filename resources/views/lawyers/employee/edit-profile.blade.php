@@ -623,8 +623,8 @@
                     </div>
 
                     <div class='modal profile_modal' id='employeeSpecializationEdit'>
-                        <h2 class="lawyer-wrapper_title _line-blue">Редактировать</h2>
-
+                        <h2 class="order-modal_title">Редактировать</h2>
+                        <a href="#" class="specializations-clear">Очистить</a>
                         @include('component_build', [
                                 'component' => 'component.gridComponent.simpleGrid',
                                 'params_component' => [
@@ -651,13 +651,14 @@
 									}",
 
                                     'template' => "
-                                    <ul name=\"lawyer_services\" :id=\"name + '_body'\">
-                                        <div v-if=\"data\" v-for=\"item in data\">
-                                            <li>@{{item.name}}</li>
-                                            <button name='add' v-if=\"!employeeSpecialization.includes(item.id)\" @click.prevent=\"addSpecialization(item.id)\">+</button>
-                                            <button name='delete' v-if=\"employeeSpecialization.includes(item.id)\" @click.prevent=\"deleteSpecialization(item.id)\">delete</button>
+                                    <div name=\"lawyer_services\" :id=\"name + '_body'\">
+                                        <div class='specializations-btn_container'>
+                                            <div class='specializations-btn' v-if=\"data\" v-for=\"item in data\">
+                                                <button class='specializations-add' name='add' v-if=\"!employeeSpecialization.includes(item.id)\" @click.prevent=\"addSpecialization(item.id)\">@{{item.name}}</button>
+                                                <button class='specializations-delete' name='delete' v-if=\"employeeSpecialization.includes(item.id)\" @click.prevent=\"deleteSpecialization(item.id)\">@{{item.name}}</button>
+                                            </div>
                                         </div>
-                                    </ul>",
+                                    </div>",
                                 ]
                         ])
 
@@ -665,7 +666,7 @@
 
                         <div class='flex align-center form--submit'>
                             <button type='button' id='save_specialization' class='main-btn main-btn_blue'>Сохранить</button>
-                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Закрыть</button>
+                            <button type='button' class='main-btn main-btn_white' data-fancybox-close>Отменить</button>
                         </div>
                     </div>
 

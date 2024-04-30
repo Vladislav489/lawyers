@@ -703,7 +703,7 @@
 .lawyer-wrapper_title._line-blue{margin-bottom: 26px;}
 .lawyer-wrapper_title-left {
     text-align: left;
-    margin-bottom: -8px;
+    margin-bottom: 8px;
 }
 .lawyer-wrapper_title span {
     color: rgba(40, 40, 40, 0.50);
@@ -1424,7 +1424,7 @@
 
 .my-orders .lawyer-wrapper_title {
     text-align: left;
-    margin-bottom: -8px;
+    margin-bottom: 8px;
 }
 .my-orders_ul {
     display: flex;
@@ -1629,7 +1629,7 @@
 .lawsuit_nav {
     position: relative;
     box-shadow: 0 4px 22px rgba(0, 0, 0, 0.07);
-    margin: -20px -20px 0;
+    margin: -20px -20px 24px;
     padding: 20px 20px 12px;
     display: flex;
     flex-direction: column;
@@ -2187,12 +2187,54 @@
         line-height: 140%;
         padding-top: 28px;
     }
+.specializations-clear{
+    color: #999;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 140%;
+    position: absolute;
+    right: 96px;
+    top: 34px;
+    transition: all .3s linear;
+}
+    .specializations-clear:hover{
+        color: var(--dark-color);
+        text-decoration: underline;
+    }
+.specializations-btn_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 6px;
+}
+    .specializations-btn{
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+        .specializations-btn [class*="specializations-"]{
+            align-content: center;
+            border-radius: 19px;
+            display: inline-flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            font-size: 14px;
+            height: 38px;
+            justify-content: center;
+            line-height: 18px;
+            padding: 0 44px 0 12px;
+            transition: all .3s linear;
+        }
+        .specializations-add{background: rgba(226,226,226,.3) url(../images/icons/add-icon.svg) center right 12px no-repeat;}
+        .specializations-add:hover{background-color: rgba(226,226,226,1);}
+        .specializations-delete{background: rgba(198,208,253,.3) url(../images/icons/delete-icon.svg) center right 12px no-repeat;}
+        .specializations-delete:hover{background-color: rgba(198,208,253,1);}
 @media (max-width: 600px){
 .modal.fancybox-content{padding: 24px 16px 32px;}
 .order-modal_title.big{
     font-size: 18px;
     text-align: left;
 }
+.specializations-clear{top: 28px;}
 }
 
 
