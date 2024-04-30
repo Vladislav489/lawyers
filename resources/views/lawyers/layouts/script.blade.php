@@ -1,3 +1,13 @@
+<script src="/js/jquery/jquery-3.6.0.min.js"></script>
+<script src="/js/vue/vue.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/component/parentComponent.js"></script>
+<script src="/js/dropzone/dropzone1/dropzone.min.js"></script>
+<script src="/lawyers/scripts/jquery.fancybox.min.js"></script>
+<script src="/lawyers/scripts/popup.js"></script>
+<script src="/lawyers/scripts/select2.full.min.js"></script>
+<script src="/lawyers/scripts/slick.min.js"></script>
+<script src="/lawyers/scripts/script.js"></script>
 <script data-create_page="front">
     var page__ = null;
 
@@ -51,8 +61,3 @@
     InitHeader();
     page__.onLoadPage();
 </script>
-
-<!-- lawyers -->
-
-<script src="/lawyers/scripts/jquery.fancybox.min.js"></script>
-<script src="/lawyers/lib/OwlCarousel2-2.3.4/docs/assets/owlcarousel/owl.carousel.min.js"></script>

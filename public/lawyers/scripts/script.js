@@ -59,3 +59,12 @@ const selectRow = (selectBlock, select = false) => {
         })
     }
 }
+$(function(){
+    document.querySelectorAll('.nav-ul > li').forEach(item => {
+        selectRow(item);
+    });
+    /* Select */
+    $('.js_select').select2({
+        minimumResultsForSearch: -1,
+    });
+});
