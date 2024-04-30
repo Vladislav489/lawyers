@@ -415,10 +415,9 @@
                         'autostart' => 'false',
                         'name' => 'employee_info_more',
                         'globalData' => "EmployeeInfo",
-//                        "callAfterloadComponent" => "function(component) {
-//                            // timeout
-//                            setTimeout(docSlider(), 1500)
-//                        }",
+                        "callAfterloadComponent" => "function() {
+                            docSlider()
+                        }",
                         'template' =>
                         "<div class='lawyer-card'>
                         <div class='lawyer-info'>
@@ -896,46 +895,43 @@
             storeSpecialization()
             // setTimeout(docSlider(), 600)
         })
+
+        function getSliderSettings() {
+            return {
+                slidesToShow: 5,
+                infinite: false,
+                dots: false,
+                arrows: this.slideCount > 5 ? true : false,
+                //arrows: true,
+                appendArrows: '.js_slider_nav',
+                responsive: [{
+                    breakpoint: 1241,
+                    settings: {
+                        slidesToShow: 4,
+                    }
+                }, {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                    }
+                }, {
+                    breakpoint: 601,
+                    settings: {
+                        slidesToShow: 2,
+                    }
+                }],
+            }
+        }
+
         function docSlider() {
-            // let slider =
-            // if ($('.js_docs-slider').slick() !== undefined) {
-            //     $('.js_docs-slider').slick('refresh')
-            // }
-
-            // console.log($('.js_docs-slider').on('reInit', function () {
-            //     console.log('reinit')
-            // }))
-               $('.js_docs-slider').slick({
-                    slidesToShow: 5,
-                    infinite: false,
-                    dots: false,
-                    arrows: this.slideCount > 5 ? true : false,
-                    //arrows: true,
-                    appendArrows: '.js_slider_nav',
-                    responsive: [{
-                        breakpoint: 1241,
-                        settings: {
-                            slidesToShow: 4,
-                        }
-                    }, {
-                        breakpoint: 1024,
-                        settings: {
-                            slidesToShow: 3,
-                        }
-                    }, {
-                        breakpoint: 601,
-                        settings: {
-                            slidesToShow: 2,
-                        }
-                    }],
-
-                });
+           $('.js_docs-slider').not('.slick-initialized').slick(getSliderSettings());
         }
 
         function refreshSlider() {
-            $('.js_docs-slider').slick('unslick');
-            $('.slick-list').remove(); /* Remove current slides elements, in case that you want to show new slides. */
-            docSlider()
+            $('.js_docs-slider').slick('unslick')
+            setTimeout(function() {
+                $('.js_docs-slider').slick(getSliderSettings())
+            }, 100)
         }
 
         function filterText(){
@@ -981,7 +977,6 @@
                     if (response) {
                         $.fancybox.close()
                         updateGlobalData(response)
-                        page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
                         refreshSlider()
                     }
                 }
@@ -1087,7 +1082,8 @@
                     data, function (data) {
                         $.fancybox.close()
                         updateGlobalData(data)
-                        page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
+                        refreshSlider()
+                        page__.getElementsGroup('employee_info_more')[1]['obj'].updateVue()
                     })
             })
 
@@ -1100,9 +1096,7 @@
                 url: '{{ route__('actionUpdateEmployeeInfo_mainstay_employee_employeemainstaycontroller') }}',
                 success: function (response) {
                     $.fancybox.close()
-                    // updateModals()
                     updateGlobalData(response)
-                    // clearDropZones(true, response)
                 }
 
             })
@@ -1125,7 +1119,7 @@
                 }, function (data) {
                     $.fancybox.close()
                     updateGlobalData(data)
-                    page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
+                    refreshSlider()
                 })
             })
         }
@@ -1135,9 +1129,6 @@
         }
 
         function setEdit() {
-            /*$(document).on('click', '#edit_main_modal', function () {
-                $('#employeeInfoEdit').modal('toggle')
-            })*/
             $(document).on('click', '#edit_services_modal', function () {
                 $('#employeeServiceCreate').modal('toggle')
             })
