@@ -47,11 +47,17 @@ class EmployeeSpecializationLogic extends CoreEngine
     }
 
     public function updateSpecialization(array $data) {
-        $currentList = (new EmployeeSpecializationLogic(['user_id' => $data['user_id']]))->offPagination()->setLimit(false)->getList()['result'];
-        $currentList = Arr::pluck($currentList, 'service_id');
+        $currentServiceList = (new EmployeeSpecializationLogic(['user_id' => $data['user_id']]))->offPagination()->setLimit(false)->getList()['result'];
+        $currentList = Arr::pluck($currentServiceList, 'service_id');
 
-        $recordsToAdd = array_diff($data['service_ids'], $currentList);
-        $recordsToDelete = array_diff($currentList, $data['service_ids']);
+        if (isset($data['service_ids'])) {
+            $recordsToAdd = array_diff($data['service_ids'], $currentList);
+            $recordsToDelete = array_diff($currentList, $data['service_ids']);
+//            dd($currentList, ['add' => $recordsToAdd, 'del' => $recordsToDelete]);
+        } else {
+            $currentListIds = Arr::pluck($currentServiceList, 'id');
+            $this->deleteForeva($currentListIds);
+        }
 
         if (!empty($recordsToAdd)) {
             foreach ($recordsToAdd as $item) {
@@ -64,9 +70,7 @@ class EmployeeSpecializationLogic extends CoreEngine
             $service_ids = explode(',', implode(', ', $recordsToDelete));
             $list = (new EmployeeSpecializationLogic(['user_id' => $data['user_id'], 'service_id' => $service_ids]))->getList()['result'];
             $ids = Arr::pluck($list, 'id');
-            foreach ($ids as $id) {
-                $this->deleteForeva($id);
-            }
+            $this->deleteForeva($ids);
         }
     }
 

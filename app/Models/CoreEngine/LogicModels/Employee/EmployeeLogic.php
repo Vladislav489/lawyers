@@ -56,6 +56,15 @@ class EmployeeLogic extends UserLogic
         return $this->default;
     }
 
+    public function getEmployeeAchievements($data) {
+        $res = (new EmployeeLogic($data))->setJoin(['Achievements'])->getOne();
+//        dd($res);
+        if (isset($res['achievements'])) {
+            $res['achievements'] = json_decode($res['achievements'], true);
+        }
+        return $res;
+    }
+
     public function getOne()
     {
         $result = parent::getOne();
@@ -377,7 +386,62 @@ class EmployeeLogic extends UserLogic
     protected function getFilter(): array
     {
         $tab = $this->engine->getTable();
-        $this->filter = [['field' => $tab . '.id', 'params' => 'user_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => $tab . '.type_id', 'params' => 'type_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'Employee.is_confirmed', 'params' => 'is_confirmed', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Employee.dt_practice_start', 'params' => 'start_practice_date', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Employee.consultation_price', 'params' => 'consultation_price', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => 'Company.name', 'params' => 'company', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',], ['field' => $tab . '.region_id', 'params' => 'region_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'Offer.vacancy_id', 'params' => 'vacancy_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => $tab . '.city_id', 'params' => 'city_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => 'InnerJoinService.service_id', 'params' => 'service_id', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND', 'relatedModel' => 'InnerJoinService'], ['field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)", 'params' => 'search_spec', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '=', 'concat' => 'AND',], ['field' => "TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW()))", 'params' => 'experience', 'validate' => ['string' => true, "empty" => true], 'type' => 'string|array', "action" => '>=', 'concat' => 'AND',], //            [   'field' => "",'params' => 'rating',
+        $this->filter = [
+            ['field' => $tab . '.id', 'params' => 'user_id',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+                ],
+            ['field' => $tab . '.type_id', 'params' => 'type_id',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+                ],
+            ['field' => 'Employee.is_confirmed', 'params' => 'is_confirmed',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array',
+                "action" => 'IN', 'concat' => 'AND',
+                ],
+            ['field' => 'Employee.dt_practice_start', 'params' => 'start_practice_date',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',
+                ],
+            ['field' => 'Employee.consultation_price', 'params' => 'consultation_price',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',
+                ],
+            ['field' => 'Company.name', 'params' => 'company',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => 'IN', 'concat' => 'AND',
+                ],
+            [
+                'field' => $tab . '.region_id', 'params' => 'region_id',
+                'validate' => ['string' => true, "empty" => true], 'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+                ],
+            ['field' => 'Offer.vacancy_id', 'params' => 'vacancy_id',
+                'validate' => ['string' => true, "empty" => true], 'type' => 'string|array',
+                "action" => '=', 'concat' => 'AND',
+                ],
+            ['field' => $tab . '.city_id', 'params' => 'city_id',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => '=', 'concat' => 'AND',
+                ],
+            ['field' => 'InnerJoinService.service_id', 'params' => 'service_id',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => '=', 'concat' => 'AND',
+                'relatedModel' => 'InnerJoinService'
+            ],
+            ['field' => "CONCAT(user_entity.first_name, ' ', user_entity.last_name)",
+                'params' => 'search_spec', 'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => '=', 'concat' => 'AND',
+                ],
+            [
+                  'field' => "TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW()))",
+                'params' => 'experience',
+                'validate' => ['string' => true, "empty" => true],
+                'type' => 'string|array', "action" => '>=', 'concat' => 'AND',
+                ], //            [   'field' => "",'params' => 'rating',
 //                'validate' => ['string' => true,"empty" => true],
 //                'type' => 'string|array',
 //                "action" => '>=', 'concat' => 'AND',

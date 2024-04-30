@@ -79,6 +79,7 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionUpdateSpecialization(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
+//        dd($this->params)
         (new EmployeeSpecializationLogic())->updateSpecialization($this->params);
         return $this->actionGetEmployee(['id' => (string)auth()->id()]);
     }
@@ -225,6 +226,12 @@ class EmployeeMainstayController extends MainstayController
         $data['employee_user_id'] = auth()->id();
 
         return response()->json((new VacancyLogic())->sendClosingDocs($data));
+    }
+
+    public function actionGetEmployeeAchievements($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new EmployeeLogic())->getEmployeeAchievements($this->params));
+
     }
 
 }
