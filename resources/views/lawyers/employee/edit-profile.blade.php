@@ -415,11 +415,10 @@
                         'autostart' => 'false',
                         'name' => 'employee_info_more',
                         'globalData' => "EmployeeInfo",
-                        "callAfterloadComponent" => "function(component) {
-                            //console.log('111');
-                            docSlider()
-                            //docSlider1()
-                        }",
+//                        "callAfterloadComponent" => "function(component) {
+//                            // timeout
+//                            setTimeout(docSlider(), 1500)
+//                        }",
                         'template' =>
                         "<div class='lawyer-card'>
                         <div class='lawyer-info'>
@@ -625,23 +624,6 @@
 
                     <div class='modal profile_modal' id='employeeSpecializationEdit'>
                         <h2 class="lawyer-wrapper_title _line-blue">Редактировать</h2>
-{{--                        @include('component_build', [--}}
-{{--                                'component' => 'component.gridComponent.simpleGrid',--}}
-{{--                                'params_component' => [--}}
-{{--                                    'autostart' => 'true',--}}
-{{--                                    'name' => 'employee_specialization_edit',--}}
-{{--                                    'url' => route__("actionGetSpecialization_mainstay_employee_employeemainstaycontroller"),--}}
-{{--                                    'params' => ['user_id' => auth()->id()],--}}
-
-{{--                                    'template' => "--}}
-{{--                                    <ul name=\"lawyer_services\" :id=\"name + '_body'\">--}}
-{{--                                        <div v-if=\"data\" v-for=\"item in data\">--}}
-{{--                                            <li>@{{item.name}}</li>--}}
-{{--                                            <button @click.prevent=\"deleteSpecialization(item.id)\">delete</button>--}}
-{{--                                        </div>--}}
-{{--                                    </ul>",--}}
-{{--                                ]--}}
-{{--                        ])--}}
 
                         @include('component_build', [
                                 'component' => 'component.gridComponent.simpleGrid',
@@ -650,7 +632,7 @@
                                     'name' => 'employee_service_list',
                                     'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"),
 									'callBeforloadComponent' => "function(component) {
-                                        let employeeSpecialization = page__.getGolobalData('EmployeeInfo').specialization ?? null
+                                        let employeeSpecialization = page__.getGolobalData('EmployeeInfo').specialization ?? ''
                                         component.option['employeeSpecialization'] = employeeSpecialization
                                         if(employeeSpecialization) {
                                             component.data.sort((item1, item2) => {
@@ -665,7 +647,6 @@
                                                 }
                                             })
                                         }
-                                        console.log(component.data)
 									    return component.option
 									}",
 
@@ -912,61 +893,50 @@
             deleteData()
             filterText()
             storeSpecialization()
+            // setTimeout(docSlider(), 600)
         })
         function docSlider() {
-            $('.js_docs-slider').not('.slick-initialized').slick({
-                slidesToShow: 5,
-                infinite: true,
-                dots: false,
-                arrows: this.slideCount > 5 ? true : false,
-                //arrows: true,
-                appendArrows: '.js_slider_nav',
-                responsive: [{
-                    breakpoint: 1241,
-                    settings: {
-                        slidesToShow: 4,
-                    }
-                }, {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                    }
-                }, {
-                    breakpoint: 601,
-                    settings: {
-                        slidesToShow: 2,
-                    }
-                }]
-            });
-            //$('.js_docs-slider').slick('refresh');
+            // let slider =
+            // if ($('.js_docs-slider').slick() !== undefined) {
+            //     $('.js_docs-slider').slick('refresh')
+            // }
+
+            // console.log($('.js_docs-slider').on('reInit', function () {
+            //     console.log('reinit')
+            // }))
+               $('.js_docs-slider').slick({
+                    slidesToShow: 5,
+                    infinite: false,
+                    dots: false,
+                    arrows: this.slideCount > 5 ? true : false,
+                    //arrows: true,
+                    appendArrows: '.js_slider_nav',
+                    responsive: [{
+                        breakpoint: 1241,
+                        settings: {
+                            slidesToShow: 4,
+                        }
+                    }, {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 3,
+                        }
+                    }, {
+                        breakpoint: 601,
+                        settings: {
+                            slidesToShow: 2,
+                        }
+                    }],
+
+                });
         }
-        function docSlider1() {
-                    /*$('.js_docs-slider').slick({
-                        slidesToShow: 5,
-                        infinite: false,
-                        dots: false,
-                        arrows: this.slideCount > 5 ? true : false,
-                        arrows: true,
-                        appendArrows: '.js_slider_nav',
-                        responsive: [{
-                            breakpoint: 1241,
-                            settings: {
-                                slidesToShow: 4,
-                            }
-                        }, {
-                            breakpoint: 1024,
-                            settings: {
-                                slidesToShow: 3,
-                            }
-                        }, {
-                            breakpoint: 601,
-                            settings: {
-                                slidesToShow: 2,
-                            }
-                        }]
-                    });*/
-                    $('.js_docs-slider').slick('refresh');
-                }
+
+        function refreshSlider() {
+            $('.js_docs-slider').slick('unslick');
+            $('.slick-list').remove(); /* Remove current slides elements, in case that you want to show new slides. */
+            docSlider()
+        }
+
         function filterText(){
             $('.js_number_filter').on('keypress', function() {
                 if ( event.which != 0 && event.which != 8 ) {
@@ -1010,10 +980,9 @@
                     if (response) {
                         $.fancybox.close()
                         updateGlobalData(response)
+                        page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
+                        refreshSlider()
                     }
-                    docSlider1()
-                    docSlider()
-                    page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
                 }
             })
 
@@ -1117,8 +1086,6 @@
                     data, function (data) {
                         $.fancybox.close()
                         updateGlobalData(data)
-                        docSlider1()
-                        docSlider()
                         page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
                     })
             })
@@ -1157,10 +1124,7 @@
                 }, function (data) {
                     $.fancybox.close()
                     updateGlobalData(data)
-                    docSlider1()
-                    docSlider()
                     page__.getElementsGroup('employee_info_more')[1]['obj'].startWidget()
-
                 })
             })
         }
@@ -1207,27 +1171,9 @@
             return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
         }
 
-        // function clearDropZones(restartElements = false, data = []) {
-        //         page__.getElementsGroup('employee_info_more').forEach(function(element) {
-        //             if(element['obj']['files'] !== undefined) {
-        //                 element['obj'].removeAllFiles()
-        //             } else {
-        //                 if (restartElements) {
-        //                     element['obj'].setData(data)
-        //                     element['obj'].startWidget()
-        //                 }
-        //             }
-        //         })
-        // }
-
         function updateGlobalData(data) {
             Object.assign(page__.getGolobalData('EmployeeInfo'), data['result'])
         }
-
-        /*function showScheduleBlock() {
-            $('#select_worktime').prop('checked', !$('#select_worktime').prop('checked'))
-            $('#set_schedule').prop('hidden', !$('#set_schedule').prop('hidden'))
-        }*/
 
         function getWorkingDaysArray() {
             if ($('#select_worktime').prop('checked')) {
@@ -1248,9 +1194,8 @@
         }
 
         function addSpecialization(id) {
-            let specialicationArray = page__.getGolobalData('EmployeeInfo').specialization
+            let specialicationArray = page__.getGolobalData('EmployeeInfo').specialization ?? []
             specialicationArray.push(id)
-            console.log(specialicationArray)
             page__.getGolobalData('EmployeeInfo').specialization = specialicationArray
             page__.getElementsGroup('employee_service_list')[0]['obj'].startWidget()
 
@@ -1283,12 +1228,5 @@
 
         }
 
-        function getExcludedServices() {
-            let data = []
-            page__.getElementsGroup('employee_specialization_edit')[0]['obj'].data.forEach(function (item) {
-                data.push(item.service_id)
-            })
-            return data
-        }
     </script>
 @endsection
