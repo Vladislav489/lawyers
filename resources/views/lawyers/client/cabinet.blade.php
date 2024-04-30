@@ -237,22 +237,19 @@
                                 'template' => "
                     <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
                         <div class='client-add-order_btn'>
-                        <h2 class='lawyer-wrapper_title lawyer-wrapper_title-left'>Мои заказы </h2>
+                            <h2 class='lawyer-wrapper_title lawyer-wrapper_title-left'>Мои заказы </h2>
+                            <a href='' class='main-btn main-btn_orange small add_ico'><span>Новый заказ</span></a>
                         </div>
                         <ul class='my-orders_ul'>
                             <li v-for=\"item in data\">
                                 <div class='my-orders_info'>
-                                    <p class='my-orders_text'>
-                                        @{{ item.title }}
-                                    </p>
+                                    <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" class='my-orders_text'>@{{ item.title }}</a>
 
                                     <ul class='my-orders_sub-ul'>
                                         <li>@{{ item.count_messages ?? 0 }} сообщений</li>
                                         <li v-if=\"!item.status >= 4\">@{{ item.count_offers ?? 0 }} предложения от юристов</li>
                                     </ul>
                                 </div>
-
-                                <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" type='button' class='main-btn main-btn_white'>Открыть</a>
                             </li>
                         </ul>
                         <button class='more-services' @click.prevent=\"goToOrdersPage()\">Еще</button>

@@ -143,15 +143,13 @@ label input {
         display: inline-block;
         padding-right: 20px;
     }
-    .main-btn.edit_ico span{
+    .main-btn.with_ico span{
         background: none;
         background-size: auto;
         line-height: 24px;
-        padding: 0 0 0 36px;
         position: relative;
     }
-    .main-btn.edit_ico span:before,.main-btn.edit_ico span:after{
-        background: url(../images/icons/edit-icon.svg) no-repeat;
+    .main-btn.with_ico span:before,.main-btn.with_ico span:after{
         content: "";
         height: 24px;
         left: 0;
@@ -160,9 +158,16 @@ label input {
         transition: all .3s linear;
         width: 24px;
     }
-    .main-btn.edit_ico span:after{background-image: url(../images/icons/edit-icon-white.svg);}
-    .main-btn.edit_ico span:hover:before,.main-btn.edit_ico:not(:hover) span:after{opacity: 0;}
-.main-btn .second{display: none;}
+    .main-btn.with_ico span:hover:before,.main-btn.with_ico:not(:hover) span:after{opacity: 0;}
+    .main-btn.edit_ico span{padding: 0 0 0 36px;}
+    .main-btn.edit_ico span:before{background: url(../images/icons/edit-icon.svg) no-repeat;}
+    .main-btn.edit_ico span:after{background: url(../images/icons/edit-icon-white.svg) no-repeat;}
+.main-btn.small{height: 36px;}
+    .main-btn.add_ico span{
+        background: url(../images/icons/add-order-icon.svg) right no-repeat;
+        line-height: 24px;
+        padding: 0 36px 0 0;
+    }
 
 .main-btn_border {
     background-color: var(--white-color);
