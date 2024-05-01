@@ -65,8 +65,7 @@ class EmployeeLogic extends UserLogic
         return $res;
     }
 
-    public function getOne()
-    {
+    public function getOne() {
         $result = parent::getOne();
         if (isset($result['photos'])) {
             $result['photos'] = json_decode($result['photos'], true);
@@ -89,8 +88,17 @@ class EmployeeLogic extends UserLogic
         return $result;
     }
 
-    public function save($data)
-    {
+    public function getList() {
+        $result = parent::getList();
+        foreach ($result['result'] as $k => $v) {
+            if (isset($result['result'][$k]['specialization'])) {
+                $result['result'][$k]['specialization'] = json_decode($result['result'][$k]['specialization'], true);
+            }
+        }
+        return $result;
+    }
+
+    public function save($data) {
         if (empty($data)) return false;
         DB::beginTransaction();
         $data['modifier_id'] = 1;
@@ -523,7 +531,7 @@ class EmployeeLogic extends UserLogic
                     'Specialization' => [
                         'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('id', id,
-                                'service_id', service_id)) as specialization, user_id
+                                'service_id', service_id, 'name', (SELECT S.name FROM service as S WHERE S.id = service_id))) as specialization, user_id
                                 FROM employee_specializations GROUP BY user_id) as Specialization ON Specialization.user_id = user_entity.id"),
                         'field' => ['specialization'],
                         ],

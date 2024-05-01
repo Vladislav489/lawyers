@@ -219,7 +219,7 @@
                                     <h3 class='fs-name'>@{{ item.last_name + ' ' + item.first_name + ' ' + item.middle_name }}</h3></a>
                                     <p class='fs-row'>
                                         <img class='icon' src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
-                                        <span class='fs-text'>Москва и МО, пр. Роберта Рождественского, 522</span>
+                                        <span class='fs-text'>@{{ item.location }}</span>
                                     </p>
                                     <p class='fs-row'>
                                         <img class='icon' src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon'>
@@ -236,8 +236,8 @@
                                     <p class='fs-text'>
                                         @{{ item.about }}
                                     </p>
-                                    <ul class='fs-text_bold' v-for=\"service in JSON.parse(item.service)\" >
-                                        <li>@{{ service.service_name }} </li>
+                                    <ul class='fs-text_bold' v-for=\"specialization in item.specialization\">
+                                        <li>@{{ specialization.name }} </li>
                                     </ul>
                                 </div>
 
