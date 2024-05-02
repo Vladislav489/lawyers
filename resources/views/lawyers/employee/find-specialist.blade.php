@@ -236,14 +236,13 @@
                                     <p class='fs-text'>
                                         @{{ item.about }}
                                     </p>
-                                    <ul class='fs-text_bold' v-for=\"specialization in item.specialization\">
-                                        <li>@{{ specialization.name }} </li>
+                                    <ul class='specialist-specialization'>
+                                        <li class='fs-text_bold' v-for=\"specialization in item.specialization\">@{{ specialization.name }}</li>
                                     </ul>
                                 </div>
 
                                 <div class='buttons-container'>
-                                    <button class='main-btn main-btn_blue'>Консультация: @{{ item.consultation_price }} &#8381;</button>
-                                    <button class='main-btn main-btn_white'>Заказать звонок</button>
+                                    <button class='main-btn main-btn_blue'>Заказать звонок</button>
                                     <button class='main-btn main-btn_white'>Сообщение</button>
                                 </div>
                             </div>

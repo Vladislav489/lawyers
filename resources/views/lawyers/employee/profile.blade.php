@@ -35,10 +35,7 @@
 
                             <div class=\"lawyer-info\">
                                 <h2 class=\"lawyer-name\">@{{getFullName(data)}}</h2>
-                                <span class=\"lawyer-check\">
-                                    Проверенный юрист
-                                    <img class=\"icon\" src=\"/lawyers/images/icons/check-icon-white.svg\" alt=\"check-icon\">
-                                </span>
+                                <span class=\"lawyer-check\">Проверенный юрист</span>
                             </div>
                         </div>
 
@@ -112,26 +109,17 @@
                             <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
                         </div>
 
-                        <button class="main-btn">
-                            <span class="first">
-                                Создать задачу
-                                <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                            </span>
-                            <span class="second">
-                                <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}">Создать задачу</a>
-                                <img class="icon" src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon">
-                            </span>
-                        </button>
+                        <button class="main-btn"><span>Создать задачу</span></button>
                     </div>
                 </div>
 
                 <div class="right">
-                    <ul class="round-top_nav">
+                    {{--<ul class="round-top_nav">
                         <li class="active"><button type="button">О себе</button></li>
                         <li><button type="button">Услуги</button></li>
                         <li><button type="button">Отзывы</button></li>
                         <li><button type="button">Ответы юриста</button></li>
-                    </ul>
+                    </ul>--}}
 
                     @include('component_build', [
                    'component' => 'component.infoComponent.textInfo',
@@ -139,51 +127,36 @@
                        'autostart' => 'false',
                        'name' => 'employee_info_more',
                        'globalData' => "EmployeeInfo",
-
+                        "callAfterloadComponent" => "function() {
+                            docSlider()
+                        }",
                        'template' =>
                        "<div class='lawyer-card'>
                        <div class='lawyer-info'>
-                           <h2 class='lawyer-name'>
-                               @{{getFullName(data)}}
-                           </h2>
-                           <span class='lawyer-check'>
-                               Проверенный юрист
-                               <img src='/lawyers/images/icons/check-icon-white.svg' alt='check-icon'>
-                           </span>
+                           <h2 class='lawyer-name'>@{{getFullName(data)}}</h2>
                        </div>
 
-                       <p class='lawyer-text_p'>
-                           @{{data.about}}
-                       </p>
+                       <p class='lawyer-text_p'>@{{data.about}}</p>
 
-                       <div class='lawyer-card_block'>
-                           <h2 class='lawyer-card_block-title'>Фото<span>
-                           @{{data.photos === null ? 0 : data.photos.length}}
-                           </span></h2>
-                           <ul class='lawyer-photos' v-for=\"item in data.photos\">
-                               <li>
-                                   <img :src='item.path' alt='lawyer-img'>
-                               </li>
-                           </ul>
-                       </div>
-
-                       <div class='lawyer-card_block'>
-                           <h2 class='lawyer-card_block-title'>Документы и сертификаты <span>
-                           @{{data.achievements === null ? 0 : data.achievements.length}}
-                           </span></h2>
-                           <ul class='lawyer-certs_container' v-for=\"item in data.achievements\">
-                               <li class='lawyer-cert'>
-                                   <img :src=\"item.path\" alt='cert-img'>
-                               </li>
-                           </ul>
-                       </div>
+                           <h2 class='lawyer-card_block-title'>Документы и сертификаты</h2>
+                            <div class='docs-slider_container js_slider_nav'>
+                                <div class='docs-slider-content full_width'>
+                                <ul class='docs-slider js_docs-slider'>
+                                    <li class='docs-slider_item'  v-for=\"item in data.achievements\">
+                                        <a :href=\"item.path\" data-fancybox>
+                                            <img :src=\"item.path\" alt='cert-img' width='130' height='130' />
+                                        </a>
+                                        <p class='docs-slider_title'>@{{ item.description }}</p>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
                    </div>"
                    ]
                ])
 
                     <div class="lawyer-services lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title">Заказать услугу по фикс прайсу с гарантией от нашего портала</h2>
-                        <h3 class="lawyer-wrapper_subtitle _line-blue">Краткое описание логики заказа и зачем.</h3>
+                        <h2 class="lawyer-wrapper_title _line-blue">Услуги юриста</h2>
 
                             @include('component_build', [
                                 'component' => 'component.gridComponent.simpleGrid',
@@ -229,7 +202,7 @@
                     </div>
 
                     <div class="lawyer-all-services lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title _line-blue">Оказываемые услуги</h2>
+                        <h2 class="lawyer-wrapper_title _line-blue">Специализация</h2>
                             @include('component_build', [
                                 'component' => 'component.gridComponent.simpleGrid',
                                 'params_component' => [
@@ -244,7 +217,7 @@
 
                                     'pagination' => [
                                         'page' => 1,
-                                        'pageSize' => 3,
+                                        'pageSize' => 6,
                                         'countPage' => 1,
                                         'typePagination' => 2,
                                         'showPagination' => 1,
@@ -463,6 +436,53 @@
 
         function getFullName(data) {
             return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
+        }
+        function getSliderSettings() {
+            let slidesLength = $('.js_docs-slider').find('li').length;
+            return {
+                slidesToShow: 6,
+                infinite: false,
+                dots: false,
+                arrows: slidesLength > 6 ? true : false,
+                appendArrows: '.js_slider_nav',
+                prevArrow: '<button type="button" class="slick-prev"><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.26758H13.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 5.26758L9.25 1.26758" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 5.26758L9.25 9.26758" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+                nextArrow: '<button type="button" class="slick-next"><svg width="14" height="11" viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5.26758H13.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 5.26758L9.25 1.26758" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 5.26758L9.25 9.26758" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+                responsive: [{
+                    breakpoint: 1281,
+                    settings: {
+                        slidesToShow: 7,
+                        arrows: slidesLength > 7 ? true : false,
+                    }
+                },{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 5,
+                        arrows: slidesLength > 5 ? true : false,
+                    }
+                },{
+                    breakpoint: 769,
+                    settings: {
+                        slidesToShow: 5,
+                        arrows: false,
+                    }
+                },{
+                    breakpoint: 665,
+                    settings: {
+                        slidesToShow: 4,
+                        arrows: false,
+                    }
+                    },{
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 3,
+                        arrows: false,
+                    }
+                }],
+            }
+        }
+
+        function docSlider() {
+            $('.js_docs-slider').not('.slick-initialized').slick(getSliderSettings());
         }
     </script>
 @endsection

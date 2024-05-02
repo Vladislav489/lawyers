@@ -432,6 +432,18 @@
     gap: 4px;
     flex-wrap: wrap;
 }
+.specialist-specialization{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+    .specialist-specialization li:not(:last-child){margin-right: 5px;}
+    .specialist-specialization li:not(:last-child):after{
+        content: ",";
+        display: inline-block;
+        margin-left: -4px;
+    }
 
 .fs-block .buttons-container {
     flex-direction: column;
@@ -630,6 +642,7 @@
         display: flex;
         gap: 4px;
     }
+    .fs-block .buttons-container .main-btn{flex: 1 1 auto;}
 }
 
 
