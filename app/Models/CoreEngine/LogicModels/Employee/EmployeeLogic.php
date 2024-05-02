@@ -85,6 +85,10 @@ class EmployeeLogic extends UserLogic
             $result['specialization'] = json_decode($result['specialization'], true);
             $result['specialization'] = Arr::pluck($result['specialization'], 'service_id');
         }
+//        if (isset($result['location_coordinates'])) {
+//            $result['location_coordinates'] = json_decode($result['location_coordinates'], true);
+////            dd($result['location_coordinates']);
+//        }
         return $result;
     }
 

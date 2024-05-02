@@ -17,6 +17,8 @@ class Employee extends BaseModel
         'is_confirmed',
         'user_id',
         'company_id',
-        'about'
+        'about',
+        'location_coordinates',
+        'location_address'
     ];
 }
