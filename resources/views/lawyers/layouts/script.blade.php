@@ -4,7 +4,7 @@
 <script src="/js/component/parentComponent.js"></script>
 <script src="/js/dropzone/dropzone1/dropzone.min.js"></script>
 <script src="/lawyers/scripts/jquery.fancybox.min.js"></script>
-<script src="/lawyers/scripts/popup.js"></script>
+<script src="/lawyers/scripts/popup.js" type="module"></script>
 <script src="/lawyers/scripts/select2.full.min.js"></script>
 <script src="/lawyers/scripts/slick.min.js"></script>
 <script src="/lawyers/scripts/script.js"></script>

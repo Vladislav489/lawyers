@@ -53,6 +53,17 @@ header {
     position: relative;
     display: block;
 }
+    .nav-ul li .select-btn:before{
+        background: url(../images/icons/arrow-icon-white.svg) center / 100% auto no-repeat;
+        content: "";
+        height: 16px;
+        position: absolute;
+        right: -7px;
+        top: calc(50% - 7px);
+        transition: all .3s linear;
+        width: 7px;
+    }
+    .nav-ul li.active .select-btn:before{rotate: 90deg;}
 .nav-ul > li .arrow-icon {
     width: 7px;
     transition-duration: var(--transition);
@@ -61,20 +72,19 @@ header {
     transform: rotate(90deg);
 }
 .nav-ul > li .select-window {
-    transition: var(--transition);
+    display: none;
     overflow: hidden;
     color: var(--white-color);
     position: absolute;
-    height: 0;
     top: calc(100% + 10px);
     width: 275px;
     z-index: 1;
 }
-.nav-ul > li .select-window > li {
+.header-nav .nav-ul > li .select-window > li {
     padding: 8px 8px 8px 13px;
     background-color: var(--dark-color);
 }
-.nav-ul > li .select-window > li:hover {
+.header-nav .nav-ul > li .select-window > li:hover {
     background-color: #414141;
     padding-left: 8px;
     border-left: 5px solid var(--blue-color);
@@ -155,8 +165,11 @@ header {
 
 
 .burger-btn {
+    background: url(../images/icons/burger-icon.svg) center no-repeat;
     display: none;
+    height: 32px;
     margin-left: auto;
+    width: 33px;
 }
 .arrow-back-icon {
     display: none;
@@ -1352,6 +1365,7 @@ header {
     padding: 10px 16px;
     width: 200px;
     border-radius: var(--b-radius-second);
+    position: relative;
 }
 .payment-message .message-icon {
     position: relative;
@@ -1380,19 +1394,52 @@ header {
     right: -15px;
     border-radius: 50%;
 }
-.payment-message .name {
+.payment-message .name{
+    cursor: pointer;
     font-size: 14px;
     font-weight: 600;
     line-height: 140%;
-    text-transform: capitalize;
-    /*flex: 1 1 auto;*/
-    text-align: right;
     margin-left: auto;
+    max-width: calc(100% - 36px);
+    overflow: hidden;
+    padding-right: 18px;
+    position: relative;
+    text-align: right;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+    white-space: nowrap;
 }
-.payment-message .icon {
-    width: 6px;
-    rotate: 90deg;
+    .payment-message .name:before{
+        background: url(../images/icons/arrow-icon-main.svg) no-repeat;
+        content: "";
+        height: 9px;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 4px);
+        transition: all .3s linear;
+        width: 5px;
+    }
+    .payment-message:not(.active) .name:before{rotate: 90deg;}
+.profile_nav{
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 0 0 8px 8px;
+    display: none;
+    left: 0;
+    padding: 20px 12px;
+    position: absolute;
+    top: calc(100% + 17px);
+    width: 100%;
 }
+    .profile_nav li:not(:last-child){margin-bottom: 16px;}
+    .profile_nav li a{
+        color: var(--dark-color);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 140%;
+        transition: all .3s linear;
+    }
+    .profile_nav li a:hover{color: #C65B5B;}
 @media screen and (max-width: 1024px) {
     .payment-message {
         display: none;

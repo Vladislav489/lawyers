@@ -1929,11 +1929,12 @@
     .modal .section_header{margin-bottom: 32px;}
     .modal input,.modal textarea{
         border: 1.5px rgba(0,0,0,.1) solid;
-        border-radius: 12px;
+        border-radius: 50px;
         padding: 0 20px;
         width: 100%;
     }
     .modal textarea{
+        border-radius: 12px;
         height: 136px;
         padding: 12px 20px;
     }

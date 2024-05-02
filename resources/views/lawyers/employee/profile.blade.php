@@ -255,11 +255,7 @@
 
                                     <p class="name">Алексеева Юлия</p>
                                     <span class="date">16.05.2023</span>
-                                    <img
-                                        class="check-icon icon"
-                                        src="/lawyers/images/icons/check-icon-green-transparent.svg"
-                                        alt="check-icon"
-                                    >
+                                    <img class="check-icon icon" src="/lawyers/images/icons/check-icon-green-transparent.svg" alt="check-icon">
                                 </div>
 
                                 <blockquote>

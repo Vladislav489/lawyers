@@ -1,6 +1,6 @@
-const selectRow = (selectBlock, select = false) => {
-    const selectBtns = [...selectBlock.querySelectorAll('.select-btn')];
-    const selectWindow = selectBlock.querySelector('.select-window');
+/*const selectRow = (selectBlock, select = false) => {
+    const selectBtns = [...selectBlock.querySelectorAll('.js_select-btn')];
+    const selectWindow = selectBlock.querySelector('.js_select-window');
 
     let selectItems;
     const subIcons = [...selectBlock.querySelectorAll('.sub-icon')];
@@ -53,15 +53,23 @@ const selectRow = (selectBlock, select = false) => {
     }
 
     const closeWindows = () => {
-        document.querySelectorAll('.select-window').forEach((item) => {
+        document.querySelectorAll('.js_select-window').forEach((item) => {
             item.classList.remove('_open');
             item.style.height = '0px';
         })
     }
-}
+}*/
 $(function(){
-    document.querySelectorAll('.nav-ul > li').forEach(item => {
+    /*document.querySelectorAll('.js_nav > li').forEach(item => {
         selectRow(item);
+    });*/
+    $('.js_select-btn').click(function(){
+        $(this).closest('li').toggleClass('active');
+        $(this).next().slideToggle(300);
+    });
+    $('.js_open_profile_nav').click(function(){
+        $(this).toggleClass('active');
+        $(this).next().fadeToggle();
     });
     /* Select */
     $('.js_select').select2({
