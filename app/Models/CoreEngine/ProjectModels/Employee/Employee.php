@@ -19,6 +19,7 @@ class Employee extends BaseModel
         'company_id',
         'about',
         'location_coordinates',
-        'location_address'
+        'location_address',
+        'site_url'
     ];
 }

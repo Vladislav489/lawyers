@@ -60,9 +60,9 @@
                                     <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                     <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                                 </div>
-                                <div class=\"lawyer-info_row\">
+                                <div class=\"lawyer-info_row\" v-if=\"data.site_url\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
-                                    <span>www.site.ru</span>
+                                    <span>@{{ data.site_url }}</span>
                                 </div>
                                 <div class=\"lawyer-info_row\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
@@ -359,9 +359,9 @@
                                 <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                 <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                             </div>
-                            <div class=\"lawyer-info_row\">
+                            <div class=\"lawyer-info_row\" v-if=\"data.site_url\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
-                                <a href=\"#\" class=\"span-link\">www.site.ru</a>
+                                <a href=\"data.site_url\" class=\"span-link\">@{{ data.site_url }}</a>
                             </div>
                             <div class=\"lawyer-info_row\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
