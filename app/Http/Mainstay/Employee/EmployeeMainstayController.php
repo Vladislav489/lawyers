@@ -119,6 +119,7 @@ class EmployeeMainstayController extends MainstayController
             DB::raw("Employee.location_coordinates as location_coordinates"),
             DB::raw("Employee.location_address as location_address"),
             DB::raw("Employee.site_url as site_url"),
+            DB::raw("Employee.thesis as thesis"),
             ];
         return response()->json(['result' => (new EmployeeLogic($this->params, $select))
             ->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule', 'Specialization'])->getOne()]);

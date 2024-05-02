@@ -349,7 +349,11 @@
                                 "<div class='modal profile_modal' id='employeeInfoMoreEdit'>
                                     <h5 class='order-modal_title' id='exampleModalLongTitle'>Редактировать текст</h5>
                                     <div class='registration-form_label full'>
-                                        <label class='label-title'>О себе</label>
+                                        <label class='label-title'>Тезис с лимитом символов</label>
+                                        <input id='thesis_edit' type='text' name='thesis_edit' :value=\"data.thesis\"/>
+                                    </div>
+                                    <div class='registration-form_label full'>
+                                        <label class='label-title'>Описание</label>
                                         <textarea id='about_edit' type='text' name='about_edit' :value=\"data.about\"/>
                                     </div>
                                     <div class='flex align-center form--submit'>
@@ -430,7 +434,7 @@
                             </h2>
                             <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         </div>
-                        <p class='lawyer-text_p lawyer-text_blue bold'>Главный тезис от юриста с лимитом символа</p>
+                        <p class='lawyer-text_p lawyer-text_blue bold'>@{{ data.thesis }}</p>
                         <p class='lawyer-text_p'>
                             @{{data.about}}
                         </p>
@@ -1065,6 +1069,7 @@
 
         function getMoreDataForUpdate() {
             return {
+                'thesis': $('#thesis_edit').val(),
                 'about': $('#about_edit').val(),
             }
         }

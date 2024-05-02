@@ -20,6 +20,7 @@ class Employee extends BaseModel
         'about',
         'location_coordinates',
         'location_address',
-        'site_url'
+        'site_url',
+        'thesis'
     ];
 }
