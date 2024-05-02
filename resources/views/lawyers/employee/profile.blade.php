@@ -163,7 +163,7 @@
                                 'params_component' => [
                                     'autostart' => 'true',
                                     'name' => 'service_list',
-                                    'url' => route__("actionGetServiceList_mainstay_service_servicemainstaycontroller"), // получаем список EmployeeServices!!!!
+                                    'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"), // получаем список EmployeeServices!!!!
 
                                     'template' => "<ul class=\"lawyer-services_block\" :id=\"name + '_body'\">
                                         <li v-for=\"item in data\" class=\"lawyer-service_line\" style=\"justify-content: space-between;\">
@@ -171,9 +171,9 @@
                                                 <div class=\"lawyer-service_title\">@{{ item.name }}</div>
                                                 <p class=\"lawyer-service_text\">
                                                     @{{ item.description }}
-                                                    <button class=\"lawyer-service_red-more\">
+                                                <!--    <button class=\"lawyer-service_red-more\">
                                                         ЧИТАТЬ ЕЩЕ
-                                                    </button>
+                                                    </button> -->
                                                 </p>
                                             </div>
 
@@ -208,7 +208,7 @@
                                 'params_component' => [
                                     'autostart' => 'true',
                                     'name' => 'employee_services',
-                                    'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"),
+                                    'url' => route__("actionGetSpecialization_mainstay_employee_employeemainstaycontroller"),
 									'params' => ['user_id' => request()->route('employee_id')],
 
                                     'template' => "<ul name=\"lawyer_services\" :id=\"name + '_body'\">
