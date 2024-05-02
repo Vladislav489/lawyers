@@ -143,6 +143,10 @@
                                     'template' =>"
                             <div>
                                 <div>
+                                <div class=\"registration-form_label\">
+                                    <label class=\"label-title\">Ссылка на сайт</label>
+                                    <input type=\"text\" name=\"site_url_edit\" placeholder='https://' :value=\"data.site_url\">
+                                </div>
                                 <div class='modal_time_container'>
                                     <h6 class='modal_smalltitle'>Время работы</h6>
                                     <label :class=\"['checkbox_24 js_checkbox_worktime', {active: !data.schedule}]\" id='label_select_worktime'>
@@ -291,9 +295,9 @@
                                     <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                     <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                                 </div>
-                                <div class=\"lawyer-info_row\">
+                                <div class=\"lawyer-info_row\" v-if=\"data.site_url\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
-                                    <span>www.site.ru</span>
+                                    <span>@{{ data.site_url }}</span>
                                 </div>
                                 <div class=\"lawyer-info_row\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
@@ -828,9 +832,9 @@
                                 <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                 <a name=\"phone_number\" href=\"tel:+@{{data.phone_number}}\" class=\"span-link\">+@{{data.phone_number}}</a>
                             </div>
-                            <div class=\"lawyer-info_row\">
+                            <div class=\"lawyer-info_row\" v-if=\"data.site_url\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/planet-icon-blue.svg\" alt=\"planet-icon\">
-                                <a href=\"#\" class=\"span-link\">www.site.ru</a>
+                                <a :href=\"data.site_url\" class=\"span-link\">@{{ data.site_url }}</a>
                             </div>
                             <div class=\"lawyer-info_row\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/message-icon-blue.svg\" alt=\"message-icon\">
@@ -1050,6 +1054,7 @@
                 'last_name': $('[name = last_name_edit]').val(),
                 'middle_name': $('[name = middle_name_edit]').val(),
                 'phone_number': $('[name = phone_number_edit]').val(),
+                'site_url': $('[name = site_url_edit]').val(),
                 'region_id': $('[name = region_id]').val(),
                 'city_id': $('[name = city_id]').val(),
                 'working_days': getWorkingDaysArray(),

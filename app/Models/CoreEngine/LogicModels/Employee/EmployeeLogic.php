@@ -163,6 +163,11 @@ class EmployeeLogic extends UserLogic
 
     public function updateEmployeeInfo($data)
     {
+        if (isset($data['site_url'])) {
+            if (count(explode('://', $data['site_url'])) == 1) {
+                $data['site_url'] = 'https://' . $data['site_url'];
+            }
+        }
         if (!$this->save($data)) {
             return false;
         }
