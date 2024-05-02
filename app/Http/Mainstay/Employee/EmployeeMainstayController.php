@@ -79,11 +79,14 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionUpdateSpecialization(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-//        dd($this->params)
         (new EmployeeSpecializationLogic())->updateSpecialization($this->params);
         return $this->actionGetEmployee(['id' => (string)auth()->id()]);
     }
 
+    public function actionUpdateLocation(array $param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json((new EmployeeLogic())->save($this->params));
+    }
 
     public function actionGetService(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
@@ -113,6 +116,8 @@ class EmployeeMainstayController extends MainstayController
             DB::raw("City.id as city_id, City.name as city_name, Region.id as region_id, Region.name as region_name"),
             DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             DB::raw("Employee.about as about"),
+            DB::raw("Employee.location_coordinates as location_coordinates"),
+            DB::raw("Employee.location_address as location_address"),
             ];
         return response()->json(['result' => (new EmployeeLogic($this->params, $select))
             ->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule', 'Specialization'])->getOne()]);

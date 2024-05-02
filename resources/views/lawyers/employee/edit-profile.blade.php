@@ -281,7 +281,7 @@
                             <div class=\"lawyer-info\">
                                 <div class=\"lawyer-info_row\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-blue.svg\" alt=\"loc-icon\">
-                                    <span>@{{data.city_name}}</span>
+                                    <span>@{{data.location_address ?? data.city_name}}</span>
                                 </div>
                                 <div class=\"lawyer-info_row\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
@@ -706,18 +706,18 @@
                         {{--                        <button class="more-services">Еще 2 услуги</button>--}}
                     </div>
 
-                    <div class="lawyer-practice lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title _line-blue">Судебная практика</h2>
-                        <ul class="lawyer-practice_ul">
-                            <li>
-                                <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>
-                                <span class="lawyer-practic_number">Дело №01-038/2019</span>
-                                <img class="icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">
-                            </li>
-                        </ul>
+{{--                    <div class="lawyer-practice lawyer-wrapper">--}}
+{{--                        <h2 class="lawyer-wrapper_title _line-blue">Судебная практика</h2>--}}
+{{--                        <ul class="lawyer-practice_ul">--}}
+{{--                            <li>--}}
+{{--                                <h3 class="lawyer-practic_title">Прекращение уголовного дела по ч. 3 ст. 159 УК РФ</h3>--}}
+{{--                                <span class="lawyer-practic_number">Дело №01-038/2019</span>--}}
+{{--                                <img class="icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+{{--                            </li>--}}
+{{--                        </ul>--}}
 
-                        <button class="more-services">Еще 2 услуги</button>
-                    </div>
+{{--                        <button class="more-services">Еще 2 услуги</button>--}}
+{{--                    </div>--}}
 
                     <div class="lawyer-comments lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Отзывы</h2>
@@ -804,11 +804,7 @@
 
                     <div class="lawyer-contacts lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Контакты и Адрес</h2>
-                        <div class="lawyer-contacts_map">
-{{--                            <div style="position:relative;overflow:hidden;">--}}
-{{--                                <a href="https://yandex.ru/maps/213/moscow/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Москва</a><a href="https://yandex.ru/maps/geo/moskva/53000094/?ll=37.608537%2C55.754059&utm_medium=mapframe&utm_source=maps&z=12.96" style="color:#eee;font-size:12px;position:absolute;top:14px;">Москва — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?ll=37.608537%2C55.754059&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1MzAwMDA5NBIa0KDQvtGB0YHQuNGPLCDQnNC-0YHQutCy0LAiCg2GeBZCFQEGX0I%2C&z=12.96" width="600" height="150" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>--}}
-{{--                            </div>--}}
-{{--                            <img src="/lawyers/images/main/map.png" alt="map-img">--}}
+                        <div class="lawyer-contacts_map" id="map">
                         </div>
 
                         @include('component_build', [
@@ -822,7 +818,7 @@
                     "<div class=\"lawyer-info\">
                             <div class=\"lawyer-info_row\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/loc-icon-blue.svg\" alt=\"loc-icon\">
-                                <span>@{{data.city_name}}</span>
+                                <span>@{{data.location_address ?? data.city_name}}</span>
                             </div>
                             <div class=\"lawyer-info_row\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
@@ -884,6 +880,7 @@
             </div>
         </div>
     </section>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=de2b1fff-b759-4fe3-8bc3-e496e0eb9b13" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             setEdit()
@@ -893,8 +890,97 @@
             deleteData()
             filterText()
             storeSpecialization()
-            // setTimeout(docSlider(), 600)
+            ymaps.ready(init);
         })
+
+        function init() {
+            let coords = page__.getGolobalData('EmployeeInfo').location_coordinates
+            let savedCoordinates = coords ? JSON.parse(page__.getGolobalData('EmployeeInfo').location_coordinates).map(Number) : '';
+            var center = savedCoordinates ?? [55.733842, 37.588144];
+            const zoom = 15;
+            var myPlacemark;
+            var myMap = new ymaps.Map('map', {
+                center: center,
+                zoom: zoom,
+                controls: []
+            }, {
+                suppressMapOpenBlock: true
+            });
+
+            myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+                hintContent: 'Тут',
+            }, {
+                preset: 'islands#violetDotIconWithCaption',
+                draggable: true
+            });
+
+            if (savedCoordinates === '') {
+                let city = page__.getGolobalData('EmployeeInfo').city_name;
+                ymaps.geocode(city, {results: 1}).then(
+                    function (res) {
+                        myMap.setCenter(res.geoObjects.get(0).geometry.getCoordinates())
+                        myPlacemark.geometry.setCoordinates(myMap.getCenter())
+                    })
+            }
+
+            myMap.geoObjects.add(myPlacemark);
+            myMap.events.add('click', function (e) {
+                var coords = e.get('coords');
+
+                // Если метка уже создана – просто передвигаем ее.
+                if (myPlacemark) {
+                    myPlacemark.geometry.setCoordinates(coords);
+                }
+                // Если нет – создаем.
+                else {
+                    myPlacemark = createPlacemark(coords);
+                    myMap.geoObjects.add(myPlacemark);
+                    // Слушаем событие окончания перетаскивания на метке.
+                    myPlacemark.events.add('dragend', function () {
+                        getAddress(myPlacemark.geometry.getCoordinates());
+                    });
+                }
+                getAddress(coords);
+            });
+
+
+            function createPlacemark(coords) {
+                return new ymaps.Placemark(coords, {
+                    iconCaption: 'поиск...'
+                }, {
+                    preset: 'islands#violetDotIconWithCaption',
+                    draggable: true
+                });
+            }
+
+            function getAddress(coords) {
+                myPlacemark.properties.set('iconCaption', 'поиск...');
+                ymaps.geocode(coords).then(function (res) {
+                    var firstGeoObject = res.geoObjects.get(0);
+                    page__.sendData('{{ route__('actionUpdateLocation_mainstay_employee_employeemainstaycontroller') }}',
+                        {
+                            location_coordinates: coords,
+                            location_address: firstGeoObject.getAddressLine(),
+                            id: {{ auth()->id() }}
+                        },
+                    function(response) {
+                        console.log(response)
+                    })
+                    myPlacemark.properties
+                        .set({
+                            // Формируем строку с данными об объекте.
+                            iconCaption: [
+                                // Название населенного пункта или вышестоящее административно-территориальное образование.
+                                firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                                // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+                                firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                            ].filter(Boolean).join(', '),
+                            // В качестве контента балуна задаем строку с адресом объекта.
+                            balloonContent: firstGeoObject.getAddressLine()
+                        });
+                });
+            }
+        }
 
         function getSliderSettings() {
             let slidesLength = $('.js_docs-slider').find('li').length;
