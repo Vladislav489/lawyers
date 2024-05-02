@@ -32,6 +32,59 @@
     opacity: 0;
     z-index: -1;
 }
+
+.mob_nav{
+    color: var(--white-color);
+    line-height: 140%;
+}
+.mob_nav > li:not(:last-child){margin-bottom: 16px;}
+.mob_nav > li > a{
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 4px 0;
+}
+    .nav-item{
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 4px 24px 4px 0;
+        position: relative;
+    }
+        .nav-item:before{
+            background: url(../images/icons/arrow-icon-white.svg) center / auto 100% no-repeat;
+            content: "";
+            height: 11px;
+            position: absolute;
+            right: 0;
+            rotate: 90deg;
+            top: calc(50% - 4px);
+            transition: all .3s linear;
+            width: 9px;
+        }
+        .active .nav-item:before{rotate: -90deg;}
+    .mob_nav ul{
+        display: none;
+        padding: 12px 0 0 24px;
+    }
+        .mob_nav ul li:not(:last-child){margin-bottom: 10px;}
+        .mob_nav ul li a{
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 140%;
+            transition: all .3s linear;
+        }
+        .mob_nav ul li a:hover{color: var(--orange-color);}
+.mob-create-order{
+    background: url(../images/icons/new-order.svg) no-repeat;
+    color: var(--orange-color);
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    padding-left: 29px;
+}
 @media screen and (max-width: 1024px) {
     .mobile-step_top, .mobile-step_right {
         top: 0;
@@ -50,75 +103,36 @@
     }
 }
 
-
-#mobile-menu-popup  .step {
+.mobile-menu-popup .step {
     background-color: var(--dark-color);
     padding: 14px 16px;
 }
-#mobile-menu-popup  .mob_header {
+.mobile-menu-popup .mob_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+.popup-close{
+    background: url(../images/icons/arrow-back-icon.svg) center no-repeat;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+}
 @media screen and (max-width: 1024px) {
-    #mobile-menu-popup {
+    .mobile-menu-popup {
         display: block;
     }
-    #mobile-menu-popup .step {
+    .mobile-menu-popup .step {
         display: flex;
         flex-direction: column;
         gap: 16px;
     }
-    #mobile-menu-popup .mob-header_title {
+    .mobile-menu-popup .mob-header_title {
         color: var(--white-color);
         font-size: 16px;
         font-weight: 600;
         line-height: 140%;
         text-transform: capitalize;
-    }
-    #mobile-menu-popup .nav-ul {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 16px;
-        flex: 0 1 auto;
-        overflow-y: auto;
-        overflow-x: hidden;
-        flex-wrap: nowrap;
-    }
-    #mobile-menu-popup .nav-ul > li {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
-    }
-    #mobile-menu-popup .nav-ul > li > div {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-    }
-    #mobile-menu-popup .nav-ul > li .select-btn {
-        width: 100%;
-        padding-left: 0;
-        font-weight: 600;
-    }
-    #mobile-menu-popup .nav-ul > li .select-window {
-        position: initial;
-        padding: 0 24px;
-        width: 100%;
-    }
-    #mobile-menu-popup .nav-ul > li .select-window li {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 8px 0;
-    }
-    #mobile-menu-popup .nav-ul > li .select-window li:last-of-type {
-        border-bottom: none;
-    }
-    #mobile-menu-popup .nav-ul > li .select-window a {
-        justify-content: space-between;
     }
     .support-phone {
         border-radius: 16px;
@@ -146,18 +160,6 @@
         line-height: 140%;
     }
 }
-@media screen and (max-width: 480px) {
-    #mobile-menu-popup .nav-ul > li .select-window a > p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 140%;
-    }
-    #mobile-menu-popup .nav-ul > li .select-window > li span {
-        font-size: 12px;
-        margin-top: 4px;
-    }
-}
-
 
 #mobile-filter-popup .step1 {
     display: flex;

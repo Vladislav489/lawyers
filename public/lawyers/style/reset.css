@@ -381,6 +381,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .mobile {
     display: none;
 }
+@media screen and (max-width: 1024px) {
+.popup.mobile{display: flex;}
+}
 @media screen and (max-width: 768px) {
     .mobile {
         display: flex;

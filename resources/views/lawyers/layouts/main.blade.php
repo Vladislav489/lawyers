@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <header class="header">
+    <header class="u-container main-bg">
         @include('lawyers.layouts._main-header')
     </header>
 

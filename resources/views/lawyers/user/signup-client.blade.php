@@ -19,10 +19,7 @@
                 <input type="hidden" name="type_id" value="1">
                 @include('lawyers.user.includes.general-info')
 
-                <button type="submit" class="main-btn">
-                    <span class="first">Зарегистрироваться</span>
-                    <span class="second">Зарегистрироваться</span>
-                </button>
+                <button type="submit" class="main-btn">Зарегистрироваться</button>
             </form>
         </div>
     </section>
