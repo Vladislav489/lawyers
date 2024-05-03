@@ -98,21 +98,6 @@
                 </div>
 
                 <div class="right">
-{{--                    <ul class="round-top_nav">--}}
-{{--                        <li class="active">--}}
-{{--                            <button type="button">Мои заказы</button>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <button type="button">Услуги</button>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <button type="button">Отзывы</button>--}}
-{{--                        </li>--}}
-{{--                        <li>--}}
-{{--                            <button type="button">Ответы юриста</button>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-
 
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
@@ -237,21 +222,6 @@
                                     ],
                             ]
                         ])
-
-
-
-                    {{--<div class="subscribe-block lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Подписка</h2>
-
-                        <div class="subscribe">
-                            <p class="subscribe_text">SOS Поддержка</p>
-                            <p class="subscribe-status">Активна</p>
-
-                            <time class="subscribe-block_time mobile">
-                                22 окт 2023
-                            </time>
-                        </div>
-                    </div>--}}
                 </div>
             </div>
         </div>
@@ -264,14 +234,15 @@
         }
 
         function switchCategory(categoryId) {
-            // STATUS_NEW = 1;
-            // STATUS_MODERATION = 2;
-            // STATUS_PAYED = 3;
-            // STATUS_IN_PROGRESS = 4;
-            // STATUS_INSPECTION = 5;
-            // STATUS_ACCEPTED = 6;
-            // STATUS_CLOSED = 7;
-            // STATUS_CANCELLED = 8;
+            // CONST STATUS_NEW = 1;
+            // CONST STATUS_MODERATION = 2;
+            // CONST STATUS_LAWYER_ACCEPTANCE = 8;
+            // CONST STATUS_PAYED = 3;
+            // CONST STATUS_IN_PROGRESS = 4;
+            // CONST STATUS_INSPECTION = 5;
+            // CONST STATUS_REWORK = 9;
+            // CONST STATUS_ACCEPTED = 6;
+            // CONST STATUS_CLOSED = 7;
             let component = page__.getElementsGroup('employee_vacancies')[0]['obj']
             $('nav[class = lawsuit_nav] > ul > li[mark=line_mark]').removeClass('active')
             event.currentTarget.parentElement.classList.add('active')
