@@ -81,13 +81,13 @@
         <li>
             <span class="nav-item js_select-btn">Найти специалиста</span>
             <ul class="js_select-window">
-                <li><a href="#">Найти Юриста</a></li>
-                <li><a href="#">Найти Адвоката</a></li>
-                <li><a href="#">Найти Нотариуса</a></li>
-                <li><a href="#">Найти Детектива</a></li>
+                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
+                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
+                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Нотариуса</a></li>
+                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Детектива</a></li>
             </ul>
         </li>
-        <li><a href="#">Биржа исполнителей</a></li>
+        <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}">Биржа заказов</a></li>
         <li><a href="">Вопросы юристам</a></li>
         <li><a href="">Коллективные иски</a></li>
     </ul>

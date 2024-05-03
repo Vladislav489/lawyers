@@ -1,5 +1,5 @@
-<label class="registration-form_label">
-                        <span class="label-title">Регион</span>
+<div class="registration-form_label">
+<label class="label-title">Регион</label>
 @include('component_build',["component" => "component.listComponent.selectComponent",
     "params_component" => [
         "autostart" => 'true',
@@ -17,10 +17,10 @@
 @error('region_id')
 <div style="color: red">{{ $message }}</div>
 @enderror
-</label>
+</div>
 
-<label class="registration-form_label">
-    <span class="label-title">Город</span>
+<div class="registration-form_label">
+    <label class="label-title">Город</label>
     @include('component_build',["component" => "component.listComponent.selectComponent",
         "params_component" => [
             "autostart" => 'false',
@@ -32,4 +32,4 @@
         ]])
     @error('city_id')
     <div style="color: red">{{ $message }}</div>
-    @enderror</label>
+    @enderror</div>

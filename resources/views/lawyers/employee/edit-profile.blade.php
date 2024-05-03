@@ -812,8 +812,8 @@
 
                     <div class="lawyer-contacts lawyer-wrapper">
                         <h2 class="lawyer-wrapper_title _line-blue">Контакты и Адрес</h2>
-                        <div class="lawyer-contacts_map" id="map">
-                        </div>
+                        <div class="map-container">
+                        <div class="lawyer-contacts_map" id="map"></div>
 
                         @include('component_build', [
                             'component' => 'component.infoComponent.textInfo',
@@ -853,6 +853,7 @@
                         </div>",
                             ]
                         ])
+                        </div>
                         <div class="buttons-container">
                             <button class="main-btn main-btn_white">Сообщение</button>
                             <button class="main-btn main-btn_white">Заказать звонок</button>

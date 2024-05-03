@@ -22,30 +22,29 @@
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Заполните данные о работе</h3>
 
-                    <label class="registration-form_label">
-                        <span class="label-title">Стоимость консультации</span>
+                    <div class="registration-form_label">
+                        <label class="label-title">Стоимость консультации</label>
                         <input type="text" name="consultation_price" placeholder="Стоимость консультации">
                         @error('consultation_price')
                         <div style="color: red">{{ $message }}</div>
                         @enderror
-                    </label>
-                    <label class="registration-form_label date-label">
-                        <span class="label-title">Дата начала юр. практики</span>
+                    </div>
+                    <div class="registration-form_label date-label">
+                        <label class="label-title">Дата начала юр. практики</label>
                         <input type="date" name="dt_practice_start" placeholder="Дата начала юр. практики">
-{{--                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">--}}
                         @error('dt_practice_start')
                         <div style="color: red">{{ $message }}</div>
                         @enderror
-                    </label>
-                    <label class="registration-form_label">
-                        <span class="label-title">Лицензионный номер</span>
+                    </div>
+                    <div class="registration-form_label">
+                        <label class="label-title">Лицензионный номер</label>
                         <input type="number" name="license_number" placeholder="Лицензионный номер">
                         @error('license_number')
                         <div style="color: red">{{ $message }}</div>
                         @enderror
-                    </label>
-                    <label class="registration-form_label">
-                        <span class="label-title">Компания</span>
+                    </div>
+                    <div class="registration-form_label">
+                        <label class="label-title">Компания</label>
                         @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                                 "autostart" => 'true',
@@ -58,30 +57,25 @@
                         @error('company_id')
                         <div style="color: red">{{ $message }}</div>
                         @enderror
-                    </label>
+                    </div>
                 </div>
 
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Сертификаты</h3>
-
-                    <label class="registration-form_label full file-label">
-                        <span class="label-title">Выберите файл</span>
+                    <div class="registration-form_label full file-label">
+                        <label class="label-title">Выберите файл</label>
                         <input id="achievements_fields" type="file" name="achievements[]" multiple>
-                        <span id="achievements_preview" class="choose-img _downloaded">
-                                Загрузить файл
-                        </span>
-                    </label>
+                        <span id="achievements_preview" class="choose-img _downloaded">Загрузить файл</span>
+                    </div>
                 </div>
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Аватар</h3>
 
-                    <label class="registration-form_label full file-label">
-                        <span class="label-title">Выберите файл</span>
+                    <div class="registration-form_label full file-label">
+                        <label class="label-title">Выберите файл</label>
                         <input type="file" name="avatar">
-                        <span id="avatar_preview" class="choose-img _downloaded">
-                                Загрузить файл
-                        </span>
-                    </label>
+                        <span id="avatar_preview" class="choose-img _downloaded">Загрузить файл</span>
+                    </div>
                 </div>
 
                 <button type="submit" class="main-btn">Зарегистрироваться</button>
