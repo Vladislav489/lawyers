@@ -171,60 +171,6 @@
                 </div>
 
                 <div class="right">
-{{--                    <ul class="round-top_nav">--}}
-{{--                        <li class="active"><button type="button">Мои заказы</button></li>--}}
-{{--                        <li><button type="button">Услуги</button></li>--}}
-{{--                        <li><button type="button">Отзывы</button></li>--}}
-{{--                        <li><button type="button">Ответы юриста</button></li>--}}
-{{--                    </ul>--}}
-
-                    <div class="my-orders lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title">Мои вопросы <span>1/2</span></h2>
-
-                        @include('component_build', [
-                            'component' => 'component.gridComponent.simpleGrid',
-                            'params_component' => [
-                                'autostart' => 'true',
-                                'name' => 'client_questions',
-                                'url' => route__("actionGetClientQuestions_mainstay_client_clientmainstaycontroller"),
-								'params' => ['user_id' => auth()->id()],
-
-                                'template' => '
-                                <ul class="my-orders_ul" :id="name + \'_body\'">
-                            <li v-for="item in data">
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
-                                        @{{ item.text }}
-                                    </p>
-                                    <p class="my-orders_price" v-if="item.is_payed">
-                                        @{{ item.is_payed == 1 ? "Платный" : "Бесплатный" }}
-                                        <span>@{{ item.count_answers }} ответов</span>
-                                    </p>
-                                </div>
-
-                                <p class="my-orders_stage closed-status" v-if="item.status">
-                                    @{{ item.status }}
-                                </p>
-                            </li>
-                        </ul>',
-
-                        'pagination' => [
-                                        'page' => 1,
-                                        'pageSize' => 3,
-                                        'countPage' => 1,
-                                        'typePagination' => 2,
-                                        'showPagination' => 1,
-                                        'showInPage' => 3,
-                                        'count_line' => 1,
-                                        'all_load' => 0,
-                                        'physical_presence' => 0
-                                    ],
-                            ]
-                        ])
-
-{{--                        <button class="more-services">Еще</button>--}}
-                    </div>
-
 
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
@@ -272,8 +218,7 @@
 
 
 
-                    <div class="lawsuit lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Коллективные иски </h2>
+
 
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
@@ -283,24 +228,27 @@
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 1],
 
-                                'template' => '<ul class="my-orders_ul" :id="name + \'_body\'">
-                            <li v-for="item in data">
-                                <div class="my-orders_info">
-                                    <p class="my-orders_text">
-                                        @{{ item.title }}
-                                    </p>
+                                'template' => '
+                                <div class="lawsuit lawyer-wrapper">
+                                    <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Коллективные иски </h2>
+                                    <ul class="my-orders_ul" :id="name + \'_body\'">
+                                        <li v-for="item in data">
+                                            <div class="my-orders_info">
+                                                <p class="my-orders_text">
+                                                    @{{ item.title }}
+                                                </p>
 
-                                    <ul class="my-orders_sub-ul">
-                                        <li>
-                                        @{{ item.count_group_users ?? 0 }} заявителей (Ожидают подтверждение @{{ item.count_not_approved ?? 0 }})</li>
-                                        <li>@{{ item.count_messages ?? 0 }} сообщений</li>
-                                        <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
+                                                <ul class="my-orders_sub-ul">
+                                                    <li>
+                                                    @{{ item.count_group_users ?? 0 }} заявителей (Ожидают подтверждение @{{ item.count_not_approved ?? 0 }})</li>
+                                                    <li>@{{ item.count_messages ?? 0 }} сообщений</li>
+                                                    <li>@{{ item.count_offers ?? 0 }} предложения от юристов</li>
+                                                </ul>
+                                            </div>
+                                            <a href="#" type="button" class="main-btn main-btn_white">Открыть</a>
+                                        </li>
                                     </ul>
-                                </div>
-
-                                <a href="#" type="button" class="main-btn main-btn_white">Открыть</a>
-                            </li>
-                        </ul>',
+                                </div>',
                         'pagination' => [
                                         'page' => 1,
                                         'pageSize' => 3,
@@ -315,16 +263,50 @@
                             ]
                         ])
 
-{{--                        <button class="more-services">Еще 2 услуги</button>--}}
-                    </div>
 
-                    <div class="subscribe-block lawyer-wrapper">
-                        <h2 class="lawyer-wrapper_title lawyer-wrapper_title-left">Подписка</h2>
+                    @include('component_build', [
+                            'component' => 'component.gridComponent.simpleGrid',
+                            'params_component' => [
+                                'autostart' => 'true',
+                                'name' => 'client_questions',
+                                'url' => route__("actionGetClientQuestions_mainstay_client_clientmainstaycontroller"),
+								'params' => ['user_id' => auth()->id()],
 
-                        <div class="subscribe">
-                            <p class="subscribe_text">SOS Поддержка</p>
-                            <p class="subscribe-status">Активна</p>
-                        </div>
+                                'template' => '<div class="my-orders lawyer-wrapper">
+                        <h2 class="lawyer-wrapper_title">Вопрос-ответ</h2>
+                                <ul class="my-orders_ul" :id="name + \'_body\'">
+                            <li v-for="item in data">
+                                <div class="my-orders_info">
+                                    <p class="my-orders_text">
+                                        @{{ item.text }}
+                                    </p>
+                                    <p class="my-orders_price" v-if="item.is_payed">
+                                        @{{ item.is_payed == 1 ? "Платный" : "Бесплатный" }}
+                                        <span>@{{ item.count_answers }} ответов</span>
+                                    </p>
+                                </div>
+
+                                <p class="my-orders_stage closed-status" v-if="item.status">
+                                    @{{ item.status }}
+                                </p>
+                            </li>
+                        </ul>
+                        </div>',
+
+                        'pagination' => [
+                                        'page' => 1,
+                                        'pageSize' => 3,
+                                        'countPage' => 1,
+                                        'typePagination' => 2,
+                                        'showPagination' => 1,
+                                        'showInPage' => 3,
+                                        'count_line' => 1,
+                                        'all_load' => 0,
+                                        'physical_presence' => 0
+                                    ],
+                            ]
+                        ])
+
                     </div>
                 </div>
             </div>
