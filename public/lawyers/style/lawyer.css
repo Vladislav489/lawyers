@@ -1154,11 +1154,11 @@
 }
 .lawyer-contacts .lawyer-info {
     margin-top: 16px;
-    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 12px;
+    width: 100%;
 }
 .lawyer-contacts .lawyer-info_row {
     display: flex;
@@ -1180,14 +1180,21 @@
 .lawyer-contacts .buttons-container .main-btn {
     width: 250px;
 }
+.map-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 .lawyer-contacts_map {
     margin-top: 16px;
-    /*width: 480px;*/
-    min-width: 480px;
-    flex: 1 1 auto;
+    width: 480px;
     height: 210px;
     position: relative;
 }
+    .lawyer-contacts_map + component{
+        width: calc(100% - 492px);
+    }
 .lawyer-contacts_map > img {
     width: 100%;
     height: 100%;
@@ -1360,24 +1367,16 @@
 @media screen and (max-width: 768px) {
     .lawyer-contacts .lawyer-wrapper_title {
         width: 100%;
-        order: 1;
     }
-    .lawyer-contacts .lawyer-info {
-        margin-top: 16px;
-        order: 2;
+    .map-container{width: 100%;}
+    .lawyer-contacts_map + component{
+        order: -1;
+        width: 100%;
     }
-    .lawyer-contacts .buttons-container {
-        order: 4;
-        margin-top: 0;
-    }
-    .lawyer-contacts_map {
-        margin: 0 -16px;
-        height: 300px;
-        min-width: 0;
-        order: 3;
-    }
-    .lawyer-contacts_map > img {
-        border-radius: 0;
+    .lawyer-contacts .lawyer-info{margin: 16px 0;}
+    .lawyer-contacts_map{
+        margin: 0 0 16px;
+        width: calc(100% + 32px);
     }
     .lawyer-footer {
         position: initial;
