@@ -40,23 +40,55 @@
                             ]
                         ])
 
-                    <div class="form-row form-row_all-services select">
-                        <h3 class="form-row_header">Все услуги</h3>
+                        @include('component_build',["component" => "component.listComponent.selectComponent",
+                            "params_component" => [
+                                "autostart" => 'true',
+                                "name" => 'service_type_id',
+                                "default_title" => 'Категория услуг',
+                                "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
+								'callAfterloadComponent' => "function(component) {
+								    $('.js_select').select2();
+								}",
+                                "template" =>
+                                '<div class="form-row form-row_all-services select">
+                                    <h3 class="form-row_header">Категория услуг</h3>
+                                    <select class="form-row_header select-btn js_select" mark="service_type_id" :id="name">
+                                        <option>Выбрать</option>
+                                        <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                    </select>
+                                </div>',
+                                'change' => "function() {
+                                    if($(this).val() != undefined && $(this).val() != null) {
+					                    page__.getElement('service_id')['obj'].setUrlParams({'type_id': $(this).val()})
+					                    $('select[mark=service_id]').prop('selectedIndex', 0)
+                                        setTimeout(function () {
+                                            $('.js_select').select2();
+                                        }, 200)
+                                    }
+                                }"
+                        ]])
+
                         @include('component_build',["component" => "component.listComponent.selectComponent",
                             "params_component" => [
                                 "autostart" => 'false',
                                 "name" => 'service_id',
-                                "default_title" => 'Выберите сервис',
+                                "default_title" => 'Тема услуги',
                                 "url" => route("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),
-                                "template" =>
-                                '
-                                <select class="form-row_header select-btn js_select" mark="service_id" :id="name">
-                                    <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
-                                </select>
-                                '
-                            ]])
 
-                    </div>
+								'callAfterloadComponent' => "function() {
+
+								}",
+                                "template" =>
+                                '<div class="form-row form-row_all-services select">
+                                    <h3 class="form-row_header">Тема услуги</h3>
+                                    <select class="form-row_header select-btn js_select" mark="service_id" :id="name">
+                                        <option>Выбрать</option>
+                                        <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
+                                    </select>
+                                </div>'
+                        ]])
+
+
 
                     <div class="form-row">
                         <h3 class="form-row_header">Мне нужно</h3>
