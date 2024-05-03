@@ -182,22 +182,47 @@
 
                                 'template' => "
                     <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
+                        <nav class='lawsuit_nav'>
                         <div class='client-add-order_btn'>
                             <h2 class='lawyer-wrapper_title lawyer-wrapper_title-left'>Мои заказы </h2>
-                            <a href='' class='main-btn main-btn_orange small add_ico'><span>Новый заказ</span></a>
+                            <a :href=\"'{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}'\" class='main-btn main-btn_orange small add_ico'><span>Новый заказ</span></a>
                         </div>
-                        <ul class='my-orders_ul'>
-                            <li v-for=\"item in data\">
-                                <div class='my-orders_info'>
-                                    <a :href=\"'" . route__('actionViewVacancy_controllers_client_clientcontroller') ."/'+item.id\" class='my-orders_text'>@{{ item.title }}</a>
+                            <ul>
+                                <li mark='line_mark' class='has_new'>
+                                    <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ count_new_items }}</span></button>
+                                </li>
+                                <li mark='line_mark'>
+                                    <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>
+                                </li>
+                                <li mark='line_mark'>
+                                    <button type='button' @click.prevent=\"switchCategory(8)\">Отмененные</button>
+                                </li>
+                                <li mark='line_mark' class='active'>
+                                    <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                                </li>
+                            </ul>
+                        </nav>
+                        <ul class='my-orders_ul' :id=\"name\">
+                                <li v-for=\"vacancy in data\">
+                                    <div class='my-orders_info'>
+                                        <p class='my-orders_text'>
+                                            @{{ vacancy.title }}
+                                        </p>
+                                        <p class='my-orders_price'>
+                                            @{{ vacancy.payment }} руб.
+                                        <span>0 ответов</span>
+                                        </p>
+                                    </div>
 
-                                    <ul class='my-orders_sub-ul'>
-                                        <li>@{{ item.count_messages ?? 0 }} сообщений</li>
-                                        <li v-if=\"!item.status >= 4\">@{{ item.count_offers ?? 0 }} предложения от юристов</li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
+                                    <time class='my-orders_time mobile'>
+                                        15мин назад
+                                    </time>
+
+                                    <p :class=\"['my-orders_stage', {'moderation-status': vacancy.status != 7}, {'closed-status': vacancy.status == 7}]\">
+                                        @{{ vacancy.status_text }}
+                                    </p>
+                                </li>
+                            </ul>
                         <button class='more-services' @click.prevent=\"goToOrdersPage()\">Еще</button>
                     </div>
                         ",

@@ -45,7 +45,7 @@
                             <div class='lawyer-info'>
                                 <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/loc-icon-blue.svg' alt='loc-icon'>
-                                    <span>@{{data.city_name}}</span>
+                                    <span>@{{ data.location_address ?? data.city_name }}</span>
                                 </div>
                                 <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/bah-icon-blue.svg' alt='bah-icon'>
@@ -53,11 +53,11 @@
                                 </div>
                                 <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/phone-icon-blue.svg' alt='phone-icon'>
-                                    <a name='phone_number' href='tel:+@{{data.phone_number}}' class='span-link'>+@{{data.phone_number}}</a>
+                                    <a name='phone_number' class='link'>+@{{data.phone_number}}</a>
                                 </div>
                                 <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/planet-icon-blue.svg' alt='planet-icon'>
-                                    <span>www.site.ru</span>
+                                    <span>@{{ data.site_url }}</span>
                                 </div>
                                 <!-- <div class='lawyer-info_row'>
                                     <img class='icon' src='/lawyers/images/icons/message-icon-blue.svg' alt='message-icon'>
@@ -132,9 +132,17 @@
                                         <p class='my-orders_text'>
                                             @{{ vacancy.title }}
                                         </p>
+                                        <p class='my-orders_price'>
+                                            @{{ vacancy.payment }} руб.
+                                        <span>0 ответов</span>
+                                        </p>
                                     </div>
 
-                                    <p class='my-orders_stage moderation-status'>
+                                    <time class='my-orders_time mobile'>
+                                        15мин назад
+                                    </time>
+
+                                    <p :class=\"['my-orders_stage', {'moderation-status': vacancy.status != 7}, {'closed-status': vacancy.status == 7}]\">
                                         @{{ vacancy.status_text }}
                                     </p>
                                 </li>

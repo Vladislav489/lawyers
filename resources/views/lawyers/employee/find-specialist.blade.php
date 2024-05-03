@@ -26,9 +26,7 @@
                                 "default_title" => 'Регион',
                                 "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
                                 "callAfterloadComponent" => "function(component) {
-                                    $('.js_select').select2({
-                                    	minimumResultsForSearch: -1,
-                                    });
+                                    $('.js_select').select2({});
                                     return component.option;
                                  }",
                                 "template" =>
@@ -37,10 +35,16 @@
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){
+
                                             if($(this).val() !== '') {
                                                 const param = {'region_id': $(this).find('option:selected').val()}
                                                 page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
-                                                }
+                                            }
+                                            $('select[name=city_id]').prop('selectedIndex', 0)
+                                            setTimeout(function () {
+                                                $('#stub').attr('selected', true)
+                                                $('.js_select').select2({});
+                                            }, 200)
 
                                             }"
                             ]])
@@ -56,11 +60,13 @@
                                 "url" => route("actionGetCities_mainstay_helpdata_helpdatamainstaycontroller"),
                                 "template" =>
                                 '<select class="unit-select_select js_select" name="city_id" :id="name" style="width:100%">
-                                    <option id="stub" value="" selected="true">Выбрать</option>
+                                    <option id="stub" value="" selected>Выбрать</option>
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){
-
+                                       setTimeout(function () {
+                                           $('.js_select').select2({});
+                                       }, 200)
                                     }"
                             ]])
                     </div>
@@ -74,9 +80,7 @@
                                 "default_title" => 'Сервис',
                                 "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
                                 "callAfterloadComponent" => "function(component) {
-                                    $('.js_select').select2({
-                                    	minimumResultsForSearch: -1,
-                                    });
+                                    $('.js_select').select2({});
                                     return component.option;
                                  }",
                                 "template" =>
@@ -89,6 +93,12 @@
                                                 const param = {'type_id': $(this).find('option:selected').val()}
                                                 page__.getElementsGroup('type_id')[0]['obj'].setUrlParams(param)
                                                 }
+
+                                                $('select[name=service_id]').prop('selectedIndex', 0)
+
+                                                setTimeout(function () {
+                                                    $('.js_select').select2({});
+                                                }, 200)
                                             }"
                             ]])
                     </div>
@@ -106,7 +116,11 @@
                                     <option value="" selected="true">Выбрать</option>
                                     <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
                                 </select>',
-                                "change" => "function(){}"
+                                "change" => "function(){
+                                    setTimeout(function () {
+                                        $('.js_select').select2({});
+                                    }, 200)
+                                }"
                             ]])
                     </div>
                 </div>
@@ -280,7 +294,7 @@
         }
 
         function clearFilterInputs() {
-            const form = $('form')
+            const form = $('#search_form')
             form.find('input').val('')
             const selects = form.find('select')
             for(let index = 0; index < selects.length;index++){
@@ -289,6 +303,9 @@
                     $(selects[index]).prop('selectedIndex', 0)
                 }
             }
+            setTimeout(function () {
+                $('.js_select').select2({});
+            }, 200)
         }
 
         function resetFilters() {
@@ -306,6 +323,7 @@
                     clearFilterInputs()
                     page__.getElementsGroup('employee_list')[0]['obj'].setUrlParams({})
                 }
+
                 clearFilterInputs()
             })
         }

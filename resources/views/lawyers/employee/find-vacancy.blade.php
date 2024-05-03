@@ -35,9 +35,7 @@
                     "default_title" => 'Регион',
                     "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
 					"callAfterloadComponent" => "function(component) {
-                       $('.js_select').select2({
-                       	minimumResultsForSearch: -1,
-                       });
+                       $('.js_select').select2({});
                        return component.option;
                     }",
                     "template" =>
@@ -49,6 +47,10 @@
                         if($(this).val() !== '') {
                         const param = {'region_id': $(this).find('option:selected').val()}
                         page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
+                        $('select[name=city_id]').prop('selectedIndex', 0)
+                        setTimeout(function () {
+                            $('.js_select').select2({});
+                        }, 200)
                     }
                     }"
                     ]])
@@ -68,7 +70,9 @@
                                     <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                 </select>',
                                 "change" => "function(){
-
+                                        setTimeout(function () {
+                                            $('.js_select').select2({});
+                                        }, 200)
                                     }"
                             ]])
                     </div>
@@ -97,6 +101,10 @@
                                                 const param = {'type_id': $(this).find('option:selected').val()}
                                                 page__.getElementsGroup('type_id')[0]['obj'].setUrlParams(param)
                                                 }
+                                                $('select[name=service_id]').prop('selectedIndex', 0)
+                                                setTimeout(function () {
+                                                    $('.js_select').select2({});
+                                                }, 200)
                                             }"
                             ]])
                     </div>
@@ -114,7 +122,11 @@
                                     <option value="" selected="true">Выбрать</option>
                                     <option v-for="item in data " :data-text="item.name" :value="item.id">@{{ item.name }}</option>
                                 </select>',
-                                "change" => "function(){}"
+                                "change" => "function(){
+                                setTimeout(function () {
+                                    $('.js_select').select2({});
+                                }, 200)
+                                }"
                             ]])
                     </div>
                 </div>
@@ -245,21 +257,21 @@
             ])
 
 
-            <div class="new-pagination">
-                <div class="new-pagination__btn">
-                    <a href="#">Предыдущая страница</a>
-                    <a href="#">Следующая страница</a>
-                </div>
+{{--            <div class="new-pagination">--}}
+{{--                <div class="new-pagination__btn">--}}
+{{--                    <a href="#">Предыдущая страница</a>--}}
+{{--                    <a href="#">Следующая страница</a>--}}
+{{--                </div>--}}
 
-                <div class="new-pagination__links">
-                    <a  href="#">1</a>
-                    <a  href="#">2</a>
-                    <a class="new-pagination__link_active" href="#">3</a>
-                    <a  href="#">4</a>
-                    <span>...</span>
-                    <a  href="#">28</a>
-                </div>
-            </div>
+{{--                <div class="new-pagination__links">--}}
+{{--                    <a  href="#">1</a>--}}
+{{--                    <a  href="#">2</a>--}}
+{{--                    <a class="new-pagination__link_active" href="#">3</a>--}}
+{{--                    <a  href="#">4</a>--}}
+{{--                    <span>...</span>--}}
+{{--                    <a  href="#">28</a>--}}
+{{--                </div>--}}
+{{--            </div>--}}
 
 
 
