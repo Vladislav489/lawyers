@@ -270,7 +270,7 @@
 
                             <div class=\"lawyer-info\">
                                 <h2 class=\"lawyer-name with_ico\">@{{getFullName(data)}}</h2>
-                                <span class=\"lawyer-check\">Проверенный юрист</span>
+                                <span class=\"lawyer-check\" v-if=\"data.is_confirmed == 1\">Проверенный юрист</span>
                             </div>
                         </div>
 
@@ -291,7 +291,7 @@
                                     <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
                                     <span name=\"practice_years\">@{{agetostr(data.practice_years)}} практики</span>
                                 </div>
-                                <div class=\"lawyer-info_row\">
+                                <div class=\"lawyer-info_row\" v-if=\"data.phone_number\">
                                     <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                     <a name=\"phone_number\" class=\"span-link\">+@{{data.phone_number}}</a>
                                 </div>
@@ -430,7 +430,7 @@
                         "<div class='lawyer-card'>
                         <div class='lawyer-info'>
                             <h2 class='lawyer-name with_ico'>
-                                @{{getFullName(data)}}
+                                @{{ data.full_name }}
                             </h2>
                             <a href='#employeeInfoMoreEdit' id='edit_more_modal' data-fancybox class='edit'></a>
                         </div>
@@ -832,7 +832,7 @@
                                 <img class=\"icon\" src=\"/lawyers/images/icons/bah-icon-blue.svg\" alt=\"bah-icon\">
                                 <span name=\"data.practice_years\">@{{agetostr(data.practice_years)}}</span>
                             </div>
-                            <div class=\"lawyer-info_row\">
+                            <div class=\"lawyer-info_row\" v-if=\"data.phone_number\">
                                 <img class=\"icon\" src=\"/lawyers/images/icons/phone-icon-blue.svg\" alt=\"phone-icon\">
                                 <a name=\"phone_number\" class=\"span-link\">+@{{data.phone_number}}</a>
                             </div>
@@ -1271,10 +1271,6 @@
                 }
             }
             return age+" "+txt;
-        }
-
-        function getFullName(data) {
-            return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
         }
 
         function updateGlobalData(data) {
