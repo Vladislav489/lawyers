@@ -44,7 +44,6 @@ class UserLogic extends CoreEngine
     public function save($data)
     {
         if (isset($data['password'])) {
-            $data['modifier_id'] = 1;
             $data['input_password'] = $data['password'];
             $data['password'] = Hash::make($data['password']);
             if (isset($data) && !empty($data)) {

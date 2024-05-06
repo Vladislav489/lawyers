@@ -22,12 +22,12 @@ class ClientMainstayController extends MainstayController {
 //        dd($this->params, Region::class);
         $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
+//            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'password' => 'required|string|confirmed',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
-            'middle_name' => 'required|string|max:64',
-            'post_code' => 'required|string|max:7',
+            'middle_name' => 'nullable|string|max:64',
+//            'post_code' => 'required|string|max:7',
             'date_birthday' => 'required|date',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
             'region_id' => 'required|integer|exists:' . Region::class . ',id',
@@ -35,11 +35,12 @@ class ClientMainstayController extends MainstayController {
         ];
 
         $validated = Validator::validate($this->params, $rules);
+//        $validated['modifier_id'] = 1;
         if ($data = (new UserLogic())->save($validated)) {
-            $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
+            $credentials = ['email' => $data['email'], 'password' => $data['input_password']];
             return (new LoginController())->actionUserLogin($credentials);
         }
-        return redirect()->back()->withErrors();
+        return redirect()->back()->withErrors($validated)->withInput();
     }
 
     public function actionUpdateClient($param = []) {
@@ -52,6 +53,7 @@ class ClientMainstayController extends MainstayController {
         $this->params = (empty($param)) ? $this->params : $param;
         $select = ['*', DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name"),
             DB::raw("City.name as city_name, Region.name as region_name"),
+            DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as full_name"),
             DB::raw("IFNULL(Balance.balance, 0) as balance"),
             DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Question.id, 'text', Question.text, 'status', Question.status)), ']') as questions"),
 //            DB::raw("CONCAT('[', GROUP_CONCAT(JSON_OBJECT('id', Vacancy.id, 'text', Question.text, 'status', Question.status)), ']') as questions")

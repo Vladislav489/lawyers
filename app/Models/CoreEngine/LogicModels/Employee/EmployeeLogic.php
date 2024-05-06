@@ -18,8 +18,10 @@ use App\Models\CoreEngine\ProjectModels\HelpData\DayOfWeek;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Service\Service;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\User\UserModifier;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
+use App\Models\System\HelperFunction;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +44,7 @@ class EmployeeLogic extends UserLogic
         $this->helpEngine['offer_response'] = self::createTempLogic(new EmployeeOfferResponse());
         $this->helpEngine['vacancy_offer'] = self::createTempLogic(new VacancyOffer());
         $this->helpEngine['working_schedule'] = self::createTempLogic(new EmployeeWorkingSchedule());
+        $this->helpEngine['modifier'] = self::createTempLogic(new UserModifier());
         $this->getFilter();
         $this->compileGroupParams();
 
@@ -54,6 +57,11 @@ class EmployeeLogic extends UserLogic
         $this->default = [];
 
         return $this->default;
+    }
+
+    public function getModifiersList() {
+        $list = ($this->helpEngine['modifier'])->getList();
+        return ['result' => HelperFunction::ArrayForSelectFomCodeEngine($list['result'],'id','name')];
     }
 
     public function getEmployeeAchievements($data) {
@@ -105,7 +113,6 @@ class EmployeeLogic extends UserLogic
     public function save($data) {
         if (empty($data)) return false;
         DB::beginTransaction();
-        $data['modifier_id'] = 1;
         $data = parent::save($data);
         $data['user_id'] = empty($data['id']) ? auth()->id() : $data['id'];
         unset($data['id']);
@@ -119,7 +126,7 @@ class EmployeeLogic extends UserLogic
             if (!isset($data['employee_id'])) {
                 $this->deleteImage($data['avatar_path']);
             }
-            if (empty($data['achievements'])) {
+            if (empty($data['cert_file'])) {
                 DB::commit();
                 return $data;
             } else {
@@ -131,7 +138,7 @@ class EmployeeLogic extends UserLogic
         } elseif ($data['user_id'] && $employeeRecord) {
             $employeeForUpdate = array_intersect_key($data, array_flip($this->helpEngine['employee']->getEngine()->getFillable()));
             $data['employee_id'] = $this->helpEngine['employee']->update($employeeForUpdate, $employeeRecord->id);
-            $hasAchievementsToSave = isset($data['achievements']);
+            $hasAchievementsToSave = isset($data['cert_file']);
             $hasPhotosToSave = isset($data['photos']);
             if (!$hasAchievementsToSave && !$hasPhotosToSave) {
                 DB::commit();

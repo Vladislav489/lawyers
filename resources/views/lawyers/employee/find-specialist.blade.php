@@ -230,7 +230,7 @@
 
                                 <div class='fs-info'>
                                     <a :href=\"'".route__('actionSpecialistCard_controller')."/'+item.user_id\">
-                                    <h3 class='fs-name'>@{{ item.last_name + ' ' + item.first_name + ' ' + item.middle_name }}</h3></a>
+                                    <h3 class='fs-name'>@{{ item.full_name }}</h3></a>
                                     <p class='fs-row'>
                                         <img class='icon' src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
                                         <span class='fs-text'>@{{ item.location }}</span>

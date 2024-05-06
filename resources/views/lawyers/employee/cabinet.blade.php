@@ -28,9 +28,9 @@
                             </div>
 
                             <div class='lawyer-info'>
-                                <h2 class='lawyer-name'>@{{getFullName(data)}}</h2>
-                                <span class='lawyer-check'>Проверенный юрист</span>
-                                {{-- <span class='lawyer-check moderation'>Проходит модерацию...</span> --}}
+                                <h2 class='lawyer-name'>@{{ data.full_name }}</h2>
+                                <span class='lawyer-check' v-if=\"data.is_confirmed == 1\">Проверенный юрист</span>
+                                <span class='lawyer-check moderation' v-if=\"data.is_confirmed == 0\">Проходит модерацию...</span>
                             </div>
                         </div>
 
@@ -51,11 +51,11 @@
                                     <img class='icon' src='/lawyers/images/icons/bah-icon-blue.svg' alt='bah-icon'>
                                     <span name='practice_years'>@{{agetostr(data.practice_years)}} практики</span>
                                 </div>
-                                <div class='lawyer-info_row'>
+                                <div class='lawyer-info_row'  v-if=\"data.phone_number\">
                                     <img class='icon' src='/lawyers/images/icons/phone-icon-blue.svg' alt='phone-icon'>
                                     <a name='phone_number' class='link'>+@{{data.phone_number}}</a>
                                 </div>
-                                <div class='lawyer-info_row'>
+                                <div class='lawyer-info_row' v-if=\"data.site_url\">
                                     <img class='icon' src='/lawyers/images/icons/planet-icon-blue.svg' alt='planet-icon'>
                                     <span>@{{ data.site_url }}</span>
                                 </div>
@@ -280,8 +280,5 @@
             return age+" "+txt;
         }
 
-        function getFullName(data) {
-            return data.last_name + ' ' + data.first_name + ' ' + data.middle_name
-        }
     </script>
 @endsection

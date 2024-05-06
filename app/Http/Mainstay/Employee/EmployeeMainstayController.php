@@ -12,8 +12,10 @@ use App\Models\CoreEngine\ProjectModels\Company\Company;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
+use App\Models\CoreEngine\ProjectModels\User\UserModifier;
 use App\Models\CoreEngine\ProjectModels\User\UserType;
 use App\Models\System\ControllersModel\MainstayController;
+use App\Models\System\HelperFunction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,34 +23,43 @@ class EmployeeMainstayController extends MainstayController
 {
     const MAX_FILE_SIZE = 5;
 
+    public function actionGetModifiersForSelect($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return response()->json((new EmployeeLogic())->getModifiersList());
+    }
+
     public function actionEmployeeStore(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
+//        dd($this->params);
         $rules = [
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
-            'middle_name' => 'required|string|max:64',
+            'middle_name' => 'nullable|string|max:64',
             'date_birthday' => 'required|date',
-            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
+//            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-            'post_code' => 'required|string|max:7',
+//            'post_code' => 'required|string|max:7',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
             'region_id' => 'required|integer|exists:' . Region::class . ',id',
             'password' => 'required|string|confirmed',
-            'consultation_price' => 'required|integer',
+//            'consultation_price' => 'required|integer',
             'dt_practice_start' => 'required|date',
-            'license_number' => 'required|string|max:128',
-            'company_id' => 'required|integer|exists:' . Company::class . ',id',
-            'achievements.*' => 'nullable|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'license_number' => 'nullable|string|max:128',
+//            'company_id' => 'required|integer|exists:' . Company::class . ',id',
+            'cert_file' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
+            'cert_description' => 'required|string|max:128',
             'avatar' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
             'type_id' => 'required|integer|exists:' . UserType::class . ',id',
+            'modifier_id' => 'required|integer|exists:' . UserModifier::class . ',id',
             ];
 
         $validated = Validator::validate($this->params, $rules);
+//        dd($validated);
         if ($data = (new EmployeeLogic())->save($validated)) {
-            $credentials = ['phone_number' => $data['phone_number'], 'password' => $data['input_password']];
+            $credentials = ['email' => $data['email'], 'password' => $data['input_password']];
             return (new LoginController())->actionUserLogin($credentials);
         }
-        return redirect()->back();
+        return redirect()->back()->withErrors($validated)->withInput();
     }
 
     public function actionEmployeeServiceStore(array $param = []) {
@@ -109,7 +120,7 @@ class EmployeeMainstayController extends MainstayController
         $select = [
             '*',
             DB::raw("CONCAT('/storage', Employee.avatar_path) as avatar_full_path") ,
-            DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as full_name") ,
+            DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as full_name") ,
             DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
             DB::raw("IF(Photos.path IS NULL, NULL, CONCAT('[', GROUP_CONCAT(DISTINCT(JSON_OBJECT('id', Photos.id, 'path',
             CONCAT('/storage', Photos.path)))), ']')) as photos"),
@@ -120,6 +131,7 @@ class EmployeeMainstayController extends MainstayController
             DB::raw("Employee.location_address as location_address"),
             DB::raw("Employee.site_url as site_url"),
             DB::raw("Employee.thesis as thesis"),
+            DB::raw("Employee.is_confirmed as is_confirmed"),
             ];
         return response()->json(['result' => (new EmployeeLogic($this->params, $select))
             ->setJoin(['Employee', 'Achievements', 'City','Region', 'Photos', 'WorkingSchedule', 'Specialization'])->getOne()]);
@@ -129,8 +141,7 @@ class EmployeeMainstayController extends MainstayController
         $this->params = (empty($param)) ? $this->params : $param;
         $select = [
             '*', DB::raw("TIMESTAMPDIFF(YEAR, Employee.dt_practice_start, DATE(NOW())) as practice_years"),
-//            DB::raw("IF(EmployeeService.id IS NULL, NULL, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('description',
-//            EmployeeService.description, 'service_name', Service.name)), ']')) as service"),
+            DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as full_name") ,
             DB::raw('Employee.user_id as user_id, Employee.avatar_path as avatar_path, Employee.consultation_price as consultation_price, Employee.about as about'),
             DB::raw("CONCAT(Region.name, ' ', City.name) as location"),
             ];

@@ -137,7 +137,7 @@
                                             <span>@{{ data.city_name }}</span>
                                         </div>
 
-                                        <div class="lawyer-info_row">
+                                        <div class="lawyer-info_row" v-if="data.phone_number">
                                             <img src="/lawyers/images/icons/phone-icon-blue.svg" alt="phone-icon" class="icon">
 
                                             <a href="tel:+@{{ data.phone_number }}" class="link">+@{{ data.phone_number }}</a>

@@ -23,9 +23,9 @@ return new class extends Migration
 
             $table->string('first_name', 64)->comment('имя');
             $table->string('last_name', 64)->comment('фамилия');
-            $table->string('middle_name', 64)->comment('отчество');
-            $table->string('post_code', 7)->comment('почтовый индекс');
-            $table->string('phone_number', 20)->unqique()->comment('номер телефона');
+            $table->string('middle_name', 64)->comment('отчество')->nullable();
+            $table->string('post_code', 7)->comment('почтовый индекс')->nullable();
+            $table->string('phone_number', 20)->unique()->comment('номер телефона')->nullable();
             $table->date('date_birthday')->comment('дата рождения');
             $table->dateTime('online')->nullable()->comment('был в сети');
 
@@ -36,7 +36,7 @@ return new class extends Migration
             $table->bigInteger('region_id')->unsigned()->index()->comment('ID региона');
             $table->bigInteger('city_id')->unsigned()->index()->comment('ID города');
             $table->bigInteger('type_id')->unsigned()->index()->comment('ID типа пользоватедя');
-            $table->bigInteger('modifier_id')->unsigned()->index()->comment('ID модификатора пользоватедя');
+            $table->bigInteger('modifier_id')->unsigned()->index()->comment('ID модификатора пользоватедя')->default(0);
         });
     }
 
