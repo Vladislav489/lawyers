@@ -269,7 +269,7 @@
                             </div>
 
                             <div class=\"lawyer-info\">
-                                <h2 class=\"lawyer-name with_ico\">@{{getFullName(data)}}</h2>
+                                <h2 class=\"lawyer-name with_ico\">@{{ data.full_name }}</h2>
                                 <span class=\"lawyer-check\" v-if=\"data.is_confirmed == 1\">Проверенный юрист</span>
                             </div>
                         </div>

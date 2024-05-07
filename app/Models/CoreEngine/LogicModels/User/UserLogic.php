@@ -60,9 +60,14 @@ class UserLogic extends CoreEngine
                     }
                 }
                 $user = array_intersect_key($data, array_flip($this->engine->getFillable()));
-                if ($data['id'] = parent::update($user, auth()->id())) {
+                if (!empty($user)) {
+                    if ($data['id'] = parent::update($user, auth()->id())) {
+                        return $data;
+                    }
+                } else {
                     return $data;
-                } else return false;
+                }
+
             }
         }
         return false;
