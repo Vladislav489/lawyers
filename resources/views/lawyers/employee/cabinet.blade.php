@@ -129,18 +129,10 @@
                             <ul class='my-orders_ul' :id=\"name\">
                                 <li v-for=\"vacancy in data\">
                                     <div class='my-orders_info'>
-                                        <p class='my-orders_text'>
-                                            @{{ vacancy.title }}
-                                        </p>
-                                        <p class='my-orders_price'>
-                                            @{{ vacancy.payment }} руб.
-                                        <span>0 ответов</span>
-                                        </p>
+                                        <p class='my-orders_text'>@{{ vacancy.title }}</p>
+                                        <p class='my-orders_price'>@{{ vacancy.payment }} руб. <span>0 ответов</span></p>
+                                        <p class='my-orders_time'>15мин назад</p>
                                     </div>
-
-                                    <time class='my-orders_time mobile'>
-                                        15мин назад
-                                    </time>
 
                                     <p :class=\"['my-orders_stage', {'moderation-status': vacancy.status != 7}, {'closed-status': vacancy.status == 7}]\">
                                         @{{ vacancy.status_text }}

@@ -364,8 +364,8 @@
         padding-bottom: 12px;
     }
     .lawyer-section .lawsuit_nav {
-        margin: 0 -16px;
-        padding: 40px 15px 12px;
+        margin: 0 -16px 24px;
+        padding: 25px 15px 12px;
     }
     .lawyer-container .left {
         gap: 8px;
@@ -1014,7 +1014,7 @@
 
 @media screen and (max-width: 768px) {
     .lawyer-wrapper {
-        padding: 40px 16px 50px;
+        padding: 0 16px 50px;
         border-radius: 0;
     }
     .lawyer-service_line {
@@ -1454,7 +1454,8 @@
 }
 .my-orders_info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 8px;
 }
 .my-orders_text {
@@ -1462,6 +1463,7 @@
     font-weight: 600;
     line-height: 140%;
     transition: all .3s linear;
+    width: 100%;
 }
     a.my-orders_text:hover{color: var(--blue-color);}
 .my-orders_price {
@@ -1472,12 +1474,20 @@
 .my-orders_price span {
     color: rgba(40, 40, 40, 0.50);
 }
+.my-orders_time{
+    background: url(../images/icons/lil-clock-gray.svg) no-repeat;
+    color: rgba(40,40,40,.5);
+    font-size: 14px;
+    line-height: 24px;
+    padding-left: 28px;
+}
 .my-orders_stage {
     padding: 0 15px;
     font-size: 14px;
     font-weight: 600;
     text-transform: uppercase;
     flex: 0 0 114px;
+    margin-left: auto;
     text-align: center;
 }
 .my-orders_stage.moderation-status {
@@ -1502,6 +1512,7 @@
 
 @media screen and (max-width: 768px) {
     .my-orders .lawyer-wrapper_title {
+        margin-bottom: -6px;
         text-align: center;
     }
     .my-orders_ul > li {
@@ -1512,22 +1523,12 @@
         position: relative;
     }
     .my-orders_time {
+        font-size: 12px;
         position: absolute;
         right: 12px;
         top: 12px;
-        font-size: 12px;
-        line-height: 140%;
-        color: rgba(40, 40, 40, 0.5);
     }
-    .my-orders_time:after {
-        position: absolute;
-        content: url("../images/icons/lil-clock-gray.svg");
-        left: -24px;
-        width: 24px;
-        height: 24px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
+    .my-orders_stage{margin-left: 0;}
     .my-orders_info {
         order: 2;
     }

@@ -2,24 +2,11 @@
 @section('title', 'Главная')
 
 @section('content')
-    <section class="gradient-bg">
-        <div class="container">
-            <div class="ro">
-                <div class="col">
                     <section class="gradient-bg u-container">
                         <div class="container main-banner">
                             <div class="block">
                                 <p class="banner-text">Юридическая помощь по Вашей ситуации от лучших экспертов</p>
-                                <a href="#" class="main-btn">
-                                    <div class="first">
-                                        Задать вопрос юристу
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="19" viewBox="0 0 10 19" fill="none" class="arrow-icon">
-                                            <path d="M1.27478 1.82703L7.98864 9.50001L1.27478 17.173" stroke="white" stroke-width="2.10997" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </div>
-
-                                </a>
+                                <a href="#" class="main-btn"><span>Задать вопрос юристу</span></a>
                             </div>
 
                             <div class="block image-block">
@@ -72,10 +59,7 @@
                                 <form action="#" class="form">
                                     <label>
                                         <input type="search" placeholder="Вопрос по недвижимости...">
-                                        <input type="image"
-                                               src="/lawyers/images/icons/search-icon-gray.svg"
-                                               alt="search-icon"
-                                               class="search-icon-input mobile">
+                                        <input type="image" src="/lawyers/images/icons/search-icon-gray.svg" alt="search-icon" class="search-icon-input mobile">
                                     </label>
                                     <button type="submit" class="mobile-hidden">
                                         Найти
@@ -86,14 +70,45 @@
                         </div>
                     </section>
 
-                    <section class="u-container">
+                    <section class="u-container white-bg">
                         <div class="container specialists">
-                            <h2 class="section_header _line-blue">
-                                Специалисты дня <br>
-                                с самым высоким рейтингом
-                            </h2>
+                            <h2 class="section_header _line-blue">Специалисты дня <br>с самым высоким рейтингом</h2>
+<script>
+$(function(){
+specSlider()
+});
+function getSliderSettings() {
+            let slidesLength = $('.js_specialists_slider').find('li').length;
+            return {
+                slidesToShow: 3,
+                infinite: true,
+                dots: false,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                arrows: slidesLength > 3 ? true : false,
+                responsive: [{
+                    breakpoint: 1281,
+                    settings: {
+                        slidesToShow: 2,
+                        arrows: false,
+                        dots: true,
+                    }
+                },{
+                    breakpoint: 981,
+                    settings: {
+                        slidesToShow: 1,
+                        arrows: false,
+                        dots: true,
+                    }
+                }],
+            }
+        }
 
-                            <div class="specialists-container specialists-carousel">
+        function specSlider() {
+            $('.js_specialists_slider').not('.slick-initialized').slick(getSliderSettings());
+        }
+</script>
+                            <div class="js_specialists_slider specialists-carousel">
                                 <a href="#" class="specialist">
                                     <h2 class="specialist-title">ЛИДЕР КАТЕГОРИИ: <span> БИЗНЕС</span></h2>
 
@@ -129,13 +144,7 @@
                                             <h3 class="block-header">Лучший отзыв</h3>
 
                                             <div class="comment-rate">
-{{--                                                <div class="stars">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                </div>--}}
+                                                <div class="stars"><span style="width: 80%;"></span></div>
 
                                                 <p class="name">Алексеева Юлия</p>
 
@@ -157,10 +166,7 @@
                                             </blockquote>
                                         </div>
 
-                                        <button class="specialist-btn">
-                                            <span class="first">Смотреть: более 100+ </span>
-                                            <span class="second">Смотреть: более 100+ </span>
-                                        </button>
+                                        <button class="specialist-btn"><span>Смотреть: более 100+</span></button>
                                     </div>
                                 </a>
                                 <a href="#" class="specialist">
@@ -198,13 +204,7 @@
                                             <h3 class="block-header">Лучший отзыв</h3>
 
                                             <div class="comment-rate">
-{{--                                                <div class="stars">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                </div>--}}
+                                                <div class="stars"><span style="width: 80%;"></span></div>
 
                                                 <p class="name">Алексеева Юлия</p>
 
@@ -226,10 +226,7 @@
                                             </blockquote>
                                         </div>
 
-                                        <button class="specialist-btn">
-                                            <span class="first">Смотреть: более 100+ </span>
-                                            <span class="second">Смотреть: более 100+ </span>
-                                        </button>
+                                        <button class="specialist-btn"><span>Смотреть: более 100+</span></button>
                                     </div>
                                 </a>
                                 <a href="#" class="specialist">
@@ -267,13 +264,7 @@
                                             <h3 class="block-header">Лучший отзыв</h3>
 
                                             <div class="comment-rate">
-{{--                                                <div class="stars">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                </div>--}}
+                                                <div class="stars"><span style="width: 80%;"></span></div>
 
                                                 <p class="name">Алексеева Юлия</p>
 
@@ -295,10 +286,7 @@
                                             </blockquote>
                                         </div>
 
-                                        <button class="specialist-btn">
-                                            <span class="first">Смотреть: более 100+ </span>
-                                            <span class="second">Смотреть: более 100+ </span>
-                                        </button>
+                                        <button class="specialist-btn"><span>Смотреть: более 100+</span></button>
                                     </div>
                                 </a>
                                 <a href="#" class="specialist">
@@ -336,13 +324,7 @@
                                             <h3 class="block-header">Лучший отзыв</h3>
 
                                             <div class="comment-rate">
-{{--                                                <div class="stars">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                    <img src="/lawyers/images/icons/star-icon-full.svg" alt="star-icon">--}}
-{{--                                                </div>--}}
+                                                <div class="stars"><span style="width: 80%;"></span></div>
 
                                                 <p class="name">Алексеева Юлия</p>
 
@@ -364,10 +346,7 @@
                                             </blockquote>
                                         </div>
 
-                                        <button class="specialist-btn">
-                                            <span class="first">Смотреть: более 100+ </span>
-                                            <span class="second">Смотреть: более 100+ </span>
-                                        </button>
+                                        <button class="specialist-btn"><span>Смотреть: более 100+</span></button>
                                     </div>
                                 </a>
                             </div>
@@ -376,187 +355,59 @@
 
                     <section class="gradient-bg u-container">
                         <div class="container questions">
-                            <h2 class="section_header _line-blue-dark">
-                                Популярные правовые вопросы <br>
-                                за последнее время
-                            </h2>
+                            <h2 class="section_header _line-blue-dark">Популярные правовые вопросы <br>за последнее время</h2>
 
                             <div class="questions-container">
                                 <div class="question">
                                     <h3 class="title">СЕМЕЙНЫЕ СПОРЫ</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question">
                                     <h3 class="title">ТРУДОВЫЕ СПОРЫ</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question">
                                     <h3 class="title">УГОЛОВНЫЕ ДЕЛА</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question mobile-hidden">
                                     <h3 class="title">ЖИЛИЩНЫЕ СПОРЫ</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question mobile-hidden">
                                     <h3 class="title">ЗЕМЕЛЬНЫЕ СПОРЫ</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question mobile-hidden">
                                     <h3 class="title">ЮРИСТ ДЛЯ БИЗНЕСА</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question mobile-hidden">
                                     <h3 class="title">БЕСПЛАТНАЯ ЮР. ПОМОЩЬ*</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
 
                                 <div class="question mobile-hidden">
                                     <h3 class="title">НАЛОГОВЫЕ СПОРЫ</h3>
-                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и
-                                        пр.</p>
-                                    <button class="question-btn main-btn main-btn_white">
-                        <span class="first">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                        <span class="second">
-                            Подробнее
-                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                                <path d="M1.87708 1.35132L8.59093 8.54474L1.87708 15.7382" stroke="#5D74F1" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                                    </button>
+                                    <p class="text">Юридическая помощь по взысканию алиментов, расторжению брака, разделу имущества и пр.</p>
+                                    <button class="question-btn main-btn main-btn_white">Подробнее</button>
                                 </div>
                             </div>
 
-                            <a href="#" class="all-services main-btn main-btn_blue">
-                <span class="first">
-                    Все услуги
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                        <path d="M1.37708 1.14307L8.09093 8.33649L1.37708 15.5299" stroke="white" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
-                                <span class="second">
-                    Все услуги
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="17" viewBox="0 0 10 17" fill="none">
-                        <path d="M1.37708 1.14307L8.09093 8.33649L1.37708 15.5299" stroke="white" stroke-width="1.91815" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </span>
-                            </a>
+                            <a href="#" class="all-services main-btn main-btn_blue"><span>Все услуги</span></a>
 
                             <form action="#" class="questions-form">
                                 <div class="block left">
@@ -566,15 +417,9 @@
                                 <div class="block right">
                                     <label><input type="text" name="name" placeholder="Имя"></label>
                                     <label><input type="tel" name="phone" placeholder="Телефон"></label>
-                                    <button type="submit" class="main-btn">
-                                        <span class="first">Отправить</span><span class="second">Отправить</span>
-                                    </button>
+                                    <button type="submit" class="main-btn"><span>Отправить</span></button>
                                 </div>
                             </form>
                         </div>
                     </section>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection
