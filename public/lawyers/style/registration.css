@@ -13,10 +13,10 @@
     margin-top: 24px;
     grid-template-columns: 1fr 1fr;
 }
-.registration-section .round-top_nav li {
+.registration-section .round-top_nav li a{
     color: rgba(40, 40, 40, 0.50);
 }
-.registration-section .round-top_nav li.active {
+.registration-section .round-top_nav li.active a{
     color: white;
 }
 
@@ -40,12 +40,12 @@
         margin-bottom: 0;
         gap: 0;
     }
-    .registration-section .round-top_nav li {
+    .registration-section .round-top_nav li a{
         padding: 10px 0;
         width: 100%;
         text-align: center;
     }
-    .registration-section .round-top_nav li.active {
+    .registration-section .round-top_nav li.active a{
         color: white;
         background-color: var(--blue-color);
     }
@@ -147,9 +147,9 @@
     line-height: 140%;
 }
 .registration-form_label input {
-    width: 100%;
-    height: 44px;
     font-size: 16px;
+    height: 50px;
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {

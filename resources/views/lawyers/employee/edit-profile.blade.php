@@ -384,9 +384,7 @@
                                 <label class='label-title'>Выберите файлы</label>
                                 <div class='form-row_files add-cert_btn' id='file_input' @click=\"clickInput($('#cert'))\">
                                     <input type='file' class='form-row_files' name='cert' id='cert'>
-                                    <span>
-                                        <div>Загрузить файл</div>
-                                    </span>
+                                    <span data-text class='load-file-text'>Загрузить файл</span>
                                 </div>
                             </div>
                             <div class='flex align-center form--submit'>

@@ -994,7 +994,7 @@ header {
     border-radius: var(--b-radius-second);
     border: 2px solid var(--white-color);
 }
-.round-top_nav li {
+.round-top_nav li a{
     border-radius: var(--b-radius-second);
     padding: 11px 30px;
     display: flex;
@@ -1004,7 +1004,7 @@ header {
     line-height: 25px;
     cursor: pointer;
 }
-.round-top_nav li.active {
+.round-top_nav li.active a{
     color: var(--white-color);
     background: var(--blue-color);
 }
@@ -1062,14 +1062,14 @@ header {
         overflow-x: auto;
         overflow-y: hidden;
     }
-    .round-top_nav li {
+    .round-top_nav li a{
         width: max-content;
         padding: 4px 30px;
         color: rgba(40, 40, 40, 0.80);
         display: block;
         white-space: nowrap;
     }
-    .round-top_nav li.active {
+    .round-top_nav li.active a{
         background: #EEF1FF;
         color: var(--dark-color);
     }
@@ -1097,7 +1097,7 @@ header {
         font-size: 14px;
         text-align: center;
     }
-    .round-top_nav li {
+    .round-top_nav li a{
         font-size: 14px;
     }
 }

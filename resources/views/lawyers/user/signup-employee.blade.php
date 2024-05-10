@@ -60,7 +60,6 @@
 {{--                    </div>--}}
                     <div class="registration-form_label date-label full">
                         <label class="label-title">Дата начала юр. практики</label>
-                        <img src="/lawyers/images/icons/calendar-icon.svg" alt="calendar-icon">
                         <input type="date" name="dt_practice_start" placeholder="Дата начала юр. практики" value="{{ old('dt_practice_start') }}">
                         @error('dt_practice_start')
                         <div style="color: red">{{ $message }}</div>
@@ -106,10 +105,11 @@
                         <label class='label-title'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
                             <input type='file' class='form-row_files' name='cert_file' id='cert'>
-                            <img id="preview" src="" alt="" style="height: 100%; width: auto"/>
-                            <span>
-                                <div>Загрузить файл</div>
-                            </span>
+                            <div data-img-container class='form-img-container'>
+                            <span data-delete class='delete-img'></span>
+                            <img id="preview" src="" alt="" width="100" height="100"/>
+                            </div>
+                            <span data-text class='load-file-text'>Загрузить файл</span>
                         </div>
                     </div>
                 </div>
@@ -120,10 +120,11 @@
                         <label class='label-title'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
                             <input type='file' class='form-row_files' name='avatar' id='avatar'>
-                            <img id="preview" src="" alt="" style="height: 100%; width: auto"/>
-                            <span>
-                                <div>Загрузить файл</div>
-                            </span>
+                            <div data-img-container class='form-img-container'>
+                            <span data-delete class='delete-img'></span>
+                            <img id="preview" src="" alt="" width="100" height="100"/>
+                            </div>
+                            <span data-text class='load-file-text'>Загрузить файл</span>
                         </div>
                     </div>
                 </div>
@@ -137,6 +138,7 @@
         $(document).ready(function () {
             setElement()
             clickInput()
+            deleteFiles()
         })
 
         function clickInput() {
@@ -161,13 +163,23 @@
                     var reader = new FileReader();
 
                     reader.onload = function (e) {
-                        element.next('span').prop('hidden', true)
-                        element.next('#preview').attr('src', e.target.result)
+                        element.parent().addClass('loaded').find('[data-text]').fadeOut(0);
+                        element.parent().find('[data-img-container]').fadeIn();
+                        element.parent().find('#preview').attr('src', e.target.result)
                     };
 
                     reader.readAsDataURL(files[i]);
 
                 }
+            })
+        }
+        function deleteFiles(){
+            $('[data-delete]').on('click',function(){
+                var formParent = $(this).closest('[name=file_input]');
+                $(formParent).removeClass('loaded').find('[data-text]').fadeIn();
+                $(formParent).find('#preview').attr('src','');
+                $(formParent).find('input').val('');
+                $(formParent).find('[data-img-container]').fadeOut(0);
             })
         }
 
