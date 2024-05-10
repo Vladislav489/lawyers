@@ -95,6 +95,7 @@ img {
 .gradient-bg {
     background: var(--gradient);
 }
+.white-bg{background-color: #fff;}
 .u-container {
     padding: 0 20px;
 }
