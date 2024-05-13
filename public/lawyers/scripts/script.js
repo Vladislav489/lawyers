@@ -87,4 +87,7 @@ $(function(){
     $('.js_select').select2({
         minimumResultsForSearch: -1,
     });
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
 });

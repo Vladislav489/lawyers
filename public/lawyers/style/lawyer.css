@@ -1489,6 +1489,7 @@
     flex: 0 0 114px;
     margin-left: auto;
     text-align: center;
+    white-space: nowrap;
 }
 .my-orders_stage.moderation-status {
     color: var(--blue-color)

@@ -47,7 +47,14 @@
                                 "default_title" => 'Категория услуг',
                                 "url" => route("actionGetServiceTypeListForSelect_mainstay_service_servicemainstaycontroller"),
 								'callAfterloadComponent' => "function(component) {
-								    $('.js_select').select2();
+                                    $('.js_select').select2({
+                                       language: {
+                                         noResults: function(){return 'Совпадений не найдено';},
+                                       }
+                                       });
+                                       $('.js_select').one('select2:open', function(e) {
+                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                   });
 								}",
                                 "template" =>
                                 '<div class="form-row form-row_all-services select">
@@ -62,7 +69,14 @@
 					                    page__.getElement('service_id')['obj'].setUrlParams({'type_id': $(this).val()})
 					                    $('select[mark=service_id]').prop('selectedIndex', 0)
                                         setTimeout(function () {
-                                            $('.js_select').select2();
+                                            $('.js_select').select2({
+                                               language: {
+                                                 noResults: function(){return 'Совпадений не найдено';},
+                                               }
+                                               });
+                                               $('.js_select').one('select2:open', function(e) {
+                                               $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                           });
                                         }, 200)
                                     }
                                 }"

@@ -101,7 +101,7 @@
 
         @auth
             @if(session('type_id') == 1)
-                <a href="#" class="create-order cool-underline">Создать заказ</a>
+                <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}" class="create-order cool-underline">Создать заказ</a>
                 <div class="payment-message js_open_profile_nav">
                     <div class="message-icon user_ico">{{--<span class="count">1</span>--}}</div>
                     <div class="name">{{Auth::user()->first_name}}</div>
