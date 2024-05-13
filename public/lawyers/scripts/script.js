@@ -63,6 +63,9 @@ $(function(){
     /*document.querySelectorAll('.js_nav > li').forEach(item => {
         selectRow(item);
     });*/
+    $('[name=noactive] a').click(function(e) {
+        e.preventDefault();
+    });
     $('.js_select-btn').hover(function(){
         var isHovered = $(this).is(":hover");
         if (isHovered) {
