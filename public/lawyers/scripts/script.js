@@ -76,6 +76,10 @@ $(function(){
             $(this).children('.js_select-window').stop().slideUp(300);
         }
     });
+    $('.js_select-btn_mob').click(function(){
+        $(this).toggleClass('active');
+        $(this).children('.js_select-window').slideToggle();
+    });
     $('.js_open_profile_nav').hover(function(){
         var isHovered = $(this).is(":hover");
         if (isHovered) {

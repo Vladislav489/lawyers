@@ -1432,6 +1432,11 @@ header {
         color: var(--dark-color);
         transition: all .3s linear;
     }
+    .profile_nav li.noactive a,.profile_nav li.noactive a:hover{
+        color: var(--dark-color);
+        cursor: auto;
+        opacity: .6;
+    }
     .profile_nav li a:hover{color: #C65B5B;}
 @media screen and (max-width: 1480px){
     .create-order{display: none;}
