@@ -178,7 +178,7 @@
                                 'autostart' => 'true',
                                 'name' => 'client_orders',
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
-								'params' => ['user_id' => auth()->id(), 'is_group' => 0, 'except_status' => [7, 6]],
+								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
 
                                 'template' => "
                     <div class='lawsuit lawyer-wrapper' :id=\"name + '_body'\">
@@ -188,22 +188,25 @@
                             <a :href=\"'{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}'\" class='main-btn main-btn_orange small add_ico'><span>Новый заказ</span></a>
                         </div>
                             <ul>
+                                <li mark='line_mark' class='active'>
+                                    <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                                </li>
                                 <li mark='line_mark' class='has_new'>
-                                    <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ count_new_items }}</span></button>
+                                    <button type='button' @click.prevent=\"switchCategory(1)\">Отклики <span>@{{ count_new_items }}</span></button>
+                                </li>
+                                <li mark='line_mark'>
+                                    <button type='button' @click.prevent=\"switchCategory(4)\">В работе</button>
                                 </li>
                                 <li mark='line_mark'>
                                     <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>
                                 </li>
                                 <li mark='line_mark'>
-                                    <button type='button' @click.prevent=\"switchCategory(8)\">Отмененные</button>
-                                </li>
-                                <li mark='line_mark' class='active'>
-                                    <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                                    <button type='button' @click.prevent=\"switchCategory(10)\">Отмененные</button>
                                 </li>
                             </ul>
                         </nav>
                         <ul class='my-orders_ul' :id=\"name\">
-                                <li v-for=\"vacancy in data\">
+                                <li v-for=\"vacancy in data\" @click.prevent=\"goToVacancyPage(vacancy.id)\">
                                     <div class='my-orders_info'>
                                         <p class='my-orders_text'>
                                             @{{ vacancy.title }}
@@ -248,7 +251,7 @@
                         @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
                             'params_component' => [
-                                'autostart' => 'true',
+                                'autostart' => 'false',
                                 'name' => 'client_group_orders',
                                 'url' => route__("actionGetVacancies_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 1],
@@ -292,7 +295,7 @@
                     @include('component_build', [
                             'component' => 'component.gridComponent.simpleGrid',
                             'params_component' => [
-                                'autostart' => 'true',
+                                'autostart' => 'false',
                                 'name' => 'client_questions',
                                 'url' => route__("actionGetClientQuestions_mainstay_client_clientmainstaycontroller"),
 								'params' => ['user_id' => auth()->id()],
@@ -343,6 +346,23 @@
         updateData()
     })
 
+    function switchCategory(categoryId) {
+        // CONST STATUS_NEW = 1;
+        // CONST STATUS_MODERATION = 2;
+        // CONST STATUS_LAWYER_ACCEPTANCE = 8;
+        // CONST STATUS_PAYED = 3;
+        // CONST STATUS_IN_PROGRESS = 4;
+        // CONST STATUS_INSPECTION = 5;
+        // CONST STATUS_REWORK = 9;
+        // CONST STATUS_ACCEPTED = 6;
+        // CONST STATUS_CLOSED = 7;
+        // CONST STATUS_CANCELLED = 10;
+        let component = page__.getElementsGroup('client_orders')[0]['obj']
+        $('nav[class = lawsuit_nav] > ul > li[mark=line_mark]').removeClass('active')
+        event.currentTarget.parentElement.classList.add('active')
+        component.setUrlParams(Object.assign({}, component.params, {status: categoryId}))
+    }
+
     function getMainDataForUpdate() {
         return {
             'first_name': $('[name = first_name_edit]').val(),
@@ -367,6 +387,10 @@
 
     function goToOrdersPage() {
         window.location.href = '{{ route__('actionMyOrders_controllers_client_clientcontroller') }}'
+    }
+
+    function goToVacancyPage(vacancyId) {
+        window.location.href = '{{ route__('actionViewVacancy_controllers_client_clientcontroller') }}' + '/' + vacancyId
     }
 </script>
 @endsection

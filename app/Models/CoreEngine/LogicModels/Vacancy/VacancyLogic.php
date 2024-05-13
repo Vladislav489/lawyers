@@ -8,6 +8,7 @@ use App\Models\CoreEngine\LogicModels\Employee\EmployeeLogic;
 use App\Models\CoreEngine\LogicModels\File\FileLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\Chat;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
+use App\Models\CoreEngine\ProjectModels\Employee\EmployeeOfferResponse;
 use App\Models\CoreEngine\ProjectModels\Employee\EmployeeRating;
 use App\Models\CoreEngine\ProjectModels\File\File;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
@@ -37,6 +38,7 @@ class VacancyLogic extends CoreEngine
     CONST STATUS_REWORK = 9;
     CONST STATUS_ACCEPTED = 6;
     CONST STATUS_CLOSED = 7;
+    CONST STATUS_CANCELLED = 10;
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
@@ -208,8 +210,8 @@ class VacancyLogic extends CoreEngine
             DB::raw("CONCAT(Executor.last_name, ' ', Executor.first_name, ' ', Executor.middle_name ) as executor_name"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name, ' ', Owner.middle_name ) as owner_name"),
         ];
-        $countNew = DB::table((new Vacancy())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
-            ->where([['status', self::STATUS_PAYED], ['is_deleted', 0], ['executor_id', \auth()->id()]])->first();
+        $countNew = DB::table((new EmployeeOfferResponse())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
+            ->where([['user_id', \auth()->id()]])->first();
         $res = (new VacancyLogic($data, $select))
             ->setJoin(['Region', 'City', 'Executor', 'Owner'])->order('desc', 'id')->getList();
         $res['count_new'] = $countNew->count_new_vacancy;
@@ -230,7 +232,10 @@ class VacancyLogic extends CoreEngine
                     END as current_status_text"),
             DB::raw("Service.name as service_name"),
             DB::raw("CONCAT(Region.name,' ', City.name) as location"),
-            DB::raw("(DATEDIFF(period_end, NOW())) as days_to_end"),
+            DB::raw("(CASE
+                                WHEN DATEDIFF(period_end, NOW()) < 0 THEN 0
+                                ELSE DATEDIFF(period_end, NOW())
+                             END) as days_to_end"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name) as owner_name"),
             DB::raw("Owner.online as owner_online"),
             DB::raw("Executor.id as executor_id"),
@@ -238,8 +243,8 @@ class VacancyLogic extends CoreEngine
         $result = (new VacancyLogic($data, $select))->setJoin(['Service', 'Region', 'City', 'Owner', 'Status', 'Executor', 'Files'])->getOne();
         $result['files'] = json_decode($result['files'], true);
         Carbon::setLocale('ru');
-        $result['time_ago'] = Carbon::make($result['created_at'])->diffForHumans();
-        $result['time_left_to_accept'] = Carbon::now()->diffInHours(Carbon::make($result['updated_at'])->addHours(48), false);
+        $result['time_ago'] = max(Carbon::make($result['created_at'])->diffForHumans(), 0);
+        $result['time_left_to_accept'] = max(Carbon::now()->diffInHours(Carbon::make($result['updated_at'])->addHours(48), false), 0);
         return ['result' => $result];
     }
 

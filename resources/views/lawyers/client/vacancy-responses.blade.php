@@ -16,10 +16,10 @@
 @section('content')
 <section class="u-container response-section">
     <div class="container">
-        <ul class="breadcrumbs">
-            <li class="cool-underline"><a href="#">Мои заказы</a></li>
-            <li class="cool-underline"><a href="#">Заказ #1234</a></li>
-        </ul>
+{{--        <ul class="breadcrumbs">--}}
+{{--            <li class="cool-underline"><a href="#">Мои заказы</a></li>--}}
+{{--            <li class="cool-underline"><a href="#">Заказ #1234</a></li>--}}
+{{--        </ul>--}}
 
         @include('component_build', [
                         'component' => 'component.infoComponent.textInfo',

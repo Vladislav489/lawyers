@@ -6,6 +6,7 @@ use App\Http\Login\LoginController;
 use App\Models\CoreEngine\LogicModels\Question\QuestionLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
+use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
@@ -72,15 +73,24 @@ class ClientMainstayController extends MainstayController {
     public function actionGetVacancies($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
         $select = ['*'];
-        $countNew = DB::table((new Vacancy())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
-            ->where([['status', VacancyLogic::STATUS_NEW], ['is_deleted', 0], ['user_id', \auth()->id()]])->first();
 
-        $res = (new VacancyLogic($this->params, $select))
+        $result = (new VacancyLogic($this->params, $select))
             ->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])
             ->order('desc', 'id')->getList();
 
-        $res['count_new'] = $countNew->count_new_vacancy;
-        return response()->json($res);
+        $res = (new VacancyLogic(['user_id' => (string) auth()->id(), 'status' => '1'], $select))
+            ->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])
+            ->order('desc', 'id')->getList();
+
+        $result['count_new'] = 0;
+
+        foreach ($res['result'] as $item) {
+            if ($item['status'] == 1) {
+                $result['count_new'] += $item['count_offers'];
+            }
+        }
+
+        return response()->json($result);
     }
 
     public function actionGetVacancy($param = []) {
@@ -115,12 +125,13 @@ class ClientMainstayController extends MainstayController {
 
     public function actionAcceptAndRateWork($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
+//        dd($this->params);
         $rules = [
             'vacancy_id' => 'required|integer|exists:vacancy,id',
             'employee_user_id' => 'required|integer|exists:user_entity,id',
             'text' => 'nullable|string',
             'rating' => 'required|integer',
-            'files' => 'nullable|array'
+            'files' => 'nullable|file'
         ];
 
         $data = Validator::validate($this->params, $rules);

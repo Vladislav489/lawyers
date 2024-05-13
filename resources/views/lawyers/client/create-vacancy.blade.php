@@ -126,6 +126,9 @@
                             <h3 class="form-row_header">Прикрепленные файлы</h3>
 
                             <label class="form-row_label form-row_files">
+                                <ul class="attached-files">
+
+                                </ul>
                                 <input type="file" name="files[]" id="files" multiple>
                                 <span>
                                 <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
@@ -133,9 +136,7 @@
                                         Выберите файлы
                                     </div>
                             </span>
-                                <ul class="attached-files">
 
-                                </ul>
                             </label>
 
                         </div>
@@ -216,6 +217,7 @@
                 showFilesInfo()
             })
             setPaymentType()
+            deleteFile()
 
         })
 
@@ -291,17 +293,28 @@
                 names.push($("#files")[0].files.item(i).name);
             }
             names.forEach((name) => {
-                $('label > span > img[alt = folder-icon]').remove()
-                $('label > span > div').remove()
+                $('label > span > img[alt = folder-icon]').prop('hidden', true)
+                $('label > span > div').prop('hidden', true)
                 $('.attached-files')
-                    .append('<li><img src="/lawyers/images/main/doc.png" alt="doc-type" class="file-type"></li>' +
-                        '<div>' + cutFileName(name) + '</div>')
+                    .append('<li>' +
+                        '<img id="preview" src="/lawyers/images/main/doc.png" alt="doc-type">' +
+                        // '<span class="delete-img"></span>' +
+                        '</li>' +
+                        '<div>' + cutFileName(name) + '</div>'
+                        )
+            })
+        }
+
+        function deleteFile() {
+            $('.delete-img').click(function (e) {
+                e.preventDefault()
+                console.log(1111)
             })
         }
 
         function cutFileName(name) {
             if(name.length > 12) {
-                return name.substring(0, 5) + '...' + name.slice(-5)
+                return name.substring(0, 5) + '...' + name.slice(-7)
             }
             return name
         }
