@@ -1373,7 +1373,7 @@ header {
     left: 0;
     padding: 20px 12px;
     position: absolute;
-    top: calc(100% + 17px);
+    top: calc(100% + 15px);
     width: 100%;
 }
     .profile_nav li:not(:last-child){margin-bottom: 16px;}

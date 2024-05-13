@@ -2,8 +2,8 @@
     <nav class="container header-nav">
         <a class="image-container" href="{{ route__('actionIndex_controller') }}">Лого</a>
         <ul class="nav-ul js_nav">
-            <li>
-                <span class="cool-underline select-btn js_select-btn select-btn js_select-btn">Найти специалиста</span>
+            <li class="js_select-btn">
+                <span class="cool-underline select-btn">Найти специалиста</span>
                 <ul class="select-window js_select-window">
                     <li>
                         <a href="{{ route('actionFindSpecialist_controller') }}">
@@ -24,13 +24,13 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn js_select-btn select-btn js_select-btn">Биржа заказов</a>
+                <a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Биржа заказов</a>
             </li>
             <li>
-                <a href="#" class="cool-underline select-btn js_select-btn select-btn js_select-btn">Вопросы юристам</a>
+                <a href="#" class="cool-underline select-btn">Вопросы юристам</a>
             </li>
             <li>
-                <a href="#" class="cool-underline select-btn js_select-btn select-btn js_select-btn">Коллективные иски</a>
+                <a href="#" class="cool-underline select-btn">Коллективные иски</a>
             </li>
         </ul>
         @guest
@@ -78,8 +78,8 @@
     </div>
     <h2 class="mob-header_title">Личный кабинет</h2>
     <ul class="mob_nav js_nav">
-        <li>
-            <span class="nav-item js_select-btn">Найти специалиста</span>
+        <li class="js_select-btn">
+            <span class="nav-item">Найти специалиста</span>
             <ul class="js_select-window">
                 <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
                 <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
