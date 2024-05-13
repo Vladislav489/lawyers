@@ -112,26 +112,32 @@
                         <nav class='lawsuit_nav'>
                             <h2 class='lawyer-wrapper_title'>Мои заказы <span></span></h2>
                             <ul>
+                                <li mark='line_mark' class='active'>
+                                    <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                                </li>
                                 <li mark='line_mark' class='has_new'>
-                                    <button type='button' @click.prevent=\"switchCategory(3)\">Новые <span>@{{ count_new_items }}</span></button>
+                                    <button type='button' @click.prevent=\"switchCategory(1)\">Отклики <span>@{{ count_new_items }}</span></button>
+                                </li>
+                                <li mark='line_mark'>
+                                    <button type='button' @click.prevent=\"switchCategory(4)\">В работе</button>
+                                </li>
+                                <li mark='line_mark'>
+                                    <button type='button' @click.prevent=\"switchCategory(5)\">Ожидает подтверждения</button>
                                 </li>
                                 <li mark='line_mark'>
                                     <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>
                                 </li>
                                 <li mark='line_mark'>
-                                    <button type='button' @click.prevent=\"switchCategory(8)\">Отмененные</button>
-                                </li>
-                                <li mark='line_mark' class='active'>
-                                    <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                                    <button type='button' @click.prevent=\"switchCategory(10)\">Отмененные</button>
                                 </li>
                             </ul>
                         </nav>
                             <ul class='my-orders_ul' :id=\"name\">
-                                <li v-for=\"vacancy in data\">
+                                <li v-for=\"vacancy in data\" @click.prevent=\"goToVacancyPage(vacancy.id)\">
                                     <div class='my-orders_info'>
                                         <p class='my-orders_text'>@{{ vacancy.title }}</p>
                                         <p class='my-orders_price'>@{{ vacancy.payment }} руб. <span>0 ответов</span></p>
-                                        <p class='my-orders_time'>15мин назад</p>
+                                        <p class='my-orders_time'>@{{ vacancy.time_ago }}</p>
                                     </div>
 
                                     <p :class=\"['my-orders_stage', {'moderation-status': vacancy.status != 7}, {'closed-status': vacancy.status == 7}]\">
@@ -243,6 +249,7 @@
             // CONST STATUS_REWORK = 9;
             // CONST STATUS_ACCEPTED = 6;
             // CONST STATUS_CLOSED = 7;
+            // CONST STATUS_CANCELLED = 10;
             let component = page__.getElementsGroup('employee_vacancies')[0]['obj']
             $('nav[class = lawsuit_nav] > ul > li[mark=line_mark]').removeClass('active')
             event.currentTarget.parentElement.classList.add('active')
@@ -253,6 +260,9 @@
             window.location.href = '{{ route__('actionViewOrders_controllers_employee_employeecontroller') }}'
         }
 
+        function goToVacancyPage(vacancyId) {
+            window.location.href = '{{ route__('actionViewVacancy_controllers_employee_employeecontroller') }}' + '/' + vacancyId
+        }
 
         function agetostr(age) {
             var txt;

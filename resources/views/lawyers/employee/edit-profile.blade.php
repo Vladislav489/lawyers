@@ -382,10 +382,10 @@
                             </div>
                             <div class='registration-form_label full' name='container'>
                                 <label class='label-title' name='container_name'>Выберите файлы</label>
-                                <div class='form-row_files add-cert_btn' id='file_input' @click=\"clickInput($('#cert'))\">
-                                    <input type='file' class='form-row_files' name='cert' id='cert'>
+                                <div class='form-row_files add-cert_btn' id='file_input' name='file_input'>
+                                    <input type='file' class='form-row_files' name='cert' id='cert' @click=\"showFiles($('input#cert'))\">
                                     <div data-img-container class='form-img-container'>
-                                        <span data-delete class='delete-img'></span>
+                                        <span data-delete class='delete-img' @click=\"deleteFiles($('[data-delete]'))\"></span>
                                         <img id='preview' src='' alt='' width='100' height='100'/>
                                     </div>
                                     <span data-text class='load-file-text'>Загрузить файл</span>
@@ -900,6 +900,7 @@
             deleteData()
             filterText()
             storeSpecialization()
+            // setElement()
             ymaps.ready(init);
         })
 
@@ -1329,6 +1330,41 @@
                 })
             })
 
+        }
+
+        function setElement() {
+            showFiles($('input#cert'))
+        }
+
+        function showFiles(element) {
+            // console.log(element)
+            element.on('change', function () {
+                var files = $(this)[0].files;
+                $(this).closest('[name=container]').find('[name=container_name]').text('Файл');
+                // element.next().empty();
+
+                for (var i = 0; i < files.length; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        element.parent().addClass('loaded').find('[data-text]').fadeOut(0);
+                        element.parent().find('[data-img-container]').fadeIn();
+                        element.parent().find('#preview').attr('src', e.target.result)
+                        element.fadeOut(0);
+                    };
+
+                    reader.readAsDataURL(files[i]);
+
+                }
+            })
+        }
+        function deleteFiles(element){
+            var formParent = element.closest('#file_input');
+            $(formParent).removeClass('loaded').find('[data-text]').fadeIn();
+            $(formParent).find('#preview').attr('src','');
+            $(formParent).find('input').val('').fadeIn(0);
+            $(formParent).find('[data-img-container]').fadeOut(0);
+            $(this).closest('[name=container]').find('[name=container_name]').text('Выберите файл');
         }
 
     </script>

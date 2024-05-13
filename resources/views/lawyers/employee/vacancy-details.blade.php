@@ -32,10 +32,6 @@
                 'template' => "
                 <div class='order_quest'>
                     <div class='exchange_left'>
-                        <ul class='question-tags-ul'>
-                            <li>@{{ data.service_name }}</li>
-                            <li><img src='/lawyers/images/icons/attach-icon-blue.svg' alt='attach-icon'>Вопрос закреплен</li>
-                        </ul>
 
                         <h3 class='exchange_title'>
                             <span>@{{ data.title }}</span>
@@ -51,16 +47,10 @@
                                     <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
                                     @{{ data.location }}
                                 </li>
-                                <li class='fs-text'>
-                                    <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='bag-icon'>
-                                    Дистанционная консультация
-                                </li>
+
                             </ul>
 
                             <ul class='exchange_other-info'>
-                                <li>
-                                    <img src='/lawyers/images/icons/lil-eye-gray.svg' alt='eye-icon'>234
-                                </li>
                                 <li>
                                     <img src='/lawyers/images/icons/lil-clock-gray.svg' alt='clock-icon'>@{{ data.time_ago }}
                                 </li>
@@ -247,12 +237,16 @@
                     <textarea placeholder="Текст" name="order_closing_text"></textarea>
                     <div class="registration-form_label full">
                         <label class="label-title">Выберите файлы</label>
+
                         <div class="form-row_files" id="file_input">
+                            <ul class="attached-files">
+
+                            </ul>
                             <input type="file" class="form-row_files" name="files[]" id="files" multiple>
                             <span>
-                    <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
-                    <div>Выберите файлы</div>
-                </span>
+                                <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
+                                <div>Выберите файлы</div>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -960,6 +954,9 @@
         $('#file_input').click(function () {
             $('#files')[0].click()
         })
+        $('#files').change(function () {
+            showFilesInfo()
+        })
         sendToInspection()
     })
 
@@ -1016,6 +1013,38 @@
             })
         })
 
+    }
+
+    function showFilesInfo() {
+        $('ul.attached-files > li').remove()
+        $('ul.attached-files > div').remove()
+        let names = [];
+        for(var i = 0; i < $("#files")[0].files.length; i++){
+            names.push($("#files")[0].files.item(i).name);
+        }
+        names.forEach((name) => {
+            $('div.order-modal-content > div > div > span > img').prop('hidden', true)
+            $('div.order-modal-content > div > div > span > div').prop('hidden', true)
+            $('.attached-files')
+                .append('<li>' +
+                    '<img id="preview" src="/lawyers/images/main/doc.png" alt="doc-type">' +
+                    // '<span class="delete-img"></span>' +
+                    '</li>' +
+                    '<div>' + cutFileName(name) + '</div>'
+                )
+        })
+    }
+
+    function cutFileName(name) {
+        if(name.length > 12) {
+            return name.substring(0, 5) + '...' + name.slice(-7)
+        }
+        return name
+    }
+
+    function viewFile(path, name) {
+        const route = `{{ route('download') }}?path=${path}&name=${name}`
+        window.open(route)
     }
 
 </script>
