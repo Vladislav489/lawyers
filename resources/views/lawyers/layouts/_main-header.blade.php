@@ -212,6 +212,7 @@
             <li class='noactive' name='noactive'><a href="#">Коллективные иски</a></li>
             <li><a href="{{ route__('actionMyOrders_controllers_client_clientcontroller') }}">Заказы</a></li>
         </ul>
+        <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}" class="mob-create-order">Создать заказ</a>
         @else
         <ul class="mob_nav js_mob_nav">
             <li class="dropdown js_select-btn_mob">
@@ -228,7 +229,6 @@
             <li class='noactive' name='noactive'><a href="#">Коллективные иски</a></li>
             <li><a href="{{ route__('actionViewOrders_controllers_employee_employeecontroller') }}">Мои заказы</a></li>
         </ul>
-        <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}" class="mob-create-order">Создать заказ</a>
         @endif
     <div class="support-phone">
         <span>Поддержка</span>
