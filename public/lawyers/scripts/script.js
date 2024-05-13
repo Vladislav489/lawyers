@@ -63,9 +63,13 @@ $(function(){
     /*document.querySelectorAll('.js_nav > li').forEach(item => {
         selectRow(item);
     });*/
-    $('.js_select-btn').click(function(){
-        $(this).closest('li').toggleClass('active');
-        $(this).next().slideToggle(300);
+    $('.js_select-btn').mouseenter(function() {
+        $(this).addClass('active');
+        $(this).find('.js_select-window').slideDown(300);
+    });
+    $('.js_select-btn').mouseleave(function() {
+        $(this).removeClass('active');
+        $(this).find('.js_select-window').slideUp(300);
     });
     $('.js_open_profile_nav').click(function(){
         $(this).toggleClass('active');

@@ -86,10 +86,6 @@
         text-align: center;
     }
 }
-.registration-form_block input[type='file'] {
-    width: 100%;
-    display: none;
-}
 .registration-form_block .registration-form_subtext {
     font-size: 14px;
     line-height: 140%;

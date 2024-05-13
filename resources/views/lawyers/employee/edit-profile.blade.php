@@ -380,10 +380,14 @@
                                 <label for='cert_name'>Название</label>
                                 <input type='text' placeholder='Название' name='cert_name' id='cert_name'>
                             </div>
-                            <div class='registration-form_label full'>
-                                <label class='label-title'>Выберите файлы</label>
+                            <div class='registration-form_label full' name='container'>
+                                <label class='label-title' name='container_name'>Выберите файлы</label>
                                 <div class='form-row_files add-cert_btn' id='file_input' @click=\"clickInput($('#cert'))\">
                                     <input type='file' class='form-row_files' name='cert' id='cert'>
+                                    <div data-img-container class='form-img-container'>
+                                        <span data-delete class='delete-img'></span>
+                                        <img id='preview' src='' alt='' width='100' height='100'/>
+                                    </div>
                                     <span data-text class='load-file-text'>Загрузить файл</span>
                                 </div>
                             </div>
@@ -395,7 +399,6 @@
                         "
                     ]
                 ])
-
                 <div class="right">
 
                     <div class='modal profile_modal' id='employeeCertEdit'>

@@ -101,8 +101,8 @@
 
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Загрузите подтверждающий документ</h3>
-                    <div class='registration-form_label full'>
-                        <label class='label-title'>Выберите файл</label>
+                    <div class='registration-form_label full' name='container'>
+                        <label class='label-title' name='container_name'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
                             <input type='file' class='form-row_files' name='cert_file' id='cert'>
                             <div data-img-container class='form-img-container'>
@@ -116,8 +116,8 @@
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Аватар</h3>
 
-                    <div class='registration-form_label full'>
-                        <label class='label-title'>Выберите файл</label>
+                    <div class='registration-form_label full' name='container'>
+                        <label class='label-title' name='container_name'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
                             <input type='file' class='form-row_files' name='avatar' id='avatar'>
                             <div data-img-container class='form-img-container'>
@@ -142,9 +142,9 @@
         })
 
         function clickInput() {
-            $('div[name=file_input]').click((element) => {
+            $('div[name=file_input] input').click((element) => {
                 // console.log(element.target);
-                $(element.target).find('input').click()
+                //$(element.target).find('input').click()
             })
         }
 
@@ -156,7 +156,7 @@
         function showFiles(element) {
             element.on('change', function () {
                 var files = $(this)[0].files;
-
+                $(this).closest('[name=container]').find('[name=container_name]').text('Файл');
                 // element.next().empty();
 
                 for (var i = 0; i < files.length; i++) {
@@ -166,6 +166,7 @@
                         element.parent().addClass('loaded').find('[data-text]').fadeOut(0);
                         element.parent().find('[data-img-container]').fadeIn();
                         element.parent().find('#preview').attr('src', e.target.result)
+                        element.fadeOut(0);
                     };
 
                     reader.readAsDataURL(files[i]);
@@ -178,8 +179,9 @@
                 var formParent = $(this).closest('[name=file_input]');
                 $(formParent).removeClass('loaded').find('[data-text]').fadeIn();
                 $(formParent).find('#preview').attr('src','');
-                $(formParent).find('input').val('');
+                $(formParent).find('input').val('').fadeIn(0);
                 $(formParent).find('[data-img-container]').fadeOut(0);
+                $(this).closest('[name=container]').find('[name=container_name]').text('Выберите файл');
             })
         }
 
