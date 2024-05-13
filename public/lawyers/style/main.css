@@ -95,7 +95,7 @@ header {
     transition-duration: var(--transition);
 }
 .nav-ul > li .select-window > li:hover svg {
-    transform: translateX(10px);
+    transform: translateX(6px);
 }
 .nav-ul > li .select-window a {
     display: flex;
@@ -124,13 +124,20 @@ header {
     }
 }
 @media screen and (max-width: 1280px) {
-    .header-nav {gap: 15px;}
+    .header-nav {gap: 9px;}
     .nav-ul {
+        gap: 4px;
         flex-wrap: wrap;
     }
     .nav-ul > li .select-btn {
-        padding: 10px;
+        font-size: 14px;
+        padding: 10px 8px;
     }
+    .nav-ul li .select-btn:before{
+        right: -4px;
+        width: 5px;
+    }
+    .nav-ul > li:not(.dropdown) .select-btn:before{display: none;}
 }
 @media screen and (max-width: 1024px) {
     .header-nav .signup-btn {
@@ -1299,7 +1306,21 @@ header {
         color: var(--white-color)
     }
 }
-
+.create-order{
+    background: url(../images/icons/new-order.svg) no-repeat;
+    color: var(--orange-color);
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-left: auto;
+    padding-left: 29px;
+}
+    .create-order.cool-underline:after{
+        background-color: var(--orange-color);
+        left: 29px;
+    }
+    .create-order.cool-underline:hover:after{width: calc(100% - 29px);}
 .payment-message {
     align-items: center;
     background-color: var(--white-color);
@@ -1308,10 +1329,12 @@ header {
     gap: 10px;
     height: 42px;
     margin-left: auto;
+    max-width: 200px;
     padding: 0 16px;
     position: relative;
-    width: 200px;
+    width: auto;
 }
+    .create-order + .payment-message{margin-left: 8px;}
 .payment-message .message-icon {
     position: relative;
     display: flex;
@@ -1319,9 +1342,19 @@ header {
     height: 16px;
 }
 .payment-message .message-icon:after {
-    content: url("../images/icons/message-icon.svg");
+    background: url("../images/icons/message-icon.svg") no-repeat;
+    content: "";
     position: absolute;
     inset: 0;
+}
+.payment-message .message-icon.user_ico{
+    height: 22px;
+    width: 22px;
+}
+.payment-message .message-icon.user_ico:after{
+    background: url(../images/icons/download-avatar-icon.svg) 0 0 / 100% auto no-repeat;
+    height: 100%;
+    width: 100%;
 }
 .payment-message .message-icon span {
     display: flex;
@@ -1343,11 +1376,12 @@ header {
     cursor: pointer;
     font-size: 14px;
     font-weight: 600;
-    line-height: 140%;
+    line-height: 20px;
     margin-left: auto;
-    max-width: calc(100% - 36px);
+    /*max-width: calc(100% - 36px);*/
+    max-width: 100%;
     overflow: hidden;
-    padding: 0 18px 1px 0;
+    padding: 0 18px;
     position: relative;
     text-align: right;
     text-overflow: ellipsis;
@@ -1360,40 +1394,45 @@ header {
         height: 9px;
         position: absolute;
         right: 0;
-        top: calc(50% - 3px);
+        top: calc(50% - 5px);
         transition: all .3s linear;
         width: 7px;
     }
-    .payment-message:not(.active) .name:before{rotate: 90deg;}
+    .payment-message:not(.active) .name:before{
+        rotate: 90deg;
+        top: calc(50% - 3px);
+    }
 .profile_nav{
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.1);
     border-radius: 0 0 8px 8px;
     display: none;
     left: 0;
-    padding: 20px 12px;
+    padding: 12px 20px;
     position: absolute;
     top: calc(100% + 15px);
     width: 100%;
 }
-    .profile_nav li:not(:last-child){margin-bottom: 16px;}
-    .profile_nav li a{
-        color: var(--dark-color);
+    .profile_nav li{
         font-size: 16px;
         font-weight: 600;
         line-height: 140%;
+    }
+    .profile_nav li:not(:last-child){margin-bottom: 16px;}
+    .profile_nav li a{
+        color: var(--dark-color);
         transition: all .3s linear;
     }
     .profile_nav li a:hover{color: #C65B5B;}
+@media screen and (max-width: 1480px){
+    .create-order{display: none;}
+    .create-order + .payment-message{margin-left: auto;}
+}
 @media screen and (max-width: 1024px) {
-    .payment-message {
-        display: none;
-    }
+    .payment-message{display: none;}
 }
 @media screen and (max-width: 768px) {
-    .payment-message {
-        display: none;
-    }
+    .payment-message{display: none;}
 }
 
 

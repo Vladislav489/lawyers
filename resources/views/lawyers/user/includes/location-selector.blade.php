@@ -7,7 +7,14 @@
         "default_title" => 'Регион',
         "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
 		"callAfterloadComponent" => "function() {
-           $('.js_select').select2({});
+           $('.js_select').select2({
+               language: {
+                 noResults: function(){return 'Совпадений не найдено';},
+               }
+               });
+               $('.js_select').one('select2:open', function(e) {
+               $('input.select2-search__field').prop('placeholder', 'Поиск...');
+           });
         }",
         "template" => '
         <select class="unit-select_select js_select" name="region_id" :id="name" style="width:100%">

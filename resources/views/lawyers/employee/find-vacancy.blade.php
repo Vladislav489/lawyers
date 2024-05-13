@@ -35,7 +35,14 @@
                     "default_title" => 'Регион',
                     "url" => route("actionGetRegions_mainstay_helpdata_helpdatamainstaycontroller"),
 					"callAfterloadComponent" => "function(component) {
-                       $('.js_select').select2({});
+                        $('.js_select').select2({
+                           language: {
+                             noResults: function(){return 'Совпадений не найдено';},
+                           }
+                           });
+                           $('.js_select').one('select2:open', function(e) {
+                           $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                       });
                        return component.option;
                     }",
                     "template" =>
@@ -49,7 +56,14 @@
                         page__.getElementsGroup('city_id')[0]['obj'].setUrlParams(param)
                         $('select[name=city_id]').prop('selectedIndex', 0)
                         setTimeout(function () {
-                            $('.js_select').select2({});
+                            $('.js_select').select2({
+                               language: {
+                                 noResults: function(){return 'Совпадений не найдено';},
+                               }
+                               });
+                               $('.js_select').one('select2:open', function(e) {
+                               $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                           });
                         }, 200)
                     }
                     }"
@@ -71,7 +85,14 @@
                                 </select>',
                                 "change" => "function(){
                                         setTimeout(function () {
-                                            $('.js_select').select2({});
+                                            $('.js_select').select2({
+                                               language: {
+                                                 noResults: function(){return 'Совпадений не найдено';},
+                                               }
+                                               });
+                                               $('.js_select').one('select2:open', function(e) {
+                                               $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                           });
                                         }, 200)
                                     }"
                             ]])
@@ -103,7 +124,14 @@
                                                 }
                                                 $('select[name=service_id]').prop('selectedIndex', 0)
                                                 setTimeout(function () {
-                                                    $('.js_select').select2({});
+                                                    $('.js_select').select2({
+                                                       language: {
+                                                         noResults: function(){return 'Совпадений не найдено';},
+                                                       }
+                                                       });
+                                                       $('.js_select').one('select2:open', function(e) {
+                                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                                   });
                                                 }, 200)
                                             }"
                             ]])
@@ -124,7 +152,14 @@
                                 </select>',
                                 "change" => "function(){
                                 setTimeout(function () {
-                                    $('.js_select').select2({});
+                                    $('.js_select').select2({
+                                       language: {
+                                         noResults: function(){return 'Совпадений не найдено';},
+                                       }
+                                       });
+                                       $('.js_select').one('select2:open', function(e) {
+                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                   });
                                 }, 200)
                                 }"
                             ]])

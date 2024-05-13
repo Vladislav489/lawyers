@@ -77,6 +77,16 @@
 								             component.option['service_id'] = page__.getGolobalData('VacancyInfo').service_id
 								             return component.option
 								}",
+                                "callAfterloadComponent" => "function() {
+                                   $('.js_select').select2({
+                                       language: {
+                                         noResults: function(){return 'Совпадений не найдено';},
+                                       }
+                                       });
+                                       $('.js_select').one('select2:open', function(e) {
+                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');
+                                   });
+                                }",
                                 "template" =>
                                 "
                                 <select class='form-row_header select-btn js_select' mark='service_id' :id=\"name\">
