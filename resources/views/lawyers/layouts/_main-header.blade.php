@@ -148,9 +148,9 @@
                     <div class="message-icon user_ico">{{--<span class="count">1</span>--}}</div>
                     <div class="name">{{Auth::user()->first_name}}</div>
                     <ul class="profile_nav" name="profile_nav">
-                        <li><a  href="#">Чат</a></li>
+                        <li class='noactive' name='noactive'><a href="#">Чат</a></li>
                         <li><a href="{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}">Профиль</a></li>
-                        <li><a  href="#">Помощь</a></li>
+                        <li class='noactive' name='noactive'><a href="#">Помощь</a></li>
                         <li><a href="{{ route__('actionUserLogout_logincontroller') }}">Выход</a></li>
                     </ul>
                 </div>
@@ -159,9 +159,9 @@
                     <div class="message-icon user_ico">{{--<span class="count">1</span>--}}</div>
                     <div class="name">{{Auth::user()->first_name}}</div>
                     <ul class="profile_nav" name="profile_nav">
-                        <li><a  href="#">Чат</a></li>
+                        <li class='noactive' name='noactive'><a href="#">Чат</a></li>
                         <li><a href="{{ route__('actionEmployeeCabinet_controllers_employee_employeecontroller') }}">Профиль</a></li>
-                        <li><a  href="#">Помощь</a></li>
+                        <li class='noactive' name='noactive'><a href="#">Помощь</a></li>
                         <li><a href="{{ route__('actionUserLogout_logincontroller') }}">Выход</a></li>
                     </ul>
                 </div>
@@ -181,21 +181,55 @@
         <a href="{{ route__('actionIndex_controller') }}" class="logo image-container">Лого</a>
     </div>
     <h2 class="mob-header_title">Личный кабинет</h2>
-    <ul class="mob_nav js_nav">
-        <li class="js_select-btn">
-            <span class="nav-item">Найти специалиста</span>
-            <ul class="js_select-window">
-                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
-                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
-                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Нотариуса</a></li>
-                <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Детектива</a></li>
-            </ul>
-        </li>
-        <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}">Биржа заказов</a></li>
-        <li><a  href="#">Вопросы юристам</a></li>
-        <li><a  href="#">Коллективные иски</a></li>
-    </ul>
-    <a href="#" class="mob-create-order">Создать заказ</a>
+        @if(auth()->check() == false)
+        <ul class="mob_nav js_mob_nav">
+            <li class="dropdown js_select-btn_mob">
+                <span class="nav-item">Найти специалиста</span>
+                <ul class="js_select-window">
+                    <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Нотариуса</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Детектива</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Биржа исполнителей</a></li>
+            <li class='noactive' name='noactive'><a href="#">Вопросы юристам</a></li>
+            <li class='noactive' name='noactive'><a href="#">Коллективные иски</a></li>
+        </ul>
+        @elseif(session('type_id') == 1)
+        <ul class="mob_nav js_nav">
+            <li class="dropdown js_select-btn_mob">
+                <span class="nav-item">Найти специалиста</span>
+                <ul class="js_select-window">
+                    <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Нотариуса</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Детектива</a></li>
+                </ul>
+            </li>
+            <li class='noactive' name='noactive'><a href="#">Услуги сайта</a></li>
+            <li class='noactive' name='noactive'><a href="#">Вопросы юристам</a></li>
+            <li class='noactive' name='noactive'><a href="#">Коллективные иски</a></li>
+            <li><a href="{{ route__('actionMyOrders_controllers_client_clientcontroller') }}">Заказы</a></li>
+        </ul>
+        <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}" class="mob-create-order">Создать заказ</a>
+        @else
+        <ul class="mob_nav js_mob_nav">
+            <li class="dropdown js_select-btn_mob">
+                <span class="nav-item">Специалисты</span>
+                <ul class="js_select-window">
+                    <li><a href="{{ route('actionFindSpecialist_controller') }}">Найти Юриста</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Адвоката</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Нотариуса</a></li>
+                    <li class='noactive' name='noactive'><a href="{{ route('actionFindSpecialist_controller') }}">Найти Детектива</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Биржа заказов</a></li>
+            <li class='noactive' name='noactive'><a href="#">Вопросы юристам</a></li>
+            <li class='noactive' name='noactive'><a href="#">Коллективные иски</a></li>
+            <li><a href="{{ route__('actionViewOrders_controllers_employee_employeecontroller') }}">Мои заказы</a></li>
+        </ul>
+        @endif
     <div class="support-phone">
         <span>Поддержка</span>
         <p>+7 (999) 999 99 99</p>
