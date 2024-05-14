@@ -1,7 +1,7 @@
 
     <nav class="container header-nav">
         <a class="image-container" href="{{ route__('actionIndex_controller') }}">Лого</a>
-        @if(auth()->check() == false)
+        @if(!auth()->check())
         <ul class="nav-ul js_nav">
             <li class="dropdown js_select-btn">
                 <a href="{{ route('actionFindSpecialist_controller') }}" class="cool-underline select-btn">Найти специалиста</a>

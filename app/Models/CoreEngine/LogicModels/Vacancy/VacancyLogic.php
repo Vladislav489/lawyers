@@ -22,6 +22,7 @@ use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyGroup;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyOffer;
 use App\Models\CoreEngine\ProjectModels\Vacancy\VacancyStatusLog;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -192,7 +193,7 @@ class VacancyLogic extends CoreEngine
     public function getVacancyList($data) {
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end',
-            DB::raw("(DATEDIFF(NOW(), period_end)) as days_to_end"),
+            DB::raw("(DATEDIFF(period_end, NOW())) as days_to_end"),
             DB::raw("CONCAT(Region.name, ', ', City.name) as location"),
             DB::raw("(CASE
         WHEN TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()) < 60 THEN CONCAT(TIMESTAMPDIFF(MINUTE, vacancy.created_at, NOW()), ' минут назад')
@@ -206,15 +207,39 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 5 THEN 'на проверке'
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
+                    WHEN status = 8 THEN 'создан'
+                    WHEN status = 9 THEN 'на доработке'
+                    WHEN status = 10 THEN 'отменен'
                     END as status_text"),
             DB::raw("CONCAT(Executor.last_name, ' ', Executor.first_name, ' ', Executor.middle_name ) as executor_name"),
             DB::raw("CONCAT(Owner.last_name, ' ', Owner.first_name, ' ', Owner.middle_name ) as owner_name"),
         ];
-        $countNew = DB::table((new EmployeeOfferResponse())->getTable())->selectRaw("COUNT(*) as count_new_vacancy")
-            ->where([['user_id', \auth()->id()]])->first();
-        $res = (new VacancyLogic($data, $select))
-            ->setJoin(['Region', 'City', 'Executor', 'Owner'])->order('desc', 'id')->getList();
-        $res['count_new'] = $countNew->count_new_vacancy;
+        $countNew = 0;
+        $list = (new VacancyLogic(['status' => '1'], $select))
+            ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOffer'])->order('desc', 'id')->getList()['result'];
+        foreach ($list as $item) {
+            if ($item['lawyers_offers']) {
+                foreach (json_decode($item['lawyers_offers'], true) as $piece) {
+//                    dd($piece);
+                    if (\auth()->id() == $piece['employee_user_id']) {
+                        $countNew++;
+                    }
+                }
+
+            }
+        }
+//        dd($data);
+        if (isset($data['status']) && $data['status'] == 1) {
+            unset($data['executor_id']);
+            $res = (new VacancyLogic($data, $select))
+                ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOfferFromExactEmployee', 'VacancyOffer'])->order('desc', 'id')->getList();;
+//            dd($res);
+        } else {
+            $res = (new VacancyLogic($data, $select))
+                ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOffer'])->order('desc', 'id')->getList();
+        }
+
+        $res['count_new'] = $countNew;
         return $res;
 
     }
@@ -376,6 +401,7 @@ class VacancyLogic extends CoreEngine
     protected function compileGroupParams(): array
     {
         $userId = $this->params['user_id'] ?? '';
+        $currentUserId = (string)\auth()->id();
         $vacancyId = $this->params['id'] ?? '';
         $this->group_params = [
             'select' => [],
@@ -409,11 +435,20 @@ class VacancyLogic extends CoreEngine
                 'VacancyOffer' => [
                     'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
                                 JSON_OBJECT('id', id, 'payment', payment, 'employee_response_id',
-                                employee_response_id)) as lawyers_offers,
+                                employee_response_id, 'employee_user_id', employee_user_id)) as lawyers_offers,
                                 JSON_LENGTH(JSON_ARRAYAGG(JSON_OBJECT('id', id, 'payment', payment,
                                 'employee_response_id', employee_response_id))) as count_offers,
                                 vacancy_id FROM vacancy_offer GROUP BY vacancy_id) as VacancyOffer ON VacancyOffer.vacancy_id = vacancy.id"),
                     'field' => ['lawyers_offers', 'count_offers']
+                ],
+                'VacancyOfferFromExactEmployee' => [
+                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
+                                JSON_OBJECT('id', id, 'payment', payment, 'employee_response_id',
+                                employee_response_id, 'employee_user_id', employee_user_id)) as my_offer,
+                                vacancy_id FROM vacancy_offer WHERE employee_user_id = $currentUserId
+                                 GROUP BY vacancy_id) as VacancyOfferFromExactEmployee ON VacancyOfferFromExactEmployee.vacancy_id = vacancy.id"),
+                    'type' => 'inner',
+                    'field' => ['my_offer']
                 ],
                 'Service' => [
                     'entity' => new Service(),

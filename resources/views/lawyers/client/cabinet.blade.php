@@ -213,7 +213,7 @@
                                         </p>
                                         <p class='my-orders_price'>
                                             @{{ vacancy.payment }} руб.
-                                        <span>0 ответов</span>
+                                        <span v-if=\"vacancy.status == 1\">@{{ vacancy.count_offers ?? 0 }} ответов</span>
                                         </p>
                                     </div>
 

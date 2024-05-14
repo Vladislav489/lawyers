@@ -164,11 +164,11 @@ class simpleGrid extends parentComponent {
     }
     createPaginationMore(){
         var $this = this;
-        if($("#"+this.id+"_footer").length == 0){
+        if($("#"+this.id+"_footer").length == 0 && this.data !='null' && Array.isArray(this.data)  &&  this.pagination['totalCount'] > this.data.length){
             let pagination = $("<div id='"+this.id+"_footer' class='simple_grid_footer'></div>").append($("<div class='pagination'></div>"));
             pagination.insertAfter("#"+this.id+"_body");
         }
-        $("<button class=\"more-services\">Еще</button>").click(function(){
+        $("<button class='more-services'>Еще</button>").click(function(){
             $this.pagination['page'] += 1;
             if($this.pagination['all_load'] == 0) {
                 $this.addloadFromAajax();
@@ -215,6 +215,22 @@ class simpleGrid extends parentComponent {
                 ul.append(li)
             }
         }
+        $(function(){
+            $('.pagination li').not('.button-right').not('.button-left').on('click', function(){
+                $('.pagination li').removeClass('active');
+                $(this).addClass('active');
+            });
+            $('.pagination li.button-right').on('click', function(){
+                var activeBtn = $(this).parent().find('li.active');
+                $(activeBtn).next('li').addClass('active');
+                $(activeBtn).removeClass('active');
+            });
+            $('.pagination li.button-left').on('click', function(){
+                var activeBtn = $(this).parent().find('li.active');
+                $(activeBtn).prev('li').addClass('active');
+                $(activeBtn).removeClass('active');
+            });
+        });
         // var pageNumbEnter = $("<div data-input_on='1' id='"+$this.id+"_numb'>...</div>").mouseenter(function(target){
         //     var obj = $(this);
         //     if(obj.data('input_on') == '1'){

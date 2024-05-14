@@ -72,7 +72,19 @@ class ClientMainstayController extends MainstayController {
 
     public function actionGetVacancies($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-        $select = ['*'];
+        $select = ['*',
+            DB::raw("CASE WHEN status = 1 THEN 'создан'
+                    WHEN status = 2 THEN 'на модерации'
+                    WHEN status = 3 THEN 'оплачен'
+                    WHEN status = 4 THEN 'в работе'
+                    WHEN status = 5 THEN 'на проверке'
+                    WHEN status = 6 THEN 'принят'
+                    WHEN status = 7 THEN 'закрыт'
+                    WHEN status = 8 THEN 'создан'
+                    WHEN status = 9 THEN 'на доработке'
+                    WHEN status = 10 THEN 'отменен'
+                    END as status_text"),
+            ];
 
         $result = (new VacancyLogic($this->params, $select))
             ->setJoin(['VacancyOffer', 'ChatMessage', 'VacancyGroup', 'VacancyGroupForApprove'])
@@ -86,7 +98,9 @@ class ClientMainstayController extends MainstayController {
 
         foreach ($res['result'] as $item) {
             if ($item['status'] == 1) {
-                $result['count_new'] += $item['count_offers'];
+                if ($item['lawyers_offers']) {
+                    $result['count_new']++;
+                }
             }
         }
 

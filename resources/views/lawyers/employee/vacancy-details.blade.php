@@ -302,8 +302,8 @@
                     </p>
 
                     <ul class='order-process_ul'>
-                        <li :class=\"currentStatusCode >= 1 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
-                        <li :class=\"currentStatusCode >= 3 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
+                        <li :class=\"currentStatusCode >= 1 ? '_check' : '_inProgress'\"><span></span>Создан новый заказ</li>
+                        <li :class=\"currentStatusCode >= 3 ? '_check' : '_inProgress'\"><span></span>Заказ оплачен</li>
                         <li :class=\"currentStatusCode >= 4 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Взят в работу</li>
                         <li :class=\"currentStatusCode >= 5 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Сдан на проверку</li>
                         <li :class=\"currentStatusCode >= 6 && currentStatusCode != 8 ? '_check' : '_inProgress'\"><span></span>Заказ принят</li>

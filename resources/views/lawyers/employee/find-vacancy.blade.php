@@ -258,9 +258,6 @@
 
                             <ul class='exchange_other-info'>
                                 <li>
-                                    <img src='/lawyers/images/icons/lil-eye-gray.svg' alt='eye-icon'>234
-                                </li>
-                                <li>
                                     <img src='/lawyers/images/icons/lil-clock-gray.svg' alt='clock-icon'>@{{ item.time_ago }}
                                 </li>
                                 <li>

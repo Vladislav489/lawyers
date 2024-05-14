@@ -384,7 +384,12 @@ class EmployeeLogic extends UserLogic
         $vacancy['period_start'] = $currentDateTime->toDateTimeString();
         $vacancy['period_end'] = $currentDateTime->addDays($employeeOffer['offer_period'])->toDateTimeString();
 
-        (new VacancyOfferLogic())->delete($vacancy['id']);
+//        $offers = (new VacancyOfferLogic())->offPagination()->getList()['result'];
+//
+//        foreach ($offers as $offer) {
+//            $this->helpEngine['offer_response']->delete($offer['employee_response_id']);
+//            $this->helpEngine['vacancy_offer']->delete($offer['id']);
+//        }
 
         $vacancy = setTimestamps($vacancy, 'update');
 
