@@ -4,10 +4,10 @@
 @section('content')
     <section class="find-section u-container">
         <div class="container">
-            <ul class="breadcrumbs">
-                <li class="cool-underline"><a href="#">Юрист</a></li>
-                <li class="cool-underline"><a href="#">Город</a></li>
-            </ul>
+{{--            <ul class="breadcrumbs">--}}
+{{--                <li class="cool-underline"><a href="#">Юрист</a></li>--}}
+{{--                <li class="cool-underline"><a href="#">Город</a></li>--}}
+{{--            </ul>--}}
 
             <form action="#" class="find-block find-form" id="search_form">
                 <label class="search-label">

@@ -15,10 +15,10 @@
 
 <section class="find-section u-container">
     <div class="container">
-        <ul class="breadcrumbs">
-            <li class="cool-underline"><a href="#">Юрист</a></li>
-            <li class="cool-underline"><a href="#">Город</a></li>
-        </ul>
+{{--        <ul class="breadcrumbs">--}}
+{{--            <li class="cool-underline"><a href="#">Юрист</a></li>--}}
+{{--            <li class="cool-underline"><a href="#">Город</a></li>--}}
+{{--        </ul>--}}
         <form action="#" class="find-block find-form mobile-hidden">
             <label class="search-label">
                 <input type="search" id="search-spec" name="search-spec" placeholder="Имя и фамилия специалиста...">
