@@ -47,10 +47,7 @@
                                                 <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
                                                 @{{ data.location }}
                                             </li>
-                                            <li class='fs-text'>
-                                                <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='bag-icon'>
-                                                Дистанционная консультация
-                                            </li>
+
                                         </ul>
 
                                         <ul class='exchange_other-info'>
@@ -267,7 +264,7 @@
             url: '{{ route__('actionSetExecutorForVacancy_mainstay_client_clientmainstaycontroller') }}',
             success: function (response) {
                 if (response) {
-                    window.location.href = `{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}`
+                    window.location.reload()
                 } else {
                     alert('error')
                 }
@@ -279,7 +276,6 @@
         let globalData = page__.getGolobalData('VacancyInfo')
         if (globalData.status == 8) {
             let component = page__.getElementsGroup('vacancy_offers')[0]['obj']
-            console.log(component);
             component.setUrlParams({executor_id: globalData.executor_id})
         }
     }

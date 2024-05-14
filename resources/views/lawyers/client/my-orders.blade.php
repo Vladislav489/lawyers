@@ -10,16 +10,12 @@
                             'params_component' => [
                                 'autostart' => 'true',
                                 'name' => 'offers',
-								'url' => route__('actionGetVacancyList_mainstay_vacancy_vacancymainstaycontroller'),
+								'url' => route__('actionGetVacancies_mainstay_client_clientmainstaycontroller'),
 								'params' => ['user_id' => auth()->id(), 'is_group' => 0],
                                 'template' =>
                             "
 <section class='gradient-bg u-container request-table-section'>
     <div class='container'>
-        <ul class='breadcrumbs mobile-hidden'>
-            <li class='cool-underline'><a href='#'>Юрист</a></li>
-            <li class='cool-underline'><a href='#'>Город</a></li>
-        </ul>
 
         <div class='request-table_container'>
             <nav class='lawsuit_nav'>
@@ -34,17 +30,20 @@
                 </form>
 
                 <ul>
-                    <li class='has_new' mark='line_mark'>
-                        <button type='button' @click.prevent=\"switchCategory(1)\">Новые <span>@{{ pagination.totalCount }}</span></button>
+                    <li mark='line_mark' class='active'>
+                        <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                    </li>
+                    <li mark='line_mark' class='has_new'>
+                        <button type='button' @click.prevent=\"switchCategory(1)\">Отклики <span>@{{ count_new_items }}</span></button>
+                    </li>
+                    <li mark='line_mark'>
+                        <button type='button' @click.prevent=\"switchCategory(4)\">В работе</button>
                     </li>
                     <li mark='line_mark'>
                         <button type='button' @click.prevent=\"switchCategory(7)\">Выполненные</button>
                     </li>
                     <li mark='line_mark'>
-                        <button type='button' @click.prevent=\"switchCategory(8)\">Отмененные</button>
-                    </li>
-                    <li class='active' mark='line_mark'>
-                        <button type='button' @click.prevent=\"switchCategory(null)\">Все</button>
+                        <button type='button' @click.prevent=\"switchCategory(10)\">Отмененные</button>
                     </li>
                 </ul>
             </nav>
@@ -62,10 +61,10 @@
                 <tr v-for=\"vacancy in data\" @click.prevent=\"goToVacancyPage(vacancy.id)\">
                     <td class='description'>@{{ vacancy.title }}</td>
                     <td>@{{ vacancy.executor_name }}</td>
-                    <td>@{{ vacancy.at_work_from ?? '---' }}</td>
-                    <td>@{{ vacancy.at_work_to ?? '---' }}</td>
+                    <td>@{{ vacancy.period_start ?? '---' }}</td>
+                    <td>@{{ vacancy.period_end ?? '---' }}</td>
                     <td>@{{ vacancy.payment }} &#8381;</td>
-                    <td class='status _moderation'>@{{ vacancy.status_text }}</td>
+                    <td class='status _moderation' :class=\"{'_success': vacancy.status == 7, '_error': vacancy.status == 10},\">@{{ vacancy.status_text }}</td>
                 </tr>
             </table>
 
@@ -77,7 +76,9 @@
 
                     <div class='request-row'>
                         <span class='request-row_left'>Статус</span>
-                        <span class='request-row_right status _moderation'>@{{ vacancy.status_text }}</span>
+                        <span class='request-row_right status'
+                        :class=\"{'_success': vacancy.status == 7}\"
+                        >@{{ vacancy.status_text }}</span>
                     </div>
 
                     <div class='request-row'>

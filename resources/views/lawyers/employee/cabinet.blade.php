@@ -136,7 +136,9 @@
                                 <li v-for=\"vacancy in data\" @click.prevent=\"goToVacancyPage(vacancy.id)\">
                                     <div class='my-orders_info'>
                                         <p class='my-orders_text'>@{{ vacancy.title }}</p>
-                                        <p class='my-orders_price'>@{{ vacancy.payment }} руб. <span>0 ответов</span></p>
+                                        <p class='my-orders_price'>@{{ vacancy.payment }} руб.
+                                        <!--<span v-if=\"vacancy.status == 1\">@{{ vacancy.count_offers }} ответов</span>-->
+                                        </p>
                                         <p class='my-orders_time'>@{{ vacancy.time_ago }}</p>
                                     </div>
 
