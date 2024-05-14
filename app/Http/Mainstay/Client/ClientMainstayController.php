@@ -145,7 +145,7 @@ class ClientMainstayController extends MainstayController {
             'employee_user_id' => 'required|integer|exists:user_entity,id',
             'text' => 'nullable|string',
             'rating' => 'required|integer',
-            'files' => 'nullable|file'
+            'files' => 'nullable|array'
         ];
 
         $data = Validator::validate($this->params, $rules);
