@@ -285,7 +285,7 @@
                                     <div class='lawyer_rate-block'>
                                         <div class='specialist-rate'>
                                             <div class='stars'><span style='width:80%;'></span></div>
-                                            <p>32 ответа</p>
+                                            <!--<p>32 ответа</p>-->
                                         </div>
                                     </div>
 
