@@ -84,6 +84,9 @@ class VacancyLogic extends CoreEngine
                 $vacancy['id'] = $data['id'];
             }
             if ($data['id'] = $this->save($vacancy)) {
+                $data['file_type'] = FileLogic::TYPE_VACANCY;
+                $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
+
                 if (isset($vacancy['id'])) {
                     if (isset($data['status'])) {
                         $this->addToStatusLog($data, $data['status']);
@@ -91,12 +94,12 @@ class VacancyLogic extends CoreEngine
                 } else {
                     $this->addToStatusLog($data, self::STATUS_NEW);
                     if (isset($data['executor_id'])) {
+                        unset($data['files']);
                         $this->setExecutor($data);
                     }
                 }
 
-                $data['file_type'] = FileLogic::TYPE_VACANCY;
-                $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
+
                 return $data;
             }
 
@@ -506,6 +509,7 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 5 THEN 'на проверке'
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
+                    WHEN status = 8 THEN 'ожидает принятия'
                     END,
                     'id', id, 'status_code', status, 'time', DATE_FORMAT(created_at, '%H:%i'), 'date', DATE_FORMAT(created_at, '%e %M'))) as status_history, vacancy_id
                     FROM vacancy_status_log GROUP BY vacancy_id) as Status ON Status.vacancy_id = vacancy.id"),
