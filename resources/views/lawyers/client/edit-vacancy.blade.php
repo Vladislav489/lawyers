@@ -301,7 +301,6 @@
 
         function showFilesInfo() {
             $('ul.attached-files > li').remove()
-            $('ul.attached-files > div').remove()
             let names = [];
             for (var i = 0; i < $("#files")[0].files.length; i++) {
                 names.push($("#files")[0].files.item(i).name);
@@ -310,8 +309,8 @@
                 $('label > span > img[alt = folder-icon]').remove()
                 $('label > span > div').remove()
                 $('.attached-files')
-                    .append('<li><img src="/lawyers/images/main/doc.png" alt="doc-type" class="file-type"></li>' +
-                        '<div>' + cutFileName(name) + '</div>')
+                    .append('<li><img src="/lawyers/images/main/doc.png" alt="doc-type" class="file-type">' +
+                        '<p class="upload_file_name">' + cutFileName(name) + '</p>'  + '</li>')
             })
         }
 
