@@ -1100,8 +1100,7 @@
                 .append('<li>' +
                     '<img id="preview" src="/lawyers/images/main/doc.png" alt="doc-type">' +
                     // '<span class="delete-img"></span>' +
-                    '</li>' +
-                    '<div>' + cutFileName(name) + '</div>'
+                    '<p class="upload_file_name">' + cutFileName(name) + '</p>'  + '</li>'
                 )
         })
     }

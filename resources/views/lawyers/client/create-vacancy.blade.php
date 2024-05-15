@@ -287,7 +287,7 @@
 
         function showFilesInfo() {
             $('ul.attached-files > li').remove()
-            $('ul.attached-files > div').remove()
+            //$('ul.attached-files > div').remove()
             let names = [];
             for(var i = 0; i < $("#files")[0].files.length; i++){
                 names.push($("#files")[0].files.item(i).name);
@@ -299,8 +299,7 @@
                     .append('<li>' +
                         '<img id="preview" src="/lawyers/images/main/doc.png" alt="doc-type">' +
                         // '<span class="delete-img"></span>' +
-                        '</li>' +
-                        '<div>' + cutFileName(name) + '</div>'
+                        '<p class="upload_file_name">' + cutFileName(name) + '</p>'  + '</li>'
                         )
             })
         }
