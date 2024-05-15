@@ -164,6 +164,7 @@
                                     'autostart' => 'true',
                                     'name' => 'service_list',
                                     'url' => route__("actionGetServices_mainstay_employee_employeemainstaycontroller"), // получаем список EmployeeServices!!!!
+                                    'params' => ['user_id' => request()->route('employee_id')],
 
                                     'template' => "<ul class=\"lawyer-services_block\" :id=\"name + '_body'\">
                                         <li v-for=\"item in data\" class=\"lawyer-service_line\" style=\"justify-content: space-between;\">
@@ -178,8 +179,8 @@
                                             </div>
 
                                             <div class=\"lawyer-service_price\">
-                                                <span>500&#8381;</span>
-                                                <button class=\"main-btn main-btn_white\">Заказать услугу</button>
+                                                <span>@{{ item.price }}&#8381;</span>
+                                                <button class=\"main-btn main-btn_white\" @click.prevent=\"orderService(item.service_id, item.user_id)\">Заказать услугу</button>
                                             </div>
                                         </li>
                                     </ul>",
@@ -444,6 +445,10 @@
             }
 
             myMap.geoObjects.add(myPlacemark);
+        }
+
+        function orderService(serviceId, employeeId) {
+            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?service_id=${serviceId}&employee_id=${employeeId}`
         }
 
         function agetostr(age) {

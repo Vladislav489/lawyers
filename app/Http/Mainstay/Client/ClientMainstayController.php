@@ -80,7 +80,7 @@ class ClientMainstayController extends MainstayController {
                     WHEN status = 5 THEN 'на проверке'
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
-                    WHEN status = 8 THEN 'создан'
+                    WHEN status = 8 THEN 'ожидает подтверждения'
                     WHEN status = 9 THEN 'на доработке'
                     WHEN status = 10 THEN 'отменен'
                     END as status_text"),

@@ -10,6 +10,9 @@
             <div class="request-form">
                 <div class="form-rows">
 
+                    <input type="hidden" name="service_id" value="{{ $serviceId }}">
+                    <input type="hidden" name="executor_id" value="{{ $employeeId }}">
+
                         @include('component_build', [
                             'component' => 'component.infoComponent.textInfo',
                             'params_component' => [
@@ -144,11 +147,10 @@
                         <div class="form-row form-row_price">
                             <h3 class="form-row_header">Какая услуга вас интересует?</h3>
 
-                            <label class="form-row_label">
-                                <input type="radio" name="request-price" value="by_agreement">
+                            <label class="form-row_label" >
+                                <input type="radio" name="request-price" value="by_agreement" checked>
                                 <span class="form-row_text">По договоренности с юристом</span>
                             </label>
-
                             <label class="form-row_label">
                                 <input type="radio" name="request-price" value="set_price">
                                 <span class="form-row_text">
@@ -218,7 +220,6 @@
             })
             setPaymentType()
             deleteFile()
-
         })
 
         function setData() {
@@ -227,6 +228,7 @@
             formData.append('description', $('[mark = description]').val())
             formData.append('title', $('[mark = title]').val())
             formData.append('payment', setPaymentType())
+            formData.append('executor_id', $('[name = executor_id]').val())
             return formData
         }
 

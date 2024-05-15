@@ -83,7 +83,6 @@ class VacancyLogic extends CoreEngine
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
             }
-
             if ($data['id'] = $this->save($vacancy)) {
                 if (isset($vacancy['id'])) {
                     if (isset($data['status'])) {
@@ -91,7 +90,11 @@ class VacancyLogic extends CoreEngine
                     }
                 } else {
                     $this->addToStatusLog($data, self::STATUS_NEW);
+                    if (isset($data['executor_id'])) {
+                        $this->setExecutor($data);
+                    }
                 }
+
                 $data['file_type'] = FileLogic::TYPE_VACANCY;
                 $data = (new FileLogic())->store($data, FileLogic::FILE_VACANCY);
                 return $data;
@@ -105,7 +108,9 @@ class VacancyLogic extends CoreEngine
 
     public function setExecutor($data) {
         if ($this->payToLawyer($data)) {
-            $data['id'] = $data['vacancy_id'];
+            if (!isset($data['id']) && isset($data['vacancy_id'])) {
+                $data['id'] = $data['vacancy_id'];
+            }
             $data['status'] = self::STATUS_LAWYER_ACCEPTANCE;
             return $this->store($data);
         }
@@ -179,7 +184,9 @@ class VacancyLogic extends CoreEngine
     public function payToLawyer($data)
     {
         // сама оплата
-        $data['id'] = $data['vacancy_id'];
+        if (!isset($data['id']) && isset($data['vacancy_id'])) {
+            $data['id'] = $data['vacancy_id'];
+        }
         $data['status'] = self::STATUS_PAYED;
         return $this->store($data);
     }
@@ -207,7 +214,7 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 5 THEN 'на проверке'
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
-                    WHEN status = 8 THEN 'создан'
+                    WHEN status = 8 THEN 'ожидает подтверждения'
                     WHEN status = 9 THEN 'на доработке'
                     WHEN status = 10 THEN 'отменен'
                     END as status_text"),
@@ -219,24 +226,25 @@ class VacancyLogic extends CoreEngine
             ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOffer'])->order('desc', 'id')->getList()['result'];
         foreach ($list as $item) {
             if ($item['lawyers_offers']) {
-                foreach (json_decode($item['lawyers_offers'], true) as $piece) {
-//                    dd($piece);
-                    if (\auth()->id() == $piece['employee_user_id']) {
+                foreach (json_decode($item['lawyers_offers'], true) as $offer) {
+                    if (\auth()->id() == $offer['employee_user_id']) {
                         $countNew++;
                     }
                 }
 
             }
         }
-//        dd($data);
         if (isset($data['status']) && $data['status'] == 1) {
             unset($data['executor_id']);
             $res = (new VacancyLogic($data, $select))
                 ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOfferFromExactEmployee', 'VacancyOffer'])->order('desc', 'id')->getList();;
-//            dd($res);
         } else {
             $res = (new VacancyLogic($data, $select))
                 ->setJoin(['Region', 'City', 'Executor', 'Owner', 'VacancyOffer'])->order('desc', 'id')->getList();
+        }
+
+        foreach ($res['result'] as $index => $value) {
+            $res['result'][$index]['auth_id'] = \auth()->id();
         }
 
         $res['count_new'] = $countNew;
