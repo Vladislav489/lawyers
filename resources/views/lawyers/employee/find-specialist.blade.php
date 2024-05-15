@@ -298,7 +298,7 @@
                                 </div>
 
                                 <div class='buttons-container'>
-                                    <button class='main-btn main-btn_blue'>Заказать звонок</button>
+                                    <button class='main-btn main-btn_blue' @click.prevent=\"order(item.user_id)\">Заказать</button>
                                     <button class='main-btn main-btn_white'>Сообщение</button>
                                 </div>
                             </div>
@@ -325,6 +325,10 @@
             filter()
             resetFilters()
         })
+
+        function order(employeeId) {
+            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?employee_id=${employeeId}`
+        }
 
         function filter() {
             $('#send').on('click', function (e) {

@@ -32,21 +32,29 @@ class VacancyMainstayController extends MainstayController
     public function actionVacancyStore($param = []) {
         $this->params = empty($param) ? $this->params : $param;
         $user = \auth()->user();
+        $messages = [
+            'required' => 'Поле обязательно к заполнению',
+            'integer'    => 'Поле обязательно к заполнению',
+            'max' => 'Максимальная длина :max символов',
+            'min'      => 'Минимальная длина :min символов',
+        ];
         $rules = [
             'service_id' => 'required|integer|exists:service,id',
             'title' => 'required|string|min:5|max:150',
             'description' => 'required|string|min:5|max:1200',
             'payment' => 'required',
             'files' => 'array|nullable',
-            'files.*' => 'file|max:5120'
+            'files.*' => 'file|max:5120',
+            'executor_id' => 'nullable|integer|exists:user_entity,id'
         ];
-        $data = Validator::validate($this->params, $rules);
+        $data = Validator::validate($this->params, $rules, $messages);
         $data['status'] = VacancyLogic::STATUS_NEW;
         $data['priority_id'] = 1;
         $data['user_id'] = $user->id;
         $data['region_id'] = $user->region_id;
         $data['city_id'] = $user->city_id;
 
+//        dd($data);
         return response()->json((new VacancyLogic(['user_id' => $user->id]))->store($data));
     }
 

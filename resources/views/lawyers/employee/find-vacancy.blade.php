@@ -237,6 +237,7 @@
                 <h2 class='find-section_header mobile-hidden'>Найдено: <span>@{{ pagination.totalCount }} предложений</span></h2>
                 <div class='exchange' v-for=\"item in data\">
                     <div class='exchange_left' @click=\"viewVacancy(item.id)\">
+                    <!--<p v-if=\"item.lawyers_offers && JSON.parse(item.lawyers_offers).find(i => i.employee_user_id == item.auth_id)\">отклик доставлен</p>-->
                         <h3 class='exchange_title'>
                             <span>@{{ item.title }}</span>
                         </h3>
