@@ -20,23 +20,27 @@ class ClientMainstayController extends MainstayController {
 
     public function actionStoreClient(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-//        dd($this->params, Region::class);
         $rules = [
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-//            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'password' => 'required|string|confirmed',
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
             'middle_name' => 'nullable|string|max:64',
-//            'post_code' => 'required|string|max:7',
             'date_birthday' => 'required|date',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
             'region_id' => 'required|integer|exists:' . Region::class . ',id',
             'type_id' => 'required|integer|exists:' . UserType::class . ',id',
         ];
 
-        $validated = Validator::validate($this->params, $rules);
-//        $validated['modifier_id'] = 1;
+        $messages = [
+            'required' => 'Это обязательное поле',
+            'email.email' => 'Введите email в формате xxx@xxx.xx',
+            'email.unique' => 'Пользователь с таким email уже зарегистрирован',
+            'password.confirmed' => 'Пароль не совпадает',
+            'max' => 'Максимальная длина :max символов'
+        ];
+
+        $validated = Validator::validate($this->params, $rules ,$messages);
         if ($data = (new UserLogic())->save($validated)) {
             $credentials = ['email' => $data['email'], 'password' => $data['input_password']];
             return (new LoginController())->actionUserLogin($credentials);

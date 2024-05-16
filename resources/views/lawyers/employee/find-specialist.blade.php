@@ -298,7 +298,7 @@
                                 </div>
 
                                 <div class='buttons-container'>
-                                    <button class='main-btn main-btn_blue' @click.prevent=\"order(item.user_id)\">Заказать</button>
+                                    <button class='main-btn main-btn_blue' @click.prevent=\"order(item.user_id, item.full_name)\">Заказать</button>
                                     <button class='main-btn main-btn_white'>Сообщение</button>
                                 </div>
                             </div>
@@ -326,8 +326,8 @@
             resetFilters()
         })
 
-        function order(employeeId) {
-            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?employee_id=${employeeId}`
+        function order(employeeId, employeeName) {
+            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?employee_id=${employeeId}&employee_name=${employeeName}`
         }
 
         function filter() {

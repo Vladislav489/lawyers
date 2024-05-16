@@ -7,6 +7,7 @@ use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
 use App\Models\System\ControllersModel\MainstayController;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,9 +35,10 @@ class VacancyMainstayController extends MainstayController
         $user = \auth()->user();
         $messages = [
             'required' => 'Поле обязательно к заполнению',
-            'integer'    => 'Поле обязательно к заполнению',
+            'integer'    => 'Введите целочисленное значение',
             'max' => 'Максимальная длина :max символов',
             'min'      => 'Минимальная длина :min символов',
+            'files.*.max' => 'Максимальный размер файла 5 МБ'
         ];
         $rules = [
             'service_id' => 'required|integer|exists:service,id',
@@ -45,7 +47,8 @@ class VacancyMainstayController extends MainstayController
             'payment' => 'required',
             'files' => 'array|nullable',
             'files.*' => 'file|max:5120',
-            'executor_id' => 'nullable|integer|exists:user_entity,id'
+            'executor_id' => 'nullable|integer|exists:user_entity,id',
+            'period' => 'nullable|integer'
         ];
         $data = Validator::validate($this->params, $rules, $messages);
         $data['status'] = VacancyLogic::STATUS_NEW;
@@ -54,6 +57,12 @@ class VacancyMainstayController extends MainstayController
         $data['region_id'] = $user->region_id;
         $data['city_id'] = $user->city_id;
 
+        if ($data['period'] != 0) {
+            $currentTimeStamp = Carbon::now();
+            $data['period_start'] = $currentTimeStamp->toDateTimeString();
+            $data['period_end'] = $currentTimeStamp->addDays($data['period'])->toDateTimeString();
+        }
+        unset($data['period']);
 //        dd($data);
         return response()->json((new VacancyLogic(['user_id' => $user->id]))->store($data));
     }
@@ -61,6 +70,13 @@ class VacancyMainstayController extends MainstayController
     public function actionVacancyUpdate($param = []) {
         $this->params = empty($param) ? $this->params : $param;
         $userId = \auth()->id();
+        $messages = [
+            'required' => 'Поле обязательно к заполнению',
+            'integer'    => 'Введите целочисленное значение',
+            'max' => 'Максимальная длина :max символов',
+            'min'      => 'Минимальная длина :min символов',
+            'files.*.max' => 'Максимальный размер файла 5 МБ'
+        ];
         $rules = [
             'service_id' => 'required|integer|exists:service,id',
             'title' => 'required|string|min:5|max:150',
@@ -68,9 +84,10 @@ class VacancyMainstayController extends MainstayController
             'payment' => 'required',
             'files' => 'array|nullable',
             'files.*' => 'file|max:5120',
-            'id' => 'required|integer|exists:vacancy,id'
+            'id' => 'required|integer|exists:vacancy,id',
+            'period' => 'nullable|integer'
         ];
-        $data = Validator::validate($this->params, $rules);
+        $data = Validator::validate($this->params, $rules ,$messages);
         $data['user_id'] = $userId;
         return response()->json((new VacancyLogic(['user_id' => $userId]))->store($data));
     }

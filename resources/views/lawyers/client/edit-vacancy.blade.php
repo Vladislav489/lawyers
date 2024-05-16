@@ -30,72 +30,72 @@
             <div class="request-form">
                 <div class="form-rows">
 
-                    @include('component_build', [
-                        'component' => 'component.infoComponent.textInfo',
-                        'params_component' => [
-                            'autostart' => 'false',
-                            'ssr' => 'true',
-                            'name' => 'servicesForRadios',
-                            'url' => route__('actionGetServiceTypeList_mainstay_service_servicemainstaycontroller'),
-                            "callBeforloadComponent" => "function(component) {
-                                            component.option['type_id'] = page__.getGolobalData('VacancyInfo').service_type_id
-                                            return component.option
-                                        }",
-                            'callAfterloadComponent' => "function() {
-                                    $('[name=request-type]').change(function() {
-                                            if($(this).val() != undefined && $(this).val() != null) {
-                                            page__.getElement('service_id')['obj'].setUrlParams({'type_id': $(this).val()})
-                                         }
-                                    })
+{{--                    @include('component_build', [--}}
+{{--                        'component' => 'component.infoComponent.textInfo',--}}
+{{--                        'params_component' => [--}}
+{{--                            'autostart' => 'false',--}}
+{{--                            'ssr' => 'true',--}}
+{{--                            'name' => 'servicesForRadios',--}}
+{{--                            'url' => route__('actionGetServiceTypeList_mainstay_service_servicemainstaycontroller'),--}}
+{{--                            "callBeforloadComponent" => "function(component) {--}}
+{{--                                            component.option['type_id'] = page__.getGolobalData('VacancyInfo').service_type_id--}}
+{{--                                            return component.option--}}
+{{--                                        }",--}}
+{{--                            'callAfterloadComponent' => "function() {--}}
+{{--                                    $('[name=request-type]').change(function() {--}}
+{{--                                            if($(this).val() != undefined && $(this).val() != null) {--}}
+{{--                                            page__.getElement('service_id')['obj'].setUrlParams({'type_id': $(this).val()})--}}
+{{--                                         }--}}
+{{--                                    })--}}
 
-                                }",
-                            'template' =>
-                            "<div class='form-row form-row_radio'>
-                                <h3 class='form-row_header'>Какая услуга Вас интересует?</h3>
-                                <label  v-for=\"item in data\" class='form-row_label'>
-                                   <input type='radio' name='request-type' :value=\"item.id\" :checked=\"assertTrue(item.id, type_id)\">
-                                   <span class='form-row_text'>@{{ item.name }}</span>
-                                   <span class='form-row_subtext'>
-                                       @{{ item.description }}
-                                   </span>
-                                </label>
-                            </div>
-                            ",
-                        ]
-                    ])
+{{--                                }",--}}
+{{--                            'template' =>--}}
+{{--                            "<div class='form-row form-row_radio'>--}}
+{{--                                <h3 class='form-row_header'>Какая услуга Вас интересует?</h3>--}}
+{{--                                <label  v-for=\"item in data\" class='form-row_label'>--}}
+{{--                                   <input type='radio' name='request-type' :value=\"item.id\" :checked=\"assertTrue(item.id, type_id)\">--}}
+{{--                                   <span class='form-row_text'>@{{ item.name }}</span>--}}
+{{--                                   <span class='form-row_subtext'>--}}
+{{--                                       @{{ item.description }}--}}
+{{--                                   </span>--}}
+{{--                                </label>--}}
+{{--                            </div>--}}
+{{--                            ",--}}
+{{--                        ]--}}
+{{--                    ])--}}
 
-                    <div class="form-row form-row_all-services select">
-                        <h3 class="form-row_header">Все услуги</h3>
-                        @include('component_build',["component" => "component.listComponent.selectComponent",
-                            "params_component" => [
-                                "autostart" => 'false',
-                                "name" => 'service_id',
-                                "default_title" => 'Выберите сервис',
-								"url" => route__("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),
-//								"params" => ['type_id' => ],
-								"callBeforloadComponent" => "function(component) {
-								             component.option['service_id'] = page__.getGolobalData('VacancyInfo').service_id
-								             return component.option
-								}",
-                                "callAfterloadComponent" => "function() {
-                                   $('.js_select').select2({
-                                       language: {
-                                         noResults: function(){return 'Совпадений не найдено';},
-                                       }
-                                       });
-                                       $('.js_select').one('select2:open', function(e) {
-                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');
-                                   });
-                                }",
-                                "template" =>
-                                "
-                                <select class='form-row_header select-btn js_select' mark='service_id' :id=\"name\">
-                                    <option v-for=\"(items_ , index) in data\" :data-text=\"items_\" :value=\"index\" :selected=\"assertTrue(index, service_id)\">@{{items_}}</option>
-                                </select>
-                                "
-                            ]])
+{{--                    <div class="form-row form-row_all-services select">--}}
+{{--                        <h3 class="form-row_header">Все услуги</h3>--}}
+{{--                        @include('component_build',["component" => "component.listComponent.selectComponent",--}}
+{{--                            "params_component" => [--}}
+{{--                                "autostart" => 'false',--}}
+{{--                                "name" => 'service_id',--}}
+{{--                                "default_title" => 'Выберите сервис',--}}
+{{--								"url" => route__("actionGetServiceListForSelect_mainstay_service_servicemainstaycontroller"),--}}
+{{--//								"params" => ['type_id' => ],--}}
+{{--								"callBeforloadComponent" => "function(component) {--}}
+{{--								             component.option['service_id'] = page__.getGolobalData('VacancyInfo').service_id--}}
+{{--								             return component.option--}}
+{{--								}",--}}
+{{--                                "callAfterloadComponent" => "function() {--}}
+{{--                                   $('.js_select').select2({--}}
+{{--                                       language: {--}}
+{{--                                         noResults: function(){return 'Совпадений не найдено';},--}}
+{{--                                       }--}}
+{{--                                       });--}}
+{{--                                       $('.js_select').one('select2:open', function(e) {--}}
+{{--                                       $('input.select2-search__field').prop('placeholder', 'Поиск...');--}}
+{{--                                   });--}}
+{{--                                }",--}}
+{{--                                "template" =>--}}
+{{--                                "--}}
+{{--                                <select class='form-row_header select-btn js_select' mark='service_id' :id=\"name\">--}}
+{{--                                    <option v-for=\"(items_ , index) in data\" :data-text=\"items_\" :value=\"index\" :selected=\"assertTrue(index, service_id)\">@{{items_}}</option>--}}
+{{--                                </select>--}}
+{{--                                "--}}
+{{--                            ]])--}}
 
-                    </div>
+{{--                    </div>--}}
 
                     <div class="form-row">
                         <h3 class="form-row_header">Мне нужно</h3>
@@ -104,6 +104,7 @@
                         <textarea name="what-i-need" mark="title" rows="3"
                                   placeholder="Например: Подготовить документы для регистрации ООО"></textarea>
                         </label>
+                        <span class="error_message" style="color: red;"></span>
                     </div>
 
                     <div class="form-row">
@@ -113,6 +114,7 @@
                         <textarea name="request-description" mark="description" rows="7"
                                   placeholder="Чем подробнее вы опишите детали вопроса или требования к документу, тем точнее юристы смогут оценить стоимость..."></textarea>
                         </label>
+                        <span class="error_message" style="color: red;"></span>
                     </div>
 
                     <div class="form-row">
@@ -140,6 +142,8 @@
                         <h3 class="form-row_header">Загрузить файлы</h3>
 
                         <label class="form-row_label form-row_files">
+                            <ul class="attached-files" mark="files">
+                            </ul>
                             <input type="file" name="files[]" id="files" multiple>
                             <span>
                                 <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
@@ -147,9 +151,9 @@
                                         Выберите файлы
                                     </div>
                             </span>
-                            <ul class="attached-files">
-                            </ul>
+
                         </label>
+                        <span class="error_message" style="color: red;"></span>
                     </div>
 
                     <div class="form-row form-row_price">
@@ -231,7 +235,7 @@
             setPaymentType()
             setTextAreasValues()
             setPaymentValue()
-            getDataForSelect()
+            // getDataForSelect()
         })
 
         function setData() {
@@ -282,7 +286,7 @@
                     let messages = error.responseJSON.errors
                     console.log(messages);
                     for (let elem in messages) {
-                        $('[mark = ' + elem + ']').after(`<div style="color: red">${messages[elem][0]}</div>`)
+                        $('[mark = ' + elem.replace(/\.[0-9]+/, '') + ']').parent().next('.error_message').text(messages[elem][0])
                     }
 
                 }

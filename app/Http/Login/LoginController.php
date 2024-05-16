@@ -45,7 +45,7 @@ class LoginController extends CentralController {
                 return redirect(route__('actionClientCabinet_controllers_client_clientcontroller'));
             }
         } else {
-            return redirect(route__('actionLogin_controllers_site_usercontroller'));
+            return redirect(route__('actionLogin_controllers_site_usercontroller'))->with('error', 'Неверный email или пароль');
         }
     }
 

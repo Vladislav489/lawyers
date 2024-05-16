@@ -30,22 +30,17 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionEmployeeStore(array $param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-//        dd($this->params);
         $rules = [
             'first_name' => 'required|string|max:64',
             'last_name' => 'required|string|max:64',
             'middle_name' => 'nullable|string|max:64',
             'date_birthday' => 'required|date',
-//            'phone_number' => 'required|string|max:128|unique:' . UserEntity::class . ',phone_number',
             'email' => 'required|string|max:128|email|unique:' . UserEntity::class . ',email',
-//            'post_code' => 'required|string|max:7',
             'city_id' => 'required|integer|exists:' . City::class . ',id',
             'region_id' => 'required|integer|exists:' . Region::class . ',id',
             'password' => 'required|string|confirmed',
-//            'consultation_price' => 'required|integer',
             'dt_practice_start' => 'required|date',
             'license_number' => 'nullable|string|max:128',
-//            'company_id' => 'required|integer|exists:' . Company::class . ',id',
             'cert_file' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
             'cert_description' => 'required|string|max:128',
             'avatar' => 'required|image|max:' . self::MAX_FILE_SIZE * 1024,
@@ -53,8 +48,18 @@ class EmployeeMainstayController extends MainstayController
             'modifier_id' => 'required|integer|exists:' . UserModifier::class . ',id',
             ];
 
-        $validated = Validator::validate($this->params, $rules);
-//        dd($validated);
+        $messages = [
+            'required' => 'Это обязательное поле',
+            'max' => 'Максимальная длина :max символов',
+            'image' => 'Допустимые форматы: jpg, jpeg, png, bmp, svg или webp',
+            'email.email' => 'Введите email в формате xxx@xxx.xx',
+            'email.unique' => 'Пользователь с таким email уже зарегистрирован',
+            'password.confirmed' => 'Пароль не совпадает',
+            'cert_file.max' => 'Максимальный размер файла :max байт',
+            'avatar.max' => 'Максимальный размер файла :max байт',
+        ];
+
+        $validated = Validator::validate($this->params, $rules, $messages);
         if ($data = (new EmployeeLogic())->save($validated)) {
             $credentials = ['email' => $data['email'], 'password' => $data['input_password']];
             return (new LoginController())->actionUserLogin($credentials);
