@@ -18,8 +18,9 @@ class ClientController extends BaseClientController
 
     public function actionCreateVacancy() {
         $employeeId = request()->get('employee_id');
+        $employeeName = request()->get('employee_name');
         $serviceId = request()->get('service_id');
-        return view('lawyers.client.create-vacancy', compact('employeeId', 'serviceId'));
+        return view('lawyers.client.create-vacancy', compact('employeeId', 'serviceId', 'employeeName'));
     }
 
     public function actionMyOrders() {

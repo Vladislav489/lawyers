@@ -372,8 +372,7 @@ class EmployeeLogic extends UserLogic
         return false;
     }
 
-    public function acceptWork($data)
-    {
+    public function acceptWork($data) {
         $employeeOffer = (new self($data, [DB::raw("Offer.period as offer_period")]))->setJoin(['Offer'])->getOne();
         $currentDateTime = Carbon::now();
 
@@ -381,8 +380,10 @@ class EmployeeLogic extends UserLogic
         $vacancy['executor_id'] = $data['employee_user_id'];
         $vacancy['status'] = VacancyLogic::STATUS_IN_PROGRESS;
 
-        $vacancy['period_start'] = $currentDateTime->toDateTimeString();
-        $vacancy['period_end'] = $currentDateTime->addDays($employeeOffer['offer_period'])->toDateTimeString();
+        if (!empty($employeeOffer) && isset($employeeOffer['offer_period'])) {
+            $vacancy['period_start'] = $currentDateTime->toDateTimeString();
+            $vacancy['period_end'] = $currentDateTime->addDays($employeeOffer['offer_period'])->toDateTimeString();
+        }
 
 //        $offers = (new VacancyOfferLogic())->offPagination()->getList()['result'];
 //
@@ -394,7 +395,7 @@ class EmployeeLogic extends UserLogic
         $vacancy = setTimestamps($vacancy, 'update');
 
         if ((new VacancyLogic())->store($vacancy)) {
-            return ['message' => "you've accept a job offer"];
+            return ['message' => "you've accept a job"];
         }
         return false;
     }

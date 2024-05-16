@@ -5,28 +5,28 @@
         <label class="label-title">Имя*</label>
         <input type="text" name="first_name" placeholder="Имя*" value="{{ old('first_name') }}">
         @error('first_name')
-        <div>{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
     <div class="registration-form_label">
         <label class="label-title">Фамилия*</label>
         <input type="text" name="last_name" placeholder="Фамилия*" value="{{ old('last_name') }}">
         @error('last_name')
-        <div style="color: red">{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
     <div class="registration-form_label">
         <label class="label-title">Отчество</label>
         <input type="text" name="middle_name" placeholder="Отчество" value="{{ old('middle_name') }}">
         @error('middle_name')
-        <div style="color: red">{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
     <div class="registration-form_label date-label">
         <label class="label-title">Дата рождения*</label>
         <input type="date" name="date_birthday" placeholder="Дата рождения*" value="{{ old('date_birthday') }}">
         @error('date_birthday')
-        <div style="color: red">{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
 {{--    <div class="registration-form_label">--}}
@@ -40,7 +40,7 @@
         <label class="label-title">Электронная почта*</label>
         <input type="email" name="email" placeholder="Электронная почта*" value="{{ old('email') }}">
         @error('email')
-        <div style="color: red">{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
 </div>
@@ -67,7 +67,7 @@
         <label class="label-title">Пароль*</label>
         <input type="password" name="password" placeholder="Пароль*">
         @error('password')
-        <div style="color: red">{{ $message }}</div>
+        <span style="color: red">{{ $message }}</span>
         @enderror
     </div>
     <div class="registration-form_label full">

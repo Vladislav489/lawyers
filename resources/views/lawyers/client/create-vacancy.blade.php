@@ -10,8 +10,12 @@
             <div class="request-form">
                 <div class="form-rows">
 
-                    <input type="hidden" name="service_id" value="{{ $serviceId }}">
+                    <input type="hidden" name="employee_service_id" value="{{ $serviceId }}">
                     <input type="hidden" name="executor_id" value="{{ $employeeId }}">
+
+                    @if($employeeName)
+                        <p>Заказ для {{ $employeeName }}</p>
+                    @endif
 
                         @include('component_build', [
                             'component' => 'component.infoComponent.textInfo',
@@ -62,6 +66,7 @@
                                 "template" =>
                                 '<div class="form-row form-row_all-services select">
                                     <h3 class="form-row_header">Категория услуг</h3>
+                                    <span class="error_message" style="color: red;"></span>
                                     <select class="form-row_header select-btn js_select" mark="service_type_id" :id="name">
                                         <option>Выбрать</option>
                                         <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
@@ -96,13 +101,18 @@
 
 								}",
                                 "template" =>
-                                '<div class="form-row form-row_all-services select">
-                                    <h3 class="form-row_header">Тема услуги</h3>
-                                    <select class="form-row_header select-btn js_select" mark="service_id" :id="name">
+                                '
+                                <div>
+                                <div class="form-row form-row_all-services select">
+                                    <h3 class="form-row_header" mark="service_id">Тема услуги</h3>
+                                    <select class="form-row_header select-btn js_select" name="service_id" :id="name">
                                         <option>Выбрать</option>
                                         <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                     </select>
-                                </div>'
+                                </div>
+                                <span class="error_message" style="color: red;"></span>
+                                </div>
+                                '
                         ]])
 
 
@@ -111,25 +121,25 @@
                         <h3 class="form-row_header">Мне нужно</h3>
 
                         <label class="form-row_label">
-                        <textarea name="what-i-need" mark="title" rows="3"
+                        <textarea name="title" mark="title" rows="3"
                                   placeholder="Например: Подготовить документы для регистрации ООО"></textarea>
                         </label>
+                        <span class="error_message" style="color: red;"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <h3 class="form-row_header">Подробное описание вопроса</h3>
+                        <label class="form-row_label">
+                            <textarea mark="description" name="description" rows="7"
+                                      placeholder="Чем подробнее вы опишите детали вопроса или требования к документу, тем точнее юристы смогут оценить стоимость..."></textarea>
+                        </label>
+                        <span class="error_message" style="color: red;"></span>
                     </div>
 
                         <div class="form-row">
-                            <h3 class="form-row_header">Подробное описание вопроса</h3>
-
-                            <label class="form-row_label">
-                        <textarea name="request-description" mark="description" rows="7"
-                                  placeholder="Чем подробнее вы опишите детали вопроса или требования к документу, тем точнее юристы смогут оценить стоимость..."></textarea>
-                            </label>
-                        </div>
-
-                        <div class="form-row">
                             <h3 class="form-row_header">Прикрепленные файлы</h3>
-
                             <label class="form-row_label form-row_files">
-                                <ul class="attached-files">
+                                <ul class="attached-files" mark="files">
 
                                 </ul>
                                 <input type="file" name="files[]" id="files" multiple>
@@ -138,26 +148,37 @@
                                     <div>
                                         Выберите файлы
                                     </div>
-                            </span>
-
+                                </span>
                             </label>
-
+                            <span class="error_message" style="color: red;"></span>
                         </div>
 
                         <div class="form-row form-row_price">
                             <h3 class="form-row_header">Какая услуга вас интересует?</h3>
 
+                            @if(!$employeeId)
                             <label class="form-row_label" >
                                 <input type="radio" name="request-price" value="by_agreement" checked>
                                 <span class="form-row_text">По договоренности с юристом</span>
                             </label>
+                            @endif
                             <label class="form-row_label">
-                                <input type="radio" name="request-price" value="set_price">
+                                <input type="radio" name="request-price" value="set_price" @if($employeeId) checked @endif>
                                 <span class="form-row_text">
                                 Я планирую заплатить
-                                <input type="text" class="form-row_price-input" id="price" placeholder="Сумма" disabled> рублей
+                                <input type="text" class="form-row_price-input" id="price" placeholder="Сумма" @if(!$employeeId) disabled @endif value="1000"> рублей
+                                    <span class="error_message" style="color: red;"></span>
                             </span>
                             </label>
+                            @if($employeeId)
+                            <label class="">
+                                <span class="form-row_text">
+                                Выполнить за
+                                <input type="text" class="form-row_price-input" id="period" placeholder="Сумма" value="7"> дней
+                                    <span class="error_message" style="color: red;"></span>
+                            </span>
+                            </label>
+                            @endif
                         </div>
                     </div>
                     {{--<div class="form-row form-row_all-services select">
@@ -206,6 +227,7 @@
                             Я принимаю <a href="#">Правила</a> и <a href="#">Политику Конфидициальности</a>
                         </span>
                     </label>
+                    <span style="color: red;" id="policy_confirmation"></span>
                 </div>
             </div>
         </div>
@@ -224,11 +246,12 @@
 
         function setData() {
             const formData = setFiles()
-            formData.append('service_id', $('[mark = service_id]').val())
-            formData.append('description', $('[mark = description]').val())
-            formData.append('title', $('[mark = title]').val())
+            formData.append('service_id', $('[name = service_id]').val())
+            formData.append('description', $('[name = description]').val())
+            formData.append('title', $('[name = title]').val())
             formData.append('payment', setPaymentType())
             formData.append('executor_id', $('[name = executor_id]').val())
+            formData.append('period', $('#period').val() === undefined || $('#period').val() === null ? 0 : $('#period').val())
             return formData
         }
 
@@ -245,7 +268,6 @@
                 let priceField = $('#price')
                 priceField.val(null)
                 priceField.prop('disabled', true)
-                price = 0
                 if ($(this).val() === 'set_price') {
                     priceField.prop('disabled', false)
                     priceField.change(function () {
@@ -253,6 +275,9 @@
                     })
                 }
             })
+            if ($('input[type = radio][name = request-price]').val() == 'set_price') {
+                price = $('#price').val()
+            }
             return price
         }
 
@@ -267,12 +292,13 @@
                     window.location.href = '{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}'
                 },
                 error: function (error) {
-                    let messages = error.responseJSON.errors
-                    console.log(messages);
-                    for (let elem in messages) {
-                        $('[mark = ' + elem + ']').after(`<div style="color: red">${messages[elem][0]}</div>`)
+                    if (error.status == 422) {
+                        let messages = error.responseJSON.errors
+                        console.log(messages);
+                        for (let elem in messages) {
+                            $('[mark = ' + elem.replace(/\.[0-9]+/, '') + ']').parent().next('.error_message').text(messages[elem][0])
+                        }
                     }
-
                 }
 
             })
@@ -283,6 +309,8 @@
                 e.preventDefault()
                 if($('input[type = checkbox][name = private-policy]')[0].checked === true) {
                     sendData(setData())
+                } else {
+                    $('#policy_confirmation').text('Ознакомьтесь с правилами и политикой конфиденциальности')
                 }
             })
         }

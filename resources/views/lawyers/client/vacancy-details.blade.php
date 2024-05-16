@@ -289,7 +289,6 @@
                 'template' => "
                 <div class='order-process'>
                     <div class='order-process-lawyer'>
-                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='lawyer-avatar-img'>
                         <div class='right'>
                             <h4>@{{ data.owner_name }}</h4>
                             <time>@{{ data.owner_online ?? 'Был(а) давно' }}</time>

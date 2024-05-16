@@ -8,14 +8,6 @@
 
             @include('lawyers.user.includes.user-type-switch', ['lawyer' => 1])
 
-            @if($errors)
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
             <form
                 class="registration-form"
                 action="{{ route__('actionEmployeeStore_mainstay_employee_employeemainstaycontroller') }}"
@@ -62,7 +54,7 @@
                         <label class="label-title">Дата начала юр. практики</label>
                         <input type="date" name="dt_practice_start" placeholder="Дата начала юр. практики" value="{{ old('dt_practice_start') }}">
                         @error('dt_practice_start')
-                        <div style="color: red">{{ $message }}</div>
+                        <span style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="registration-form_label full">
@@ -79,7 +71,7 @@
                         <label class="label-title">Лицензионный номер</label>
                         <input type="text" name="license_number" placeholder="Лицензионный номер" value="{{ old('license_number') }}">
                         @error('license_number')
-                        <div style="color: red">{{ $message }}</div>
+                        <span style="color: red">{{ $message }}</span>
                         @enderror
                     </div>
 {{--                    <div class="registration-form_label">--}}
@@ -104,7 +96,7 @@
                     <div class='registration-form_label full' name='container'>
                         <label class='label-title' name='container_name'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
-                            <input type='file' class='form-row_files' name='cert_file' id='cert'>
+                            <input type='file' class='form-row_files' name='cert_file' id='cert' mark="cert_file">
                             <div data-img-container class='form-img-container'>
                             <span data-delete class='delete-img'></span>
                             <img id="preview" src="" alt="" width="100" height="100"/>
@@ -112,6 +104,9 @@
                             <span data-text class='load-file-text'>Загрузить файл</span>
                         </div>
                     </div>
+                    @error('cert_file')
+                    <span style="color: red">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Аватар</h3>
@@ -119,7 +114,7 @@
                     <div class='registration-form_label full' name='container'>
                         <label class='label-title' name='container_name'>Выберите файл</label>
                         <div class='form-row_files add-cert_btn' name='file_input'>
-                            <input type='file' class='form-row_files' name='avatar' id='avatar'>
+                            <input type='file' class='form-row_files' name='avatar' id='avatar' mark="avatar">
                             <div data-img-container class='form-img-container'>
                             <span data-delete class='delete-img'></span>
                             <img id="preview" src="" alt="" width="100" height="100"/>
@@ -127,6 +122,9 @@
                             <span data-text class='load-file-text'>Загрузить файл</span>
                         </div>
                     </div>
+                    @error('avatar')
+                    <span style="color: red">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <button type="submit" class="main-btn">Зарегистрироваться</button>

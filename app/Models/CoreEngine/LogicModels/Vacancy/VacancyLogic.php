@@ -79,7 +79,6 @@ class VacancyLogic extends CoreEngine
                 array_flip($this->engine->getFillable())
             );
             $vacancy = setTimestamps($vacancy, 'update');
-
             if (isset($data['id'])) {
                 $vacancy['id'] = $data['id'];
             }

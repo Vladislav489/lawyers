@@ -8,20 +8,17 @@
             <form class="registration-form" id="login-form" action="{{ route__('actionUserLogin_logincontroller') }}" method="post" enctype="application/x-www-form-urlencoded">
                 <div class="registration-form_block">
                     <h3 class="registration-form_block-header">Введите данные</h3>
+                    <p style="color: lightcoral">{{ session('error') }}</p>
                         @csrf
                             <div class="registration-form_label full">
                                 <label class="label-title" for="email">Электронная почта</label>
                                 <input id="email" placeholder="email.com" class="form-control @error('email') is-invalid @enderror" type="tel" name="email" value="{{ old('email') }}">
-                                @error('email')
-                                <div class="error-text">{{ $message }}</div>
-                                @enderror
+
                             </div>
                             <div class="registration-form_label full">
                                 <label class="label-title" for="password">Пароль</label>
                                 <input id="password" placeholder="Пароль" class="form-control @error('password') is-invalid @enderror" type="password" name="password" value="{{ old('password') }}">
-                                @error('password')
-                                <div class="error-text">{{ $message }}</div>
-                                @enderror
+
                             </div>
                         <button type="submit" class="main-btn">Войти</button>
                         @guest
