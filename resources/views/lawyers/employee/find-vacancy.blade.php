@@ -277,7 +277,7 @@
             'pagination'=>
             [
             'page'=> 1,
-            'pageSize'=> 3,
+            'pageSize'=> 20,
             'countPage'=> 1,
             'typePagination'=> 1,
             'showPagination'=> 1,
