@@ -143,7 +143,6 @@ class ClientMainstayController extends MainstayController {
 
     public function actionAcceptAndRateWork($param = []) {
         $this->params = (empty($param)) ? $this->params : $param;
-//        dd($this->params);
         $rules = [
             'vacancy_id' => 'required|integer|exists:vacancy,id',
             'employee_user_id' => 'required|integer|exists:user_entity,id',
@@ -155,6 +154,11 @@ class ClientMainstayController extends MainstayController {
         $data = Validator::validate($this->params, $rules);
         $data['user_id'] = auth()->id();
         return response()->json((new VacancyLogic())->rateWork($data));
+    }
+
+    public function actionDeleteVacancy($param = []) {
+        $this->params = (empty($param)) ? $this->params : $param;
+        return (new VacancyLogic())->deleteVacancy($this->params);
     }
 }
 

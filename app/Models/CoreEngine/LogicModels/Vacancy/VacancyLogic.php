@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class VacancyLogic extends CoreEngine
 {
@@ -155,16 +156,29 @@ class VacancyLogic extends CoreEngine
         return $this->helpEngine['status_log']->insert($logRow);
     }
 
-    public function deleteVacancy(array $data): bool
-    {
-        try {
-            // return Vacancy::find($data['id'])->delete();
-            $vacancy = $this->setModel(new Vacancy());
-            return $vacancy->delete($data['id']);
-        } catch (\Throwable $e) {
+    public function deleteVacancy(array $data): bool {
+        if (empty($data) || !isset($data['vacancy_id'])) {
+            return false;
         }
+        $vacancyId = $data['vacancy_id'];
+        $vacancy = (new VacancyLogic(['id' => $vacancyId]))->getOne();
+        if ($vacancy['status'] == self::STATUS_PAYED) {
+            $this->makeRefund($vacancy['payment']);
+        }
+        $vacancyFiles = (new FileLogic(['path_start' => 'vacancy/' . $vacancyId]))->getList()['result'];
+        if (!empty($vacancyFiles)) {
+            foreach ($vacancyFiles as $vacancyFile) {
+                Storage::delete($vacancyFile['path']);
+            }
+        }
+        if (empty($vacancy)) {
+            return false;
+        }
+        return $this->deleteForeva($vacancyId);
+    }
 
-        return false;
+    public function makeRefund($amount) {
+        // возвращение денег на счет
     }
 
     public function sendClosingDocs($data) {
@@ -279,7 +293,7 @@ class VacancyLogic extends CoreEngine
         $result['files'] = json_decode($result['files'], true);
         Carbon::setLocale('ru');
         $result['time_ago'] = max(Carbon::make($result['created_at'])->diffForHumans(), 0);
-        $result['time_left_to_accept'] = max(Carbon::now()->diffInHours(Carbon::make($result['updated_at'])->addHours(48), false), 0);
+        $result['time_left_to_accept'] = max(Carbon::now()->diffInHours(Carbon::make($result['updated_at'])->addHours(24), false), 0);
         return ['result' => $result];
     }
 
@@ -545,25 +559,30 @@ class VacancyLogic extends CoreEngine
     }
 
     public function triggerVacancyCancellationWhenLawyerNotAccept() {
-        $this->params = [
-            'status' => '8',
+        $params = [
+            'status' => (string) self::STATUS_LAWYER_ACCEPTANCE,
         ];
-        $vacancyList = $this->offPagination()->setLimit(false)->getList();
-        foreach ($vacancyList as $vacancy) {
-            if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(48), false) <= 0) {
-                (new EmployeeLogic())->declineWork([$vacancy['id'], $vacancy['executor_id']]);
+        $vacancyList = (new VacancyLogic($params))->offPagination()->setLimit(false)->getList()['result'];
+        if (!empty($vacancyList)) {
+            foreach ($vacancyList as $vacancy) {
+                if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(24), false) <= 0) {
+//                (new EmployeeLogic())->declineWork([$vacancy['id'], $vacancy['executor_id']]);
+                    $this->deleteVacancy(['vacancy_id' => (string) $vacancy['id']]);
+                }
             }
         }
     }
 
     public function triggerVacancyApprovingWhenClientNotAccept() {
-        $this->params = [
-            'status' => '5',
+        $params = [
+            'status' => (string) self::STATUS_INSPECTION,
         ];
-        $vacancyList = $this->offPagination()->setLimit(false)->getList();
-        foreach ($vacancyList as $vacancy) {
-            if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(48), false) <= 0) {
-                $this->acceptWorkDone($vacancy['id']);
+        $vacancyList = (new VacancyLogic($params))->offPagination()->setLimit(false)->getList()['result'];
+        if (!empty($vacancyList)) {
+            foreach ($vacancyList as $vacancy) {
+                if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(24), false) <= 0) {
+                    $this->acceptWorkDone($vacancy['id']);
+                }
             }
         }
     }

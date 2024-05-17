@@ -230,13 +230,16 @@ class EmployeeMainstayController extends MainstayController
 
     public function actionSendWorkToInspection($param = []) {
         $this->params = empty($param) ? $this->params : $param;
+        $messages = [
+            'required' => 'Это обязательное поле'
+        ];
         $rules = [
             'text' => 'required|string',
-            'files' => 'required|array',
+            'files' => 'nullable|array',
             'vacancy_id' => 'required|integer|exists:vacancy,id',
         ];
 
-        $data = Validator::validate($this->params, $rules);
+        $data = Validator::validate($this->params, $rules, $messages);
         $data['employee_user_id'] = auth()->id();
 
         return response()->json((new VacancyLogic())->sendClosingDocs($data));

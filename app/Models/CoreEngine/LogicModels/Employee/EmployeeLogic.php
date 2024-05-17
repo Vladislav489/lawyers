@@ -402,13 +402,14 @@ class EmployeeLogic extends UserLogic
 
     public function declineWork($data)
     {
-        // вернуть оплаченные деньги клиенту
-        (new VacancyLogic())->getVacancyLastStatus($data['vacancy_id']);
+        $logic = new VacancyLogic();
+        $logic->makeRefund($data['payment']);
+        $logic->getVacancyLastStatus($data['vacancy_id']);
         $vacancy['id'] = $data['vacancy_id'];
         $vacancy['executor_id'] = null;
 //        $vacancy['status'] = VacancyLogic::STATUS_NEW;
 //        $vacancy = setTimestamps($vacancy, 'update');
-        if ((new VacancyLogic())->store($vacancy)) {
+        if ($logic->store($vacancy)) {
             // кинуть клиенту оповещение об отказе
             return ['message' => "you've decline a job offer"];
         }

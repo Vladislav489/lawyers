@@ -66,7 +66,7 @@
                                 "template" =>
                                 '<div class="form-row form-row_all-services select">
                                     <h3 class="form-row_header">Категория услуг</h3>
-                                    <span class="error_message" style="color: red;"></span>
+                                    <span data-error style="color: red;"></span>
                                     <select class="form-row_header select-btn js_select" mark="service_type_id" :id="name">
                                         <option>Выбрать</option>
                                         <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
@@ -110,7 +110,7 @@
                                         <option v-for="(items_ , index) in data " :data-text="items_" :value="index">@{{items_}}</option>
                                     </select>
                                 </div>
-                                <span class="error_message" style="color: red;"></span>
+                                <span data-error style="color: red;"></span>
                                 </div>
                                 '
                         ]])
@@ -124,7 +124,7 @@
                         <textarea name="title" mark="title" rows="3"
                                   placeholder="Например: Подготовить документы для регистрации ООО"></textarea>
                         </label>
-                        <span class="error_message" style="color: red;"></span>
+                        <span data-error style="color: red;"></span>
                     </div>
 
                     <div class="form-row">
@@ -133,7 +133,7 @@
                             <textarea mark="description" name="description" rows="7"
                                       placeholder="Чем подробнее вы опишите детали вопроса или требования к документу, тем точнее юристы смогут оценить стоимость..."></textarea>
                         </label>
-                        <span class="error_message" style="color: red;"></span>
+                        <span data-error style="color: red;"></span>
                     </div>
 
                         <div class="form-row">
@@ -150,7 +150,7 @@
                                     </div>
                                 </span>
                             </label>
-                            <span class="error_message" style="color: red;"></span>
+                            <span data-error style="color: red;"></span>
                         </div>
 
                         <div class="form-row form-row_price">
@@ -167,7 +167,7 @@
                                 <span class="form-row_text">
                                 Я планирую заплатить
                                 <input type="text" class="form-row_price-input" id="price" placeholder="Сумма" @if(!$employeeId) disabled @endif value="1000"> рублей
-                                    <span class="error_message" style="color: red;"></span>
+                                    <span data-error style="color: red;"></span>
                             </span>
                             </label>
                             @if($employeeId)
@@ -175,7 +175,7 @@
                                 <span class="form-row_text">
                                 Выполнить за
                                 <input type="text" class="form-row_price-input" id="period" placeholder="Сумма" value="7"> дней
-                                    <span class="error_message" style="color: red;"></span>
+                                    <span data-error style="color: red;"></span>
                             </span>
                             </label>
                             @endif
@@ -294,9 +294,8 @@
                 error: function (error) {
                     if (error.status == 422) {
                         let messages = error.responseJSON.errors
-                        console.log(messages);
                         for (let elem in messages) {
-                            $('[mark = ' + elem.replace(/\.[0-9]+/, '') + ']').parent().next('.error_message').text(messages[elem][0])
+                            $('[mark = ' + elem.replace(/\.[0-9]+/, '') + ']').parent().next('[data-error]').text(messages[elem][0])
                         }
                     }
                 }
