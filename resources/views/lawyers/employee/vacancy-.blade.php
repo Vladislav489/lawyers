@@ -61,10 +61,6 @@
                                                 <img src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
                                                 @{{ data.location }}
                                             </li>
-                                            <li class='fs-text'>
-                                                <img src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon' class='bag-icon'>
-                                                Дистанционная консультация
-                                            </li>
                                         </ul>
 
                                         <ul class='exchange_other-info'>
@@ -211,6 +207,7 @@
                                                     </label>
                                                     <p>Я принимаю <a>Правила</a> и <a>Политику Конфидициальности</a></p>
                                                 </div>
+                                                <span style='color: red;' id='policy_confirmation'></span>
                                                 <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
                                                 <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
                                             </form>
@@ -264,6 +261,7 @@
                                                     </label>
                                                     <p>Я принимаю <a>Правила</a> и <a>Политику Конфидициальности</a></p>
                                                 </div>
+                                                <span style='color: red;' id='policy_confirmation'></span>
                                                 <input type='hidden' id='offer_id' :value=\"lawyerResponse.id\">
                                                 <input type='hidden' id='employee_response_id' :value=\"lawyerResponse.employee_response_id\">
                                             </form>
@@ -288,6 +286,8 @@
         function send() {
             if ($('.acceptance-checkbox').prop('checked')) {
                 sendRespondData(getResponseData())
+            } else {
+                $('#policy_confirmation').text('Ознакомьтесь с правилами и политикой конфиденциальности')
             }
         }
 

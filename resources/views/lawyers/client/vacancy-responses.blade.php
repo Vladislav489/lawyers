@@ -148,6 +148,7 @@
                     </ul>
                     <!-- <button class='main-btn main-btn_blue' @click.prevent=\"setEmployeeForOrder(item.employee_user_id)\">
                         <span class='first' @click.prevent=\"setEmployeeForOrder(employee_user_id)\">Заказать</span>
+                        <span class='first' @click.prevent=\"setEmployeeForOrder(employee_user_id)\">Заказать</span>
                         <span class='second'>Заказать</span>
                     </button>
                     <button class='main-btn main-btn_white'>

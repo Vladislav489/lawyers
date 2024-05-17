@@ -64,7 +64,7 @@
                     <td>@{{ vacancy.period_start ?? '---' }}</td>
                     <td>@{{ vacancy.period_end ?? '---' }}</td>
                     <td>@{{ vacancy.payment }} &#8381;</td>
-                    <td class='status _moderation' :class=\"{'_success': vacancy.status == 7, '_error': vacancy.status == 10},\">@{{ vacancy.status_text }}</td>
+                    <td class='status _moderation' :class=\"{'_success': vacancy.status == 7, '_error': vacancy.status == 10},\"><wbr/>@{{ vacancy.status_text }}</td>
                 </tr>
             </table>
 

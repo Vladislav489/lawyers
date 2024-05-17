@@ -211,6 +211,7 @@
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support' @click=\"sendToRedo(data.id)\">Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</a>
+                        <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete' @click=\"deleteOrder(data.id)\">Отменить заказ</button>
                         <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
                         <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         {{-- Тест --}}
@@ -1015,6 +1016,10 @@
                 icon = '/lawyers/images/icons/order-created-icon.svg'
                 info = `Заказ закрыт`
                 break
+            case 'ожидает принятия' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Заказ ожидает принятия`
+                break
         }
         return [info, icon]
     }
@@ -1049,6 +1054,23 @@
         })
     }
 
+    function deleteOrder(vacancyId) {
+        page__.sendData(
+            '{{ route__('actionDeleteVacancy_mainstay_client_clientmainstaycontroller') }}',
+            {vacancy_id: vacancyId},
+            function (response) {
+                if (response) {
+                    location.href = '{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}'
+                } else {
+                    alert('Что-то пошло не так')
+                }
+            },
+            function (error) {
+                alert('Что-то пошло не так')
+            }
+        )
+    }
+
     function getDataForSend() {
         let formData = new FormData()
         formData.append('rating', $('[name=rate]:checked').val())
@@ -1076,7 +1098,6 @@
                 }
             })
         })
-
     }
 
     function chooseRating() {

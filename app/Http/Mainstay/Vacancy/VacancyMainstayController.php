@@ -36,6 +36,7 @@ class VacancyMainstayController extends MainstayController
         $messages = [
             'required' => 'Поле обязательно к заполнению',
             'integer'    => 'Введите целочисленное значение',
+            'service_id.integer' => 'Поле обязательно к заполнению',
             'max' => 'Максимальная длина :max символов',
             'min'      => 'Минимальная длина :min символов',
             'files.*.max' => 'Максимальный размер файла 5 МБ'

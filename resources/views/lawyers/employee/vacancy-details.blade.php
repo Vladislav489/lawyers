@@ -233,10 +233,12 @@
 
             <div class="modal order-modal" id="modal_info">
                 <h5 class="order-modal_title">Укажите информацию</h5>
+                <span data-error mark="text" style="color: red"></span>
                 <div class="order-modal-content">
                     <textarea placeholder="Текст" name="order_closing_text"></textarea>
                     <div class="registration-form_label full">
                         <label class="label-title">Выберите файлы</label>
+                        <span data-error mark="files" style="color: red"></span>
 
                         <div class="form-row_files" id="file_input">
                             <ul class="attached-files">
@@ -1007,6 +1009,14 @@
                 success: function (response) {
                     if (response) {
                         location.reload()
+                    }
+                },
+                error: function (error) {
+                    if (error.status == 422) {
+                        let messages = error.responseJSON.errors
+                        for (let elem in messages) {
+                            $('[mark = ' + elem.replace(/\.[0-9]+/, '') + '][data-error]').text(messages[elem][0])
+                        }
                     }
                 }
             })
