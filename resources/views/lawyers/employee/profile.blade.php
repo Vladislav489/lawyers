@@ -80,7 +80,14 @@
                             ]
                         ])
 
+                    <div class="buttons-container">
+                        <button class="main-btn main-btn_white">Сообщение</button>
+                        @if(session('type_id') == 1)
+                        <button class="main-btn main-btn_blue" data-create-order><span>Предложить работу</span></button>
+                        @endif
+                    </div>
 
+                    @if(session('type_id') == 1)
                     <div class="exchange-block">
                         <h2 class="exchange-title _line-blue">Биржа юридических задач</h2>
 
@@ -109,8 +116,10 @@
                             <p class="exchange-dogovor_text"><span>&#8381;</span> 7 предложений от 1 500&#8381;</p>
                         </div>
 
-                        <button class="main-btn"><span>Создать задачу</span></button>
+                        <button class="main-btn"><span>
+                                <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}">Создать задачу</a></span></button>
                     </div>
+                    @endif
                 </div>
 
                 <div class="right">
@@ -375,7 +384,7 @@
                         ])
                         <div class="buttons-container">
                             <button class="main-btn main-btn_white">Сообщение</button>
-                            <button class="main-btn main-btn_white">Заказать услугу</button>
+                            <button class="main-btn main-btn_white" data-create-order>Заказать услугу</button>
                         </div>
                     </div>
 
@@ -412,6 +421,7 @@
     <script>
         $(document).ready(function() {
             ymaps.ready(init);
+            goToOrderPage()
         })
 
         function init() {
@@ -447,8 +457,15 @@
             myMap.geoObjects.add(myPlacemark);
         }
 
-        function orderService(serviceId, employeeId) {
-            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?service_id=${serviceId}&employee_id=${employeeId}`
+        function orderService(serviceId, employeeId, employeeName) {
+            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?service_id=${serviceId}&employee_id=${employeeId}&employee_name=${employeeName}`
+        }
+
+        function goToOrderPage() {
+            let employee = page__.getGolobalData('EmployeeInfo');
+            $('[data-create-order]').click(function () {
+                orderService('', {{ request()->route('employee_id') }}, employee.full_name)
+            })
         }
 
         function agetostr(age) {
