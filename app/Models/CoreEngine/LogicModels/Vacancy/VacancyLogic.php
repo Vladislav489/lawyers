@@ -25,6 +25,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class VacancyLogic extends CoreEngine
@@ -568,6 +569,10 @@ class VacancyLogic extends CoreEngine
                 if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(24), false) <= 0) {
 //                (new EmployeeLogic())->declineWork([$vacancy['id'], $vacancy['executor_id']]);
                     $this->deleteVacancy(['vacancy_id' => (string) $vacancy['id']]);
+                    Log::build([
+                        'driver' => 'daily',
+                        'path' => storage_path('/logs/vacancy_cron.log')
+                    ])->info('Вакансия с id ' . $vacancy['id'] . ' удалена, так как юрист не принял ее в работу!');
                 }
             }
         }
@@ -582,6 +587,10 @@ class VacancyLogic extends CoreEngine
             foreach ($vacancyList as $vacancy) {
                 if (Carbon::now()->diffInMinutes(Carbon::make($vacancy['updated_at'])->addHours(24), false) <= 0) {
                     $this->acceptWorkDone($vacancy['id']);
+                    Log::build([
+                        'driver' => 'daily',
+                        'path' => storage_path('/logs/vacancy_cron.log')
+                    ])->info('Вакансия с id ' . $vacancy['id'] . ' автоматически принята, так как пользователь не сделал этого сам!');
                 }
             }
         }
