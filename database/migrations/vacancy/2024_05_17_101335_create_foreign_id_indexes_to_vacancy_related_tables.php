@@ -63,7 +63,7 @@ return new class extends Migration
             $table->dropForeign(['vacancy_id']);
         });
 
-        Schema::table('file', function (Blueprint $table) {
+        Schema::table('employee_offer_responses', function (Blueprint $table) {
             $table->dropForeign(['vacancy_id']);
         });
 
