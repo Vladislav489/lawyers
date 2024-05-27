@@ -26,9 +26,9 @@ class FileMainstayController extends MainstayController
         return response()->json((new FileLogic($this->params))->getOne());
     }
 
-    public function actionDownloadFile($filePath, $fileName) {
+    public function actionDownloadFile($filePath) {
         if (!empty((new FileLogic(['path' => $filePath]))->getOne())) {
-            return response()->download(Storage::path($filePath), $fileName);
+            return response()->download(Storage::path($filePath));
         }
         return response('<div style="color: red">no file or access</div>', 404);
     }

@@ -188,7 +188,7 @@ class parentComponent {
             success:function (data) {
                 if (data.length != 0 && data != undefined) {
                     $this.data = $this.option['data']  = $this.option['data'].concat(data['result']);
-                    $this.setOption('data',$this.option['data'])
+                    // $this.setOption('data',$this.option['data'])
                 }
             }
         });
@@ -284,5 +284,23 @@ class parentComponent {
         }
         if(sendParams == undefined) sendParams = {};
         return sendParams;
+    }
+
+    addChatLoadFromAajax() {
+        var $this = this;
+        $.ajax({
+            url:this.urlAdi,
+            type:'post',
+            data: this.checkParasms(),
+            dataType:"json",
+            success:function (data) {
+                if (data.length != 0 && data != undefined) {
+                    for (let index in data['result']['chat_messages']) {
+                        $this.option['data']['chat_messages'].unshift(data['result']['chat_messages'][index]);
+                    }
+                    $this.setOption('data',$this.option['data'])
+                }
+            }
+        });
     }
 }

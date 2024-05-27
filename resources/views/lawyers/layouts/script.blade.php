@@ -8,6 +8,10 @@
 <script src="/lawyers/scripts/select2.full.min.js"></script>
 <script src="/lawyers/scripts/slick.min.js"></script>
 <script src="/lawyers/scripts/script.js"></script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script type="module" src="{{asset('js/echo.js')}}"></script>
+
 <script data-create_page="front">
     var page__ = null;
 

@@ -148,7 +148,7 @@
                     <div class="message-icon user_ico">{{--<span class="count">1</span>--}}</div>
                     <div class="name">{{Auth::user()->first_name}}</div>
                     <ul class="profile_nav" name="profile_nav">
-                        <li class='noactive' name='noactive'><a href="#">Чат</a></li>
+                        <li><a href="{{ route__('actionChatList_controllers_chat_chatcontroller') }}">Чат</a></li>
                         <li><a href="{{ route__('actionClientCabinet_controllers_client_clientcontroller') }}">Профиль</a></li>
                         <li class='noactive' name='noactive'><a href="#">Помощь</a></li>
                         <li><a href="{{ route__('actionUserLogout_logincontroller') }}">Выход</a></li>
@@ -159,7 +159,7 @@
                     <div class="message-icon user_ico">{{--<span class="count">1</span>--}}</div>
                     <div class="name">{{Auth::user()->first_name}}</div>
                     <ul class="profile_nav" name="profile_nav">
-                        <li class='noactive' name='noactive'><a href="#">Чат</a></li>
+                        <li><a href="{{ route__('actionChatList_controllers_chat_chatcontroller') }}">Чат</a></li>
                         <li><a href="{{ route__('actionEmployeeCabinet_controllers_employee_employeecontroller') }}">Профиль</a></li>
                         <li class='noactive' name='noactive'><a href="#">Помощь</a></li>
                         <li><a href="{{ route__('actionUserLogout_logincontroller') }}">Выход</a></li>

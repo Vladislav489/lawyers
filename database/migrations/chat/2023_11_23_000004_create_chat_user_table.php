@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('updated_at')->nullable();
             $table->boolean('is_read')->default(false)->comment('прочитан');
             $table->boolean('is_block')->default(false)->comment('заблокирован');
-            $table->boolean('is_archive')->comment('в архиве');
+            $table->boolean('is_archive')->comment('в архиве')->default(false);
             $table->boolean('is_deleted')->default(false);
             $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата');
             $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');

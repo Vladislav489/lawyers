@@ -36,7 +36,7 @@ class UserLogic extends CoreEngine
 
     public function getUserName() {
         $this->select = [
-            DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as user_name")
+            DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as user_name")
         ];
         return (new self($this->params, $this->select))->getOne()['user_name'];
     }

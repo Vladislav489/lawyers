@@ -20,6 +20,9 @@ class FrontController extends CentralController {
         //if(is_null(Site::getSiteId()))
           //          abort(404);
         //Проверка для системных пользователей
+        if (!Auth::check()) {
+            return redirect(route__("actionUserLogin_logincontroller"));
+        }
 
         if(isset($_GET['cache_build'])) {
             if($_GET['cache_build'] != Config::get('app.borderToken')){
