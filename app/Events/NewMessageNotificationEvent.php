@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Models\CoreEngine\LogicModels\Notification\NotificationLogic;
+use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\ProjectModels\Chat\ChatUser;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
@@ -34,10 +36,18 @@ class NewMessageNotificationEvent implements ShouldBroadcast
     public function broadcastOn()
     {
         $channels = [];
+
         foreach ($this->message['recipients_arr'] as $recipientId) {
+            $this->storeMessageNotification($recipientId, $this->message['sender_user_id']);
             $channels[] = new PrivateChannel('notification_user.' . $recipientId);
         }
         return $channels;
+    }
+
+    public function storeMessageNotification($receiverId, $senderId) {
+        $notification['message'] = 'У Вас новое сообщение от ' . (new UserLogic(['id' => (string) $senderId]))->getUserName();
+        $notification['user_id'] = $receiverId;
+        return (new NotificationLogic())->store($notification);
     }
 
     public function broadcastAs()

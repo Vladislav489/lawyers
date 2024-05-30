@@ -257,7 +257,6 @@
 
         function readMessage(messageId, messageStatus, chatId) {
             if (messageStatus === 0) {
-                console.log('read', messageId, chatId, messageStatus)
                 page__.sendData(
                     '{{ route__('actionReadMessage_mainstay_chat_chatmainstaycontroller') }}',
                     {
@@ -297,7 +296,6 @@
             document.querySelectorAll('.other-message').forEach((elem) => {
                 observer.observe(elem)
             })
-
         }
 
         function openChat(chatId) {
@@ -360,7 +358,7 @@
                 return;
             }
             if (recipientsObj.length === 0) {
-                alert('Кому ты пишешь? Ты один тут нахуй!')
+                alert('Не удалось отправить сообщение, так как собеседник удалил чат')
                 $('#message').val('')
                 return;
             }
@@ -415,14 +413,18 @@
 
         function deleteMessage(message) {
             const messageId = message.id
+            const chatId = getChatWindow().params.chat_id
             page__.sendData(
                 '{{ route__('actionDeleteMessage_mainstay_chat_chatmainstaycontroller') }}',
                 {
                     id: messageId,
-                    user_id: message.sender_user_id
+                    user_id: message.sender_user_id,
+                    chat_id: chatId,
+                    recipients: message.recipients
                 },
                 function(data) {
                     getChatWindow().data.chat_messages = getChatWindow().data.chat_messages.filter(message => message.id !== messageId)
+                    page__.getElementsGroup('chat_list')[0]['obj'].setUrlParams({})
                 }
             )
         }

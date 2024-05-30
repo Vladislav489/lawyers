@@ -103,30 +103,6 @@ class ChatLogic extends CoreEngine
         return ['result' => $chat];
     }
 
-//    public function getChat() {
-//        if ($this->params['chat_id'] == null) {
-//            return false;
-//        }
-//        $chat = parent::getOne();
-//        $chat['auth_user'] = auth()->id();
-//        if (isset($chat['chat_users'])) {
-//            $chat['chat_users'] = json_decode($chat['chat_users'], true);
-//        }
-//        if (isset($chat['chat_messages'])) {
-//            $chat['chat_messages'] = json_decode($chat['chat_messages'], true);
-//        }
-//        if ($chat['is_group'] == 0) {
-//            foreach ($chat['chat_users'] as $chatUser) {
-//                if ($chatUser['user_id'] != auth()->id()) {
-//                    $chat['name'] = $chatUser['name'];
-//                    break;
-//                }
-//            }
-//        }
-//
-//        return ['result' => $chat];
-//    }
-
     public function store($data) {
         try {
             $chat = array_intersect_key(
@@ -259,25 +235,12 @@ class ChatLogic extends CoreEngine
                                              ON ChatLastMessage.chat_id = chat.id"),
                     'field' => ['last_message'],
                 ],
-//                'ChatLastMessage' => [
-//                    'entity' => DB::raw("(SELECT cm.is_read, cm.created_at as last_message_ts, cm.message as last_message, cm.message_type_id, DATE(cm.created_at),
-//                     TIME_FORMAT(cm.created_at, '%H:%i') as last_message_time, cm.chat_id FROM chat_message cm JOIN (SELECT chat_id, MAX(created_at) AS max_created_at
-//                     FROM chat_message GROUP BY chat_id) AS latest ON cm.chat_id = latest.chat_id AND cm.created_at = latest.max_created_at)
-//                     as ChatLastMessage ON ChatLastMessage.chat_id = chat.id"),
-//                    'field' => ['last_message', 'last_message_time', 'last_message_ts'],
-//                ],
                 'CountNewMessages' => [
                     'entity' => DB::raw("(SELECT JSON_LENGTH(JSON_ARRAYAGG(
                                 JSON_OBJECT('id', id))) as count_new_messages,
                                 chat_id FROM chat_message WHERE sender_user_id <> $userId AND is_read = 0 GROUP BY chat_id) as CountNewMessages ON CountNewMessages.chat_id = chat.id"),
                     'field' => ['count_new_messages'],
                 ],
-//                'Users' => [
-//                    'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
-//                                JSON_OBJECT('id', id, 'name', CONCAT_WS(' ', last_name, first_name, middle_name)) as users,
-//                                chat_id FROM chat_user GROUP BY chat_id) as ChatUser ON ChatUser.chat_id = chat.id"),
-//                    'field' => [],
-//                ],
 
             ]
         ];

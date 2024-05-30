@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Mainstay\Chat;
+use App\Events\MessageDeleteEvent;
 use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
 use App\Models\CoreEngine\LogicModels\Chat\ChatMessageLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
@@ -81,12 +82,20 @@ class ChatMainstayController extends MainstayController
         $this->params = empty($param) ? $this->params : $param;
         $data = Validator::validate($this->params, [
             'id' => 'required|integer|exists:chat_message,id',
-            'user_id' => 'required|integer|exists:user_entity,id'
+            'user_id' => 'required|integer|exists:user_entity,id',
+            'chat_id' => 'required|integer|exists:chat,id',
+            'recipients' => 'required'
         ]);
         if ($data['user_id'] !== (string) auth()->id()) {
             return false;
         }
-        return response()->json((new ChatMessageLogic())->deleteForeva($data['id']));
+        $response = (new ChatMessageLogic())->deleteForeva($data['id']);
+        if ($response > 0) {
+            $data['recipients_arr'] = json_decode($data['recipients'], true);
+            broadcast(new MessageDeleteEvent($data));
+            return response()->json($response);
+        }
+        return response()->json(false);
     }
 
     public function actionUpdateMessage($param = []) {

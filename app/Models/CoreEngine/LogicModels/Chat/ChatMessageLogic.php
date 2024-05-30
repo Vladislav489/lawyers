@@ -52,7 +52,6 @@ class ChatMessageLogic extends CoreEngine
     public function store($data) {
         if (isset($data['recipients'])) {
             $data['recipients_arr'] = json_decode($data['recipients'], true);
-            $data['recipients'] = json_encode($data['recipients']);
         }
         if (isset($data['files'])) {
             $data['user_id'] = auth()->id();
