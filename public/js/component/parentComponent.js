@@ -286,21 +286,4 @@ class parentComponent {
         return sendParams;
     }
 
-    addChatLoadFromAajax() {
-        var $this = this;
-        $.ajax({
-            url:this.urlAdi,
-            type:'post',
-            data: this.checkParasms(),
-            dataType:"json",
-            success:function (data) {
-                if (data.length != 0 && data != undefined) {
-                    for (let index in data['result']['chat_messages']) {
-                        $this.option['data']['chat_messages'].unshift(data['result']['chat_messages'][index]);
-                    }
-                    $this.setOption('data',$this.option['data'])
-                }
-            }
-        });
-    }
 }

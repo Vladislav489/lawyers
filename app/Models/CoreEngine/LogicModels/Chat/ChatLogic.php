@@ -42,6 +42,7 @@ class ChatLogic extends CoreEngine
             $list[$index]['last_message'] = json_decode($chat['last_message'], true);
         }
 
+
         foreach ($list as $index => $chat) {
             if ($chat['is_group'] == 0) {
                 foreach ($chat['chat_users'] as $chatUser) {
@@ -50,10 +51,44 @@ class ChatLogic extends CoreEngine
                         break;
                     }
                 }
+                if(!empty($chat['chat_users'])) {
+                    if ($this->isDeleted($chat)) {
+                        unset($list[$index]);
+                    }
+//                    $presentUserIds = array_column($chat['chat_users'], 'user_id');
+//                    if (!in_array(auth()->id(), $presentUserIds)) {
+//                        unset($list[$index]);
+//                    }
+                }
             }
         }
 
         return ['result' => $list];
+    }
+
+    public function isDeleted($chat) {
+        $deletedForMyself = array_filter($chat['chat_users'], function($chatUser) {
+            return $chatUser['is_deleted'] == 1 && $chatUser['user_id'] == auth()->id();
+        });
+
+        return $deletedForMyself;
+    }
+
+    public function getChatAndUndeleteIt() {
+        $chat = parent::getOne();
+        if (empty($chat)) {
+            return false;
+        }
+        $chat['chat_users'] = json_decode($chat['chat_users'], true);
+        foreach ($chat['chat_users'] as $index => $chat_user) {
+            if ($chat_user['is_deleted'] == 1) {
+                $chat_user['is_deleted'] = 0;
+                $chat['chat_users'][$index]['is_deleted'] = 0;
+                unset($chat_user['name']);
+                $this->helpEngine['chatUser']->save($chat_user);
+            }
+        }
+        return $chat;
     }
 
     public function getChatInfo() {
@@ -137,7 +172,8 @@ class ChatLogic extends CoreEngine
 
     public function deleteChat(array $data): bool
     {
-        return $this->helpEngine['chatUser']->delete($data);
+        $chatUserRowId = ChatUser::where([['user_id', $data['user_id']], ['chat_id', $data['chat_id']]])->first()->id;
+        return $this->helpEngine['chatUser']->delete($chatUserRowId);
     }
 
     protected function getFilter(): array
@@ -162,12 +198,7 @@ class ChatLogic extends CoreEngine
                 'type' => 'string|array',
                 "action" => '=', 'concat' => 'AND',
             ],
-//            [
-//                'field' => 'SELECT chat_id from chat_user where user_id', 'params' => 'chat_user_id',
-//                'validate' => ['string' => true, "empty" => true],
-//                'type' => 'string|array',
-//                "action" => 'IN', 'concat' => 'AND',
-//            ],
+
 
         ];
         $this->filter = array_merge($this->filter, parent::getFilter());
@@ -184,7 +215,7 @@ class ChatLogic extends CoreEngine
             'relatedModel' => [
                 'ChatUser' => [
                     'entity' => DB::raw("(SELECT JSON_ARRAYAGG(
-                                JSON_OBJECT('is_block', is_block, 'is_read', is_read, 'user_id',
+                                JSON_OBJECT('id', id, 'is_block', is_block, 'is_deleted', is_deleted, 'is_read', is_read, 'user_id',
                                 user_id, 'name', (SELECT CONCAT_WS(' ', last_name, first_name, middle_name) FROM user_entity WHERE id = user_id))) as chat_users,
                                 chat_id FROM chat_user GROUP BY chat_id) as ChatUser ON ChatUser.chat_id = chat.id"),
                     'field' => ['chat_users'],

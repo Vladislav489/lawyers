@@ -45,6 +45,8 @@
             ])
 
                 <div class='chat-window'>
+
+            @if(session()->get('type_id') == 1)
                 @include('component_build',[
 	            "component" => 'component.infoComponent.textInfo',
                 "params_component" => [
@@ -64,21 +66,49 @@
                         </div>
 
                         <div class='chat-header_buttons'>
-                            <button class='chat-order' type='button'>
+                            <button class='chat-order' type='button' @click.prevent=\"makeAnOrder(data.chat_users)\">
                                 Заказ <img src='/lawyers/images/icons/chat-order.svg' alt='order-icon'>
                             </button>
                             <button type='button'><img src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'></button>
-                            <button type='button'><img src='/lawyers/images/icons/call-icon.svg' alt='call-icon'></button>
-                            <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon' @click=\"chatOptions()\"></button>
+                            <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon' @click=\"toggleOptions()\"></button>
                             <ul id='chat_options' hidden>
                                 <li><a @click.prevent=\"deleteChat(data.id)\">Удалить чат</a></li>
-                                <li>Заблокировать пользователя</li>
-                                <li></li>
                             </ul>
                         </div>
                     </div>"
                     ]
                     ])
+            @else
+                @include('component_build',[
+            "component" => 'component.infoComponent.textInfo',
+            "params_component" => [
+                "autostart" => 'true',
+                "name" => "chat_header",
+                "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+                "params" => ['id' => request()->get('chat_id')],
+                "callAfterloadComponent" => "function() {
+                }",
+                "template" => "<div class='chat-window_header'>
+                    <div class='chat-header_left'>
+                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
+                        <div class='chat_info'>
+                            <h4>@{{ data.name }}</h4>
+                            <time>был в сети 5 мин назад</time>
+                        </div>
+                    </div>
+
+                    <div class='chat-header_buttons'>
+
+                        <button type='button'><img src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'></button>
+                        <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon' @click=\"toggleOptions()\"></button>
+                        <ul id='chat_options' hidden>
+                            <li><a @click.prevent=\"deleteChat(data.id)\">Удалить чат</a></li>
+                        </ul>
+                    </div>
+                </div>"
+                ]
+                ])
+            @endif
 
 
                 @include('component_build',[
@@ -89,8 +119,8 @@
                     "url" => route("actionGetChatMessages_mainstay_chat_chatmainstaycontroller"),
                     "params" => [
 						'chat_id' => request()->get('chat_id'),
-						'page' => '1',
-						'pageSize' => '20'
+						'page' => 1,
+						'pageSize' => 20
 						],
 					"callAfterloadComponent" => "function() {
 					    if(this.params.chat_id) {
@@ -106,13 +136,15 @@
                                 v-bind:data-message-id=\"message.id\"
                                 v-bind:data-message-status=\"message.is_read\"
                                 :id=\"'message' + message.id\"
-                                @click.right=\"console.log(111)\">
+                                @click.prevent=\"togglePopup(message.id)\">
                                 <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
                                 <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
                                     <a @click=\"viewFile(message.message)\">
                                     <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
                                 <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
+                                <a v-if=\"message.sender_user_id == data.auth_user\"
+                                 @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\" hidden>delete</a>
                             </div>
 
                         <div>
@@ -173,45 +205,59 @@
         </div>
     </section>
 
-{{--    @include('js.util')--}}
-{{--    @include('js.validation')--}}
-{{--    @include('js.async-api')--}}
-{{--    @include('js.delete-handler')--}}
     <script>
 
         $(document).ready(function() {
-            readMessages()
         })
 
+        function getHeight() {
+            return document.querySelector('.messages-container').scrollHeight
+        }
+
         function loadMoreMessages() {
-            let currentChatHeight = document.querySelector('.messages-container').scrollHeight
+            let currentChatHeight = getHeight()
             document.querySelector('.messages-container').addEventListener('scroll', function () {
                 if (this.scrollTop === 0) {
                     let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-                    // let topMessageId = chatWindow.data.chat_messages[0].id
-                    // console.log(chatWindow.vueObject)
 
                     chatWindow.pagination['page'] += 1
-                    chatWindow.addChatLoadFromAajax()
-                    let newChatHeight = this.scrollHeight
-                    console.log(currentChatHeight, newChatHeight)
-                    let top
-                    if (currentChatHeight === newChatHeight) {
-                        top = currentChatHeight
-                    } else {
-                        top = newChatHeight - currentChatHeight
-                    }
-                    console.log(top)
-                    this.scrollTo({
-                        top: top
+                    let newChatHeight
+                    addChatLoadFromAjax(chatWindow,
+                        function (data) {
+                            let $this = chatWindow
+                            if (data['result']['chat_messages'].length != 0 && data != undefined) {
+                                for (let index in data['result']['chat_messages']) {
+                                    $this.option['data']['chat_messages'].unshift(data['result']['chat_messages'][index]);
+                                }
+                                $this.setOption('data',$this.option['data'])
+                                setTimeout(function() {
+                                    newChatHeight = getHeight()
+                                    document.querySelector('.messages-container').scrollTo({
+                                        top: newChatHeight - currentChatHeight
+                                    }, 1000)
+                                })
+                                currentChatHeight = newChatHeight
+                            }
+
                     })
-                    currentChatHeight = newChatHeight
                 }
             })
         }
 
+        function addChatLoadFromAjax(componentObj, callback) {
+            var $this = componentObj;
+            $.ajax({
+                url: $this.urlAdi,
+                type:'post',
+                data: $this.checkParasms(),
+                dataType:"json",
+                success: callback
+            });
+        }
+
         function readMessage(messageId, messageStatus, chatId) {
-            if (messageStatus == 0) {
+            if (messageStatus === 0) {
+                console.log('read', messageId, chatId, messageStatus)
                 page__.sendData(
                     '{{ route__('actionReadMessage_mainstay_chat_chatmainstaycontroller') }}',
                     {
@@ -230,10 +276,6 @@
                     }
                 )
             }
-        }
-
-        function getNewMessages(messages) {
-            return messages.filter(message => message.is_read == 0 && message.sender_user_id != {{ auth()->id() }})
         }
 
         function readMessages(chatId) {
@@ -259,7 +301,11 @@
         }
 
         function openChat(chatId) {
-            page__.getElementsGroup('chat_window')[0]['obj'].setUrlParams({
+            leaveOtherChatChannel()
+            listenChatChannel(chatId)
+            let chatWindow = getChatWindow()
+            chatWindow.pagination['page'] = 1
+            chatWindow.setUrlParams({
                 chat_id: chatId,
                 page: 1,
                 pageSize: 20
@@ -271,9 +317,10 @@
                 scrollChatDown()
                 loadMoreMessages()
             }, 250);
-            // setTimeout(function () {
-            //     readMessages(chatId)
-            // }, 250)
+        }
+
+        function getNewMessages(messages) {
+            return messages.filter(message => message.is_read == 0 && message.sender_user_id != {{ auth()->id() }})
         }
 
         function scrollChatDown() {
@@ -292,12 +339,7 @@
                 url: '{!! route__('actionSendMessage_mainstay_chat_chatmainstaycontroller') !!}',
                 success: function (response) {
                     let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-                    // if (chatWindow.data.chat_messages[chatWindow.data.chat_messages.length - 1].message === response.message) {
-                    //     chatWindow.data.chat_messages[chatWindow.data.chat_messages.length - 1].message = response.message
-                    // } else {
-                        chatWindow.data.chat_messages.push(response)
-                    // }
-
+                    chatWindow.data.chat_messages.push(response)
                     page__.getElementsGroup('chat_list')[0]['obj'].setUrlParams({})
                     setTimeout(function () {
                         scrollChatDown()
@@ -313,9 +355,13 @@
                 sendMessage(files)
             }
             let chat = page__.getElementsGroup('chat_header')[0].obj.data
-            console.log(chat)
-            let recipientsObj = chat.chat_users.filter((user) => user.user_id !== {{ auth()->id() }});
+            let recipientsObj = chat.chat_users.filter((user) => user.user_id !== {{ auth()->id() }} && user.is_deleted !== 1);
             if (!message) {
+                return;
+            }
+            if (recipientsObj.length === 0) {
+                alert('Кому ты пишешь? Ты один тут нахуй!')
+                $('#message').val('')
                 return;
             }
             let recipientsArr = recipientsObj.map((user) => user.user_id);
@@ -332,11 +378,6 @@
                 data.append('files', message)
             }
             $('#message').val('')
-            // let json = {}
-            // data.forEach((value, key) => json[key] = value);
-            // let currentMessage = JSON.stringify(json);
-            // page__.getElementsGroup('chat_window')[0]['obj'].data.chat_messages.push(JSON.parse(currentMessage))
-            // scrollChatDown()
             sendFormData(data)
         }
 
@@ -364,15 +405,33 @@
             $('[data-delete]').attr('hidden', true)
         }
 
-        function chatOptions() {
+        function togglePopup(messageId) {
+            $('#delete_btn' + messageId).prop('hidden', !$('#delete_btn' + messageId).prop('hidden'))
+        }
+
+        function toggleOptions() {
             $('#chat_options').attr('hidden', !$('#chat_options').attr('hidden'))
+        }
+
+        function deleteMessage(message) {
+            const messageId = message.id
+            page__.sendData(
+                '{{ route__('actionDeleteMessage_mainstay_chat_chatmainstaycontroller') }}',
+                {
+                    id: messageId,
+                    user_id: message.sender_user_id
+                },
+                function(data) {
+                    getChatWindow().data.chat_messages = getChatWindow().data.chat_messages.filter(message => message.id !== messageId)
+                }
+            )
         }
 
         function deleteChat(chatId) {
             page__.sendData(
                 '{{ route__('actionChatDelete_mainstay_chat_chatmainstaycontroller') }}',
                 {
-                    id: chatId
+                    chat_id: chatId
                 },
                 function (response) {
                     if (response) {
@@ -382,41 +441,49 @@
             )
         }
 
-    </script>
-
-    <script type="module">
-        import Echo from '{{asset('js/echo.js')}}'
-
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key: '{{ env('PUSHER_APP_KEY') }}',
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-            wsHost: '{{ env('PUSHER_HOST') }}',
-            wsPort: '{{ env('PUSHER_PORT') }}',
-            forceTLS: true,
-            disableStats: true,
-        });
-
-        function getChatWindow() {
-            return page__.getElementsGroup('chat_window')[0]['obj']
+        function leaveOtherChatChannel() {
+            let channelsToLeave
+            if (Object.keys(window.Echo.connector.channels).length > 0) {
+                channelsToLeave = Object.keys(window.Echo.connector.channels)
+                    .filter(channel => channel !== 'notification_channel' && !channel.includes('private-notification_user.'))
+                channelsToLeave.forEach((channelName) => {
+                    window.Echo.leave(channelName)
+                })
+            }
         }
 
-        window.Echo.channel('send_message')
-            .listen('.send_message', (data) => {
-                console.log('send_message')
-                let chatWindow = getChatWindow()
-                if (chatWindow.params.chat_id == data.chat_id) {
-                    chatWindow.data.chat_messages.push(data)
-                    setTimeout(function () {
-                        readMessages(data.chat_id)
-                    }, 200)
-                }
-                page__.getElementsGroup('chat_list')[0]['obj'].setUrlParams({})
-            }).listen('.read_message', (data) => {
-                let chatWindow = getChatWindow()
-                if (chatWindow.params.chat_id) {
-                    chatWindow.data.chat_messages.find(item => item.id == data.id).is_read = data.is_read
-                }
-            })
+        function listenChatChannel(chatId) {
+            window.Echo.private('send_message.' + chatId)
+                .listen('.send_message', (data) => {
+                    let chatWindow = getChatWindow()
+                    if (chatWindow.params.chat_id == data.chat_id) {
+                        chatWindow.data.chat_messages.push(data)
+                        setTimeout(function () {
+                            readMessages(data.chat_id)
+                        }, 200)
+                    }
+                })
+                .listen('.read_message', (data) => {
+                    let chatWindow = getChatWindow()
+                    if (chatWindow.params.chat_id) {
+                        chatWindow.data.chat_messages.find(item => item.id == data.id).is_read = data.is_read
+                    }
+                })
+        }
+
+        function getChatWindow() {
+            let chatWindow
+            if (page__.getElementsGroup('chat_window')[0] !== undefined) {
+                chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
+            }
+            return chatWindow
+        }
+
+        function makeAnOrder(chatUsers) {
+            let employee = chatUsers.filter(user => user.user_id !== {{ auth()->id() }})
+            location.href = `{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}?employee_id=${employee[0].user_id}&employee_name=${employee[0].name}`
+        }
+
     </script>
+
 @endsection

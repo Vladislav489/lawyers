@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\CoreEngine\ProjectModels\Chat\ChatUser;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -11,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReadMessageEvent implements ShouldBroadcast
+class NewMessageNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -32,19 +33,28 @@ class ReadMessageEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('send_message.' . $this->message['chat_id']);
+        $channels = [];
+        foreach ($this->message['recipients_arr'] as $recipientId) {
+            $channels[] = new PrivateChannel('notification_user.' . $recipientId);
+        }
+        return $channels;
     }
 
     public function broadcastAs()
     {
-        return 'read_message';
+        return 'new_message_notification';
     }
 
     public function broadcastWith()
     {
         return [
+            'message' => $this->message['message'],
+            'chat_id' => $this->message['chat_id'],
+            'sender_user_id' => $this->message['sender_user_id'],
             'id' => $this->message['id'],
-            'is_read' => 1
+            'message_type_id' => $this->message['message_type_id'],
+            'time' => Carbon::now()->format('H:i'),
+            'is_read' => 0
         ];
     }
 }
