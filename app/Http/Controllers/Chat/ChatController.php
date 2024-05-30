@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends FrontController
 {
+
+
     public function getPageParams(): array
     {
         return [

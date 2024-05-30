@@ -8,6 +8,9 @@
 <script src="/lawyers/scripts/select2.full.min.js"></script>
 <script src="/lawyers/scripts/slick.min.js"></script>
 <script src="/lawyers/scripts/script.js"></script>
+
+@include('lawyers.layouts.echo')
+
 <script data-create_page="front">
     var page__ = null;
 

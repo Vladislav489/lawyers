@@ -14,5 +14,6 @@ class Chat extends BaseModel
         'is_deleted',
         'is_archive',
         'user_id',
+        'updated_at'
     ];
 }

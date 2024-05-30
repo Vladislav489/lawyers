@@ -7,12 +7,14 @@
     "require": {
         "php": "^8.0.2",
         "alexusmai/laravel-file-manager": "^3.0",
+        "beyondcode/laravel-websockets": "^1.14",
         "guzzlehttp/guzzle": "^7.2",
         "laragear/preload": "^1.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
+        "pusher/pusher-php-server": "^7.2",
         "scheb/yahoo-finance-api": "^4.3",
         "seyyedam7/laravel-html-parser": "^3.1",
         "symfony/polyfill-php81": "*"

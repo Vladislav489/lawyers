@@ -30,8 +30,8 @@ class Controller extends CentralController {
 
     public function viewFile() {
         $filePath = request()->query('path');
-        $fileName = request()->query('name');
-        return (new FileMainstayController())->actionDownloadFile($filePath, $fileName);
+//        $fileName = request()->query('name');
+        return (new FileMainstayController())->actionDownloadFile($filePath);
     }
 
 }

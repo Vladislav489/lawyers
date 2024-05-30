@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_user', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->boolean('is_read')->default(false)->comment('прочитан');
-            $table->boolean('is_block')->default(false)->comment('заблокирован');
-            $table->boolean('is_archive')->comment('в архиве')->default(false);
+            $table->string('message')->comment('Текст уведомления');
+            $table->unsignedBigInteger('user_id')->index()->comment('Адресат');
+            $table->boolean('is_read')->default(false);
             $table->boolean('is_deleted')->default(false);
-            $table->bigInteger('chat_id')->unsigned()->index()->comment('ID чата');
-            $table->bigInteger('user_id')->unsigned()->index()->comment('ID пользователя');
+
+            $table->foreign('user_id')->references('id')->on('user_entity')->cascadeOnDelete();
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_user');
+        Schema::dropIfExists('notifications');
     }
 };

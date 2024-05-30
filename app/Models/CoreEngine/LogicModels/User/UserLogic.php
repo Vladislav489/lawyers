@@ -3,6 +3,7 @@
 namespace App\Models\CoreEngine\LogicModels\User;
 
 use App\Models\CoreEngine\Core\CoreEngine;
+use App\Models\CoreEngine\ProjectModels\Chat\ChatMessage;
 use App\Models\CoreEngine\ProjectModels\HelpData\City;
 use App\Models\CoreEngine\ProjectModels\HelpData\Region;
 use App\Models\CoreEngine\ProjectModels\Question\UserQuestion;
@@ -36,9 +37,16 @@ class UserLogic extends CoreEngine
 
     public function getUserName() {
         $this->select = [
-            DB::raw("CONCAT(last_name, ' ', first_name, ' ', middle_name) as user_name")
+            DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as user_name")
         ];
         return (new self($this->params, $this->select))->getOne()['user_name'];
+    }
+
+    public function getNewMessagesForUser($data) {
+        if (!isset($data['user_id'])) {
+            return false;
+        }
+
     }
 
     public function save($data)

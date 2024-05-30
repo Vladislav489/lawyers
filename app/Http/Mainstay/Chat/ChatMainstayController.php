@@ -1,76 +1,118 @@
 <?php
 namespace App\Http\Mainstay\Chat;
+use App\Events\MessageDeleteEvent;
 use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
+use App\Models\CoreEngine\LogicModels\Chat\ChatMessageLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
-use App\Models\CoreEngine\ProjectModels\Chat\Chat;
-use App\Models\System\Admin\Rule;
 use App\Models\System\ControllersModel\MainstayController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ChatMainstayController extends MainstayController
 {
-    public function callAction($method, $parameters)
-    {
-        if (!Auth::check()) {
-            return response()->json(['message' => 'forbidden']);
-        }
-
-        return parent::callAction($method, $parameters);
-    }
-
-    public function actionCreateChat($param = []) {
+    public function createChat($param = []) {
         $this->params = empty($param) ? $this->params : $param;
-        $rules = [
-            'id' => 'nullable|integer|exists:chat,id',
-            'owner_user_id' => 'required|integer|exists:user_entity,id',
-            'is_group' => 'nullable|integer',
-            'name' => 'nullable|string',
-            'recipient_id' => 'required|integer|exists:user_entity,id'
-        ];
-        $data = Validator::validate($this->params, $rules);
-        if (!isset($data['is_group']) || $data['is_group'] == 0) {
-            $data['name'] = (new UserLogic(['id' => (string) $data['recipient_id']]))->getUserName();
+        return (new ChatLogic())->store($this->params);
+    }
+
+    public function actionGetChat($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $data = $this->params;
+        if ($data['user_id'] == $data['target_user_id']) {
+            return response()->json(['message' => "forbidden"], 403);
         }
-        $chatId = (new ChatLogic())->store($data);
-//        $validator = Validator::make($request->all(), [
-//            'name' => 'required|string',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return response()->json([
-//                'errors' => $validator->errors()
-//            ]);
-//        }
-//
-//        $request->merge([
-//            'user_id' => Auth::id(),
-//        ]);
-//
-//        return response()->json(
-//            (new ChatLogic())->store($request->all())
-//        );
-    }
-
-    public function actionGetChat(Request $request)
-    {
-        return response()->json(
-            Chat::find($request->input('id'))
-        );
-    }
-
-    public function actionGetChatList()
-    {
-        return response()->json((new ChatLogic())->getList());
-    }
-
-    public function actionChatDelete(Request $request)
-    {
-        if ($request->isMethod('delete')) {
-            return response()->json(
-                (new ChatLogic())->deleteChat($request->all())
-            );
+        if ($data['user_id'] == null) {
+            return response()->json(['message' => "unauthorized"], 401);
         }
+        if (!isset($data['name'])) {
+            $data['name'] = (new UserLogic(
+                ['id' => $data['target_user_id']],
+                [DB::raw("CONCAT_WS(' ', last_name, first_name, middle_name) as name")]))
+                ->getOne()['name'];
+        }
+        $chat = (new ChatLogic($data))->setJoin(['ChatUser'])->getChatAndUndeleteIt();
+        if (!$chat) {
+            $chat = $this->createChat($data);
+        }
+        return response()->json($chat);
+
+    }
+
+    public function actionGetChatList($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new ChatLogic())->getChatList());
+    }
+
+    public function actionGetChatInfo($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        if ($this->params['id'] == null) {
+            return false;
+        }
+        $data = Validator::validate($this->params, [
+            'id' => 'required|integer|exists:chat,id'
+        ]);
+        return response()->json((new ChatLogic($data))->setJoin(['ChatUser'])->getChatInfo());
+    }
+
+    public function actionGetChatMessages($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        if ($this->params['chat_id'] == null) {
+            return false;
+        }
+        $data = Validator::validate($this->params, [
+            'chat_id' => 'required|integer|exists:chat,id',
+            'page' => 'required',
+            'pageSize' => 'required'
+        ]);
+        $select = ['*', DB::raw("DATE_FORMAT(created_at, '%H:%i') as time"),];
+        return response()->json((new ChatMessageLogic($data, $select))->setJoin(['Sender'])->order('desc', 'id')->getMessageList());
+    }
+
+    public function actionSendMessage($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new ChatMessageLogic())->store($this->params));
+    }
+
+    public function actionReadMessage($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        return response()->json((new ChatMessageLogic())->read($this->params));
+    }
+
+    public function actionDeleteMessage($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $data = Validator::validate($this->params, [
+            'id' => 'required|integer|exists:chat_message,id',
+            'user_id' => 'required|integer|exists:user_entity,id',
+            'chat_id' => 'required|integer|exists:chat,id',
+            'recipients' => 'required'
+        ]);
+        if ($data['user_id'] !== (string) auth()->id()) {
+            return false;
+        }
+        $response = (new ChatMessageLogic())->deleteForeva($data['id']);
+        if ($response > 0) {
+            $data['recipients_arr'] = json_decode($data['recipients'], true);
+            broadcast(new MessageDeleteEvent($data));
+            return response()->json($response);
+        }
+        return response()->json(false);
+    }
+
+    public function actionUpdateMessage($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $data = Validator::validate($this->params, [
+            'id' => 'required|integer|exists:chat_message,id',
+            'message' => 'required|string'
+        ]);
+        return response()->json((new ChatMessageLogic())->save($data));
+    }
+
+    public function actionChatDelete($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $data = Validator::validate($this->params, [
+            'chat_id' => 'required|integer|exists:chat,id'
+        ]);
+        $data['user_id'] = \auth()->id();
+        return response()->json((new ChatLogic())->deleteChat($data));
     }
 }

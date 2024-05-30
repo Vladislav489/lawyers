@@ -17,5 +17,7 @@ class ChatMessage extends BaseModel
         'message_type_id',
         'sender_user_id',
         'target_user_id',
+        'is_read',
+        'updated_at'
     ];
 }

@@ -4,10 +4,10 @@
 @section('content')
     <section class="find-section u-container">
         <div class="container">
-{{--            <ul class="breadcrumbs">--}}
-{{--                <li class="cool-underline"><a href="#">Юрист</a></li>--}}
-{{--                <li class="cool-underline"><a href="#">Город</a></li>--}}
-{{--            </ul>--}}
+            {{--            <ul class="breadcrumbs">--}}
+            {{--                <li class="cool-underline"><a href="#">Юрист</a></li>--}}
+            {{--                <li class="cool-underline"><a href="#">Город</a></li>--}}
+            {{--            </ul>--}}
 
             <form action="#" class="find-block find-form" id="search_form">
                 <label class="search-label">
@@ -170,16 +170,16 @@
                 <div class="unit-select">
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Рейтинг</span>
-{{--                        <div class="unit-select_select select-btn">--}}
-{{--                            <p class="unit-select_text">Не важен</p>--}}
-{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
-{{--                        </div>--}}
-{{--                        <ul class="select-window">--}}
-{{--                            <li>1 звезда</li>--}}
-{{--                            <li>2 звезды</li>--}}
-{{--                            <li>5 звезд</li>--}}
-{{--                            <li>Не важен</li>--}}
-{{--                        </ul>--}}
+                        {{--                        <div class="unit-select_select select-btn">--}}
+                        {{--                            <p class="unit-select_text">Не важен</p>--}}
+                        {{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+                        {{--                        </div>--}}
+                        {{--                        <ul class="select-window">--}}
+                        {{--                            <li>1 звезда</li>--}}
+                        {{--                            <li>2 звезды</li>--}}
+                        {{--                            <li>5 звезд</li>--}}
+                        {{--                            <li>Не важен</li>--}}
+                        {{--                        </ul>--}}
                         <select class="unit-select_select js_select" name="rating" id="rating">
                             <option value="" selected="true">Любой</option>
                             <option value="1">1</option>
@@ -192,16 +192,16 @@
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Оценка</span>
-{{--                        <div class="unit-select_select select-btn">--}}
-{{--                            <p class="unit-select_text">Не важна</p>--}}
-{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
-{{--                        </div>--}}
-{{--                        <ul class="select-window">--}}
-{{--                            <li>Не важна</li>--}}
-{{--                            <li>1</li>--}}
-{{--                            <li>2</li>--}}
-{{--                            <li>3</li>--}}
-{{--                        </ul>--}}
+                        {{--                        <div class="unit-select_select select-btn">--}}
+                        {{--                            <p class="unit-select_text">Не важна</p>--}}
+                        {{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+                        {{--                        </div>--}}
+                        {{--                        <ul class="select-window">--}}
+                        {{--                            <li>Не важна</li>--}}
+                        {{--                            <li>1</li>--}}
+                        {{--                            <li>2</li>--}}
+                        {{--                            <li>3</li>--}}
+                        {{--                        </ul>--}}
                         <select class="unit-select_select js_select" name="evaluation" id="evaluation">
                             <option value="" selected="true">Любая</option>
                             <option value="1">1</option>
@@ -214,14 +214,14 @@
 
                     <div class="unit-select_row">
                         <span class="unit-select_subtext">Опыт работы</span>
-{{--                        <div class="unit-select_select select-btn">--}}
-{{--                            <p class="unit-select_text">От 10 лет</p>--}}
-{{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
-{{--                        </div>--}}
-{{--                        <ul class="select-window">--}}
-{{--                            <li>От 20 лет</li>--}}
-{{--                            <li>От 30 лет</li>--}}
-{{--                        </ul>--}}
+                        {{--                        <div class="unit-select_select select-btn">--}}
+                        {{--                            <p class="unit-select_text">От 10 лет</p>--}}
+                        {{--                            <img class="sub-icon" src="/lawyers/images/icons/arrow-icon-gray.svg" alt="arrow-icon">--}}
+                        {{--                        </div>--}}
+                        {{--                        <ul class="select-window">--}}
+                        {{--                            <li>От 20 лет</li>--}}
+                        {{--                            <li>От 30 лет</li>--}}
+                        {{--                        </ul>--}}
                         <select class="unit-select_select js_select" name="experience" id="experience">
                             <option value="" selected="true">Любой</option>
                             <option value="1">От 1 года</option>
@@ -243,7 +243,8 @@
                 </p>
                 <div class="buttons-container">
                     <a href="#" class="main-btn main-btn_orange"><span>Бесплатная консультация</span></a>
-                    <a href="{{route__('actionCreateVacancy_controllers_client_clientcontroller')}}" class="main-btn"><span>Создать задачу на бирже</span></a>
+                    <a href="{{route__('actionCreateVacancy_controllers_client_clientcontroller')}}"
+                       class="main-btn"><span>Создать задачу на бирже</span></a>
                 </div>
             </div>
         </div>
@@ -253,71 +254,71 @@
         <div class="container">
 
 
-                @include('component_build', [
-                    'component' => 'component.gridComponent.simpleGrid',
-                    'params_component' => [
-                        'autostart' => 'false',
-						'ssr' => 'true',
-                        'name' => 'employee_list',
-                        'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
+            @include('component_build', [
+                'component' => 'component.gridComponent.simpleGrid',
+                'params_component' => [
+                    'autostart' => 'true',
+//						'ssr' => 'true',
+                    'name' => 'employee_list',
+                    'url' => route__("actionGetEmployeeList_mainstay_employee_employeemainstaycontroller"),
 
-                        'template' =>
-                        "<div :id=\"name + '_body'\" class='exchanges'>
-                        <h2 class='find-section_header'>Найдено: <span>@{{ pagination.totalCount }} специалистов</span></h2>
-                        <div class='found-specialists' >
-                            <div v-for=\"item in data\" class='fs-block' >
-                                <div class='fs-img'>
-                                    <img :src=\"'/storage' + item.avatar_path\" alt='lawyer-img'>
-                                </div>
+                    'template' =>
+                    "<div :id=\"name + '_body'\" class='exchanges'>
+                    <h2 class='find-section_header'>Найдено: <span>@{{ pagination.totalCount }} специалистов</span></h2>
+                    <div class='found-specialists' >
+                        <div v-for=\"item in data\" class='fs-block' >
+                            <div class='fs-img'>
+                                <img :src=\"'/storage' + item.avatar_path\" alt='lawyer-img'>
+                            </div>
 
-                                <div class='fs-info'>
-                                    <a :href=\"'".route__('actionSpecialistCard_controller')."/'+item.user_id\">
-                                    <h3 class='fs-name'>@{{ item.full_name }}</h3></a>
-                                    <p class='fs-row'>
-                                        <img class='icon' src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
-                                        <span class='fs-text'>@{{ item.location }}</span>
-                                    </p>
-                                    <p class='fs-row'>
-                                        <img class='icon' src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon'>
-                                        <span class='fs-text'>@{{ agetostr(item.practice_years) }} практики</span>
-                                    </p>
+                            <div class='fs-info'>
+                                <a :href=\"'".route__('actionSpecialistCard_controller')."/'+item.user_id\">
+                                <h3 class='fs-name'>@{{ item.full_name }}</h3></a>
+                                <p class='fs-row'>
+                                    <img class='icon' src='/lawyers/images/icons/loc-icon-gray.svg' alt='loc-icon'>
+                                    <span class='fs-text'>@{{ item.location }}</span>
+                                </p>
+                                <p class='fs-row'>
+                                    <img class='icon' src='/lawyers/images/icons/bag-icon-gray.svg' alt='bag-icon'>
+                                    <span class='fs-text'>@{{ agetostr(item.practice_years) }} практики</span>
+                                </p>
 
-                                    <div class='lawyer_rate-block'>
-                                        <div class='specialist-rate'>
-                                            <div class='stars'><span style='width:80%;'></span></div>
-                                            <!--<p>32 ответа</p>-->
-                                        </div>
+                                <div class='lawyer_rate-block'>
+                                    <div class='specialist-rate'>
+                                        <div class='stars'><span style='width:80%;'></span></div>
+                                        <!--<p>32 ответа</p>-->
                                     </div>
-
-                                    <p class='fs-text'>
-                                        @{{ item.about }}
-                                    </p>
-                                    <ul class='specialist-specialization'>
-                                        <li class='fs-text_bold' v-for=\"specialization in item.specialization\">@{{ specialization.name }}</li>
-                                    </ul>
                                 </div>
 
-                                <div class='buttons-container'>
-                                    <button class='main-btn main-btn_blue' @click.prevent=\"order(item.user_id, item.full_name)\">Заказать</button>
-                                    <button class='main-btn main-btn_white'>Сообщение</button>
-                                </div>
+                                <p class='fs-text'>
+                                    @{{ item.about }}
+                                </p>
+                                <ul class='specialist-specialization'>
+                                    <li class='fs-text_bold' v-for=\"specialization in item.specialization\">@{{ specialization.name }}</li>
+                                </ul>
+                            </div>
+
+                            <div class='buttons-container'>
+                                <button class='main-btn main-btn_blue' @click.prevent=\"order(item.user_id, item.full_name)\">Заказать</button>
+                                <button class='main-btn main-btn_white' @click.prevent=\"goToChat(item.user_id)\">Сообщение</button>
                             </div>
                         </div>
-                        </div>",
-                        'pagination'=>
-                        [
-							'page'=> 1,
-							'pageSize'=> 20,
-							'countPage'=> 1,
-							'typePagination'=> 1,
-							'showPagination'=> 1,
-							'showInPage'=> 4,
-							'count_line'=> 1,
-							'all_load'=> 0,
-							'physical_presence'=> 0
-						],
-                    ]
-                ])
+                    </div>
+                    </div>",
+                    'pagination'=>
+                    [
+                        'page'=> 1,
+                        'pageSize'=> 20,
+                        'countPage'=> 1,
+                        'typePagination'=> 1,
+                        'showPagination'=> 1,
+                        'showInPage'=> 4,
+                        'count_line'=> 1,
+                        'all_load'=> 0,
+                        'physical_presence'=> 0
+                    ],
+                ]
+            ])
         </div>
     </section>
     <script>
@@ -343,9 +344,9 @@
             const form = $('#search_form')
             form.find('input').val('')
             const selects = form.find('select')
-            for(let index = 0; index < selects.length;index++){
+            for (let index = 0; index < selects.length; index++) {
                 let key = $(selects[index]).attr("name");
-                if(key){
+                if (key) {
                     $(selects[index]).prop('selectedIndex', 0)
                 }
             }
@@ -402,7 +403,27 @@
                     txt = 'лет';
                 }
             }
-            return age+" "+txt;
+            return age + " " + txt;
+        }
+
+        function goToChat(target_user_id) {
+            let authId = {{ auth()->check() ? auth()->id() : 'null' }};
+            page__.sendData('{{ route__('actionGetChat_mainstay_chat_chatmainstaycontroller') }}',
+                {
+                    user_id: authId,
+                    target_user_id: target_user_id
+                },
+                function (response) {
+                    if (response) {
+                        location.href = `{{ route__('actionChatList_controllers_chat_chatcontroller') }}?chat_id=${response.id}`
+                    }
+                },
+                function (error) {
+                    if (error.status === 401) {
+                        location.href = '{{ route__('actionLogin_controllers_site_usercontroller') }}'
+                    }
+                }
+            )
         }
     </script>
 @endsection

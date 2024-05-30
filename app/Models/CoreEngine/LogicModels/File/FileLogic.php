@@ -10,10 +10,13 @@ class FileLogic extends FileSystemLogic
 {
     const FILE_VACANCY = 'vacancy';
     const FILE_RATING = 'rating';
+    const FILE_CHAT = 'chat';
 
     const TYPE_VACANCY = 1;
     const TYPE_VACANCY_CLOSING = 2;
     const TYPE_RATING = 3;
+    const TYPE_CHAT_IMG = 4;
+    const TYPE_CHAT_FILE = 5;
 
     public function __construct($params = [], $select = ['*'], $callback = null)
     {
@@ -36,16 +39,19 @@ class FileLogic extends FileSystemLogic
             $fileName = $file->getClientOriginalName();
 
             if (!isset($data['id'])) {
-                $data['id'] = $data['vacancy_id'];
+                $data['id'] = $data['vacancy_id'] ?? $data['chat_id'];
             }
 
             if (!isset($data['user_id'])) {
                 $data['user_id'] = $data['employee_user_id'];
             }
-
             $savedFileInfo = $this->saveFile($type . '/' . $data['id'], $fileName, $file);
             $savedFileInfo['user_id'] = $data['user_id'];
-            $savedFileInfo['vacancy_id'] = $data['id'];
+            if ($type == self::FILE_VACANCY || $type == self::FILE_RATING) {
+                $savedFileInfo['vacancy_id'] = $data['id'];
+            } else {
+                $savedFileInfo['vacancy_id'] = null;
+            }
             $savedFileInfo['type'] = $data['file_type'];
             $savedFileInfo['name'] = $savedFileInfo['fileName'];
             $fileRecord = array_intersect_key($savedFileInfo, array_flip($this->engine->getFillable()));
