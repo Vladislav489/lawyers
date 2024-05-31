@@ -21,7 +21,7 @@
         @include('lawyers.layouts._main-header')
     </header>
 
-    <main class="gradient-bg">
+    <main @class(["gradient-bg", "flex" => $shouldFlex ?? false])>
         @yield('content')
     </main>
 
