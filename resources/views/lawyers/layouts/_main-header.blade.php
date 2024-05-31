@@ -67,7 +67,7 @@
                 <a href="{{ route__('actionCreateVacancy_controllers_client_clientcontroller') }}" class="create-order cool-underline">Создать заказ</a>
             @endif
                 <div class="payment-message js_open_profile_nav">
-                    <div class="message-icon user_ico">
+                    <div data-name="notifications-icon" class="message-icon user_ico">
                         @include('component_build',[
 	                    "component" => 'component.infoComponent.textInfo',
                         "params_component" => [
@@ -186,7 +186,7 @@
 
     @auth
     <script>
-        document.querySelector('.message-icon').addEventListener('click', function() {
+        document.querySelector('[data-name=notifications-icon]').addEventListener('click', function() {
             page__.getElementsGroup('notification_list')[0]['obj'].setUrlParams({user_id: {{ auth()->id() }} })
         })
 
@@ -199,7 +199,7 @@
                         if (data) {
                             let notificationListObj = page__.getElementsGroup('notification_list')[0]['obj']
                             notificationListObj.data = notificationListObj.data.find(notification => notification.id === notificationId).is_read = 1
-                            console.log(page__.getElementsGroup('notification_counter')[0]['obj'].data = --page__.getElementsGroup('notification_counter')[0]['obj'].data)
+                            page__.getElementsGroup('notification_counter')[0]['obj'].setData(page__.getElementsGroup('notification_counter')[0]['obj'].data - 1)
                         }
                     }
                 )

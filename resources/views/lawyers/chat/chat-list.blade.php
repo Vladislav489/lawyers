@@ -1,6 +1,10 @@
 @extends('lawyers.layouts.main')
 @section('title', 'Чаты')
 
+ @php
+ $shouldFlex = true
+ @endphp
+
 @section('content')
     <section class="u-container chat-section">
         <div class="container">
@@ -142,6 +146,7 @@
                                     <a @click=\"viewFile(message.message)\">
                                     <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
+                                <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
                                 <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
                                 <span class='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\" hidden></span>
                             </div>
@@ -161,7 +166,8 @@
                                     <a @click=\"viewFile(message.message)\">
                                     <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
-                                <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
+                                <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
+                                <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\"></time>
                             </div>
                         </div>
 
@@ -313,7 +319,7 @@
             setTimeout(function () {
                 scrollChatDown()
                 loadMoreMessages()
-            }, 250);
+            }, 300);
         }
 
         function getNewMessages(messages) {
