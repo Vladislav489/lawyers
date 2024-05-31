@@ -251,9 +251,7 @@
         <div class="registration-form_label full" id="file_input">
             <label class="label-title">Выберите файлы</label>
             <div class="form-row_files">
-                <ul class="attached-files">
-
-                </ul>
+                <ul class="attached-files"></ul>
                 <input type="file" name="files[]" id="files" multiple="">
                 <span>
                     <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">

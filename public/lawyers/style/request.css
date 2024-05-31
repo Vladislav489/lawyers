@@ -29,6 +29,12 @@
     flex-wrap: wrap;
     gap: 24px 60px;
 }
+.form-row_title{
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 140%;
+    width: 100%;
+}
 .form-row_header {
     width: 100%;
     font-size: 22px;
@@ -135,7 +141,7 @@
     width: 24px;
     align-items: center;
 }
-.attached-files {
+.attached-files:not(:empty) {
     display: flex;
     flex-wrap: wrap;
     gap: 22px;
@@ -188,10 +194,11 @@
 }
 .form-row_price .form-row_text {
     display: flex;
+    font-weight: 600;
     gap: 16px;
     align-items: center;
 }
-.form-row_price input[type="text"] {
+.form-row_price input[type="text"]{
     text-align: center;
     border-radius: var(--b-radius);
     width: 150px;
@@ -347,8 +354,8 @@
     align-items: center;
 }
 .private-policy input[type="checkbox"]:checked + .label-text:before {
-    top: 3px;
-    left: -28px;
+    top: 4px;
+    left: -30px;
     content: url('../images/icons/check-icon-blue-full.svg');
     border: none;
 }
@@ -366,6 +373,8 @@
         border-radius: 0;
         padding: 16px 16px 0;
     }
+    .form-row_title{font-size: 22px;}
+    .form-row_header{font-size: 20px;}
     .form-rows{
         order: 2;
         width: 100%;

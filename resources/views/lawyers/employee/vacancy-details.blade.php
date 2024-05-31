@@ -241,9 +241,7 @@
                         <span data-error mark="files" style="color: red"></span>
 
                         <div class="form-row_files" id="file_input">
-                            <ul class="attached-files">
-
-                            </ul>
+                            <ul class="attached-files"></ul>
                             <input type="file" class="form-row_files" name="files[]" id="files" multiple>
                             <span>
                                 <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">

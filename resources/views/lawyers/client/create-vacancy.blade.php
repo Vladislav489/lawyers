@@ -14,7 +14,7 @@
                     <input type="hidden" name="executor_id" value="{{ $employeeId }}">
 
                     @if($employeeName)
-                        <p>Заказ для {{ $employeeName }}</p>
+                        <h1 class='form-row_title'>Заказ для {{ $employeeName }}</h1>
                     @endif
 
                         @include('component_build', [
@@ -139,9 +139,7 @@
                         <div class="form-row">
                             <h3 class="form-row_header">Прикрепленные файлы</h3>
                             <label class="form-row_label form-row_files">
-                                <ul class="attached-files" mark="files">
-
-                                </ul>
+                                <ul class="attached-files" mark="files"></ul>
                                 <input type="file" name="files[]" id="files" multiple>
                                 <span>
                                 <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">
@@ -170,13 +168,14 @@
                                     <span data-error style="color: red;"></span>
                             </span>
                             </label>
+                        </div>
+                        <div class="form-row form-row_price">
                             @if($employeeId)
                             <label class="">
                                 <span class="form-row_text">
                                 Выполнить за
-                                <input type="text" class="form-row_price-input" id="period" placeholder="Сумма" value="7"> дней
-                                    <span data-error style="color: red;"></span>
-                            </span>
+                                <input type="text" class="form-row_price-input" id="period" placeholder="Сумма" value="7"> дней</span>
+                                <span data-error style="color: red;"></span>
                             </label>
                             @endif
                         </div>

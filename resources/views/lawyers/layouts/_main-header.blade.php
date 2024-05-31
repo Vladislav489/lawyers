@@ -80,6 +80,7 @@
                             "template" => "<span v-if=\"data\" class='count'>@{{ data }}</span>"
                             ]
                         ])
+                    </div>
                         @include('component_build',[
 	                    "component" => 'component.infoComponent.textInfo',
                         "params_component" => [
@@ -90,23 +91,17 @@
 				        	"callAfterloadComponent" => "function() {
 				        	}",
                             "template" => "
-                            <ul style='background-color: white; width: 300px'>
+                            <ul v-if='data.length > 0' data-name='notification-nav' class='notification_dropdown'>
                                 <li v-for=\"notification in data\"
                                     v-bind:data-notification-id=\"notification.id\"
                                     v-bind:data-notification-status=\"notification.is_read\"
-                                    style='margin-bottom: 10px'
-                                >@{{ notification.message }}
-                                    <p>
-                                        @{{ notification.date }}
-                                    </p>
-                                    <a v-if=\"notification.is_read === 0\" @click.prevent=\"readNotification(notification.id, notification.is_read)\">
-                                        Отметить как прочитанное
-                                    </a>
+                                ><p>@{{ notification.message }}</p>
+                                    <p>@{{ notification.date }}</p>
+                                    <a v-if=\"notification.is_read === 0\" @click.prevent=\"readNotification(notification.id, notification.is_read)\">Отметить как прочитанное</a>
                                 </li>
                             </ul>"
                             ]
                         ])
-                    </div>
                     <div class="name">{{Auth::user()->first_name}}</div>
                     <ul class="profile_nav" name="profile_nav">
                         <li><a href="{{ route__('actionChatList_controllers_chat_chatcontroller') }}">Чат</a></li>

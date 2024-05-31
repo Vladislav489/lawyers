@@ -2,7 +2,7 @@
 @section('title', 'Чаты')
 
 @section('content')
-    <section class="gradient-bg u-container chat-section">
+    <section class="u-container chat-section">
         <div class="container">
             <div class="chat-container">
 
@@ -143,8 +143,7 @@
                                     <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
                                 <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
-                                <a v-if=\"message.sender_user_id == data.auth_user\"
-                                 @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\" hidden>delete</a>
+                                <span class='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\" hidden></span>
                             </div>
 
                         <div>
