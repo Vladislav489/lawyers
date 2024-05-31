@@ -63,6 +63,15 @@ $(function(){
     /*document.querySelectorAll('.js_nav > li').forEach(item => {
         selectRow(item);
     });*/
+    /*
+    $('.user_ico).click(function() {
+        $('[data-name=notification-nav]').fadeToggle();
+    });
+    $(document).click(function(event){
+        if (!$(event.target).closest('[data-name=notification-nav]').length){
+            $('body').find('[data-name=notification-nav]').fadeOut();
+        };
+    });*/
     $('[name=noactive] a').click(function(e) {
         e.preventDefault();
     });

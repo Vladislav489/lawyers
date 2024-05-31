@@ -142,8 +142,7 @@
                         <h3 class="form-row_header">Загрузить файлы</h3>
 
                         <label class="form-row_label form-row_files">
-                            <ul class="attached-files" mark="files">
-                            </ul>
+                            <ul class="attached-files" mark="files"></ul>
                             <input type="file" name="files[]" id="files" multiple>
                             <span>
                                 <img src="/lawyers/images/icons/folder-icon.svg" alt="folder-icon">

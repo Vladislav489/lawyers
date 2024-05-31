@@ -1370,7 +1370,6 @@ header {
     justify-content: center;
     align-items: center;
     width: 16px;
-    aspect-ratio: 1;
     position: absolute;
     color: var(--white-color);
     font-size: 11px;
@@ -1378,7 +1377,7 @@ header {
     text-transform: capitalize;
     background-color: var(--blue-color);
     top: -8px;
-    right: -15px;
+    right: -10px;
     border-radius: 50%;
 }
 .payment-message .name{
@@ -1411,6 +1410,26 @@ header {
         rotate: 90deg;
         top: calc(50% - 3px);
     }
+.notification_dropdown{
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 8px;
+    padding: 12px 20px;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 15px);
+    width: 230px;
+    z-index: 9;
+}
+    .notification_dropdown p{
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    .notification_dropdown a{
+        color: var(--blue-color);
+        font-size: 12px;
+    }
+    .notification_dropdown a:hover{text-decoration: underline;}
 .profile_nav{
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.1);

@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    height: 100%;
 }
 
 
@@ -296,6 +297,7 @@
     max-width: 320px;
     width: max-content;
     padding: 4px 12px;
+    position: relative;
 }
 .message-bubble p, .message-bubble time {
     font-size: 14px;
@@ -333,6 +335,18 @@
 .message-bubble.your-message time:after {
     content: url("../images/icons/check-icon-you.svg");
 }
+.delete-message{
+    background: url(../images/icons/delete-message.svg) center no-repeat;
+    cursor: pointer;
+    height: 24px;
+    left: -30px;
+    opacity: .6;
+    position: absolute;
+    top: calc(50% - 12px);
+    transition: all .3s linear;
+    width: 24px;
+}
+    .delete-message:hover{opacity: 1;}
 
 
 .send-message-input {
