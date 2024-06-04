@@ -86,7 +86,7 @@
     border-right: 2px solid var(--blue-color);
     padding-right: 14px;
 }
-.lawyer-avatar {
+.chat-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -126,6 +126,7 @@
     font-size: 14px;
     line-height: 18px;
     color: #707991;
+    word-break: break-all;
 }
 .chat-new-message {
     background-color: var(--blue-color);
@@ -200,7 +201,7 @@
     align-items: center;
     gap: 16px;
 }
-.chat-header_left .lawyer-avatar {
+.chat-header_left .chat-avatar {
     width: 40px;
     height: 40px;
 
@@ -302,6 +303,7 @@
 .message-bubble p, .message-bubble time {
     font-size: 14px;
     line-height: 140%;
+    word-break: break-all;
 }
 .message-bubble time {
     position: relative;
@@ -335,9 +337,15 @@
 .message-bubble.your-message time:after {
     content: url("../images/icons/check-icon-you.svg");
 }
+.chat-file{
+    background: url(../images/icons/file-icon-white.svg) left no-repeat;
+    display: inline-block;
+    padding-left: 30px;
+}
 .delete-message{
     background: url(../images/icons/delete-message.svg) center no-repeat;
     cursor: pointer;
+    display: none;
     height: 24px;
     left: -30px;
     opacity: .6;
@@ -348,7 +356,30 @@
 }
     .delete-message:hover{opacity: 1;}
 
-
+.attached_files{
+    align-items: center;
+    display: flex;
+    padding-top: 20px;
+}
+.attached_files:not(.active){display: none;}
+    .attached_files p{
+        font-size: 14px;
+        line-height: 20px;
+        margin-right: 8px;
+        max-width: calc(100% - 32px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .attached_files_del{
+        background: url(../images/icons/delete-message.svg) center no-repeat;
+        cursor: pointer;
+        height: 24px;
+        opacity: .6;
+        transition: all .3s linear;
+        width: 24px;
+    }
+    .attached_files_del:hover{opacity: 1;}
 .send-message-input {
     display: flex;
     /*margin-top: auto;*/
@@ -408,7 +439,7 @@
         align-items: center;
         gap: 16px;
     }
-    .chat-header_left .lawyer-avatar {
+    .chat-header_left .chat-avatar {
         width: 40px;
         height: 40px;
 
@@ -586,7 +617,7 @@
     .chat-header_left {
         gap: 8px;
     }
-    .chat-header_left .lawyer-avatar {
+    .chat-header_left .chat-avatar {
         width: 32px;
         height: 32px;
     }

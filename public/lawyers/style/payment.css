@@ -4,22 +4,24 @@
     gap: 30px;
     padding-top: 30px;
     align-items: flex-start;
-    padding-bottom: 151px;
+    padding-bottom: 50px;
 }
 .payment {
     background-color: var(--white-color);
     border-radius: 16px;
-    padding: 16px 24px 117px;
     display: flex;
+    flex: 1 1 975px;
     flex-wrap: wrap;
     gap: 32px 20px;
-    width: 975px;
+    padding: 16px 24px 24px;
 }
 .payment-block {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
+    .payment-block.finance-block{flex: 1 1 340px;}
+    .payment-block.payment-replenishment{flex: 1 1 567px;}
 .payment_header {
     font-size: 22px;
     font-weight: 600;
@@ -39,7 +41,7 @@
     line-height: 140%;
 }
 .payment-section .lawyer-block {
-    flex: 1 1 445px;
+    flex: 1 1 395px;
     display: flex;
     flex-direction: column;
     gap: 27px;
@@ -48,11 +50,6 @@
     background: rgba(255, 255, 255, 0.40);
     backdrop-filter: blur(2px);
     padding: 20px 27px;
-}
-
-
-.finance-block {
-    width: 340px;
 }
 .finance-block .line {
     margin: 12px 0;
@@ -69,8 +66,7 @@
 }
 
 
-form.payment-container {
-    width: 567px;
+form.payment-container{
     padding-top: 18px;
 }
 form.payment-container label {
