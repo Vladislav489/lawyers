@@ -50,9 +50,6 @@ class ChatMessageLogic extends CoreEngine
     }
 
     public function store($data) {
-        if (isset($data['recipients'])) {
-            $data['recipients_arr'] = json_decode($data['recipients'], true);
-        }
         if (isset($data['files'])) {
             $data['user_id'] = auth()->id();
             $extension = $data['files']->getClientOriginalExtension();
@@ -74,23 +71,22 @@ class ChatMessageLogic extends CoreEngine
                 $message['id'] = $data['id'];
                 $message = setTimestamps($message, 'update');
             }
-
-            if ($data['id'] = $this->save($message)) {
+            if ($message['id'] = $this->save($message)) {
                 $chat['id'] = $data['chat_id'];
                 $chat = setTimestamps($chat, 'update');
                 if (!(new ChatLogic())->save($chat)) {
                     return false;
                 }
-                broadcast((new SendMessageEvent($data)))->toOthers();
-                broadcast((new NewMessageNotificationEvent($data)));
-
+                $message['recipients_arr'] = json_decode($data['recipients'], true);
+                broadcast((new SendMessageEvent($message)))->toOthers();
+                broadcast((new NewMessageNotificationEvent($message)));
                 return [
-                    'message' => $data['message'],
-                    'chat_id' => $data['chat_id'],
-                    'sender_user_id' => $data['sender_user_id'],
-                    'id' => $data['id'],
-                    'message_type_id' => $data['message_type_id'],
-                    'recipients' => $data['recipients'],
+                    'message' => $message['message'],
+                    'chat_id' => $message['chat_id'],
+                    'sender_user_id' => $message['sender_user_id'],
+                    'id' => $message['id'],
+                    'message_type_id' => $message['message_type_id'],
+                    'recipients' => $message['recipients'],
                     'time' => Carbon::now()->format('H:i'),
                     'is_read' => 0
                 ];

@@ -36,7 +36,7 @@ class FileLogic extends FileSystemLogic
         $files = $data['files'];
         unset($data['files']);
         foreach ($files as $file) {
-            $fileName = $file->getClientOriginalName();
+            $fileName = $file->getClientOriginalName() . date('Y-m-d h:i:s');;
 
             if (!isset($data['id'])) {
                 $data['id'] = $data['vacancy_id'] ?? $data['chat_id'];

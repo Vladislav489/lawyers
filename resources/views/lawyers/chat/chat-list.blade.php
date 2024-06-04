@@ -348,6 +348,13 @@
                     setTimeout(function () {
                         scrollChatDown()
                     }, 10);
+                },
+                error: function (error) {
+                    if (error.status == 422) {
+                        let messages = error.responseJSON.errors
+                        alert (messages.files[0])
+                    }
+
                 }
             })
         }
