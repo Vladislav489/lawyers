@@ -90,6 +90,7 @@ class ChatMessageLogic extends CoreEngine
                     'sender_user_id' => $data['sender_user_id'],
                     'id' => $data['id'],
                     'message_type_id' => $data['message_type_id'],
+                    'recipients' => $data['recipients'],
                     'time' => Carbon::now()->format('H:i'),
                     'is_read' => 0
                 ];

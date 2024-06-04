@@ -10,6 +10,7 @@ use App\Models\CoreEngine\ProjectModels\Question\UserQuestion;
 use App\Models\CoreEngine\ProjectModels\User\UserBalance;
 use App\Models\CoreEngine\ProjectModels\User\UserEntity;
 use App\Models\CoreEngine\ProjectModels\Vacancy\Vacancy;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Question\Question;
@@ -75,10 +76,15 @@ class UserLogic extends CoreEngine
                 } else {
                     return $data;
                 }
-
             }
         }
         return false;
+    }
+
+    public function setUserOnlineTimestamp() {
+        $data['online'] = Carbon::now()->toDateTimeString();
+        $data = setTimestamps($data, 'update');
+        return $this->save($data);
     }
 
     protected function getFilter(): array {
