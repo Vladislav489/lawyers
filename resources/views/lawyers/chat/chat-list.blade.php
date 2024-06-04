@@ -9,7 +9,7 @@
     <section class="u-container chat-section">
         <div class="container">
             <div class="chat-container">
-
+                <div class='chats-block'>
                 @include('component_build',[
                     "component" => 'component.gridComponent.simpleGrid',
                     "params_component" => [
@@ -17,7 +17,7 @@
                         "name" => "chat_list",
                         'url' => route__("actionGetChatList_mainstay_chat_chatmainstaycontroller"),
                         "template"=>"
-                    <div class='chats-block'>
+                        <div>
                         <form action='#' class='search-chat'>
                             <span class='burger'></span>
 
@@ -29,7 +29,7 @@
 
                         <div class='chats'>
                             <div class='chat popup-btn' data-popup='chat-popup' v-for=\"chat in data\" v-if=\"chat.last_message\" @click.prevent=\"openChat(chat.id)\">
-                                <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
+                                <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='chat-avatar'>
                                 <div class='chat_right'>
                                     <h3 class='chat_title'>
                                         @{{ chat.name }}
@@ -43,11 +43,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
                     ",
                     ]
                 ])
-
+                </div>
                 <div class='chat-window'>
 
             @if(session()->get('type_id') == 1)
@@ -62,7 +62,7 @@
 					}",
                     "template" => "<div class='chat-window_header'>
                         <div class='chat-header_left'>
-                            <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
+                            <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='chat-avatar'>
                             <div class='chat_info'>
                                 <h4>@{{ data.name }}</h4>
                                 <time>@{{ data.is_online !== undefined && data.is_online === 1 ? 'Онлайн' : data.last_online}}</time>
@@ -94,7 +94,7 @@
                 }",
                 "template" => "<div class='chat-window_header'>
                     <div class='chat-header_left'>
-                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
+                        <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='chat-avatar'>
                         <div class='chat_info'>
                             <h4>@{{ data.name }}</h4>
                             <time>@{{ data.is_online !== undefined && data.is_online === 1 ? 'Онлайн' : data.last_online}}</time>
@@ -130,24 +130,28 @@
 					    if(this.params.chat_id) {
                             readMessages(this.params.chat_id)
                         }
+                        $(function(){
+                            $('[data-name=message]').click(function() {
+                                $(this).find('[data-name=delete-message]').fadeToggle(0);
+                            });
+                        });
 					}",
                     "template" => "
                     <div class='message-wrapper' :id=\"name + '_body'\">
                         <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
 
-                            <div v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
+                            <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
                                 :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
                                 v-bind:data-message-id=\"message.id\"
                                 v-bind:data-message-status=\"message.is_read\"
                                 :id=\"'message' + message.id\">
                                 <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
                                 <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
-                                    <a @click=\"viewFile(message.message)\">
-                                    <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
+                                    <a @click=\"viewFile(message.message)\" class='chat-file'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
                                 <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
                                 <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
-                                <span class='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\" hidden></span>
+                                <span class='delete-message' data-name='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\"></span>
                             </div>
 
                         <div>
@@ -172,9 +176,10 @@
 
 
                         </div>
-
-                        <div id='has_attached_files'></div>
-                        <a data-delete hidden @click=\"deleteFiles()\">x</a>
+                        <div class='attached_files'>
+                        <p id='has_attached_files'></p>
+                        <a data-delete @click=\"deleteFiles()\" class='attached_files_del'></a>
+                        </div>
                         <div class='send-message-input'>
                             <label>
                                 <span class='attach-icon'>
@@ -406,14 +411,14 @@
             let counter = $('input#file')[0].files.length;
             if (counter > 0 && counter != null && counter != undefined) {
                 $('#has_attached_files').text(counter + ' прикрепленный файл')
-                $('[data-delete]').attr('hidden', false)
+                $('[data-delete]').parent().addClass('active');
             }
         }
 
         function deleteFiles(){
             $('#file').val('')
             $('#has_attached_files').text('')
-            $('[data-delete]').attr('hidden', true)
+            $('[data-delete]').parent().removeClass('active');
         }
 
         function togglePopup(messageId) {

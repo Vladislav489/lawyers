@@ -10,12 +10,9 @@
         </ul>
 
         <div class="payment">
-            <div class="payment-block">
-                <h2 class="payment_header">
-                    Финансы Клиента
-                </h2>
-
-                <div class="payment-container finance-block">
+            <div class="payment-block finance-block">
+                <h2 class="payment_header">Финансы Клиента</h2>
+                <div class="payment-container">
                     <div class="finance-line">
                         <p>Доступно</p>
                         <p>0 рублей</p>
@@ -40,11 +37,8 @@
                 </div>
             </div>
 
-            <div class="payment-block">
-                <h2 class="payment_header">
-                    Пополнение счета
-                </h2>
-
+            <div class="payment-block payment-replenishment">
+                <h2 class="payment_header">Пополнение счета</h2>
                 <form action="#" class="payment-container">
                     <label>
                         <span class="label_text">Сумма пополнения</span>
@@ -82,17 +76,12 @@
                         <span>0 рублей</span>
                     </p>
 
-                    <button type="submit" class="main-btn">
-                        <span class="first">Продолжить <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon"></span>
-                        <span class="second">Продолжить <img src="/lawyers/images/icons/arrow-icon-white.svg" alt="arrow-icon"></span>
-                    </button>
+                    <button type="submit" class="main-btn"><span>Продолжить</span></button>
                 </form>
             </div>
 
             <div class="payment-block transaction-block">
-                <h2 class="payment_header">
-                    История транзакций
-                </h2>
+                <h2 class="payment_header">История транзакций</h2>
 
                 <table class="transaction-history" cellpadding="0" cellspacing="0">
                     <tr>
@@ -137,18 +126,15 @@
 
         <div class="lawyer-block">
             <div class="lawyer-avatar">
-                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-avatar" class="lawyer-avatar">
+                <img src="/lawyers/images/main/lawyer-img.png" alt="lawyer-avatar" height="70" width="70" />
 
                 <h3 class="lawyer-name">Соколовский Владимир Александрович</h3>
             </div>
 
-            <div class="balance-block">
-                <div class="balance-block_left">
-                    <p class="balance-text">Ваш баланс</p>
-                    <p class="balance_balance">
-                        <span>&#8381</span>
-                        0 руб
-                    </p>
+            <div class="lawyer-info_balance">
+                <div class="lawyer-balance-block">
+                    <p>Ваш баланс</p>
+                    <span class="balance-summ"><span class="balance-summ_ico">₽</span>0 руб</span>
                 </div>
             </div>
         </div>

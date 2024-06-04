@@ -1741,7 +1741,7 @@
     display: grid;
     gap: 0 44px;
     /*grid-template-columns: minmax(250px, 500px) minmax(100px, 180px) minmax(1fr, 105px) minmax(1fr, 105px) minmax(1fr, 105px) minmax(1fr, 105px);*/
-    grid-template-columns: minmax(180px, 500px) minmax(100px, 180px) repeat(2, minmax(80px, 105px)) minmax(70px, 105px) minmax(80px, 130px));
+    grid-template-columns: minmax(180px, 500px) minmax(100px, 180px) repeat(2, minmax(80px, 105px)) minmax(70px, 105px) minmax(80px, 130px);
     padding: 16px 20px 20px;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
     border-left: 1px solid rgba(0, 0, 0, 0.1);
