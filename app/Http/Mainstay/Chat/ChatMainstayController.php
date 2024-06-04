@@ -71,7 +71,19 @@ class ChatMainstayController extends MainstayController
 
     public function actionSendMessage($param = []) {
         $this->params = empty($param) ? $this->params : $param;
-        return response()->json((new ChatMessageLogic())->store($this->params));
+        $data = Validator::validate($this->params, [
+            'recipients' => 'required',
+            'sender_user_id' => 'required|integer|exists:user_entity,id',
+            'target_user_id' => 'required|integer|exists:user_entity,id',
+            'chat_id' => 'required|integer|exists:chat,id',
+            'message_type_id' => 'required|integer',
+            'files' => 'nullable|file|max:5120',
+            'message' => 'nullable|string'
+        ],
+        [
+            'files.max' => "Размер файла не должен превышать 5 МБ"
+        ]);
+        return response()->json((new ChatMessageLogic())->store($data));
     }
 
     public function actionReadMessage($param = []) {

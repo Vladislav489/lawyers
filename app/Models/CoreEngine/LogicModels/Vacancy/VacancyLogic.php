@@ -281,6 +281,7 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 7 THEN 'закрыт'
                     END as current_status_text"),
             DB::raw("Service.name as service_name"),
+            DB::raw("Service.id as service_id"),
             DB::raw("CONCAT(Region.name,' ', City.name) as location"),
             DB::raw("(CASE
                                 WHEN DATEDIFF(period_end, NOW()) < 0 THEN 0

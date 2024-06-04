@@ -97,6 +97,8 @@
 
 {{--                    </div>--}}
 
+                    <input type="hidden" mark="service_id">
+
                     <div class="form-row">
                         <h3 class="form-row_header">Мне нужно</h3>
 
@@ -227,6 +229,7 @@
     <script>
         let price = 0
         $(document).ready(function () {
+            $('[mark = service_id]').val(page__.getGolobalData('VacancyInfo').service_id)
             saveVacancy()
             $('#files').change(function () {
                 showFilesInfo()
