@@ -10,43 +10,43 @@
         <div class="container">
             <div class="chat-container">
 
-            @include('component_build',[
-	            "component" => 'component.gridComponent.simpleGrid',
-                "params_component" => [
-                    "autostart" => 'true',
-                    "name" => "chat_list",
-					'url' => route__("actionGetChatList_mainstay_chat_chatmainstaycontroller"),
-                    "template"=>"
-                <div class='chats-block'>
-                    <form action='#' class='search-chat'>
-                        <span class='burger'></span>
+                @include('component_build',[
+                    "component" => 'component.gridComponent.simpleGrid',
+                    "params_component" => [
+                        "autostart" => 'true',
+                        "name" => "chat_list",
+                        'url' => route__("actionGetChatList_mainstay_chat_chatmainstaycontroller"),
+                        "template"=>"
+                    <div class='chats-block'>
+                        <form action='#' class='search-chat'>
+                            <span class='burger'></span>
 
-                        <label>
-                            <input type='search' name='chat-search' placeholder='Поиск'>
-                            <input type='image' src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'>
-                        </label>
-                    </form>
+                            <label>
+                                <input type='search' name='chat-search' placeholder='Поиск'>
+                                <input type='image' src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'>
+                            </label>
+                        </form>
 
-                    <div class='chats'>
-                        <div class='chat popup-btn' data-popup='chat-popup' v-for=\"chat in data\" v-if=\"chat.last_message\" @click.prevent=\"openChat(chat.id)\">
-                            <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
-                            <div class='chat_right'>
-                                <h3 class='chat_title'>
-                                    @{{ chat.name }}
-                                    <img src='/lawyers/images/icons/chat-verify.svg' alt='verify-img' class='chat-verify'>
-                                    <time>@{{ chat.last_message.last_message_time }}</time>
-                                </h3>
-                                <p class='chat-preview'>
-                                    @{{ chat.last_message.message }}
-                                    <span class='chat-new-message' v-if=\"chat.count_new_messages\">@{{ chat.count_new_messages }}</span>
-                                </p>
+                        <div class='chats'>
+                            <div class='chat popup-btn' data-popup='chat-popup' v-for=\"chat in data\" v-if=\"chat.last_message\" @click.prevent=\"openChat(chat.id)\">
+                                <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
+                                <div class='chat_right'>
+                                    <h3 class='chat_title'>
+                                        @{{ chat.name }}
+                                        <img src='/lawyers/images/icons/chat-verify.svg' alt='verify-img' class='chat-verify'>
+                                        <time>@{{ chat.last_message.last_message_time }}</time>
+                                    </h3>
+                                    <p class='chat-preview'>
+                                        @{{ chat.last_message.message }}
+                                        <span class='chat-new-message' v-if=\"chat.count_new_messages\">@{{ chat.count_new_messages }}</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                ",
-                ]
-            ])
+                    ",
+                    ]
+                ])
 
                 <div class='chat-window'>
 
@@ -65,7 +65,7 @@
                             <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
                             <div class='chat_info'>
                                 <h4>@{{ data.name }}</h4>
-                                <time>был в сети 5 мин назад</time>
+                                <time>@{{ data.is_online !== undefined && data.is_online === 1 ? 'Онлайн' : data.last_online}}</time>
                             </div>
                         </div>
 
@@ -74,7 +74,7 @@
                                 Заказ <img src='/lawyers/images/icons/chat-order.svg' alt='order-icon'>
                             </button>
                             <button type='button'><img src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'></button>
-                            <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon' @click=\"toggleOptions()\"></button>
+                            <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon'></button>
                             <ul id='chat_options' hidden>
                                 <li><a @click.prevent=\"deleteChat(data.id)\">Удалить чат</a></li>
                             </ul>
@@ -97,14 +97,14 @@
                         <img src='/lawyers/images/main/lawyer-avatar.png' alt='avatar-img' class='lawyer-avatar'>
                         <div class='chat_info'>
                             <h4>@{{ data.name }}</h4>
-                            <time>был в сети 5 мин назад</time>
+                            <time>@{{ data.is_online !== undefined && data.is_online === 1 ? 'Онлайн' : data.last_online}}</time>
                         </div>
                     </div>
 
                     <div class='chat-header_buttons'>
 
                         <button type='button'><img src='/lawyers/images/icons/search-messages-icon.svg' alt='search-icon'></button>
-                        <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon' @click=\"toggleOptions()\"></button>
+                        <button type='button'><img src='/lawyers/images/icons/more-icon.svg' alt='more-icon'></button>
                         <ul id='chat_options' hidden>
                             <li><a @click.prevent=\"deleteChat(data.id)\">Удалить чат</a></li>
                         </ul>
@@ -139,8 +139,7 @@
                                 :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
                                 v-bind:data-message-id=\"message.id\"
                                 v-bind:data-message-status=\"message.is_read\"
-                                :id=\"'message' + message.id\"
-                                @click.prevent=\"togglePopup(message.id)\">
+                                :id=\"'message' + message.id\">
                                 <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
                                 <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
                                     <a @click=\"viewFile(message.message)\">
@@ -319,6 +318,8 @@
             setTimeout(function () {
                 scrollChatDown()
                 loadMoreMessages()
+                checkOnline(chatId)
+                setInterval(function () {checkOnline(chatId)}, 12000)
             }, 300);
         }
 
@@ -430,6 +431,28 @@
                 function(data) {
                     getChatWindow().data.chat_messages = getChatWindow().data.chat_messages.filter(message => message.id !== messageId)
                     page__.getElementsGroup('chat_list')[0]['obj'].setUrlParams({})
+                }
+            )
+        }
+
+        function checkOnline(chatId) {
+            if (chatId === null || chatId === undefined) {
+                return
+            }
+            let chatHeader = page__.getElementsGroup('chat_header')[0]['obj']
+            page__.sendData(
+                '{{ route__('actionCheckIfOnline_mainstay_user_usermainstaycontroller') }}',
+                {
+                    user_id: chatHeader.data.chat_users.find(user => user.user_id !== {{ auth()->id() }}).user_id,
+                },
+                function(data) {
+                    if (data) {
+                        chatHeader.data.is_online = 1
+                        chatHeader.updateVue()
+                    } else {
+                        chatHeader.data.is_online = 0
+                        chatHeader.updateVue()
+                    }
                 }
             )
         }

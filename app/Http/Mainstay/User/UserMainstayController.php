@@ -35,5 +35,11 @@ class UserMainstayController extends MainstayController {
         $data['is_read'] = '1';
         return response()->json((new NotificationLogic())->store($data));
     }
+
+    public function actionCheckIfOnline($param = []) {
+        $this->params = empty($param) ? $this->params : $param;
+        $onlineUsers = cache('online');
+        return response()->json(in_array($this->params['user_id'], $onlineUsers));
+    }
 }
 

@@ -39,9 +39,11 @@
                     </li>
                 </ul>
             </li>
-            @if(session('type_id') == 2)
-            <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Биржа заказов</a></li>
-            @endif
+            @auth
+                @if(session('type_id') == 2)
+                <li><a href="{{ route__('actionVacancyExchange_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Биржа заказов</a></li>
+                @endif
+            @endauth
             @guest
             <li>
                 <a href="{{ route__('actionFindSpecialist_controller') }}" class="cool-underline select-btn">Биржа исполнителей</a>
@@ -50,12 +52,14 @@
             <li class='noactive' name='noactive'><a href="#" class="cool-underline select-btn">Вопросы юристам</a></li>
             <li class='noactive' name='noactive'><a href="#" class="cool-underline select-btn">Коллективные иски</a></li>
 
-            @if(session('type_id') == 1)
-            <li class='noactive' name='noactive'><a href="#" class="cool-underline select-btn">Услуги сайта</a></li>
-            <li><a href="{{ route__('actionMyOrders_controllers_client_clientcontroller') }}" class="cool-underline select-btn">Заказы</a></li>
-            @elseif(session('type_id') == 2)
+            @auth
+                @if(session('type_id') == 1)
+                <li class='noactive' name='noactive'><a href="#" class="cool-underline select-btn">Услуги сайта</a></li>
+                <li><a href="{{ route__('actionMyOrders_controllers_client_clientcontroller') }}" class="cool-underline select-btn">Заказы</a></li>
+                @elseif(session('type_id') == 2)
                 <li><a href="{{ route__('actionViewOrders_controllers_employee_employeecontroller') }}" class="cool-underline select-btn">Мои заказы</a></li>
-            @endif
+                @endif
+            @endauth
         </ul>
 
         @guest
