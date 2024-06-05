@@ -36,6 +36,7 @@
     gap: 8px;
     flex-direction: column;
 }
+    .finance-block .payment-container{background: rgba(239,242,255,.3);}
 .payment-container p {
     font-weight: 600;
     line-height: 140%;
@@ -51,6 +52,7 @@
     backdrop-filter: blur(2px);
     padding: 20px 27px;
 }
+    .payment-section .lawyer-info_balance{background-color: #fff;}
 .finance-block .line {
     margin: 12px 0;
 }
@@ -98,12 +100,10 @@ form.payment-container .payment-type input {
     width: 100%;
 }
 form.payment-container .code {
-    width: max-content;
     color: rgba(40, 40, 40, 0.50);
     text-decoration: none;
-    margin-left: auto;
-    margin-right: 132px;
-    margin-top: 20px;
+    margin: 20px 0 0 202px;
+    width: max-content;
 }
 form.payment-container .code a {
     color: var(--blue-color);
@@ -186,3 +186,106 @@ form.payment-container .main-btn img {
     font-weight: 600;
     line-height: 140%;
 }
+@media screen and (max-width: 1024px) {
+.transaction-history{
+    border: none;
+    border-radius: 0;
+}
+    .transaction-history tbody{
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .transaction-history thead{display: none;}
+    .transaction-history tr{
+        border: 1px rgba(0,0,0,.1) solid;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+    }
+    .transaction-history td.transaction-sum{
+        background: rgba(239,242,255,.3);
+        border: none;
+        border-radius: 12px 12px 0 0;
+        color: var(--accent-color);
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 140%;
+        margin: 0;
+        order: -1;
+        padding: 20px 12px;
+    }
+    .transaction-history td.transaction-sum.green{color: var(--green-color);}
+    .transaction-history td{
+        border: none;
+        border-bottom: 1px rgba(0,0,0,.1) solid;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        margin: 0 12px;
+        padding: 12px 0;
+        position: relative;
+    }
+        .transaction-history td:last-child{border-bottom: none;}
+        .transaction-history td:not(.transaction-sum):before{
+            color: rgba(40,40,40,.5);
+            content: attr(data-label);
+            font-size: 14px;
+            line-height: 130%;
+        }
+}/* END 1024px */
+@media screen and (max-width: 620px) {
+.payment-section .container{padding-bottom: 0;}
+.payment-section .lawyer-block{
+    gap: 14px;
+    order: -1;
+    padding: 16px;
+}
+    .payment-section .lawyer-name{font-size: 16px;}
+    .payment-section .lawyer-avatar img{
+        height: 60px;
+        width: 60px;
+    }
+    .payment-section .lawyer-info_balance{
+        padding: 16px;
+    }
+        .payment-section .lawyer-balance-block{
+            align-items: center;
+            background: none;
+            display: flex;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+        }
+        .payment-section .lawyer-info_balance p{
+            font-size: 14px;
+            margin-bottom: 0;
+            width: 136px;
+        }
+        .payment-section .balance-summ{font-size: 16px;}
+.payment{
+    border-radius: 0;
+    margin: 0 -16px;
+    padding: 27px 16px 50px;
+    width: calc(100% + 32px);
+}
+    .payment_header{font-size: 18px;}
+    .payment-container{padding: 22px 16px;}
+    form.payment-container{gap: 24px;}
+        form.payment-container label{
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        form.payment-container .label_text{
+            font-size: 14px;
+            max-width: none;
+        }
+        .payment-type{
+            border-bottom: 1px rgba(0,0,0,.1) solid;
+            padding-bottom: 24px;
+        }
+        form.payment-container .code{margin: 12px 0 0;}
+        .select .sub-icon{top: 48px;}
+        form.payment-container p.text_lil{margin-top: -16px;}
+    form.payment-container .main-btn{margin-top: 20px;}
+}/* END 620px */
