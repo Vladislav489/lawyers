@@ -1650,7 +1650,6 @@
     border-radius: var(--b-radius);
     max-height: 1243px;
 }
-.order-container.full{max-height: none;}
 .order-question-block {
     padding: 24px 30px;
     display: flex;
@@ -1705,10 +1704,15 @@
     display: none;
 }
 
+.order-answer .messages-container{padding-top: 0;}
 .comments {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    margin: 0 -10px 24px 0;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+    width: calc(100% + 10px);
 }
 
 .order-row {
@@ -1808,7 +1812,11 @@
 }
 
 .order-container .send-message-input {
+    bottom: 0;
+    left: 0;
     margin-top: auto;
+    padding: 15px;
+    position: sticky;
 }
 
 .send-message-input.mobile {
@@ -2043,8 +2051,9 @@
 }
 
 .order-right .top-lawyers {
-    height: auto;
     flex: 1 1 auto;
+    height: auto;
+    max-height: none;
     position: relative;
     padding-bottom: 76px;
     border-radius: 0 0 var(--b-radius) 0;
@@ -2237,10 +2246,12 @@
         flex-direction: column;
         padding-bottom: 0;
     }
+        .order-status-buttons{justify-content: center;}
         .order-status_message{
             align-items: center;
             max-width: none;
             padding-top: 24px;
+            justify-content: center;
         }
     .order-right {
         flex: 0 0 400px;
