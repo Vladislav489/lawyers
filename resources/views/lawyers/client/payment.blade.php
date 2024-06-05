@@ -68,12 +68,12 @@
 
                     <p>
                         <span class="label_text">Сумма к оплате</span>
-                        <span>0 рублей</span>
+                        <span>0&nbsp;рублей</span>
                     </p>
 
                     <p class="text_lil">
                         <span class="label_text">Включая сбор за финансовую транзакцию</span>
-                        <span>0 рублей</span>
+                        <span>0&nbsp;рублей</span>
                     </p>
 
                     <button type="submit" class="main-btn"><span>Продолжить</span></button>
@@ -84,6 +84,7 @@
                 <h2 class="payment_header">История транзакций</h2>
 
                 <table class="transaction-history" cellpadding="0" cellspacing="0">
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Дата начала</th>
@@ -93,32 +94,33 @@
                         <th>Тип Транзакции</th>
                         <th>Комментарий</th>
                     </tr>
+                    </thead>
                     <tr>
-                        <td>6784563</td>
-                        <td>12:27 03.11.2018</td>
-                        <td>13:44 03.11.2018</td>
-                        <td class="transaction-sum red">- 800 руб.</td>
-                        <td>Завершена</td>
-                        <td>Расходы</td>
-                        <td>Пополнение счета</td>
+                        <td data-label='id'><span>6784563</span></td>
+                        <td data-label='Дата начала'><span>12:27 03.11.2018</span></td>
+                        <td data-label='Дата завершения'><span>13:44 03.11.2018</span></td>
+                        <td class="transaction-sum red"><span>- 800 руб.</span></td>
+                        <td data-label='Статус'><span>Завершена</span></td>
+                        <td data-label='Тип Транзакции'><span>Расходы</span></td>
+                        <td data-label='Комментарий'><span>Пополнение счета</span></td>
                     </tr>
                     <tr>
-                        <td>6784563</td>
-                        <td>12:27 03.11.2018</td>
-                        <td>13:44 03.11.2018</td>
-                        <td class="transaction-sum green">+ 800 руб.</td>
-                        <td>Завершена</td>
-                        <td>Расходы</td>
-                        <td>Оплата платного вопроса</td>
+                        <td data-label='id'><span>6784563</span></td>
+                        <td data-label='Дата начала'><span>12:27 03.11.2018</span></td>
+                        <td data-label='Дата завершения'><span>13:44 03.11.2018</span></td>
+                        <td class="transaction-sum green"><span>+ 800 руб.</span></td>
+                        <td data-label='Статус'><span>Завершена</span></td>
+                        <td data-label='Тип Транзакции'><span>Расходы</span></td>
+                        <td data-label='Комментарий'><span>Пополнение счета</span></td>
                     </tr>
                     <tr>
-                        <td>6784563</td>
-                        <td>12:27 03.11.2018</td>
-                        <td>13:44 03.11.2018</td>
-                        <td class="transaction-sum green">+ 800 руб.</td>
-                        <td>Завершена</td>
-                        <td>Расходы</td>
-                        <td>Оплата платного вопроса</td>
+                        <td data-label='id'><span>6784563</span></td>
+                        <td data-label='Дата начала'><span>12:27 03.11.2018</span></td>
+                        <td data-label='Дата завершения'><span>13:44 03.11.2018</span></td>
+                        <td class="transaction-sum green"><span>+ 800 руб.</span></td>
+                        <td data-label='Статус'><span>Завершена</span></td>
+                        <td data-label='Тип Транзакции'><span>Расходы</span></td>
+                        <td data-label='Комментарий'><span>Пополнение счета</span></td>
                     </tr>
                 </table>
             </div>
