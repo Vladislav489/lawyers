@@ -303,7 +303,7 @@
 .message-bubble p, .message-bubble time {
     font-size: 14px;
     line-height: 140%;
-    word-break: break-all;
+    word-break: break-word;
 }
 .message-bubble time {
     position: relative;
@@ -338,10 +338,11 @@
     content: url("../images/icons/check-icon-you.svg");
 }
 .chat-file{
-    background: url(../images/icons/file-icon-white.svg) left no-repeat;
+    background: url(../images/icons/file-icon.svg) left no-repeat;
     display: inline-block;
     padding-left: 30px;
 }
+.your-message .chat-file{background-image: url(../images/icons/file-icon-white.svg);}
 .delete-message{
     background: url(../images/icons/delete-message.svg) center no-repeat;
     cursor: pointer;

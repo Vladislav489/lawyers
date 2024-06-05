@@ -14,7 +14,7 @@
 @section('content')
 <section class="u-container order-section">
     <div class="container">
-        <div class="order-container">
+        <div class="order-container" data-container>
             <div class="order-question-block">
                 @include('component_build', [
                 'component' => 'component.infoComponent.textInfo',
@@ -80,21 +80,20 @@
 
                 <div class="order-answers mobile-hidden">
                     <span id="open_chat">Чат</span>
-                    <div class="comments" style="display: none;">
-                        <div class="order-row comment">
+                    <div class="comments" data-chat style="display: none;">
                             @include('component_build',[
-	            "component" => 'component.infoComponent.textInfo',
-                "params_component" => [
-                    "autostart" => 'false',
-                    "name" => "chat_header",
-                    "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
-					"callBeforloadComponent" => "function(component) {
+                            "component" => 'component.infoComponent.textInfo',
+                            "params_component" => [
+                                "autostart" => 'false',
+                                "name" => "chat_header",
+                                "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+                                "callBeforloadComponent" => "function(component) {
 
-					    return component.option
-					}",
-                    "template" => ""
-                    ]
-                    ])
+                                    return component.option
+                                }",
+                                "template" => ""
+                                ]
+                                ])
                             @include('component_build',[
 	            "component" => 'component.gridComponent.simpleGrid',
                 "params_component" => [
@@ -106,7 +105,7 @@
 
 					}",
                     "template" => "
-                    <div class='message-wrapper' :id=\"name + '_body'\">
+                    <div :id=\"name + '_body'\">
                         <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
 
                             <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
@@ -177,7 +176,6 @@
                     ],
                 ]
             ])
-                        </div>
                     </div>
                 </div>
 
@@ -282,8 +280,6 @@
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</a>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_delete' @click=\"deleteOrder(data.id)\">Отменить заказ</button>
-                        <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
-                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         {{-- Тест --}}
                         <!-- <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
@@ -291,6 +287,8 @@
 
                     </div>
                     <div class='order-status_message'>
+                        <p v-if=\"currentStatusCode == 8\" class=\"noactive\">Ожидает принятия исполнителем...</p>
+                        <p v-if=\"currentStatusCode == 7\">Заказ завершен</p>
                         <p v-if=\"currentStatusCode == 8\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
                         <p v-if=\"currentStatusCode == 4\">До конца проекта осталось @{{ daysToEnd }} дней</p>
                         <p v-if=\"currentStatusCode == 5\">На принятие проекта осталось @{{ hoursToAccept }} часов</p>
@@ -1044,7 +1042,8 @@
         acceptAndRate()
         chooseRating()
         $('#open_chat').on('click', function() {
-            $('.comments').fadeToggle()
+            $('[data-chat]').fadeToggle()
+            $(this).closest('[data-container]').toggleClass('full');
             if (getChatWindow().data === null) {
                 openChat(page__.getGolobalData('VacancyInfo').chat_id)
             }
