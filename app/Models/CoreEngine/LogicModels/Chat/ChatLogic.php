@@ -44,7 +44,7 @@ class ChatLogic extends CoreEngine
 
 
         foreach ($list as $index => $chat) {
-            if ($chat['is_group'] == 0) {
+            if ($chat['is_group'] == 0 && !str_contains($chat['name'], 'Чат заказа #')) {
                 foreach ($chat['chat_users'] as $chatUser) {
                     if ($chatUser['user_id'] != auth()->id()) {
                         $list[$index]['name'] = $chatUser['name'];

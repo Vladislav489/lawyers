@@ -2,6 +2,8 @@
 
 namespace App\Models\CoreEngine\LogicModels\Employee;
 
+use App\Http\Mainstay\Chat\ChatMainstayController;
+use App\Models\CoreEngine\LogicModels\Chat\ChatLogic;
 use App\Models\CoreEngine\LogicModels\User\UserLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyLogic;
 use App\Models\CoreEngine\LogicModels\Vacancy\VacancyOfferLogic;
@@ -391,13 +393,23 @@ class EmployeeLogic extends UserLogic
 //            $this->helpEngine['offer_response']->delete($offer['employee_response_id']);
 //            $this->helpEngine['vacancy_offer']->delete($offer['id']);
 //        }
-
+        if (is_null($data['chat_id'])) {
+            $chat = $this->createChatForVacancy($data);
+            $vacancy['chat_id'] = $chat['id'];
+        }
         $vacancy = setTimestamps($vacancy, 'update');
-
         if ((new VacancyLogic())->store($vacancy)) {
             return ['message' => "you've accept a job"];
         }
         return false;
+    }
+
+    public function createChatForVacancy($data) {
+        $chatInfo['user_id'] = $data['user_id'];
+        $chatInfo['name'] = $data['name'];
+        $chatInfo['target_user_id'] = $data['employee_user_id'];
+        return (new ChatLogic())->store($chatInfo);
+
     }
 
     public function declineWork($data)

@@ -213,6 +213,9 @@ class EmployeeMainstayController extends MainstayController
         $rules = [
             'vacancy_id' => 'required|exists:vacancy,id',
             'employee_user_id' => 'required|exists:user_entity,id',
+            'user_id' => 'required|exists:user_entity,id',
+            'name' => 'required|string',
+            'chat_id' => 'nullable|integer|exists:chat,id'
         ];
         $data = Validator::validate($this->params, $rules);
         return response()->json((new EmployeeLogic())->acceptWork($data));
