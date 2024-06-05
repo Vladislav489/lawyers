@@ -14,10 +14,6 @@
 @section('content')
 <section class="u-container order-section">
     <div class="container">
-        {{--            <ul class="breadcrumbs">--}}
-            {{--                <li class="cool-underline"><a href="#">Мои заказы</a></li>--}}
-            {{--                <li class="cool-underline"><a href="#">Заказ #1234</a></li>--}}
-            {{--            </ul>--}}
         <div class="order-container">
             <div class="order-question-block">
                 @include('component_build', [
@@ -26,8 +22,6 @@
                 'autostart' => 'false',
                 'name' => 'vacancy_info',
                 'globalData' => 'VacancyInfo',
-                //	                	'url' => route__('actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller'),
-                //	                	'params' => ['id' => request()->route('vacancy_id')],
 
                 'template' => "
                 <div class='order_quest'>
@@ -85,22 +79,104 @@
 
 
                 <div class="order-answers mobile-hidden">
-                    <span>11 ответов</span>
-                    <div class="comments">
+                    <span id="open_chat">Чат</span>
+                    <div class="comments" style="display: none;">
                         <div class="order-row comment">
-                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">
-                            <div class="order-history_right commentator">
-                                <h4> Соколовский Владимир
-                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">
-                                    <time>18:12</time>
-                                </h4>
-                                <p>
-                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в
-                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем
-                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>
-                                    <span>Могли бы помочь?</span>
+                            @include('component_build',[
+	            "component" => 'component.infoComponent.textInfo',
+                "params_component" => [
+                    "autostart" => 'false',
+                    "name" => "chat_header",
+                    "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+					"callBeforloadComponent" => "function(component) {
+
+					    return component.option
+					}",
+                    "template" => ""
+                    ]
+                    ])
+                            @include('component_build',[
+	            "component" => 'component.gridComponent.simpleGrid',
+                "params_component" => [
+                    "autostart" => 'false',
+                    "name" => "chat_window",
+                    "url" => route("actionGetChatMessages_mainstay_chat_chatmainstaycontroller"),
+                    "params" => [],
+					"callAfterloadComponent" => "function() {
+
+					}",
+                    "template" => "
+                    <div class='message-wrapper' :id=\"name + '_body'\">
+                        <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
+
+                            <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
+                                :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
+                                v-bind:data-message-id=\"message.id\"
+                                v-bind:data-message-status=\"message.is_read\"
+                                :id=\"'message' + message.id\">
+                                <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
+                                <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
+                                    <a @click=\"viewFile(message.message)\" class='chat-file'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
+                                <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
+                                <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
+                                <span class='delete-message' data-name='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\"></span>
                             </div>
+
+                            <div>
+                                <div class='messages-data' v-if=\"getNewMessages(data.chat_messages).length > 0\">
+                                    <time></time>
+                                    <span>Новые сообщения</span>
+                                </div>
+
+                                <div v-for=\"message in getNewMessages(data.chat_messages)\" class='message-bubble'
+                                 :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
+                                 v-bind:data-message-id=\"message.id\"
+                                 v-bind:data-message-status=\"message.is_read\">
+                                    <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
+                                    <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
+                                        <a @click=\"viewFile(message.message)\">
+                                        <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
+                                    </p>
+                                    <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
+                                    <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\"></time>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class='attached_files'>
+                            <p id='has_attached_files'></p>
+                            <a data-delete @click=\"deleteFiles()\" class='attached_files_del'></a>
+                        </div>
+                        <div class='send-message-input' v-if=\"data.length !== 0\">
+                            <label>
+                                <span class='attach-icon'>
+                                    <input type='file' id='file' @change=\"showFiles($('#file'))\">
+                                </span>
+                                <input type='text' placeholder='Введите сообщение...' name='message-text' id='message'
+                                @keyup.enter=\"sendMessage($('#message').val())\">
+
+                                <input type='image' src='/lawyers/images/icons/send-icon.svg' alt='send-message-icon'
+                                 @click.prevent=\"sendMessage($('#message').val())\">
+                            </label>
+                        </div>
+                    </div>
+                    ",
+                    'pagination'=>
+                    [
+                        'page'=> 1,
+                        'pageSize'=> 20,
+                        'countPage'=> 1,
+                        'typePagination'=> 1,
+                        'showPagination'=> 0,
+                        'showInPage'=> 4,
+                        'count_line'=> 1,
+                        'all_load'=> 0,
+                        'physical_presence'=> 0
+                    ],
+                ]
+            ])
                         </div>
                     </div>
                 </div>
@@ -179,13 +255,7 @@
 
                 </div>
 
-                <form action="#" class="send-message-input mobile-hidden">
-                    <label>
-                        <span class="attach-icon"></span>
-                        <input type="text" placeholder="Введите сообщение..." name="message-text">
-                        <input type="image" src="/lawyers/images/icons/send-icon.svg" alt="send-message-icon">
-                    </label>
-                </form>
+
                 @include('component_build', [
                 'component' => 'component.infoComponent.textInfo',
                 'params_component' => [
@@ -958,6 +1028,8 @@
     </div>
 </div>
 
+@include('js/chat-scripts')
+
 <script>
     $(document).ready(function () {
         setAdditionalInfoForHistory()
@@ -971,6 +1043,12 @@
         })
         acceptAndRate()
         chooseRating()
+        $('#open_chat').on('click', function() {
+            $('.comments').fadeToggle()
+            if (getChatWindow().data === null) {
+                openChat(page__.getGolobalData('VacancyInfo').chat_id)
+            }
+        })
     })
 
     function setAdditionalInfoForHistory(status) {
@@ -1015,6 +1093,10 @@
                 info = `Заказ закрыт`
                 break
             case 'ожидает принятия' :
+                icon = '/lawyers/images/icons/order-created-icon.svg'
+                info = `Заказ ожидает принятия`
+                break
+            case 'на доработке' :
                 icon = '/lawyers/images/icons/order-created-icon.svg'
                 info = `Заказ ожидает принятия`
                 break

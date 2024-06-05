@@ -7,6 +7,17 @@
 'ssr' => 'true',
 'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
 'params' => ['id' => request()->route('vacancy_id')],
+'callAfterloadComponent' => "function(component) {
+    page__.getElementsGroup('chat_window')[0]['obj'].setUrlParams({
+            chat_id: page__.getGolobalData('VacancyInfo').chat_id,
+            page: 1,
+            pageSize: 20
+        })
+    page__.getElementsGroup('chat_header')[0]['obj'].setUrlParams({
+            id: page__.getGolobalData('VacancyInfo').chat_id,
+        })
+    return component.option
+}"
 ]
 ])
 @section('title', 'Вакансия')
@@ -84,22 +95,104 @@
 
 
                 <div class="order-answers mobile-hidden">
-                    <span>11 сообщений</span>
-                    <div class="comments">
+                    <span id="open_chat">Чат</span>
+                    <div class="comments" style="display: none;">
                         <div class="order-row comment">
-                            <img src="/lawyers/images/main/lawyer-avatar.png" alt="avatar-img">
-                            <div class="order-history_right commentator">
-                                <h4> Соколовский Владимир
-                                    <img src="/lawyers/images/icons/chat-verify.svg" alt="verify-icon">
-                                    <time>18:12</time>
-                                </h4>
-                                <p>
-                                        <span>Собираюсь купить автомобиль в беларуссии. Автомобиль растаможен в
-                                        белоруссии в апреле 2023 года. Сам автомобиль 2019 года. Имеет 420л. с. Объем
-                                        двигателя 2998 кубических см. Интересует какие пошлины...</span>
-                                    <span>Могли бы помочь?</span>
+                            @include('component_build',[
+	            "component" => 'component.infoComponent.textInfo',
+                "params_component" => [
+                    "autostart" => 'false',
+                    "name" => "chat_header",
+                    "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+					"callBeforloadComponent" => "function(component) {
+
+					    return component.option
+					}",
+                    "template" => ""
+                    ]
+                    ])
+                            @include('component_build',[
+	            "component" => 'component.gridComponent.simpleGrid',
+                "params_component" => [
+                    "autostart" => 'false',
+                    "name" => "chat_window",
+                    "url" => route("actionGetChatMessages_mainstay_chat_chatmainstaycontroller"),
+                    "params" => [],
+					"callAfterloadComponent" => "function() {
+
+					}",
+                    "template" => "
+                    <div class='message-wrapper' :id=\"name + '_body'\">
+                        <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
+
+                            <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
+                                :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
+                                v-bind:data-message-id=\"message.id\"
+                                v-bind:data-message-status=\"message.is_read\"
+                                :id=\"'message' + message.id\">
+                                <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
+                                <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
+                                    <a @click=\"viewFile(message.message)\" class='chat-file'>@{{ trimFilePath(message.message) }}</a>
                                 </p>
+                                <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
+                                <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\">@{{ message.time }}</time>
+                                <span class='delete-message' data-name='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\"></span>
                             </div>
+
+                            <div>
+                                <div class='messages-data' v-if=\"getNewMessages(data.chat_messages).length > 0\">
+                                    <time></time>
+                                    <span>Новые сообщения</span>
+                                </div>
+
+                                <div v-for=\"message in getNewMessages(data.chat_messages)\" class='message-bubble'
+                                 :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
+                                 v-bind:data-message-id=\"message.id\"
+                                 v-bind:data-message-status=\"message.is_read\">
+                                    <p v-if=\"message.message_type_id == 1\" data-message>@{{ message.message }}</p>
+                                    <p v-if=\"message.message_type_id != 1 && message.message.includes('chat/')\">
+                                        <a @click=\"viewFile(message.message)\">
+                                        <img src='/lawyers/images/icons/file-icon.svg' style='width:20px'>@{{ trimFilePath(message.message) }}</a>
+                                    </p>
+                                    <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
+                                    <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\"></time>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class='attached_files'>
+                            <p id='has_attached_files'></p>
+                            <a data-delete @click=\"deleteFiles()\" class='attached_files_del'></a>
+                        </div>
+                        <div class='send-message-input' v-if=\"data.length !== 0\">
+                            <label>
+                                <span class='attach-icon'>
+                                    <input type='file' id='file' @change=\"showFiles($('#file'))\">
+                                </span>
+                                <input type='text' placeholder='Введите сообщение...' name='message-text' id='message'
+                                @keyup.enter=\"sendMessage($('#message').val())\">
+
+                                <input type='image' src='/lawyers/images/icons/send-icon.svg' alt='send-message-icon'
+                                 @click.prevent=\"sendMessage($('#message').val())\">
+                            </label>
+                        </div>
+                    </div>
+                    ",
+                    'pagination'=>
+                    [
+                        'page'=> 1,
+                        'pageSize'=> 20,
+                        'countPage'=> 1,
+                        'typePagination'=> 1,
+                        'showPagination'=> 0,
+                        'showInPage'=> 4,
+                        'count_line'=> 1,
+                        'all_load'=> 0,
+                        'physical_presence'=> 0
+                    ],
+                ]
+            ])
                         </div>
 
                         @include('component_build', [
@@ -133,62 +226,9 @@
                 ])
 
                     </div>
-                </div>{{-- END order-answers --}}
-{{--                <div class="order-history mobile-hidden">--}}
-{{--                    @include('component_build', [--}}
-{{--                'component' => 'component.infoComponent.textInfo',--}}
-{{--                'params_component' => [--}}
-{{--                'autostart' => 'true',--}}
-{{--                'name' => 'vacancy_history',--}}
-{{--                'globalData' => 'VacancyInfo',--}}
-{{--                'callBeforloadComponent' => "function (component) {--}}
-{{--                        let history = page__.getGolobalData('VacancyInfo').status_history--}}
-{{--                        let groupHistory = history.reduce((acc, obj) => {--}}
-{{--                                let key = obj.date;--}}
-{{--                                if (!acc[key]) {--}}
-{{--                                  acc[key] = [];--}}
-{{--                                }--}}
-{{--                                acc[key].push(obj);--}}
-{{--                                return acc;--}}
-{{--                                }, {})--}}
-
-{{--                        component.option['groupHistoryByDate'] = groupHistory--}}
-{{--                        return component.option--}}
-{{--                    }",--}}
-{{--                'template' => "--}}
-{{--                <div>--}}
-{{--                    <div v-for=\"(historyForDate, date) in groupHistoryByDate\" :key=\"date\" class='order-history-block'>--}}
-{{--                        <time>@{{ date }}</time>--}}
-{{--                        <div v-for=\"item in historyForDate\" :key=\"item.id\" class='order-history_row order-row'>--}}
-{{--                            <img src='/lawyers/images/icons/order-created-icon.svg' alt='order-created-icon'>--}}
-{{--                            <div class='order-history_right'>--}}
-{{--                                <h4>Заказ @{{ item.status }}--}}
-{{--                                    <time>@{{ item.time }}</time>--}}
-{{--                                </h4>--}}
-{{--                                <p name='additional-info-place' v-html=\"setAdditionalInfoForHistory(item.status)\">--}}
-
-{{--                                </p>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                "--}}
-{{--                ]--}}
-{{--                ])--}}
-
-{{--                </div>--}}
+                </div>
 
 
-
-
-
-                <form action="#" class="send-message-input mobile-hidden">
-                    <label>
-                        <span class="attach-icon"></span>
-                        <input type="text" placeholder="Введите сообщение..." name="message-text">
-                        <input type="image" src="/lawyers/images/icons/send-icon.svg" alt="send-message-icon">
-                    </label>
-                </form>
                 @include('component_build', [
                 'component' => 'component.infoComponent.textInfo',
                 'params_component' => [
@@ -948,6 +988,8 @@
     </div>
 </div>
 
+@include('js/chat-scripts')
+
 <script>
     $(document).ready(function () {
         $('#file_input').click(function () {
@@ -957,7 +999,27 @@
             showFilesInfo()
         })
         sendToInspection()
+        $('#open_chat').on('click', function() {
+            $('.comments').fadeToggle()
+            if (getChatWindow().data === null) {
+                openChat(page__.getGolobalData('VacancyInfo').chat_id)
+            }
+        })
     })
+
+    // function openChat() {
+    //     let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
+    //     let chatHeader = page__.getElementsGroup('chat_header')[0]['obj']
+    //     chatWindow.setUrlParams({
+    //         chat_id: page__.getGolobalData('VacancyInfo').chat_id,
+    //         page: 1,
+    //         pageSize: 20
+    //     })
+    //     chatHeader.setUrlParams({
+    //         id: page__.getGolobalData('VacancyInfo').chat_id,
+    //     })
+    //     $('.message-wrapper').prop('hidden', !$('.message-wrapper').prop('hidden'))
+    // }
 
     function acceptToWork(vacancyId) {
         $.ajax({
@@ -965,6 +1027,9 @@
             data: {
                 vacancy_id: vacancyId,
                 employee_user_id: {{ auth()->id() }},
+                name: 'Чат заказа #' + page__.getGolobalData('VacancyInfo').id,
+                user_id: page__.getGolobalData('VacancyInfo').owner_id,
+                chat_id: page__.getGolobalData('VacancyInfo').chat_id
             },
             url: '{{ route__('actionAcceptWork_mainstay_employee_employeemainstaycontroller') }}',
             success: function (response) {

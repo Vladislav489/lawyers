@@ -272,6 +272,7 @@ class VacancyLogic extends CoreEngine
     public function getVacancyForResponse($data) {
         $select = [
             'id', 'title', 'description', 'payment', 'status', 'period_start', 'period_end', 'created_at', 'updated_at',
+            'user_id as owner_id', 'chat_id',
             DB::raw("CASE WHEN status = 1 THEN 'создан'
                     WHEN status = 2 THEN 'на модерации'
                     WHEN status = 3 THEN 'оплачен'
@@ -279,6 +280,9 @@ class VacancyLogic extends CoreEngine
                     WHEN status = 5 THEN 'на проверке'
                     WHEN status = 6 THEN 'принят'
                     WHEN status = 7 THEN 'закрыт'
+                    WHEN status = 8 THEN 'ожидает подтверждения'
+                    WHEN status = 9 THEN 'на доработке'
+                    WHEN status = 10 THEN 'отменен'
                     END as current_status_text"),
             DB::raw("Service.name as service_name"),
             DB::raw("Service.id as service_id"),
