@@ -1715,9 +1715,10 @@
     width: calc(100% + 10px);
 }
 .comments .message-wrapper{
-    max-height: none;
+    max-height: 400px;
     padding: 0;
 }
+.comments .messages-container{padding: 0 20px;}
 .order-row {
     align-items: center;
     display: flex;
