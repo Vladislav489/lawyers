@@ -1714,7 +1714,10 @@
     padding-right: 10px;
     width: calc(100% + 10px);
 }
-
+.comments .message-wrapper{
+    max-height: none;
+    padding: 0;
+}
 .order-row {
     align-items: center;
     display: flex;
