@@ -1,14 +1,13 @@
 <script>
     function getHeight() {
-        return document.querySelector('.messages-container').scrollHeight
+        return document.querySelector('#messages_container').scrollHeight
     }
 
     function loadMoreMessages() {
-        let currentChatHeight = getHeight()
-        document.querySelector('.messages-container').addEventListener('scroll', function () {
+        let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
+        chatWindow.setOption('chatHeight', getHeight())
+        document.querySelector('#messages_container').addEventListener('scroll', function () {
             if (this.scrollTop === 0) {
-                let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-
                 chatWindow.pagination['page'] += 1
                 let newChatHeight
                 if (chatWindow.pagination['page'] > chatWindow.pagination.countPage) {
@@ -18,17 +17,19 @@
                     function (data) {
                         let $this = chatWindow
                         if (data['result']['chat_messages'].length != 0 && data != undefined) {
+                            console.log($this.option.chatHeight)
                             for (let index in data['result']['chat_messages']) {
                                 $this.option['data']['chat_messages'].unshift(data['result']['chat_messages'][index]);
                             }
                             $this.setOption('data',$this.option['data'])
-                            setTimeout(function() {
+                            chatWindow.vueObject.$nextTick(function() {
                                 newChatHeight = getHeight()
-                                document.querySelector('.messages-container').scrollTo({
-                                    top: newChatHeight - currentChatHeight
-                                }, 1000)
+                                document.querySelector('#messages_container').scrollTo({
+                                    top: newChatHeight - chatWindow.option.chatHeight
+                                })
+                                chatWindow.setOption('chatHeight', newChatHeight)
                             })
-                            currentChatHeight = newChatHeight
+
                         }
 
                     })
@@ -121,9 +122,11 @@
 
     function scrollChatDown() {
         let container = document.getElementById("messages_container")
+        console.log(container.scrollHeight)
         container.scrollTo({
             top: container.scrollHeight
         })
+        console.log(container.scrollHeight)
     }
 
     function sendFormData(data) {
@@ -140,9 +143,9 @@
                 if (chatList !== undefined && chatList !== null) {
                     chatList['obj'].setUrlParams({})
                 }
-                setTimeout(function () {
+                chatWindow.vueObject.$nextTick(function () {
                     scrollChatDown()
-                }, 10);
+                });
             },
             error: function (error) {
                 if (error.status == 422) {
@@ -297,9 +300,9 @@
                 let chatWindow = getChatWindow()
                 if (chatWindow.params.chat_id == data.chat_id) {
                     chatWindow.data.chat_messages.push(data)
-                    setTimeout(function () {
+                    chatWindow.vueObject.$nextTick(function () {
                         readMessages(data.chat_id)
-                    }, 200)
+                    })
                 }
             })
             .listen('.read_message', (data) => {

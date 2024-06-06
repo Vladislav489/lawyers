@@ -121,7 +121,7 @@
 
 					}",
                     "template" => "
-                    <div :id=\"name + '_body'\">
+                    <div class='message-wrapper' :id=\"name + '_body'\">
                         <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
 
                             <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
@@ -587,6 +587,7 @@
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
+                        <p v-if=\"currentStatusCode == 7\" class='noactive'>Заказ завершен</p>
                         {{-- Тест --}}
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_done'>Заказ выполнен</button>
                         <button v-if=\"currentStatusCode == 8\" class='order-status-btn ico_support'>Тех.поддержка</button>
@@ -997,28 +998,21 @@
             showFilesInfo()
         })
         sendToInspection()
+        toggleChat()
+    })
+
+    function toggleChat() {
         $('#open_chat').on('click', function() {
+            if (page__.getGolobalData('VacancyInfo').chat_id === null) {
+                return
+            }
             $('[data-chat]').fadeToggle()
             $(this).closest('[data-container]').toggleClass('full');
             if (getChatWindow().data === null) {
                 openChat(page__.getGolobalData('VacancyInfo').chat_id)
             }
         })
-    })
-
-    // function openChat() {
-    //     let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-    //     let chatHeader = page__.getElementsGroup('chat_header')[0]['obj']
-    //     chatWindow.setUrlParams({
-    //         chat_id: page__.getGolobalData('VacancyInfo').chat_id,
-    //         page: 1,
-    //         pageSize: 20
-    //     })
-    //     chatHeader.setUrlParams({
-    //         id: page__.getGolobalData('VacancyInfo').chat_id,
-    //     })
-    //     $('.message-wrapper').prop('hidden', !$('.message-wrapper').prop('hidden'))
-    // }
+    }
 
     function acceptToWork(vacancyId) {
         $.ajax({
