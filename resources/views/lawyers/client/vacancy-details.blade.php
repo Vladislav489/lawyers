@@ -105,7 +105,7 @@
 
 					}",
                     "template" => "
-                    <div :id=\"name + '_body'\">
+                    <div class='message-wrapper' :id=\"name + '_body'\">
                         <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
 
                             <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
@@ -1041,14 +1041,21 @@
         })
         acceptAndRate()
         chooseRating()
+        toggleChat()
+    })
+
+    function toggleChat() {
         $('#open_chat').on('click', function() {
+            if (page__.getGolobalData('VacancyInfo').chat_id === null) {
+                return
+            }
             $('[data-chat]').fadeToggle()
             $(this).closest('[data-container]').toggleClass('full');
             if (getChatWindow().data === null) {
                 openChat(page__.getGolobalData('VacancyInfo').chat_id)
             }
         })
-    })
+    }
 
     function setAdditionalInfoForHistory(status) {
         let info = ''

@@ -1710,7 +1710,7 @@
     flex-direction: column;
     margin: 0 -10px 24px 0;
     max-height: 400px;
-    overflow-y: auto;
+    overflow-y: hidden;
     padding-right: 10px;
     width: calc(100% + 10px);
 }
