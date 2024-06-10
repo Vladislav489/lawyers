@@ -52,7 +52,7 @@ class ChatMainstayController extends MainstayController
         $data = Validator::validate($this->params, [
             'id' => 'required|integer|exists:chat,id'
         ]);
-        return response()->json((new ChatLogic($data))->setJoin(['ChatUser'])->getChatInfo());
+        return response()->json((new ChatLogic($data))->setJoin(['ChatUser', 'CountNewMessages'])->getChatInfo());
     }
 
     public function actionGetChatMessages($param = []) {

@@ -151,7 +151,7 @@
                                 <span class='delete-message' data-name='delete-message' v-if=\"message.sender_user_id == data.auth_user\" @click=\"deleteMessage(message)\" :id=\"'delete_btn' + message.id\"></span>
                             </div>
 
-                        <div>
+
                             <div class='messages-data' v-if=\"getNewMessages(data.chat_messages).length > 0\">
                                 <time></time>
                                 <span>Новые сообщения</span>
@@ -169,7 +169,7 @@
                                 <p v-if=\"message.sender_user_id != data.auth_user\">@{{ message.time }}</p>
                                 <time v-if=\"message.is_read && message.sender_user_id == data.auth_user\"></time>
                             </div>
-                        </div>
+
 
 
                         </div>
