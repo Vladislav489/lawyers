@@ -80,27 +80,28 @@
 
                 <div class="order-answers mobile-hidden">
                     <span id="open_chat">Чат</span>
+                    @include('component_build',[
+					"component" => 'component.infoComponent.textInfo',
+                        "params_component" => [
+				        "autostart" => 'true',
+                        "name" => "chat_header",
+                        "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+				        'params' => ['id' => null],
+                        "callBeforloadComponent" => "function(component) {
+                            return component.option
+                        }",
+                        "template" => "<p>@{{ data.count_new_messages }}</p>"
+                        ]
+                    ])
                     <div class="comments" data-chat style="display: none;">
-                            @include('component_build',[
-                            "component" => 'component.infoComponent.textInfo',
-                            "params_component" => [
-                                "autostart" => 'false',
-                                "name" => "chat_header",
-                                "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
-                                "callBeforloadComponent" => "function(component) {
 
-                                    return component.option
-                                }",
-                                "template" => ""
-                                ]
-                                ])
                             @include('component_build',[
 	            "component" => 'component.gridComponent.simpleGrid',
                 "params_component" => [
-                    "autostart" => 'false',
+                    "autostart" => 'true',
                     "name" => "chat_window",
                     "url" => route("actionGetChatMessages_mainstay_chat_chatmainstaycontroller"),
-                    "params" => [],
+                    "params" => ['chat_id' => null],
 					"callAfterloadComponent" => "function() {
 
 					}",
@@ -275,7 +276,7 @@
                 'template' => "
                 <div class='order-status'>
                     <div class='order-status-buttons'>
-                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support' @click=\"sendToRedo(data.id)\">Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <a href='#modal_rate' data-fancybox v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</a>
@@ -623,7 +624,7 @@
                 'template' => "
                 <div class='order-status mobile'>
                     <div class='order-status-buttons'>
-                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_done'>Тех.поддержка</button>
+                        <button v-if=\"currentStatusCode == 4\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Отправить заказ <wbr />на доработку</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_support'>Тех.поддержка</button>
                         <button v-if=\"currentStatusCode == 5\" class='order-status-btn ico_done'>Заказ выполнен</button>
@@ -1042,6 +1043,9 @@
         acceptAndRate()
         chooseRating()
         toggleChat()
+        setTimeout(function () {
+            $('#open_chat').trigger('click')
+        }, 0)
     })
 
     function toggleChat() {
@@ -1051,9 +1055,11 @@
             }
             $('[data-chat]').fadeToggle()
             $(this).closest('[data-container]').toggleClass('full');
-            if (getChatWindow().data === null) {
+            getChatWindow().then(() => {
                 openChat(page__.getGolobalData('VacancyInfo').chat_id)
-            }
+            }).catch(error => {
+                console.log('toggleChat', error)
+            })
         })
     }
 

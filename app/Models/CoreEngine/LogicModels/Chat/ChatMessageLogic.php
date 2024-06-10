@@ -32,6 +32,9 @@ class ChatMessageLogic extends CoreEngine
         $messages = $list['result'];
         unset($list['result']);
         $list['result']['chat_messages'] = array_reverse($messages);
+        $list['result']['count_unread'] = count(array_filter($messages, function ($message) {
+            return $message['is_read'] == 0;
+        }));
         $list['result']['auth_user'] = auth()->id();
         return $list;
     }

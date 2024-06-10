@@ -7,17 +7,7 @@
 'ssr' => 'true',
 'url' => route__("actionGetVacancyForEmployeeRespond_mainstay_vacancy_vacancymainstaycontroller"),
 'params' => ['id' => request()->route('vacancy_id')],
-'callAfterloadComponent' => "function(component) {
-    page__.getElementsGroup('chat_window')[0]['obj'].setUrlParams({
-            chat_id: page__.getGolobalData('VacancyInfo').chat_id,
-            page: 1,
-            pageSize: 20
-        })
-    page__.getElementsGroup('chat_header')[0]['obj'].setUrlParams({
-            id: page__.getGolobalData('VacancyInfo').chat_id,
-        })
-    return component.option
-}"
+
 ]
 ])
 @section('title', 'Вакансия')
@@ -96,34 +86,36 @@
 
                 <div class="order-answers mobile-hidden">
                     <span id="open_chat">Чат</span>
-                    <div class="comments" data-chat style="display: none;">
-                            @include('component_build',[
+                    @include('component_build',[
 	            "component" => 'component.infoComponent.textInfo',
                 "params_component" => [
-                    "autostart" => 'false',
+                    "autostart" => 'true',
                     "name" => "chat_header",
                     "url" => route("actionGetChatInfo_mainstay_chat_chatmainstaycontroller"),
+					'params' => ['id' => null],
 					"callBeforloadComponent" => "function(component) {
 
 					    return component.option
 					}",
-                    "template" => ""
+                    "template" => "<p>@{{ data.count_new_messages }}</p>"
                     ]
                     ])
+
+                    <div class="comments" data-chat style="display: none;">
+
                             @include('component_build',[
 	            "component" => 'component.gridComponent.simpleGrid',
                 "params_component" => [
-                    "autostart" => 'false',
+                    "autostart" => 'true',
                     "name" => "chat_window",
                     "url" => route("actionGetChatMessages_mainstay_chat_chatmainstaycontroller"),
-                    "params" => [],
+                    "params" => ['chat_id' => null],
 					"callAfterloadComponent" => "function() {
 
 					}",
                     "template" => "
                     <div class='message-wrapper' :id=\"name + '_body'\">
                         <div class='messages-container' id='messages_container' v-if=\"data.chat_messages\">
-
                             <div data-name='message' v-for=\"message in data.chat_messages.filter(item => !getNewMessages(data.chat_messages).includes(item))\" class='message-bubble'
                                 :class=\"message.sender_user_id != data.auth_user ? 'other-message': 'your-message'\"
                                 v-bind:data-message-id=\"message.id\"
@@ -309,7 +301,6 @@
                     this.option['currentStatus'] = statusData[statusData.length - 1].status
                     this.option['currentStatusCode'] = statusData[statusData.length - 1].status_code
                     this.option['statusData'] = statusData
-                    console.log(this.option['currentStatusCode'])
                     return this.option
                 }",
 
@@ -999,6 +990,9 @@
         })
         sendToInspection()
         toggleChat()
+        setTimeout(function () {
+            $('#open_chat').trigger('click')
+        }, 0)
     })
 
     function toggleChat() {
@@ -1008,9 +1002,11 @@
             }
             $('[data-chat]').fadeToggle()
             $(this).closest('[data-container]').toggleClass('full');
-            if (getChatWindow().data === null) {
+            getChatWindow().then((chatWindow) => {
                 openChat(page__.getGolobalData('VacancyInfo').chat_id)
-            }
+            }).catch(error => {
+                console.log('toggleChat', error)
+            })
         })
     }
 

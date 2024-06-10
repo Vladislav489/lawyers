@@ -1,34 +1,35 @@
 <script>
+    var observer
+
     function getHeight() {
         return document.querySelector('#messages_container').scrollHeight
     }
 
     function loadMoreMessages() {
         let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-        chatWindow.setOption('chatHeight', getHeight())
         document.querySelector('#messages_container').addEventListener('scroll', function () {
             if (this.scrollTop === 0) {
                 chatWindow.pagination['page'] += 1
-                let newChatHeight
                 if (chatWindow.pagination['page'] > chatWindow.pagination.countPage) {
                     return
                 }
+                let currentChatHeight = getHeight()
+                let newChatHeight
                 addChatLoadFromAjax(chatWindow,
                     function (data) {
                         let $this = chatWindow
                         if (data['result']['chat_messages'].length != 0 && data != undefined) {
-                            console.log($this.option.chatHeight)
                             for (let index in data['result']['chat_messages']) {
                                 $this.option['data']['chat_messages'].unshift(data['result']['chat_messages'][index]);
                             }
-                            $this.setOption('data',$this.option['data'])
+
                             chatWindow.vueObject.$nextTick(function() {
                                 newChatHeight = getHeight()
                                 document.querySelector('#messages_container').scrollTo({
-                                    top: newChatHeight - chatWindow.option.chatHeight
+                                    top: newChatHeight - currentChatHeight
                                 })
-                                chatWindow.setOption('chatHeight', newChatHeight)
                             })
+
 
                         }
 
@@ -59,15 +60,21 @@
                     user_id: {{ auth()->id() }}
                 },
                 function (response) {
-                    let chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
-                    chatWindow.data.chat_messages.find(item => item.id == response.id).is_read = 1
-                    let chatList = getChatList()
-                    if (chatList !== undefined && chatList !== null) {
-                        chatList['obj'].setUrlParams({})
-                    }
+                    getChatWindow().then(chatWindow => {
+                        chatWindow.data.chat_messages.find(item => item.id == response.id).is_read = 1
+                        updateChatHeader()
+                        let chatList = getChatList()
+                        if (chatList !== undefined && chatList !== null) {
+                            chatList['obj'].setUrlParams({})
+                        }
+
+                    }).catch(error => {
+                        console.log('readMessage', error)
+                    })
+
                 },
                 function (error) {
-                    console.log(error);
+                    console.log('readMessage', error);
                 }
             )
         }
@@ -76,44 +83,89 @@
     function readMessages(chatId) {
         const options = {
             root: null,
-            rootMargin: '0px',
-            threshold: 0.5
+            rootMargin: '0px 0px 0px 0px',
+            threshold: 0.9
         }
-        const observer = new IntersectionObserver((entries, observer) => {
+        observer = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const messageId = parseInt(entry.target.getAttribute('data-message-id'));
-                    const messageStatus = parseInt(entry.target.getAttribute('data-message-status'));
+                    console.log(entry.target)
+                    let messageId = parseInt(entry.target.getAttribute('data-message-id'));
+                    let messageStatus = parseInt(entry.target.getAttribute('data-message-status'));
                     readMessage(messageId, messageStatus, chatId)
                     observer.unobserve(entry.target);
                 }
             });
         }, options)
-        document.querySelectorAll('.other-message').forEach((elem) => {
+        document.querySelectorAll('.other-message[data-message-status="0"]').forEach((elem) => {
             observer.observe(elem)
         })
     }
 
+    function checkVisibility(chatId) {
+        const messages = document.querySelectorAll('.other-message[data-message-status="0"]');
+        messages.forEach(message => {
+            const rect = message.getBoundingClientRect();
+            let messageId = parseInt(message.getAttribute('data-message-id'));
+            let messageStatus = parseInt(message.getAttribute('data-message-status'));
+            const isVisible = rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+            if (isVisible) {
+                readMessage(messageId, messageStatus, chatId)
+            }
+        });
+    }
+
+    function whenListening(chatId) {
+        let isThrottled = false, timeout;
+        document.querySelector('#messages_container').addEventListener('scroll', () => {
+            if (!isThrottled) {
+                checkVisibility(chatId);
+                isThrottled = true;
+                timeout = setTimeout(() => {
+                    isThrottled = false;
+                }, 100); // Adjust the timeout based on your needs
+            }
+        });
+    }
+
+
     function openChat(chatId) {
         leaveOtherChatChannel()
         listenChatChannel(chatId)
-        let chatWindow = getChatWindow()
-        chatWindow.pagination['page'] = 1
-        chatWindow.setUrlParams({
-            chat_id: chatId,
-            page: 1,
-            pageSize: 20
+        getChatWindow().then(chatWindow => {
+            chatWindow.pagination['page'] = 1
+            chatWindow.setUrlParams({
+                chat_id: chatId,
+                page: 1,
+                pageSize: 20
+            })
+            page__.getElementsGroup('chat_header')[0]['obj'].setUrlParams({
+                id: chatId
+            })
+
+            chatWindow.callAfterloadComponent = function() {
+                scrollChatDown()
+                loadMoreMessages()
+                checkOnline(chatId)
+                readMessages(chatId)
+                setInterval(function () {
+                    checkOnline(chatId)
+                }, 12000)
+
+            }
+            if (chatWindow.vueObject !== null) {
+                scrollChatDown()
+
+                setTimeout(function () {
+                    readMessages(chatId)
+                    checkOnline(chatId)
+                }, 100)
+
+            }
+        }).catch(error => {
+            console.log('openChat', error)
         })
-        page__.getElementsGroup('chat_header')[0]['obj'].setUrlParams({
-            id: chatId
-        })
-        setTimeout(function () {
-            scrollChatDown()
-            loadMoreMessages()
-            checkOnline(chatId)
-            readMessages(chatId)
-            setInterval(function () {checkOnline(chatId)}, 12000)
-        }, 300);
+
     }
 
     function getNewMessages(messages) {
@@ -122,11 +174,9 @@
 
     function scrollChatDown() {
         let container = document.getElementById("messages_container")
-        console.log(container.scrollHeight)
         container.scrollTo({
             top: container.scrollHeight
         })
-        console.log(container.scrollHeight)
     }
 
     function sendFormData(data) {
@@ -222,26 +272,26 @@
         $('#chat_options').attr('hidden', !$('#chat_options').attr('hidden'))
     }
 
-    function deleteMessage(message) {
-        const messageId = message.id
-        const chatId = getChatWindow().params.chat_id
-        page__.sendData(
-            '{{ route__('actionDeleteMessage_mainstay_chat_chatmainstaycontroller') }}',
-            {
-                id: messageId,
-                user_id: message.sender_user_id,
-                chat_id: chatId,
-                recipients: message.recipients
-            },
-            function(data) {
-                getChatWindow().data.chat_messages = getChatWindow().data.chat_messages.filter(message => message.id !== messageId)
-                let chatList = getChatList()
-                if (chatList !== undefined && chatList !== null) {
-                    chatList['obj'].setUrlParams({})
-                }
-            }
-        )
-    }
+    {{--function deleteMessage(message) {--}}
+    {{--    const messageId = message.id--}}
+    {{--    const chatId = getChatWindow().params.chat_id--}}
+    {{--    page__.sendData(--}}
+    {{--        '{{ route__('actionDeleteMessage_mainstay_chat_chatmainstaycontroller') }}',--}}
+    {{--        {--}}
+    {{--            id: messageId,--}}
+    {{--            user_id: message.sender_user_id,--}}
+    {{--            chat_id: chatId,--}}
+    {{--            recipients: message.recipients--}}
+    {{--        },--}}
+    {{--        function(data) {--}}
+    {{--            getChatWindow().data.chat_messages = getChatWindow().data.chat_messages.filter(message => message.id !== messageId)--}}
+    {{--            let chatList = getChatList()--}}
+    {{--            if (chatList !== undefined && chatList !== null) {--}}
+    {{--                chatList['obj'].setUrlParams({})--}}
+    {{--            }--}}
+    {{--        }--}}
+    {{--    )--}}
+    {{--}--}}
 
     function getChatList() {
         return page__.getElementsGroup('chat_list')[0]
@@ -251,22 +301,28 @@
         if (chatId === null || chatId === undefined) {
             return
         }
-        let chatHeader = page__.getElementsGroup('chat_header')[0]['obj']
-        page__.sendData(
-            '{{ route__('actionCheckIfOnline_mainstay_user_usermainstaycontroller') }}',
-            {
-                user_id: chatHeader.data.chat_users.find(user => user.user_id !== {{ auth()->id() }}).user_id,
-            },
-            function(data) {
-                if (data) {
-                    chatHeader.data.is_online = 1
-                    chatHeader.updateVue()
-                } else {
-                    chatHeader.data.is_online = 0
-                    chatHeader.updateVue()
-                }
+        getChatHeader().then(chatHeader => {
+            if (!chatHeader.data) {
+                return
             }
-        )
+            page__.sendData(
+                '{{ route__('actionCheckIfOnline_mainstay_user_usermainstaycontroller') }}',
+                {
+                    user_id: chatHeader.data.chat_users.find(user => user.user_id !== {{ auth()->id() }}).user_id,
+                },
+                function(data) {
+                    if (data) {
+                        chatHeader.data.is_online = 1
+                        chatHeader.updateVue()
+                    } else {
+                        chatHeader.data.is_online = 0
+                        chatHeader.updateVue()
+                    }
+                }
+            )
+        }).catch(error => {
+            console.log('checkOnline', error)
+        })
     }
 
     function deleteChat(chatId) {
@@ -297,28 +353,50 @@
     function listenChatChannel(chatId) {
         window.Echo.private('send_message.' + chatId)
             .listen('.send_message', (data) => {
-                let chatWindow = getChatWindow()
-                if (chatWindow.params.chat_id == data.chat_id) {
-                    chatWindow.data.chat_messages.push(data)
-                    chatWindow.vueObject.$nextTick(function () {
-                        readMessages(data.chat_id)
-                    })
-                }
+                getChatWindow().then(chatWindow => {
+                    if (chatWindow.params.chat_id == data.chat_id) {
+                        chatWindow.data.chat_messages.push(data)
+                        updateChatHeader()
+                        chatWindow.vueObject.$nextTick(function () {
+                            // document.querySelectorAll('.other-message[data-message-status="0"]').forEach((elem) => {
+                            //     observer.observe(elem)
+                            // })
+                            whenListening(data.chat_id)
+                        })
+
+                    }
+                }).catch(error => {
+                    console.log('send_message_channel', error)
+                })
             })
             .listen('.read_message', (data) => {
-                let chatWindow = getChatWindow()
-                if (chatWindow.params.chat_id) {
-                    chatWindow.data.chat_messages.find(item => item.id == data.id).is_read = data.is_read
-                }
+                getChatWindow().then(chatWindow => {
+                    if (chatWindow.params.chat_id) {
+                        chatWindow.data.chat_messages.find(item => item.id == data.id).is_read = 1
+                        updateChatHeader()
+                    }
+                }).catch(error => {
+                    console.log('read_message_channel', error)
+                })
             })
     }
 
-    function getChatWindow() {
-        let chatWindow
-        if (page__.getElementsGroup('chat_window')[0] !== undefined) {
-            chatWindow = page__.getElementsGroup('chat_window')[0]['obj']
+    async function getChatWindow() {
+        return await page__.getElementsGroup('chat_window')[0]['obj']
+    }
+
+    async function getChatHeader() {
+        return await page__.getElementsGroup('chat_header')[0]['obj']
+    }
+
+    function updateChatHeader() {
+        if(location.pathname.includes('/viewvacancy/')) {
+            getChatHeader().then(chatHeader => {
+                chatHeader.setUrlParams(chatHeader.params)
+            }).catch(error => {
+                console.log('updateChatHeader', error)
+            })
         }
-        return chatWindow
     }
 
     function makeAnOrder(chatUsers) {
